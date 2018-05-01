@@ -87,3 +87,8 @@ local_settings.py
 
 .env
 db.sqlite3
+
+# django-compressor
+assets/CACHE/
+.sass-cache/
+
