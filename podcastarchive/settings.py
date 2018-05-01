@@ -33,6 +33,7 @@ class Common(Configuration):
         'django.contrib.messages',
         'whitenoise.runserver_nostatic',
         'django.contrib.staticfiles',
+        'compressor',
 
         'django_extensions',
         'debug_toolbar',
@@ -114,6 +115,19 @@ class Common(Configuration):
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+    STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+        'compressor.finders.CompressorFinder',
+    ]
+
+    COMPRESS_ROOT = os.path.join(BASE_DIR, 'assets')
+    COMPRESS_PRECOMPILERS = (
+        ('text/x-sass', 'sass {infile} {outfile}'),
+        ('text/x-scss', 'sass --scss {infile} {outfile}'),
+    )
+
 
     AUTH_USER_MODEL = 'users.User'
 

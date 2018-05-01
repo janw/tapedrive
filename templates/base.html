@@ -2,6 +2,14 @@
 <html>
     <head>
         <title>My Project</title>
+
+        {% load compress %}
+		{% compress css %}
+		{# <link rel="stylesheet" href="/static/scss/one.css" type="text/scss" charset="utf-8"> #}
+		<style type="text/css">p { border:5px solid green;}</style>
+		<link rel="stylesheet" href="/static/scss/main.scss" type="text/x-scss" charset="utf-8">
+		{% endcompress %}
+
     </head>
 
     <body>
