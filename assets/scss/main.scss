@@ -1,0 +1,12 @@
+
+$custom-font-path:          "../fonts/";
+@import "fonts";
+
+$font-family-sans-serif:    'Fira Sans Extra Condensed', "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-family-base:          $font-family-sans-serif;
+$headings-font-family:		'PT Sans Narrow', sans-serif;
+$font-size-base:			1.15rem;
+$font-weight-normal:      	300;
+$font-weight-bold:          600;
+
+@import "bootstrap/bootstrap";

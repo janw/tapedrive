@@ -1,18 +1,36 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% load i18n staticfiles %}
 <html>
-    <head>
-        <title>My Project</title>
+  <head>
+    <title>{% trans "Podcast Archive" %}</title>
 
-        {% load compress %}
-		{% compress css %}
-		{# <link rel="stylesheet" href="/static/scss/one.css" type="text/scss" charset="utf-8"> #}
-		<style type="text/css">p { border:5px solid green;}</style>
-		<link rel="stylesheet" href="/static/scss/main.scss" type="text/x-scss" charset="utf-8">
-		{% endcompress %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load compress %}
+    {% compress css %}
+      <link rel="stylesheet" href="/static/scss/main.scss" type="text/x-scss" charset="utf-8">
+    {% endcompress %}
 
-    </head>
+  </head>
+  <body>
+    {% block header %}
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 font-weight-normal">{% trans "Podcast Archive" %}</h5>
+        <nav class="my-3 my-md-0 mx-md-auto">
+          <a class="p-2 text-dark" href="#">{% trans "Dashboard" %}</a>
+          <a class="p-2 text-dark" href="#">{% trans "Settings" %}</a>
+        </nav>
+        <a class="btn btn-outline-secondary" href="#">{% trans "Sign in" %}</a>
+      </div>
+    {% endblock header %}
 
-    <body>
     {% block content %}{% endblock content %}
-    </body>
+
+    {% block load_javascript %}
+      <script src="{% static 'js/jquery-3.3.1.min.js' %}"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
+      <script src="{% static 'js/popper.min.js' %}"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"></script>
+      <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"></script>
+    {% endblock load_javascript %}
+  </body>
 </html>
