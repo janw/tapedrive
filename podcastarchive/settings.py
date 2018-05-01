@@ -131,6 +131,11 @@ class Common(Configuration):
 
     AUTH_USER_MODEL = 'users.User'
 
+    DEBUG_TOOLBAR_CONFIG = {
+        'JQUERY_URL': '',
+    }
+
+
 
 class Development(Common):
     """
