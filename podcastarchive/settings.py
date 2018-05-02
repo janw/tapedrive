@@ -124,10 +124,11 @@ class Common(Configuration):
 
     COMPRESS_ROOT = os.path.join(BASE_DIR, 'assets')
     COMPRESS_PRECOMPILERS = (
-        ('text/x-sass', 'sass {infile} {outfile}'),
-        ('text/x-scss', 'sass --scss {infile} {outfile}'),
+        ('text/x-scss', 'django_libsass.SassCompiler'),
     )
 
+    COMPRESS_CACHEABLE_PRECOMPILERS = COMPRESS_PRECOMPILERS
+    LIBSASS_PRECISION = 8
 
     AUTH_USER_MODEL = 'users.User'
 

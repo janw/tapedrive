@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="card flex-md-row mb-4 box-shadow h-md-200">
+  <div class="card-body d-flex flex-column align-items-start">
+    <h4 class="card-title">
+    {{item.title}}
+    </h4>
+    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+    <p class="card-text">
+      {% if item.itunes_summary %}
+        {{item.itunes_summary}}
+      {% else %}
+        {{item.description}}
+      {% endif %}
+    </p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+    <a href="#" class="card-link">Another link</a>
+
+  </div>
+  <img class="card-img-right flex-auto d-none d-md-block img-fluid" data-src="holder.js/200x200?theme=industrial">
+</div>

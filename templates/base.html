@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% load i18n staticfiles %}
+<!DOCTYPE html>{% load i18n staticfiles podcasts_tags %}
 <html>
   <head>
     <title>{% trans "Podcast Archive" %}</title>
@@ -14,16 +14,29 @@
     {% block header %}
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <h5 class="my-0 font-weight-normal">{% trans "Podcast Archive" %}</h5>
-        <nav class="my-3 my-md-0 mx-md-auto">
-          <a class="p-2 text-dark" href="#">{% trans "Dashboard" %}</a>
-          <a class="p-2 text-dark" href="#">{% trans "Settings" %}</a>
-        </nav>
+        <ul class="nav justify-content-center my-3 my-md-0 mx-md-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">{% trans "Dashboard" %}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% add_active 'podcasts:podcasts-list' %}"
+              href="{% url 'podcasts:podcasts-list' %}">
+              {% trans "Podcasts" %}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              {% trans "Settings" %}
+            </a>
+          </li>
+        </ul>
         <a class="btn btn-outline-secondary" href="#">{% trans "Sign in" %}</a>
       </div>
     {% endblock header %}
 
-    {% block content %}{% endblock content %}
-
+    <div class="container py-3">
+      {% block content %}{% endblock content %}
+    </div>
     {% block load_javascript %}
       <script src="{% static 'js/jquery-3.3.1.min.js' %}"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
@@ -31,6 +44,8 @@
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"></script>
       <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"
         integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"></script>
+        <script src="{% static 'js/holder.min.js' %}"></script>
+
     {% endblock load_javascript %}
   </body>
 </html>
