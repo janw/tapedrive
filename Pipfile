@@ -5,6 +5,7 @@ name = "pypi"
 
 [dev-packages]
 Werkzeug = "==0.12.2"
+ipython = "*"
 
 [packages]
 dj-database-url = "==0.4.2"
@@ -16,7 +17,8 @@ Django = "==2.0"
 gunicorn = "==19.7.1"
 newrelic = "==2.98.0.81"
 whitenoise = "==4.0b4"
-django-compressor = "*"
+django_compressor = "*"
+django-libsass = "*"
 
 [requires]
 python_version = "3.6"
