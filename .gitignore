@@ -100,3 +100,7 @@ podcasts/migrations/
 
 # Files uploaded / saved from podcasts
 mediafiles/
+
+
+### Sublime Text ###
+*.sublime-*
