@@ -12,9 +12,9 @@
   </head>
   <body>
     {% block header %}
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <div class="d-flex flex-column flex-md-row align-items-center pt-3 p-md-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <h5 class="my-0 font-weight-normal">{% trans "Podcast Archive" %}</h5>
-        <ul class="nav justify-content-center my-3 my-md-0 mx-md-auto">
+        <ul class="nav justify-content-center mt-2 my-md-0 mx-md-auto">
           <li class="nav-item">
             <a class="nav-link" href="#">{% trans "Dashboard" %}</a>
           </li>
@@ -30,7 +30,7 @@
             </a>
           </li>
         </ul>
-        <a class="btn btn-outline-secondary" href="#">{% trans "Sign in" %}</a>
+        {# <a class="btn btn-outline-secondary" href="#">{% trans "Sign in" %}</a> #}
       </div>
     {% endblock header %}
 

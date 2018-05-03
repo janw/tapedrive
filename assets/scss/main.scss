@@ -16,3 +16,16 @@ $font-weight-bold:          600;
   max-width: 250px;
   max-height: 250px;
 }
+
+#summary p.collapse:not(.show) {
+    height: 69px !important;
+    overflow: hidden;
+    opacity: 0.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+#summary p.collapsing {
+    min-height: 69px !important;
+}

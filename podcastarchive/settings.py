@@ -37,7 +37,6 @@ class Common(Configuration):
         'bootstrap4',
 
         'django_extensions',
-        'debug_toolbar',
 
         'podcastarchive.users',
         'podcasts',
@@ -156,8 +155,14 @@ class Development(Common):
         '127.0.0.1'
     ]
 
+    INSTALLED_APPS = Common.INSTALLED_APPS + [
+        'debug_toolbar',
+        'silk',
+    ]
+
     MIDDLEWARE = Common.MIDDLEWARE + [
-        'debug_toolbar.middleware.DebugToolbarMiddleware'
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'silk.middleware.SilkyMiddleware',
     ]
 
 

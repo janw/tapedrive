@@ -11,11 +11,11 @@
     {% endif %}
     {% if item.summary %}
       <p class="card-text">
-        {{item.summary}}
+        {{item.summary | truncatewords_html:50 }}
       </p>
     {% endif %}
     <div class="d-flex flex-row">
-      <a href="{% url 'podcasts:podcasts-details' item.slug %}" class="card-link">{% trans "Show Episodes" %}</a>
+      <a href="{% url 'podcasts:podcasts-details' item.slug %}" class="card-link">{% trans "Show Details" %}</a>
       {% if item.link %}
         <a href="{{ item.link }}" class="card-link">{% trans "Go To Website" %}</a>
       {% endif %}
