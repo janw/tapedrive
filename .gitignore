@@ -97,3 +97,6 @@ podcasts/migrations/
 
 # downloaded test feeds
 *.xml
+
+# Files uploaded / saved from podcasts
+mediafiles/
