@@ -19,6 +19,10 @@ newrelic = "==2.98.0.81"
 whitenoise = "==4.0b4"
 django_compressor = "*"
 django-libsass = "*"
+pillow = "*"
+feedparser = "*"
+dateutils = "*"
+"django-bootstrap4" = "*"
 
 [requires]
 python_version = "3.6"

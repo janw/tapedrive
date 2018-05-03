@@ -24,3 +24,9 @@ def add_active(context, name, by_path=False):
         return 'active'
 
     return ''
+
+
+@register.simple_tag(takes_context=True)
+def add_next_self(context):
+    return "?next=%s" % context.request.path
+

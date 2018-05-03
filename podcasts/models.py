@@ -1,8 +1,17 @@
 from django.db import models
+from django.conf import settings
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify
 
 import uuid
+import os
+
+
+def cover_image_filename(instance, filename):
+    ext = os.path.splitext(filename)[-1]
+    filename = "%s-cover%s" % (instance.slug, ext)
+    return filename
 
 
 # Create your models here.
@@ -13,19 +22,75 @@ class Podcast(models.Model):
         max_length=255,
         verbose_name=_('Podcast Title'),
     )
+    subtitle = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_('Podcast Subtitle'),
+    )
     slug = models.SlugField(
         blank=True,
-        null=False
+        null=False,
+        unique=True,
+        editable=False,
     )
     feed_url = models.URLField(
         blank=False,
         null=False,
+        unique=True,
         verbose_name=_('Feed URL'),
     )
-    feed_last_updated = models.DateTimeField(
+
+    # Fields extracted at feed refresh
+    updated = models.DateTimeField(
         blank=True,
         null=True,
         verbose_name=_('Last Feed Update'),
+    )
+    author = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_('Podcast Author'),
+    )
+
+    language = models.CharField(
+        blank=True,
+        null=True,
+        max_length=64,
+        verbose_name=_('Main Language'),
+    )
+    link = models.URLField(
+        blank=True,
+        null=True,
+        max_length=64,
+        verbose_name=_('Podcast Link'),
+    )
+    image = models.ImageField(
+        blank=True,
+        null=True,
+        upload_to=cover_image_filename,
+        verbose_name=_('Cover Image'),
+    )
+    itunes_explicit = models.NullBooleanField(
+        verbose_name=_('Explicit Tag'),
+    )
+    itunes_type = models.CharField(
+        blank=True,
+        null=True,
+        max_length=64,
+        verbose_name=_('iTunes Type'),
+    )
+    generator = models.CharField(
+        blank=True,
+        null=True,
+        max_length=64,
+        verbose_name=_('Feed Generator'),
+    )
+    summary = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Podcast Summary'),
     )
 
     class Meta:
@@ -40,7 +105,6 @@ class Podcast(models.Model):
             self.slug = slugify(self.title)
 
         super().save(*args, **kwargs)
-
 
 
 class Episode(models.Model):

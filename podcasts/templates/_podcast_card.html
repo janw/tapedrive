@@ -1,21 +1,33 @@
-{% load i18n %}
-<div class="card flex-md-row mb-4 box-shadow h-md-200">
-  <div class="card-body d-flex flex-column align-items-start">
-    <h4 class="card-title">
-    {{item.title}}
-    </h4>
-    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-    <p class="card-text">
-      {% if item.itunes_summary %}
-        {{item.itunes_summary}}
-      {% else %}
-        {{item.description}}
-      {% endif %}
-    </p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
-    <a href="#" class="card-link">Another link</a>
+{% load i18n podcasts_tags %}
+<div class="card flex-md-row mb-4 box-shadow">
+  <img class="card-img-top d-md-none" src="{{ item.image.url }}" alt="Card image cap">
 
+  <div class="card-body d-flex flex-column align-items-start">
+    <h3 class="card-title">
+    {{item.title}}
+    </h3>
+    {% if item.subtitle %}
+      <h6 class="card-subtitle mb-2 text-muted">{{item.subtitle}}</h6>
+    {% endif %}
+    {% if item.summary %}
+      <p class="card-text">
+        {{item.summary}}
+      </p>
+    {% endif %}
+    <div class="d-flex flex-row">
+      <a href="{% url 'podcasts:podcasts-details' item.slug %}" class="card-link">{% trans "Show Episodes" %}</a>
+      {% if item.link %}
+        <a href="{{ item.link }}" class="card-link">{% trans "Go To Website" %}</a>
+      {% endif %}
+      <a href="{% url 'podcasts:podcasts-refresh-feed' item.slug %}{% add_next_self %}" class="card-link">Refresh Feed</a>
+      {# <a href="#" class="card-link">Another link</a> #}
+    </div>
   </div>
-  <img class="card-img-right flex-auto d-none d-md-block img-fluid" data-src="holder.js/200x200?theme=industrial">
+  <a href="{% url 'podcasts:podcasts-details' item.slug %}">
+    {% if item.image %}
+      <img class="card-img-right flex-auto d-none d-md-block img-fluid img-rounded" src="{{ item.image.url }}">
+    {% else %}
+      <img class="card-img-right flex-auto d-none d-md-block img-fluid img-rounded" data-src="holder.js/200x200?auto=yes&text={{item.title}}">
+    {% endif %}
+  </a>
 </div>
