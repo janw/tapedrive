@@ -109,6 +109,11 @@ class Podcast(models.Model):
 
 class Episode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    guid = models.CharField(
+        unique=True,
+        max_length=255,
+        editable=False,
+    )
     podcast = models.ForeignKey(
         Podcast,
         blank=True,
@@ -116,6 +121,38 @@ class Episode(models.Model):
         on_delete=models.CASCADE,
         related_name='episodes',
         verbose_name=_('Podcast'),
+    )
+    title = models.CharField(
+        blank=True,
+        null=True,
+        verbose_name=_('Episode Title'),
+        max_length=255,
+    )
+    subtitle = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_('Episode Subtitle'),
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Podcast Summary'),
+    )
+    link = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name=_('Episode Link'),
+    )
+    media_url = models.URLField(
+        blank=True,
+        null=True,
+        verbose_name=_('Media URL'),
+    )
+    published = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_('Published'),
     )
     download_count = models.PositiveIntegerField(
         blank=False,

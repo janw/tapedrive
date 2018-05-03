@@ -6,6 +6,7 @@ name = "pypi"
 [dev-packages]
 Werkzeug = "==0.12.2"
 ipython = "*"
+django-silk = "*"
 
 [packages]
 dj-database-url = "==0.4.2"

@@ -1,0 +1,11 @@
+<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+  <div class="d-flex w-100 justify-content-between">
+    <h3 class="my-2">{{episode.title}}</h3>
+    <p class="ml-1 my-2 text-muted"><nobr>{{episode.published|date:"DATETIME_FORMAT"}}</nobr></p>
+  </div>
+  {% if episode.subtitle %}
+    <h5 class="mb-2 text-muted">{{episode.subtitle}}</h5>
+  {% endif %}
+  <p>{{episode.description|default_if_none:''}}</p>
+
+</a>

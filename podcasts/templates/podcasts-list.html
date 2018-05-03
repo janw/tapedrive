@@ -1,14 +1,26 @@
 {% extends "base.html" %}{% load i18n %}
 
 {% block content %}
-<div class="row">
-  <div class="col mb-4 text-center text-md-left">
+<div class="d-flex w-100 justify-content-between">
+  <div class="mb-4 w-100 text-center text-sm-left">
     <div class="btn-group" role="group" aria-label="{% trans "Add New Podcasts" %}">
       <a href="{% url 'podcasts:podcasts-new' %}"  class="btn btn-outline-secondary">{% trans "Add Feed" %}</a>
       <a href="#"  class="btn btn-outline-secondary">{% trans "Import OPML" %}</a>
-      <a href="#"  class="btn btn-outline-secondary">{% trans "Discover" %}</a>
+      <a href="#"  class="btn btn-outline-secondary disabled">{% trans "Discover" %}</a>
     </div>
   </div>
+  <div class="d-none d-sm-block mb-4 text-center text-md-left">
+    <form action="#" class="form-inline">
+      <label class="sr-only" for="inlineSearch">{% trans "Seach" %}</label>
+      <div class="input-group">
+        <input type="text" class="form-control" id="inlineSearch" placeholder="{% trans "Seach …" %}">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">{% trans "Go" %}</button>
+        </div>
+      </div>
+    </form>
+</div>
+
 </div>
 <div class="row">
   <div class="col">
