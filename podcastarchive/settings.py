@@ -34,6 +34,7 @@ class Common(Configuration):
         'whitenoise.runserver_nostatic',
         'django.contrib.staticfiles',
         'compressor',
+        'bootstrap4',
 
         'django_extensions',
         'debug_toolbar',
@@ -130,12 +131,17 @@ class Common(Configuration):
     COMPRESS_CACHEABLE_PRECOMPILERS = COMPRESS_PRECOMPILERS
     LIBSASS_PRECISION = 8
 
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
     AUTH_USER_MODEL = 'users.User'
 
     DEBUG_TOOLBAR_CONFIG = {
         'JQUERY_URL': '',
     }
 
+    # Project settings
+    COVER_IMAGE_SIZE = (500, 500)
 
 
 class Development(Common):

@@ -1,0 +1,41 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}
+
+<div class="row mb-3">
+  <div class="col-md-8 order-12 order-md-1">
+    <h1>{{item.title}}</h1>
+    {% if item.subtitle %}
+      <h5 class="text-muted">{{item.subtitle}}</h5>
+    {% endif %}
+    <p>
+      {{item.summary|default_if_none:""}}
+    </p>
+    {% if item.updated %}
+      <p class="text-muted">
+        {% trans "Last fetched:" %} {{item.updated|date:"DATETIME_FORMAT"}}
+      </p>
+      <p class="text-muted">
+        {% trans "Last updated:" %} {{item.updated|date:"DATETIME_FORMAT"}}
+      </p>
+    {% endif %}
+  </div>
+
+  <div class="mb-4 offset-2 col-8 offset-md-0 col-md-4 order-1 order-md-12">
+    {% if item.image %}
+      <img class=" img-fluid" src="{{ item.image.url }}">
+    {% else %}
+      <img class="img-fluid" data-src="holder.js/200x200?auto=yes&text={{item.title}}">
+    {% endif %}
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    {% for episode in item.episodes.all %}
+      {{episode}}
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endblock content %}

@@ -4,9 +4,9 @@
 <div class="row">
   <div class="col mb-4 text-center text-md-left">
     <div class="btn-group" role="group" aria-label="{% trans "Add New Podcasts" %}">
-      <a href="#"  class="btn btn-outline-secondary">{% trans "Add Feed" %}</a>
+      <a href="{% url 'podcasts:podcasts-new' %}"  class="btn btn-outline-secondary">{% trans "Add Feed" %}</a>
       <a href="#"  class="btn btn-outline-secondary">{% trans "Import OPML" %}</a>
-      <a href="#"  class="btn btn-outline-secondary">{% trans "Discover New" %}</a>
+      <a href="#"  class="btn btn-outline-secondary">{% trans "Discover" %}</a>
     </div>
   </div>
 </div>
