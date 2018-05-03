@@ -94,3 +94,6 @@ assets/CACHE/
 
 # temporarily ignore all app migrations
 podcasts/migrations/
+
+# downloaded test feeds
+*.xml
