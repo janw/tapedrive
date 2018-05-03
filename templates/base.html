@@ -14,15 +14,15 @@
     {% block header %}
       <div class="d-flex flex-column flex-md-row align-items-center pt-3 p-md-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
         <h5 class="my-0 font-weight-normal">{% trans "Podcast Archive" %}</h5>
-        <ul class="nav justify-content-center mt-2 my-md-0 mx-md-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">{% trans "Dashboard" %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% add_active 'podcasts:podcasts-list' %}"
+        <ul class="nav justify-content-center mt-2 my-md-0 ml-md-auto">
+          <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
+            <a class="nav-link"
               href="{% url 'podcasts:podcasts-list' %}">
               {% trans "Podcasts" %}
             </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">{% trans "History" %}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
@@ -30,7 +30,6 @@
             </a>
           </li>
         </ul>
-        {# <a class="btn btn-outline-secondary" href="#">{% trans "Sign in" %}</a> #}
       </div>
     {% endblock header %}
 

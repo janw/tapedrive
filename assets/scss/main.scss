@@ -29,3 +29,8 @@ $font-weight-bold:          600;
 #summary p.collapsing {
     min-height: 69px !important;
 }
+
+.nav-item.active a {
+  color: $nav-tabs-link-active-color;
+  background: $nav-tabs-link-active-bg;
+}
