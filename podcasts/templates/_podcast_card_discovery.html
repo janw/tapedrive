@@ -1,0 +1,9 @@
+{% load i18n podcasts_tags %}
+  <div class="card text-center mb-3">
+    <img class="card-img-top" src="{{item.artworkUrl100}}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{item.name}}</h5>
+      <p class="card-text">{{item.artistName}}</p>
+      <a href="#" class="btn btn-outline-secondary btn-sm">{% trans "Add To Archive" %}</a>
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% load i18n %}
+
+{% block content %}
+  <h1 class="mb-4">{% trans "Discover New Podcasts" %}</h1>
+
+  <div class="card-columns">
+    {% for row in feeds %}
+      {# <div class="card-deck mb-3"> #}
+        {% for item in row %}
+          {% include "_podcast_card_discovery.html" %}
+        {% endfor %}
+      {# </div> #}
+    {% endfor %}
+
+  </div>
+  <div class="text-center my-3">
+    <p class="text-muted">{% trans "Aggretation and Content from " %}{{content.feed.title}}, {{content.feed.copyright}}</p>
+  </div>
+{% endblock content %}

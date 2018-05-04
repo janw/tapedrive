@@ -8,7 +8,7 @@
       <div class="btn-group" role="group" aria-label="{% trans "Add New Podcasts" %}">
         <a href="{% url 'podcasts:podcasts-new' %}"  class="btn btn-outline-secondary">{% trans "Add Feed" %}</a>
         <a href="#"  class="btn btn-outline-secondary">{% trans "Import OPML" %}</a>
-        <a href="#"  class="btn btn-outline-secondary disabled">{% trans "Discover" %}</a>
+        <a href="{% url 'podcasts:podcasts-discover' %}"  class="btn btn-outline-secondary disabled">{% trans "Discover" %}</a>
       </div>
     </div>
     <div class="d-none d-sm-block mb-4 text-center text-md-left">
@@ -48,7 +48,7 @@
       <a href="#"  class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Import OPML" %}</a>
 
       <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "URL? File? What? Just show me something to start with!" %}</p>
-        <a href="#"  class="btn btn-outline-secondary mb-4 mb-md-1 disabled">{% trans "Discover" %}</a>
+        <a href="{% url 'podcasts:podcasts-discover' %}"  class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Discover" %}</a>
       </div>
 
   {% endif %}

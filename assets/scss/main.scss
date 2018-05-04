@@ -34,3 +34,15 @@ $font-weight-bold:          600;
   color: $nav-tabs-link-active-color;
   background: $nav-tabs-link-active-bg;
 }
+
+.card-columns {
+  @include media-breakpoint-only(sm) {
+    column-count: 2;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 4;
+  }
+}
