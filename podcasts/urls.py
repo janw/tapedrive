@@ -7,6 +7,7 @@ app_name = 'podcasts'
 
 podcasts_patterns = [
     path('', views.podcasts_list, name='podcasts-list'),
+    path('discover', views.podcasts_discover, name='podcasts-discover'),
     path('new/', views.podcasts_new, name='podcasts-new'),
     path('<slug:slug>/', include([
         path('', views.podcasts_details, name='podcasts-details'),

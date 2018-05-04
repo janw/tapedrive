@@ -7,13 +7,13 @@ from django.core.files import File
 
 from .forms import NewFromURLForm
 from .models import Podcast, Episode
-from .utils import refresh_feed
+from .utils import refresh_feed, chunks
 
 from urllib.parse import urlparse
 import urllib
 from PIL import Image
 from io import BytesIO
-
+import json
 
 # Create your views here.
 def index(request):
@@ -58,6 +58,25 @@ def podcasts_new(request):
 def podcasts_details(request, slug):
     object = get_object_or_404(Podcast.objects.prefetch_related('episodes'), slug=slug)
     return render(request, 'podcasts-details.html', {'item': object})
+
+
+def podcasts_discover(request):
+    url = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podcasts/all/25/explicit.json'
+    file, header = urllib.request.urlretrieve(url)
+
+    if header['Status'] == '200 OK':
+        with open(file) as fp:
+            content = json.load(fp)
+        feeds = list(chunks(content['feed']['results'], 3))
+
+        context = {
+            'content': content,
+            'feeds': feeds
+        }
+        # print(urllib.request.urlretrieve(url)[0])
+    else:
+        context = {}
+    return render(request, 'podcasts-discover.html', context)
 
 
 @atomic
@@ -127,3 +146,4 @@ def create_episodes_from_podcast(podcast, info_or_episodes=None):
 
     objects = (Episode(podcast=podcast, **ep) for ep in episodes)
     Episode.objects.bulk_create(objects)
+
