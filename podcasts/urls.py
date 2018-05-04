@@ -4,6 +4,13 @@ from . import views
 
 app_name = 'podcasts'
 
+episodes_patterns = [
+    path('<uuid:id>/', include([
+        # path('position/<int:position>', views.podcasts_refresh_feed, name='podcasts-refresh-feed'),
+        path('played/', views.episodes_mark_played, name='episodes-mark-played'),
+        # path('unplayed/', views.episodes_mark_unplayed, name='episodes-mark-unplayed'),
+    ]))
+]
 
 podcasts_patterns = [
     path('', views.podcasts_list, name='podcasts-list'),
@@ -17,5 +24,7 @@ podcasts_patterns = [
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('episodes/', include(episodes_patterns)),
     path('podcasts/', include(podcasts_patterns)),
+    path('settings/', views.user_settings, name='podcasts-user-settings'),
 ]

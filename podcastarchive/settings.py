@@ -158,12 +158,12 @@ class Development(Common):
 
     INSTALLED_APPS = Common.INSTALLED_APPS + [
         'debug_toolbar',
-        'silk',
+        # 'silk',
     ]
 
     MIDDLEWARE = Common.MIDDLEWARE + [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
-        'silk.middleware.SilkyMiddleware',
+        # 'silk.middleware.SilkyMiddleware',
     ]
 
 
