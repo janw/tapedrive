@@ -12,8 +12,9 @@
   </head>
   <body>
     {% block header %}
-      <div class="d-flex flex-column flex-md-row align-items-center pt-3 p-md-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-        <h5 class="my-0 font-weight-normal">{% trans "Podcast Archive" %}</h5>
+      <div class="bg-white border-bottom pt-3 p-md-3 px-md-4 mb-3">
+        <div class="container d-flex flex-column flex-md-row align-items-center">
+        <a href="{% url 'podcasts:index' %}"><h5 class="my-0 text-dark">{% trans "Podcast Archive" %}</h5></a>
         <ul class="nav justify-content-center mt-2 my-md-0 ml-md-auto">
           <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
             <a class="nav-link"
@@ -30,6 +31,10 @@
             </a>
           </li>
         </ul>
+        {% if user.is_authenticated %}
+          <p class="ml-3 mt-2 my-md-0 text-muted">{% trans "Logged in as" %} {{user.username}}</p>
+        {% endif %}
+        </div>
       </div>
     {% endblock header %}
 

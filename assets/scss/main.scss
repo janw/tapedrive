@@ -9,6 +9,13 @@ $font-size-base:            1.15rem;
 $font-weight-normal:        300;
 $font-weight-bold:          600;
 
+$gray-100: #f8f9fa !default;
+$lighter: #dddddd;
+
+$theme-colors: (
+  "lighter":    $lighter,
+);
+
 @import "bootstrap/bootstrap";
 
 .card-img-right {
@@ -58,3 +65,6 @@ $font-weight-bold:          600;
     min-height: 64px;
   }
 }
+
+@include list-group-item-variant('lighter', #fefefe, #acacac);
+@include list-group-item-variant('lightest', #ffffff, #dddddd);
