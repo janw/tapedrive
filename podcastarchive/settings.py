@@ -166,6 +166,11 @@ class Development(Common):
         # 'silk.middleware.SilkyMiddleware',
     ]
 
+    SHELL_PLUS_PRE_IMPORTS = [
+        ('podcasts.conf', '*'),
+        ('podcasts.utils', '*'),
+    ]
+
 
 class Staging(Common):
     """
