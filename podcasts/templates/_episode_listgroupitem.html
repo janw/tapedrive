@@ -1,12 +1,13 @@
 {% load i18n %}
-<div class="list-group-item {% if episode.download_count == 0 %}list-group-item-lighter{% endif %} flex-column align-items-start">
+<a href="#" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}"
+   class="list-group-item {% if episode.download_count == 0 %}list-group-item-lighter{% else %}text-dark{% endif %} flex-column align-items-start">
   <div class="d-flex w-100 justify-content-between">
     <h3 class="my-2">{{episode.title}}</h3>
-    <p class="ml-1 my-2 text-muted">{% if episode.download_count == 0 %}<span class="badge badge-secondary badge-pill">{% trans "Pending" %}</span> {% endif %}<nobr>{{episode.published|date:"DATETIME_FORMAT"}}</nobr></p>
+    <p class="ml-1 my-2 text-muted"><nobr>{{episode.published|date:"DATETIME_FORMAT"}}</nobr></p>
   </div>
   {% if episode.subtitle %}
     <h5 class="mb-2 text-muted">{{episode.subtitle}}</h5>
   {% endif %}
   <p>{{episode.description | default_if_none:'' | truncatewords_html:20 }}</p>
-
-</div>
+</a>
+{% include "_episode_details_modal.html" %}
