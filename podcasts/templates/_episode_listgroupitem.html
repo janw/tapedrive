@@ -7,6 +7,6 @@
   {% if episode.subtitle %}
     <h5 class="mb-2 text-muted">{{episode.subtitle}}</h5>
   {% endif %}
-  <p>{{episode.description|default_if_none:''}}</p>
+  <p>{{episode.description | default_if_none:'' | truncatewords_html:20 }}</p>
 
 </div>
