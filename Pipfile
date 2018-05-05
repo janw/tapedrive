@@ -7,6 +7,7 @@ name = "pypi"
 Werkzeug = "==0.12.2"
 ipython = "*"
 django-silk = "*"
+coverage = "*"
 
 [packages]
 dj-database-url = "==0.4.2"
