@@ -20,15 +20,14 @@ class Command(BaseCommand):
         if verbosity > 1:
             root_logger.setLevel(logging.DEBUG)
 
-        logger.debug("I'm doing something")
-
         Podcast = apps.get_model('podcasts', 'Podcast')
 
         for podcast in Podcast.objects.iterator():
             logger.info('Refreshing feed: %s ...' % podcast.title)
 
             info = refresh_feed(podcast.feed_url)
-            logger.debug('Received ...')
+            logger.debug('Received info', info)
+
 
             podcast.create_episodes(info)
 
