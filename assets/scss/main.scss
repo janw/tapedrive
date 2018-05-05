@@ -66,5 +66,7 @@ $theme-colors: (
   }
 }
 
+.list-group-item, .list-group-item:hover{ z-index: auto; }
+
 @include list-group-item-variant('lighter', #fefefe, #acacac);
 @include list-group-item-variant('lightest', #ffffff, #dddddd);

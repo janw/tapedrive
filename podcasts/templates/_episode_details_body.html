@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12 col-sm-6 text-sm-right">
+      {% trans "Published" %} {{episode.published|date}}
+    </div>
+    <div class="col-12 col-sm-6">
+      {% if episode.downloaded %}
+        {% trans "Downloaded" %} {{episode.downloaded|date}}
+      {% else %}
+        <span class="badge badge-secondary">{% trans "Download Pending" %}</span>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col px-0">
+      <h4>{% trans "Episode Summary" %}</h4>
+      {{episode.description}}
+    </div>
+  </div>
+</div>
