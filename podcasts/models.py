@@ -3,6 +3,7 @@ from django.db import models
 from django.db.transaction import atomic
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
+from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
 
 import uuid
@@ -50,8 +51,15 @@ class PodcastManager(models.Manager):
         if image is not None:
             podcast.insert_cover(image)
 
-        podcast.create_episodes(info_or_episodes=episodes)
+        podcast.create_episodes(info_or_episodes=episodes, initial=True)
         return podcast
+
+    def get_or_create_from_feed_url(self, feed_url, info=None, **kwargs):
+        self._for_write = True
+        try:
+            return self.get(feed_url=feed_url), False
+        except self.model.DoesNotExist:
+            return self.create_from_feed_url(feed_url, info=info, **kwargs), True
 
 
 class Podcast(models.Model):
@@ -147,16 +155,23 @@ class Podcast(models.Model):
 
         super().save(*args, **kwargs)
 
-    def create_episodes(self, info_or_episodes=None):
-        if info_or_episodes is None:
-            episodes = refresh_feed(self.feed_url)['episodes']
-        elif isinstance(info_or_episodes, dict):
-            episodes = info_or_episodes['episodes']
-        else:
-            episodes = info_or_episodes
+    def get_absolute_url(self):
+        return reverse('podcasts:podcasts-details', kwargs={'slug': self.slug})
 
-        objects = (Episode(podcast=self, **ep) for ep in episodes)
-        Episode.objects.bulk_create(objects)
+    def create_episodes(self, info_or_episodes=None, initial=False):
+        if info_or_episodes is None:
+            episode_info = refresh_feed(self.feed_url)['episodes']
+        elif isinstance(info_or_episodes, dict):
+            episode_info = info_or_episodes['episodes']
+        else:
+            episode_info = info_or_episodes
+
+        if initial:
+            objects = (Episode(podcast=self, **ep) for ep in episode_info)
+            Episode.objects.bulk_create(objects)
+        else:
+            for ep in episode_info:
+                episode, created = Episode.objects.update_or_create(podcast=self, guid=ep['guid'], defaults=ep)
 
     def insert_cover(self, info_or_img_url=None):
         if info_or_img_url is None:
@@ -183,6 +198,22 @@ class Podcast(models.Model):
 
         # See also: http://docs.djangoproject.com/en/dev/ref/files/file/
         self.image.save(name, File(output), save=True)
+
+    @atomic
+    def update(self, defaults=None, create_episodes=True, insert_image=True):
+        if defaults is None:
+            defaults = refresh_feed(self.feed_url)
+
+        episodes = defaults.pop('episodes', None)
+        image = defaults.pop('image', None)
+        for key, value in defaults.items():
+            setattr(self, key, value)
+
+        if image is not None and insert_image:
+            self.insert_cover(image)
+
+        if create_episodes:
+            self.create_episodes(info_or_episodes=episodes, initial=False)
 
 
 class Listener(models.Model):
