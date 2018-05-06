@@ -9,6 +9,7 @@ from .models import Podcast, Episode, EpisodePlaybackState, Listener
 from .utils import refresh_feed, chunks
 
 import json
+import urllib
 
 
 # Create your views here.
@@ -55,9 +56,8 @@ def podcasts_new(request):
 def podcasts_details(request, slug):
     object = get_object_or_404(Podcast.objects.prefetch_related('episodes', 'episodes'), slug=slug)
     episodes = object.episodes.values_list('id', flat=True)
-    states = EpisodePlaybackState.objects.filter(episode__in=episodes, listener__user=request.user).values_list('completed', flat=True)
 
-    return render(request, 'podcasts-details.html', {'item': object, 'episodes': episodes, 'states': states})
+    return render(request, 'podcasts-details.html', {'item': object, 'episodes': episodes})
 
 
 def podcasts_discover(request):
