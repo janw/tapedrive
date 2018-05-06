@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - "3.6"
+
+install:
+  - pip install pipenv
+  - pip install coveralls
+  - pipenv install --dev --system
+
+script:
+  - coverage run --source='.'  manage.py test
+
+sudo: false
+
+after_success:
+    coveralls
