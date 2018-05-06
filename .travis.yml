@@ -9,7 +9,8 @@ install:
   - pipenv install --dev --system
 
 script:
-  - coverage run --source='.'  manage.py test
+  - python manage.py migrate
+  - coverage run --source='.' manage.py test
 
 sudo: false
 
