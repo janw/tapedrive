@@ -93,9 +93,6 @@ db.sqlite3
 assets/CACHE/
 .sass-cache/
 
-# temporarily ignore all app migrations
-podcasts/migrations/
-
 # downloaded test feeds
 *.xml
 
