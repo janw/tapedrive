@@ -16,7 +16,7 @@ $theme-colors: (
   "lighter":    $lighter,
 );
 
-@import "bootstrap/bootstrap";
+@import "../vendor/scss/bootstrap/bootstrap";
 
 .card-img-right {
   border-radius: 0 3px 3px 0;
