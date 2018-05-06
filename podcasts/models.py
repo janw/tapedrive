@@ -36,6 +36,11 @@ class IntegerRangeField(models.IntegerField):
         return super().formfield(**defaults)
 
 
+class BigPositiveIntegerField(models.PositiveIntegerField):
+    def db_type(self, connection):
+        return 'bigint unsigned'
+
+
 # Create your models here.
 class PodcastManager(models.Manager):
 
@@ -250,11 +255,16 @@ class Listener(models.Model):
 
 
 class Episode(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+    )
     guid = models.CharField(
         unique=True,
         max_length=255,
         editable=False,
+        verbose_name=_('Episode GUID'),
     )
     podcast = models.ForeignKey(
         Podcast,
@@ -279,7 +289,7 @@ class Episode(models.Model):
     description = models.TextField(
         blank=True,
         null=True,
-        verbose_name=_('Podcast Summary'),
+        verbose_name=_('Episode Summary'),
     )
     link = models.URLField(
         blank=True,
@@ -302,6 +312,60 @@ class Episode(models.Model):
         null=True,
         default=None,
         verbose_name=_('Downloaded'),
+    )
+
+    # iTunes-secific attributes
+    itunes_duration = models.CharField(
+        blank=True,
+        null=True,
+        max_length=32,
+        verbose_name=_('Duration'),
+    )
+    itunes_season = models.CharField(
+        blank=True,
+        null=True,
+        max_length=32,
+        verbose_name=_('Season'),
+    )
+    itunes_episode = models.CharField(
+        blank=True,
+        null=True,
+        max_length=32,
+        verbose_name=_('Episode Number'),
+    )
+    itunes_episodetype = models.CharField(
+        blank=True,
+        null=True,
+        max_length=16,
+        verbose_name=_('Episode Type'),
+    )
+
+    # Fields related to file storage
+    file_originalname = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_('Original Filename'),
+    )
+    file_path = models.FilePathField(
+        path=STORAGE_DIRECTORY,
+        blank=True,
+        null=True,
+        recursive=True,
+        allow_files=True,
+        allow_folders=False,
+        verbose_name=_('File Location'),
+    )
+    file_size = BigPositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_('File Size'),
+    )
+    file_sha256 = models.CharField(
+        blank=True,
+        null=True,
+        verbose_name=_('File Hash (SHA256)'),
+        max_length=64,
     )
 
     # Listeners and states
