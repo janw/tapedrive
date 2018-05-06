@@ -186,6 +186,7 @@ class Development(Common):
     SHELL_PLUS_PRE_IMPORTS = [
         ('podcasts.conf', '*'),
         ('podcasts.utils', '*'),
+        ('feedparser'),
     ]
 
 
