@@ -297,11 +297,11 @@ class Episode(models.Model):
         null=True,
         verbose_name=_('Published'),
     )
-    download_count = models.PositiveIntegerField(
-        blank=False,
-        null=False,
-        default=0,
-        verbose_name=_('Download Count'),
+    downloaded = models.DateTimeField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_('Downloaded'),
     )
 
     # Listeners and states
