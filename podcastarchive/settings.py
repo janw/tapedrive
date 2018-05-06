@@ -12,6 +12,23 @@ import os
 from configurations import Configuration, values
 
 
+def get_secret_key(PROJECT_DIR):
+    SECRET_FILE = os.path.join(PROJECT_DIR, 'secret.txt')
+    try:
+        with open(SECRET_FILE) as sf:
+            SECRET_KEY = sf.read().strip()
+    except IOError:
+        try:
+            import random
+            SECRET_KEY = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+            with open(SECRET_FILE, 'w') as sf:
+                sf.write(SECRET_KEY)
+        except IOError:
+            Exception('Please create a %s file with random characters \
+            to generate your secret key!' % SECRET_FILE)
+    return SECRET_KEY
+
+
 class Common(Configuration):
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
