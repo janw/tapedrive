@@ -2,7 +2,17 @@
 import feedparser
 from feedparser import CharacterEncodingOverride
 from dateutil import parser as dateparser
+import urllib
+from urllib.request import urlopen, Request
+from urllib.parse import urlparse
+from shutil import copyfileobj, move
 import time
+import os
+import tempfile
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 USER_AGENT = 'Podcast-Archive/0.1 (https://github.com/janwh/selfhosted-podcast-archive)'
 
@@ -97,3 +107,48 @@ def timeit(method):
                   (method.__name__, (te - ts) * 1000))
         return result
     return timed
+
+
+def download_file(link, filename):
+    logger = logging.getLogger('podcasts.utils.download_file')
+
+    if os.path.isfile(filename):
+        logger.error('File at %s already exists' % filename)
+        raise FileExistsError('File aready exists')
+
+    # Begin downloading, resolve redirects
+    prepared_request = Request(link, headers=_headers)
+    try:
+        with tempfile.NamedTemporaryFile(delete=False) as outfile:
+            with urlopen(prepared_request) as response:
+                # Check for proper content length, with resolved link
+                link = response.geturl()
+                total_size = int(response.getheader('content-length', '0'))
+                if total_size == 0:
+                    logger.error('Received content-length is 0')
+                    raise urllib.error.ContentTooShortError()
+
+                logger.debug('Resolved link:', link)
+
+                # Create the subdir, if it does not exist
+                os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+                # Finally start the download for real
+                copyfileobj(response, outfile)
+
+        move(outfile.name, filename)
+        return total_size
+
+    except (urllib.error.HTTPError,
+            urllib.error.URLError) as error:
+        logger.error("Download failed. Query returned '%s'" % error)
+    except KeyboardInterrupt:
+        logger.warning("Unexpected interruption. Deleting unfinished file")
+        os.remove(filename)
+        raise
+
+
+def strip_url(link):
+    linkpath = urlparse(link).path
+    extension = os.path.splitext(linkpath)[1]
+    return linkpath, extension

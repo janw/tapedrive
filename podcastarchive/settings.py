@@ -57,6 +57,7 @@ class Common(Configuration):
 
         'podcastarchive.users',
         'podcasts',
+        'background_task',
     ]
 
     MIDDLEWARE = [
