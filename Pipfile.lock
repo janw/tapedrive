@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "58a5ae5281436a8b12f7b242035ddbb569ff65f661eb468ddf0f5607e45cbcd5"
+            "sha256": "ff3d14ca7450b35b04ca3c2d1eabf7b297db5a2acdbf9de1b6968b8615033847"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -117,6 +117,12 @@
             ],
             "version": "==19.7.1"
         },
+        "langcodes": {
+            "hashes": [
+                "sha256:22cff103b6c0f3c9907d9a51c2d634177a50a189672ad16d959a3e2cd48eadab"
+            ],
+            "version": "==1.4.1"
+        },
         "libsass": {
             "hashes": [
                 "sha256:0f2e421d3e5a53833243e0a5f2cf7ebe9812725a7f27a797c38f3c7190ce2a82",
@@ -136,6 +142,13 @@
                 "sha256:ed8beef197efc6e6ab0ad03cea0885b31cc11f226290783649b4dafe1fb2ea27"
             ],
             "version": "==0.14.5"
+        },
+        "marisa-trie": {
+            "hashes": [
+                "sha256:4419abb6b603c97e863fad994abe57ed247fb12491f4bbacb2d762bd2e8958b6",
+                "sha256:c73bc25d868e8c4ea7aa7f1e19892db07bba2463351269b05340ccfa06eb2baf"
+            ],
+            "version": "==0.7.5"
         },
         "newrelic": {
             "hashes": [
@@ -305,6 +318,14 @@
             ],
             "version": "==0.1.0"
         },
+        "beautifulsoup4": {
+            "hashes": [
+                "sha256:11a9a27b7d3bddc6d86f59fb76afb70e921a25ac2d6cc55b40d072bd68435a76",
+                "sha256:7015e76bf32f1f574636c4288399a6de66ce08fb7b2457f628a8d70c0fbabb11",
+                "sha256:808b6ac932dccb0a4126558f7dfdcf41710dd44a4ef497a0bb59a77f9f078e89"
+            ],
+            "version": "==4.6.0"
+        },
         "certifi": {
             "hashes": [
                 "sha256:13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7",
@@ -373,6 +394,12 @@
                 "sha256:af18618ce3291be5092893d8522fe3919661bf3a1fb60e3858ae74865a4f07c2"
             ],
             "version": "==2.0"
+        },
+        "django-livereload-server": {
+            "hashes": [
+                "sha256:e1b6c7d2183f19f0fd8d80fe6dbad8bcf73eeb51d9cc6bc745870620443e5d2f"
+            ],
+            "version": "==0.3.1"
         },
         "django-silk": {
             "hashes": [
@@ -520,6 +547,16 @@
                 "sha256:d9cf190f51cbb26da0412247dfe4fb5f4098edb73db84e02f9fc21fdca31fed4"
             ],
             "version": "==0.2.4"
+        },
+        "tornado": {
+            "hashes": [
+                "sha256:1b83d5c10550f2653380b4c77331d6f8850f287c4f67d7ce1e1c639d9222fbc7",
+                "sha256:408d129e9d13d3c55aa73f8084aa97d5f90ed84132e38d6932e63a67d5bec563",
+                "sha256:88ce0282cce70df9045e515f578c78f1ebc35dcabe1d70f800c3583ebda7f5f5",
+                "sha256:ba9fbb249ac5390bff8a1d6aa4b844fd400701069bda7d2e380dfe2217895101",
+                "sha256:c050089173c2e9272244bccfb6a8615fb9e53b79420a5551acfa76094ecc3111"
+            ],
+            "version": "==5.0.2"
         },
         "traitlets": {
             "hashes": [

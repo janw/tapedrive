@@ -7,6 +7,8 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
+from django.utils.translation import gettext_lazy as _
+
 import os
 
 from configurations import Configuration, values
@@ -48,6 +50,7 @@ class Common(Configuration):
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
+        'django.contrib.humanize',
         'whitenoise.runserver_nostatic',
         'django.contrib.staticfiles',
         'compressor',
@@ -66,6 +69,7 @@ class Common(Configuration):
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -129,6 +133,13 @@ class Common(Configuration):
 
     USE_TZ = True
 
+
+    LANGUAGES = [
+        ('de', _('German')),
+        ('en', _('English')),
+    ]
+
+
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/2.0/howto/static-files/
     STATIC_URL = '/static/'
@@ -174,13 +185,16 @@ class Development(Common):
         '127.0.0.1'
     ]
 
-    INSTALLED_APPS = Common.INSTALLED_APPS + [
+    INSTALLED_APPS = [
+        'livereload',
+    ] + Common.INSTALLED_APPS + [
         'debug_toolbar',
         # 'silk',
     ]
 
     MIDDLEWARE = Common.MIDDLEWARE + [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'livereload.middleware.LiveReloadScript',
         # 'silk.middleware.SilkyMiddleware',
     ]
 

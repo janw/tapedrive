@@ -11,6 +11,7 @@ werkzeug = "==0.12.2"
 ipython = "*"
 django-silk = "*"
 coverage = "*"
+django-livereload-server = "*"
 
 
 [packages]
@@ -31,6 +32,7 @@ feedparser = "*"
 dateutils = "*"
 "django-bootstrap4" = "*"
 django-background-tasks = "*"
+langcodes = "*"
 
 
 [requires]
