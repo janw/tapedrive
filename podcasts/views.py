@@ -57,7 +57,7 @@ def podcasts_details(request, slug):
     object = get_object_or_404(Podcast.objects.prefetch_related('episodes', 'episodes'), slug=slug)
     episodes = object.episodes.values_list('id', flat=True)
 
-    return render(request, 'podcasts-details.html', {'item': object, 'episodes': episodes})
+    return render(request, 'podcasts-details.html', {'podcast': object, 'episodes': episodes})
 
 
 def podcasts_discover(request):
