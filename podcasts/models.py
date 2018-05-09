@@ -93,6 +93,11 @@ class Podcast(models.Model):
         verbose_name=_('Feed URL'),
     )
 
+    fetched = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_('Feed Fetched Last'),
+    )
     # Fields extracted at feed refresh
     updated = models.DateTimeField(
         blank=True,
@@ -208,11 +213,20 @@ class Podcast(models.Model):
         except urllib.error.HTTPError as err:
             print('Oops', err.code)
 
+        def add_subscriber(self, listener):
+            self.subscribers.add(listener)
+            self.save()
+
+        def add_follower(self, listener):
+            self.followers.add(listener)
+            self.save()
+
     @atomic
     def update(self, defaults=None, create_episodes=True, insert_image=True):
         if defaults is None:
             defaults = refresh_feed(self.feed_url)
-
+        info = defaults
+        defaults['fetched'] = timezone.now()
         episodes = defaults.pop('episodes', None)
         image = defaults.pop('image', None)
         for key, value in defaults.items():

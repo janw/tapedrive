@@ -22,12 +22,12 @@
     </div>
   {% endif %}
 
-  {% if podcast.updated %}
+  {% if podcast.fetched %}
     <div class="">
       <p class="text-muted mb-0">{% trans "Last fetched" %}</p>
       <p class="mb-0">
-        {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"}},
-        {{podcast.updated|date:"TIME_FORMAT"}}</p>
+        {{podcast.fetched|naturalday:"SHORT_DATE_FORMAT"|title}},
+        {{podcast.fetched|date:"TIME_FORMAT"}}</p>
     </div>
   {% endif %}
 
@@ -35,7 +35,7 @@
     <div class="">
       <p class="text-muted mb-0">{% trans "Feed updated" %}</p>
       <p class="mb-0">
-        {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"}},
+        {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"|title}},
         {{podcast.updated|date:"TIME_FORMAT"}}</p>
     </div>
   {% endif %}
