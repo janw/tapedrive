@@ -55,8 +55,7 @@ def podcasts_new(request):
 
 def podcasts_details(request, slug):
     object = get_object_or_404(Podcast.objects.prefetch_related('episodes', 'episodes'), slug=slug)
-    episodes = object.episodes.values_list('id', flat=True)
-
+    episodes = object.episodes.order_by('-published')[:10]
     return render(request, 'podcasts-details.html', {'podcast': object, 'episodes': episodes})
 
 
@@ -85,20 +84,6 @@ def podcasts_refresh_feed(request, slug):
     podcast.create_episodes(info)
 
     next = request.GET.get('next', '/')
-    return redirect(next)
-
-
-@atomic
-def episodes_mark_played(request, id):
-    object = get_object_or_404(Episode, id=id)
-    listener, created = Listener.objects.get_or_create(user=request.user)
-    if created:
-        listener.save()
-    state = EpisodePlaybackState(episode=object, listener=listener)
-    state.completed = True
-    state.save()
-
-    next = request.GET.get('next', reverse('podcasts:podcasts-details', kwargs={'slug': object.podcast.slug}))
     return redirect(next)
 
 

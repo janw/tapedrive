@@ -1,6 +1,9 @@
 {% load i18n %}
 <div class="d-flex justify-content-center flex-wrap mb-4">
-  <a href="#" class="btn btn-outline-secondary mt-2 mt-md-0 mx-2">{% trans "Download All Episodes" %}</a>
+  <button type="button" data-href="{% url 'podcasts:api-refresh-feed' podcast.slug %}"
+     class="btn btn-outline-secondary mt-2 mt-md-0 mx-2 api-caller">{% trans "Refresh Feed" %}</button>
+  <a href="#" data-href="{% url 'podcasts:api-refresh-feed' podcast.slug %}"
+     class="btn btn-outline-secondary mt-2 mt-md-0 mx-2 api-caller">{% trans "Download Episodes" %}</a>
   <div class="btn-group mt-2 mt-md-0 mx-2">
     <a href="#" class="btn btn-outline-secondary {% if episode.podcast.subscribed %}disabled{% endif %}">
         {% trans "Subscribe" %}
