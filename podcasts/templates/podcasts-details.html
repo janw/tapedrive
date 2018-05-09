@@ -1,81 +1,28 @@
 {% extends "base.html" %}{% load i18n podcasts_tags humanize %}
 
 {% block content %}
+<h1 class="mb-3 mb-md-0 text-center text-md-left">{{podcast.title}}</h1>
 
-<div class="row mb-3">
-  <div class="col-md-8 col-lg-9 order-12 order-md-1">
-    <h1 class="mb-1">{{podcast.title}}</h1>
+<div class="row">
+  <div class="col{% if podcast.image %}-md-8 col-lg-9 order-12 order-md-1{% endif %}">
     {% if podcast.subtitle %}
-      <h5 class="text-muted mb-3">{{podcast.subtitle}}</h5>
+      <h5 class="text-muted mb-2">{{podcast.subtitle}}</h5>
     {% endif %}
-    <div id="summary" class="mb-5">
-      <p class="collapse" id="podcast-summary-collapse" aria-expanded="false">
-        {{podcast.summary|default_if_none:""}}
-      </p>
-      <div class="text-center">
-        <a class="btn btn-outline-secondary btn-sm px-3 collapsed" data-toggle="collapse" href="#podcast-summary-collapse" role="button" aria-expanded="false" aria-controls="podcast-summary-collapse"></a>
-      </div>
 
-      <style type="text/css">
-          #summary a.collapsed:after {content: '{% trans "Show Summary" %}'; }
-          #summary a:not(.collapsed):after {content: '{% trans "Hide Summary" %}'; }
-      </style>
+    {% if podcast.summary %}
+      {% include "_per_podcast_summary.html" %}
+    {% endif %}
+  </div>
+  {% if podcast.image %}
+    <div class="mb-3 mb-md-0 offset-2 col-8 offset-md-0 col-md-4 col-lg-3 order-1 order-md-12">
+      <img class="img-fluid rounded" src="{{ podcast.image.url }}">
     </div>
-  </div>
-
-  <div class="mb-3 offset-2 col-8 offset-md-0 col-md-4 col-lg-3 order-1 order-md-12">
-    {% if podcast.image %}
-      <img class=" img-fluid rounded" src="{{ podcast.image.url }}">
-    {% else %}
-      <img class="img-fluid rounded" data-src="holder.js/200x200?auto=yes&text={{podcast.title}}">
-    {% endif %}
-  </div>
+  {% endif %}
 </div>
 
-
-<div class="row mt-3">
+<div class="row">
   <div class="col">
-    <div class="d-flex justify-content-around flex-wrap mb-4">
-
-      {% if podcast.author %}
-        <div class="p-2 text-center">
-          <p class="text-muted mb-0">{% trans "From" %}</p>
-          <p class="mb-0">{{podcast.author}}</p>
-        </div>
-      {% endif %}
-
-      {% if podcast.link %}
-        <div class="p-2 px-4 text-center">
-          <p class="text-muted mb-0">{% trans "Website" %}</p>
-          <a href="{{podcast.link}}" class="mb-0 text-dark">{% clean_link podcast.link %}</a>
-        </div>
-      {% endif %}
-
-      {% if podcast.language %}
-        <div class="p-2 px-4 text-center">
-          <p class="text-muted mb-0">{% trans "Language" %}</p>
-          <p class="mb-0">{% resolve_language podcast.language %}</p>
-        </div>
-      {% endif %}
-
-      {% if podcast.updated %}
-        <div class="p-2 px-4 text-center">
-          <p class="text-muted mb-0">{% trans "Last fetched" %}</p>
-          <p class="mb-0">
-            {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"}},
-            {{podcast.updated|date:"TIME_FORMAT"}}</p>
-        </div>
-      {% endif %}
-
-        {% if podcast.updated %}
-        <div class="p-2 px-4 text-center">
-          <p class="text-muted mb-0">{% trans "Feed updated" %}</p>
-          <p class="mb-0">
-            {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"}},
-            {{podcast.updated|date:"TIME_FORMAT"}}</p>
-        </div>
-      {% endif %}
-    </div>
+    {% include "_per_podcast_attributes.html" %}
   </div>
 </div>
 
