@@ -6,8 +6,10 @@
     <p class="ml-1 my-2 text-muted"><nobr>{{episode.published|date:"DATETIME_FORMAT"}}</nobr></p>
   </div>
   {% if episode.subtitle %}
-    <h5 class="mb-2 text-muted">{{episode.subtitle}}</h5>
+    <h5 class="mb-2 text-muted">{{episode.subtitle|escape}}</h5>
   {% endif %}
-  <p>{{episode.description | default_if_none:'' | truncatewords_html:20 }}</p>
+  {# <p>{{episode.description | default_if_none:'' | truncatewords_html:20 }}</p> #}
 </a>
+<div>
 {% include "_episode_details_modal.html" %}
+</div>
