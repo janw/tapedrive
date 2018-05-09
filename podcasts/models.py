@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.db.transaction import atomic
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
@@ -17,6 +18,7 @@ from PIL import Image
 from io import BytesIO
 
 from .conf import *
+from .validators import validate_path
 from .utils import refresh_feed, timeit
 
 User = get_user_model()
@@ -463,3 +465,24 @@ class EpisodePlaybackState(models.Model):
     def __str__(self):
         return "%(user)s's state on %(episode)s" % {'user': self.listener,
                                                     'episode': self.episode}
+
+
+class PodcastsSettings(models.Model):
+    site = models.OneToOneField(
+        Site,
+        on_delete=models.CASCADE,
+    )
+    storage_directory = models.CharField(
+        null=False,
+        blank=False,
+        max_length=255,
+        default=STORAGE_DIRECTORY,
+        validators=[validate_path, ],
+        verbose_name=_('Storage Directory'),
+    )
+
+
+@receiver(post_save, sender=Site)
+def create_site_settings(sender, instance, created, **kwargs):
+    if created:
+        PodcastsSettings.objects.create(site=instance)

@@ -5,9 +5,10 @@ from django.contrib.auth import get_user_model
 from django.forms import ModelForm, Form
 from django.template.defaultfilters import slugify
 
-from .models import Podcast, Listener
+from .models import Podcast, Listener, PodcastsSettings
 from .utils import refresh_feed
 import itertools
+import os
 
 
 class NewFromURLForm(ModelForm):
@@ -64,6 +65,19 @@ class ListenerSettingsForm(ModelForm):
         self.fields['subscribed_podcasts'].queryset = self.instance.interested_podcasts.order_by('title')
 
 
-class AdminSettingsForm(Form):
+class AdminSettingsForm(ModelForm):
     test = forms.CharField(required=False)
     pub_date = forms.DateField(required=False)
+
+    class Meta:
+        model = PodcastsSettings
+        exclude = []
+
+    def save(self):
+        instance = super().save(commit=False)
+        instance.storage_directory = os.path.expanduser(os.path.expandvars(instance.storage_directory))
+        # Workaound for default site missing its settings instance
+        # PodcastsSettings.objects.get_or_create(site=instance)
+
+        instance.save()
+        return instance
