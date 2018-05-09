@@ -1,0 +1,43 @@
+{% load i18n podcasts_tags humanize %}
+<div class="d-flex justify-content-around flex-wrap px-0 py-2 my-4 border-top border-bottom text-center">
+
+  {% if podcast.author %}
+    <div class="">
+      <p class="text-muted mb-0">{% trans "From" %}</p>
+      <p class="mb-0">{{podcast.author}}</p>
+    </div>
+  {% endif %}
+
+  {% if podcast.link %}
+    <div class="">
+      <p class="text-muted mb-0">{% trans "Website" %}</p>
+      <a href="{{podcast.link}}" class="mb-0 text-dark">{% clean_link podcast.link %}</a>
+    </div>
+  {% endif %}
+
+  {% if podcast.language %}
+    <div class="">
+      <p class="text-muted mb-0">{% trans "Language" %}</p>
+      <p class="mb-0">{% resolve_language podcast.language %}</p>
+    </div>
+  {% endif %}
+
+  {% if podcast.updated %}
+    <div class="">
+      <p class="text-muted mb-0">{% trans "Last fetched" %}</p>
+      <p class="mb-0">
+        {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"}},
+        {{podcast.updated|date:"TIME_FORMAT"}}</p>
+    </div>
+  {% endif %}
+
+    {% if podcast.updated %}
+    <div class="">
+      <p class="text-muted mb-0">{% trans "Feed updated" %}</p>
+      <p class="mb-0">
+        {{podcast.updated|naturalday:"SHORT_DATE_FORMAT"}},
+        {{podcast.updated|date:"TIME_FORMAT"}}</p>
+    </div>
+  {% endif %}
+
+</div>
