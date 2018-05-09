@@ -187,22 +187,26 @@ class Podcast(models.Model):
             img_url = info_or_img_url
 
         name = urlparse(img_url).path.split('/')[-1]
-        content, headers = urllib.request.urlretrieve(img_url)
 
-        img_size = getattr(settings, 'COVER_IMAGE_SIZE', (250, 250))
+        try:
+            content, headers = urllib.request.urlretrieve(img_url)
+            img_size = getattr(settings, 'COVER_IMAGE_SIZE', (250, 250))
 
-        im = Image.open(content)
-        output = BytesIO()
+            im = Image.open(content)
+            output = BytesIO()
 
-        # Resize the image (from https://djangosnippets.org/snippets/10597/)
-        im.thumbnail(img_size)
+            # Resize the image (from https://djangosnippets.org/snippets/10597/)
+            im.thumbnail(img_size)
 
-        # After modifications, save it to the output
-        im.save(output, format='JPEG', quality=95)
-        output.seek(0)
+            # After modifications, save it to the output
+            im.save(output, format='JPEG', quality=95)
+            output.seek(0)
 
-        # See also: http://docs.djangoproject.com/en/dev/ref/files/file/
-        self.image.save(name, File(output), save=True)
+            # See also: http://docs.djangoproject.com/en/dev/ref/files/file/
+            self.image.save(name, File(output), save=True)
+
+        except urllib.error.HTTPError as err:
+            print('Oops', err.code)
 
     @atomic
     def update(self, defaults=None, create_episodes=True, insert_image=True):
