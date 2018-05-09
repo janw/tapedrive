@@ -32,7 +32,7 @@
           </li>
         </ul>
         {% if user.is_authenticated %}
-          <p class="ml-3 mt-2 my-md-0 text-muted">{% trans "Logged in as" %} {{user.username}}</p>
+          <p class="ml-3 mt-2 my-md-0 text-muted">{% trans "Logged in as" %} {{user.username|title}}</p>
         {% endif %}
         </div>
       </div>
