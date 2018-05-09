@@ -1,7 +1,10 @@
 from django.core.files import File
 from django.db import models
+from django.db.models.signals import post_save
 from django.db.transaction import atomic
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
@@ -238,12 +241,20 @@ class Podcast(models.Model):
         if create_episodes:
             self.create_episodes(info_or_episodes=episodes, initial=False)
 
+        return info
+
 
 class Listener(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     subscribed_podcasts = models.ManyToManyField(
         Podcast,
-        verbose_name=_('User\'s Podcasts'),
+        verbose_name=_('Subscribed Podcasts'),
+        related_name='subscribers',
+    )
+    interested_podcasts = models.ManyToManyField(
+        Podcast,
+        verbose_name=_('Added Podcasts'),
+        related_name='followers',
     )
 
     # Settings for future playback functionality
@@ -265,11 +276,30 @@ class Listener(models.Model):
     )
 
     def __str__(self):
-        return _("Listener %(user)s") % {'user': self.user.username}
+        return _("User %(user)s") % {'user': self.user.username}
 
     def has_played(self, episode):
         if not EpisodePlaybackState.objects.get(episode=episode, listener=self):
             return False
+
+    def subscribe_to_podcast(self, podcast):
+        self.subscribed_podcasts.add(podcast)
+        self.save()
+
+    def follow_podcast(self, podcast):
+        self.followers.add(listener)
+        self.save()
+
+
+@receiver(post_save, sender=User)
+def create_user_listener(sender, instance, created, **kwargs):
+    if created:
+        Listener.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_listener(sender, instance, **kwargs):
+    instance.listener.save()
 
 
 class Episode(models.Model):
