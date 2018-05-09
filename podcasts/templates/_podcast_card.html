@@ -10,11 +10,11 @@
     {{item.title}}
     </h3>
     {% if item.subtitle %}
-      <h6 class="card-subtitle mb-2 text-muted">{{ item.subtitle }}</h6>
+      <h6 class="card-subtitle mb-2 text-muted">{{ item.subtitle|safe }}</h6>
     {% endif %}
     {% if item.summary %}
       <p class="card-text text-smaller text-md-normal">
-        {{ item.summary | truncatechars_html:450 }}
+        {{ item.summary | truncatechars_html:450|safe }}
       </p>
     {% endif %}
   </div>
