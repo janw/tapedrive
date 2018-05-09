@@ -51,6 +51,7 @@ class Common(Configuration):
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.humanize',
+        'django.contrib.sites',
         'whitenoise.runserver_nostatic',
         'django.contrib.staticfiles',
         'compressor',
@@ -73,7 +74,7 @@ class Common(Configuration):
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        # 'podcastarchive.users.middleware.LoginRequiredMiddleware',
+        'podcastarchive.users.middleware.LoginRequiredMiddleware',
     ]
 
     ROOT_URLCONF = 'podcastarchive.urls'
@@ -121,6 +122,12 @@ class Common(Configuration):
         },
     ]
 
+    LOGIN_EXEMPT_URLS = [
+        'admin/'
+    ]
+
+    SITE_ID = 1
+
     # Internationalization
     # https://docs.djangoproject.com/en/2.0/topics/i18n/
     LANGUAGE_CODE = 'en-us'
@@ -133,12 +140,10 @@ class Common(Configuration):
 
     USE_TZ = True
 
-
     LANGUAGES = [
         ('de', _('German')),
         ('en', _('English')),
     ]
-
 
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/2.0/howto/static-files/
