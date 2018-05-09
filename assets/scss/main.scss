@@ -18,6 +18,14 @@ $theme-colors: (
 
 @import "../vendor/scss/bootstrap/bootstrap";
 
+.card-img-container {
+  width: 250px;
+
+  & div {
+    width: 250px;
+  }
+}
+
 .card-img-right {
   border-radius: 0 3px 3px 0;
   max-width: 250px;
@@ -70,3 +78,23 @@ $theme-colors: (
 
 @include list-group-item-variant('lighter', #fefefe, #acacac);
 @include list-group-item-variant('lightest', #ffffff, #dddddd);
+
+.card-full-link {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%; width: 100%;
+}
+
+.podcast-summary {
+  overflow: hidden;
+  // white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 100vh;
+}
+
+.text-smaller {
+  @include media-breakpoint-down(md) {
+    font-size: 0.95rem;
+    letter-spacing: 0.95;
+  }
+}

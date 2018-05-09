@@ -1,33 +1,31 @@
 {% load i18n podcasts_tags %}
 <div class="card flex-md-row mb-4 box-shadow">
-  <img class="card-img-top d-md-none" src="{{ item.image.url }}" alt="Card image cap">
+  <a class="card-full-link" href="{% url 'podcasts:podcasts-details' item.slug %}" aria-label"{% trans "Open Podcast Details" %}"></a>
+  {% if item.image %}
+    <img class="card-img-top d-md-none" src="{{ item.image.url }}" alt="Card image cap">
+  {% endif %}
 
   <div class="card-body d-flex flex-column align-items-start">
     <h3 class="card-title">
     {{item.title}}
     </h3>
     {% if item.subtitle %}
-      <h6 class="card-subtitle mb-2 text-muted">{{item.subtitle}}</h6>
+      <h6 class="card-subtitle mb-2 text-muted">{{ item.subtitle }}</h6>
     {% endif %}
     {% if item.summary %}
-      <p class="card-text">
-        {{item.summary | truncatewords_html:50 }}
+      <p class="card-text text-smaller text-md-normal">
+        {{ item.summary | truncatechars_html:450 }}
       </p>
     {% endif %}
-    <div class="d-flex flex-row">
-      <a href="{% url 'podcasts:podcasts-details' item.slug %}" class="card-link">{% trans "Show Details" %}</a>
-      {% if item.link %}
-        <a href="{{ item.link }}" class="card-link">{% trans "Go To Website" %}</a>
+  </div>
+  <div class="bg-light card-img-container">
+    <div class="d-none d-md-flex flex-column h-100 justify-content-center align-items-center bd-highlight">
+      {% if item.image %}
+        <img class="card-img-right align-self-start" src="{{ item.image.url }}">
+      {% else %}
+        <h6 class="mx-3 mt-3 text-muted">{{item.title}}</h6>
+        <p class="mx-3 text-muted">{% trans "(No Cover)" %}</p>
       {% endif %}
-      <a href="{% url 'podcasts:podcasts-refresh-feed' item.slug %}{% add_next_self %}" class="card-link">Refresh Feed</a>
-      {# <a href="#" class="card-link">Another link</a> #}
     </div>
   </div>
-  <a href="{% url 'podcasts:podcasts-details' item.slug %}">
-    {% if item.image %}
-      <img class="card-img-right flex-auto d-none d-md-block img-fluid img-rounded" src="{{ item.image.url }}">
-    {% else %}
-      <img class="card-img-right flex-auto d-none d-md-block img-fluid img-rounded" data-src="holder.js/200x200?auto=yes&text={{item.title}}">
-    {% endif %}
-  </a>
 </div>
