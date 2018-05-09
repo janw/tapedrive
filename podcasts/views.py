@@ -43,6 +43,9 @@ def podcasts_new(request):
             podcast = Podcast.objects.create_from_feed_url(
                 form.cleaned_data['feed_url'],
                 form.cleaned_data['info'])
+            if request.user is not None:
+                podcast.add_subscriber(request.user.listener)
+                podcast.add_follower(request.user.listener)
             return redirect('podcasts:podcasts-details', slug=podcast.slug)
     else:
         form = NewFromURLForm()
@@ -54,9 +57,21 @@ def podcasts_new(request):
 
 
 def podcasts_details(request, slug):
-    object = get_object_or_404(Podcast.objects.prefetch_related('episodes', 'episodes'), slug=slug)
-    episodes = object.episodes.order_by('-published')[:10]
-    return render(request, 'podcasts-details.html', {'podcast': object, 'episodes': episodes})
+    podcast = get_object_or_404((
+        Podcast.objects
+        .prefetch_related('episodes', 'episodes')
+        .prefetch_related('subscribers', 'subscribers')),
+        slug=slug)
+
+    user_is_subscriber = podcast.subscribers.filter(user=request.user).count() == 1
+    episodes = podcast.episodes.order_by('-published')[:10]
+
+    context = {
+        'user_is_subscriber': user_is_subscriber,
+        'podcast': podcast,
+        'episodes': episodes,
+    }
+    return render(request, 'podcasts-details.html', context)
 
 
 def podcasts_discover(request):

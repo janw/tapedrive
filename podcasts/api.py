@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.http import (
     Http404, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse,
+    HttpResponseForbidden, HttpResponse
 )
 
 
@@ -18,8 +19,11 @@ import json
 import urllib
 
 
-@require_POST
-def podcasts_refresh_feed(request, slug=None):
+class HttpResponseNoContent(HttpResponse):
+    status_code = 204
+
+
+def podcast_refresh_feed(request, slug=None):
     podcast = get_object_or_404(Podcast, slug=slug)
     response_data = {}
     response_data['info'] = podcast.update()
@@ -27,25 +31,22 @@ def podcasts_refresh_feed(request, slug=None):
     return JsonResponse(response_data)
 
 
-# @require_POST
-# def api_move_or_resize_by_code(request):
-#     response_data = {}
-#     user = request.user
-#     id = request.POST.get('id')
-#     existed = bool(request.POST.get('existed') == 'true')
-#     delta = datetime.timedelta(minutes=int(request.POST.get('delta')))
-#     resize = bool(request.POST.get('resize', False))
-#     event_id = request.POST.get('event_id')
+def podcast_subscribe(request, slug=None):
+    if request.user is None:
+        return HttpResponseForbidden
+    podcast = get_object_or_404(Podcast, slug=slug)
+    podcast.add_subscriber(request.user.listener)
+    podcast.save()
+    return HttpResponseNoContent()
 
-#     response_data = _api_move_or_resize_by_code(
-#         user,
-#         id,
-#         existed,
-#         delta,
-#         resize,
-#         event_id)
 
-#     return JsonResponse(response_data)
+def podcast_unsubscribe(request, slug=None):
+    if request.user is None:
+        return HttpResponseForbidden()
+    podcast = get_object_or_404(Podcast, slug=slug)
+    podcast.remove_subscriber(request.user.listener)
+    podcast.save()
+    return HttpResponseNoContent()
 
 
 @atomic

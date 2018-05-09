@@ -216,13 +216,21 @@ class Podcast(models.Model):
         except urllib.error.HTTPError as err:
             print('Oops', err.code)
 
-        def add_subscriber(self, listener):
-            self.subscribers.add(listener)
-            self.save()
+    def add_subscriber(self, listener):
+        self.subscribers.add(listener)
+        self.save()
 
-        def add_follower(self, listener):
-            self.followers.add(listener)
-            self.save()
+    def remove_subscriber(self, listener):
+        self.subscribers.remove(listener)
+        self.save()
+
+    def add_follower(self, listener):
+        self.followers.add(listener)
+        self.save()
+
+    def remove_follower(self, listener):
+        self.followers.remove(listener)
+        self.save()
 
     @atomic
     def update(self, defaults=None, create_episodes=True, insert_image=True):

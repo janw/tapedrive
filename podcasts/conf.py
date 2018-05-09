@@ -2,6 +2,7 @@ from django.conf import settings
 from .apps import PodcastsConfig
 import os
 from tempfile import TemporaryDirectory
+from html5lib.constants import namespaces as html_namespaces
 
 
 def _getattr(variable, default):

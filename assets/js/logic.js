@@ -19,26 +19,50 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-$('.api-caller').click(function() {
-    var $a = $(this);
-    $a.prop("disabled",true).addClass("disabled")
+function fireApiCall(url, successfn) {
     var csrftoken = getCookie('csrftoken');
     $.ajax({
-        type: "POST",
-        url: $a.data('href'),
-        data: {
-        },
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         },
+        type: "POST",
+        url: url,
+        data: {
+        },
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function(msg) {
-            console.log(msg);
-            location.reload();
-        }
+        success: [
+            function(msg) {
+                console.log(msg);
+            },
+            successfn,
+        ]
     });
+}
+
+$('.ajax-call-reload').click(function() {
+    var $a = $(this);
+    $a.prop("disabled",true).addClass("disabled")
+    fireApiCall($a.data('href'), function(msg){location.reload();})
+    return false;
+});
+
+$('button#subscribe').click(function() {
+    var $a = $(this);
+    $a.prop("disabled",true).addClass("disabled")
+    fireApiCall($a.data('href'), function(msg){
+        $('button#unsubscribe').prop("disabled",false).removeClass("disabled")
+    })
+    return false;
+});
+
+$('button#unsubscribe').click(function() {
+    var $a = $(this);
+    $a.prop("disabled",true).addClass("disabled")
+    fireApiCall($a.data('href'), function(msg){
+        $('button#subscribe').prop("disabled",false).removeClass("disabled")
+    })
     return false;
 });

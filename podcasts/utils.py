@@ -10,6 +10,8 @@ import time
 import os
 import tempfile
 import logging
+import bleach
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -20,6 +22,9 @@ _headers = {'User-Agent': USER_AGENT}
 _global_info_keys = ['author', 'language', 'link', 'subtitle', 'title', 'image',
                      'itunes_explicit', 'itunes_type', 'generator', 'updated', 'summary']
 _episode_info_keys = ['link', 'subtitle', 'title', 'published', 'description', 'guid']
+
+CLEAN_HTML_GLOBAL = ['summary', 'subtitle', ]
+CLEAN_HTML_EPISODE = ['description', 'subtitle', ]
 
 
 def refresh_feed(feed_url):
@@ -52,6 +57,8 @@ def parse_feed_info(feedobj):
                 feed_info_dict[key] = dateparser.parse(feed_info_dict[key])
             elif key == 'image' and 'href' in feed_info_dict[key].keys():
                 feed_info_dict[key] = feed_info_dict[key]['href']
+            if key in CLEAN_HTML_GLOBAL:
+                feed_info_dict[key] = clean_html(feed_info_dict[key])
 
         episode_list = feedobj.get('items', False) or feedobj.get('entries', False)
         if episode_list:
@@ -73,6 +80,8 @@ def parse_episode_info(episode):
               episode_info.get(key, None) is not None and
               'href' in episode_info[key].keys()):
             episode_info[key] = episode_info[key]['href']
+        if key in CLEAN_HTML_GLOBAL:
+            episode_info[key] = clean_html(episode_info[key])
 
     # media_url = None
     episode_info['media_url'] = None
@@ -152,3 +161,17 @@ def strip_url(link):
     linkpath = urlparse(link).path
     extension = os.path.splitext(linkpath)[1]
     return linkpath, extension
+
+
+def clean_html(html):
+
+    allowed_tags = bleach.sanitizer.ALLOWED_TAGS
+    allowed_tags.append('img')
+
+    allowed_attrs = bleach.sanitizer.ALLOWED_ATTRIBUTES
+    allowed_attrs['img'] = ['alt', 'title']
+
+    return bleach.clean(
+        html,
+        tags=allowed_tags,
+        attributes=allowed_attrs)
