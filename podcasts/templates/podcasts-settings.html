@@ -1,0 +1,44 @@
+{% extends "base.html" %}{% load i18n bootstrap4 %}
+
+{% block content %}
+<h1>{% trans "Settings" %}</h1>
+<h2 class="text-muted">{% trans "User Preferences" %}</h2>
+<p class="lead">{% trans "Your personal preferences on the behaviour of the Podcast Archive." %}</p>
+
+<div class="row">
+  <div class="col mb-4">
+    <form action="{% url 'podcasts:settings' %}" method="post" class="form">
+      {% csrf_token %}
+      {% bootstrap_form listener_form layout='horizontal' horizontal_label_class='col-md-2' horizontal_field_class='col-md-6' %}
+      <div class="form-group row">
+        <div class="offset-md-2 col-md-6 mt-3">
+          <button type="submit" class="btn btn-outline-secondary px-4">{% trans "Save Changes" %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% if admin_form %}
+
+<h2 class="text-muted">{% trans "Administration" %}</h2>
+
+<p class="lead">{% trans "You are an admin on this server, therefore you have access to all global settings." %}</p>
+
+<div class="row">
+  <div class="col mb-4">
+    <form action="{% url 'podcasts:settings' %}" method="post" class="form">
+      {% csrf_token %}
+      {% bootstrap_form admin_form layout='horizontal' horizontal_label_class='col-md-2' horizontal_field_class='col-md-6' %}
+      <div class="form-group row">
+        <div class="offset-md-2 col-md-6 mt-3">
+          <button type="submit" class="btn btn-outline-secondary px-4">{% trans "Save Changes" %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endif %}
+
+{% endblock content %}

@@ -14,7 +14,7 @@
     {% block header %}
       <div class="bg-white border-bottom pt-3 p-md-3 px-md-4 mb-3">
         <div class="container d-flex flex-column flex-md-row align-items-center">
-        <a href="{% url 'podcasts:index' %}"><h5 class="my-0 text-dark">{% trans "Monopod" %}</h5></a>
+        <a href="{% url 'podcasts:index' %}"><h5 class="my-0 text-dark">{% trans "Tape Drive" %} <small class="text-muted">{% trans "Podcast Archive" %}</small></h5></a>
         <ul class="nav justify-content-center mt-2 my-md-0 ml-md-auto">
           <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
             <a class="nav-link"
@@ -23,10 +23,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">{% trans "History" %}</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" href="#">
+              {% trans "History" %}
+            </a>
+          </li>
+          <li class="nav-item {% add_active 'podcasts:settings' %}">
+            <a class="nav-link" href="{% url "podcasts:settings" %}">
               {% trans "Settings" %}
             </a>
           </li>

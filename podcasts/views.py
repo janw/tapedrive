@@ -1,10 +1,9 @@
 from django.db.transaction import atomic
 from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
-from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .forms import NewFromURLForm
+from .forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm
 from .models import Podcast, Episode, EpisodePlaybackState, Listener
 from .utils import refresh_feed, chunks
 
@@ -102,5 +101,23 @@ def podcasts_refresh_feed(request, slug):
     return redirect(next)
 
 
-def user_settings(request):
-    pass
+def settings(request):
+
+    if request.method == 'POST':
+        listener_form = ListenerSettingsForm(request.POST, request.FILES, instance=request.user.listener, prefix='listener')
+        admin_form = AdminSettingsForm(request.POST, request.FILES, prefix='admin')
+
+        if listener_form.is_valid() and (not request.user.is_superuser or admin_form.is_valid()):
+            print('Horraaay')
+            listener = listener_form.save()
+            print(listener)
+            # do something with the cleaned_data on the formsets.
+            next = request.GET.get('next', '/')
+            return redirect(next)
+    else:
+        listener_form = ListenerSettingsForm(instance=request.user.listener, prefix='listener')
+        admin_form = None
+        if request.user.is_superuser:
+            admin_form = AdminSettingsForm(prefix='admin')
+
+    return render(request, 'podcasts-settings.html', {'listener_form': listener_form, 'admin_form': admin_form})
