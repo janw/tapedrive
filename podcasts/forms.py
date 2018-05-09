@@ -2,10 +2,10 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.forms import ModelForm
+from django.forms import ModelForm, Form
 from django.template.defaultfilters import slugify
 
-from .models import Podcast
+from .models import Podcast, Listener
 from .utils import refresh_feed
 import itertools
 
@@ -37,3 +37,33 @@ class NewFromURLForm(ModelForm):
             raise forms.ValidationError(_('The URL did not return a valid podcast feed'))
 
         return self.cleaned_data
+
+
+class ListenerSettingsForm(ModelForm):
+    subscribed_podcasts = forms.ModelMultipleChoiceField(
+        queryset=None,
+        widget=forms.CheckboxSelectMultiple(),
+        help_text=_('Podcasts checked here will be included in periodic feed refreshes'),
+        required=False,  # When all podcasts are deselected, it's technically empty
+    )
+
+
+    class Meta:
+        model = Listener
+        exclude = [
+            'user',
+            'interested_podcasts',
+
+            # Exclude all playback settings until feature implemented
+            'playback_seek_forward_by',
+            'playback_seek_backward_by',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['subscribed_podcasts'].queryset = self.instance.interested_podcasts.order_by('title')
+
+
+class AdminSettingsForm(Form):
+    test = forms.CharField(required=False)
+    pub_date = forms.DateField(required=False)

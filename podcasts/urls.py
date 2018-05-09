@@ -35,5 +35,5 @@ podcasts_patterns = [
 urlpatterns = [
     path('', views.index, name='index'),
     path('podcasts/', include(podcasts_patterns)),
-    path('settings/', views.user_settings, name='podcasts-user-settings'),
+    path('settings/', views.settings, name='settings'),
 ]

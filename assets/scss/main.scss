@@ -98,3 +98,17 @@ $theme-colors: (
     letter-spacing: 0.95;
   }
 }
+
+
+#id_listener-subscribed_podcasts {
+  padding-top: calc(0.375rem + 1px);
+}
+
+input[name="listener-subscribed_podcasts"] {
+  margin-right: calc(0.375rem + 1px);
+  margin-bottom: 0.75rem;
+}
+
+.col-form-label {
+  font-family: $headings-font-family;
+}
