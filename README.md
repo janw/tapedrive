@@ -35,5 +35,6 @@ Currently the main 'todo' is completing the sought out feature set around archiv
 ## Authors and License
 
 * **Jan Willhaus** - *Initial work*
+* Cassette Icon by [Just UI](https://www.behance.net/Just_UI) via [IconFinder](https://www.iconfinder.com/icons/669942/audio_cassette_multimedia_music_icon)
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details
+The project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details
