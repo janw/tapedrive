@@ -62,7 +62,11 @@ class ListenerSettingsForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.fields['subscribed_podcasts'].queryset = self.instance.interested_podcasts.order_by('title')
+        if self.fields['subscribed_podcasts'].queryset.count() == 0:
+            self.fields['subscribed_podcasts'].help_text = _(
+                '(Podcasts you add will appear here to refresh them periodically)')
 
 
 class AdminSettingsForm(ModelForm):
