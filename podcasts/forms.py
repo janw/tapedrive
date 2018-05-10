@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.text import format_lazy
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -7,7 +8,8 @@ from django.forms import ModelForm, Form
 from django.template.defaultfilters import slugify
 
 from .models import Podcast, Listener, PodcastsSettings
-from .utils import refresh_feed
+from .utils import (refresh_feed, get_segments_html, resolve_segments,
+    AVAILABLE_PODCAST_SEGMENTS, AVAILABLE_EPISODE_SEGMENTS, UNIFYING_EPISODE_SEGMENTS)
 import itertools
 import os
 
@@ -82,6 +84,16 @@ class ListenerSettingsForm(ModelForm):
 
 
 class AdminSettingsForm(ModelForm):
+    naming_scheme = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': '4'}),
+        help_text='''
+            <p class="mb-1">Make the archive structure your own. The following segments are supported:</p>
+            <p class="mb-1 naming-scheme-segments"><b>Feed-based segments:</b> {podcast_segments}</p>
+            <p class="mb-1 naming-scheme-segments"><b>Episode-based segments:</b> {episode_segments}</p>
+            <p>☝️Btw: Click on one of these to add them to the input field above! </p>
+            ''',
+    )
+
     class Meta:
         model = PodcastsSettings
         exclude = ['site', ]
@@ -99,21 +111,26 @@ class AdminSettingsForm(ModelForm):
             'naming_scheme': _('''
                 <p>The Episode Naming Scheme is used to create all filenames
                 when episodes are downloaded into the archive storage directory.
-                The scheme uses <a href="https://docs.python.org/3/library/'''
-                '''string.html#formatspec">Format Specification Mini-Language
+                The scheme uses <a
+                href="https://docs.python.org/3/library/string.html#formatspec">
+                Format Specification Mini-Language
                 </a> to compile filenames from the available episode and podcast
-                properties. The available properties are listed below:</p>
-                <ul>
-                    <li><code>{podcast_slug}</code>: Cleaned slug of the podcast name</li>
-                </ul>
+                properties. The available properties are listed below the field.
+                </p>
                 <p>Please note that the scheme must contain at least one of
                 these segments to ensure a unique name:
-                <code>{episode_slug}</code>, <code>{episode_id}</code>,
-                <code>{episode_date}</code>, <code>{episode_number}</code>,
-                <code>{episode_origname}</code>, <code>{episode_sha256}</code>.
+                <code>{{episode_slug}}</code>,
+                <code>{{episode_id}}</code>,
+                <code>{{episode_date}}</code>,
+                <code>{{episode_number}}</code>
                 </p>
                 '''),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['naming_scheme'].help_text = resolve_segments(self.fields['naming_scheme'].help_text)
+        self.fields['naming_scheme'].label = _('Episode Naming Scheme')
 
 
 class SiteSettingsForm(ModelForm):

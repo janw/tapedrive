@@ -1,4 +1,8 @@
-
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
+from django.utils.text import format_lazy
 import feedparser
 from feedparser import CharacterEncodingOverride
 from dateutil import parser as dateparser
@@ -25,6 +29,76 @@ _episode_info_keys = ['link', 'subtitle', 'title', 'published', 'description', '
 
 CLEAN_HTML_GLOBAL = ['summary', 'subtitle', ]
 CLEAN_HTML_EPISODE = ['description', 'subtitle', ]
+
+
+# Mappings of usable segment => field name
+AVAILABLE_PODCAST_SEGMENTS = {
+    'podcast_slug': 'slug',
+    'podcast_type': 'itunes_type',
+    'podcast_title': 'title',
+    'podcast_subtitle': 'subtitle',
+    'podcast_author': 'author',
+    'podcast_language': 'language',
+    'podcast_explicit': 'itunes_explicit',
+    'podcast_updated': 'updated',
+}
+
+AVAILABLE_EPISODE_SEGMENTS = {
+    'episode_slug': 'slug',
+    'episode_id': 'id',
+    'episode_date': 'published',
+    'episode_number': 'itunes_episode',
+    'episode_type': 'itunes_episodetype',
+}
+
+UNIFYING_EPISODE_SEGMENTS = [
+    'episode_slug',
+    'episode_id',
+    'episode_date',
+    'episode_number',
+]
+
+
+def resolve_segments(string):
+    return format_lazy(string,
+        podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS, wrap_in='code'),
+        episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS, wrap_in='code'),
+        unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS, wrap_in='code'),
+    )
+
+
+def get_segments_html(segments, wrap_in='span'):
+    if isinstance(segments, dict):
+        segments = list(segments.keys())
+    joined = (('}</' + wrap_in + '>, <' + wrap_in + '>{').join(segments))
+    return '<' + wrap_in + '>{' + joined + '}</' + wrap_in + '>'
+
+
+class MapThroughDict(object):
+    def __init__(self, mapping, object):
+        self.mapping = mapping
+        self.object = object
+
+    def __getitem__(self, key):
+        obj_attr_key = self.mapping.get(key)
+
+        if obj_attr_key is None:
+            return '{' + key + '}'
+
+        attr_value = getattr(self.object, obj_attr_key, None)
+        logger.debug('Mapping %s => %s => %s', (key, obj_attr_key, attr_value))
+        return attr_value
+
+
+def construct_download_filename(episode):
+    site = Site.objects.get(pk=getattr(settings, 'SITE_ID', 1))
+    filename = site.podcastssettings.naming_scheme
+
+    filename = filename.format_map(
+        MapThroughDict(AVAILABLE_PODCAST_SEGMENTS, episode.podcast))
+    filename = filename.format_map(
+        MapThroughDict(AVAILABLE_EPISODE_SEGMENTS, episode))
+    return filename
 
 
 def refresh_feed(feed_url):
