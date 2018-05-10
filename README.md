@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/janwh/selfhosted-podcast-archive.svg?branch=master)](https://travis-ci.org/janwh/selfhosted-podcast-archive)
 [![Coverage Status](https://coveralls.io/repos/github/janwh/selfhosted-podcast-archive/badge.svg?branch=master)](https://coveralls.io/github/janwh/selfhosted-podcast-archive?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/540e17f78c60b290b84e/maintainability)](https://codeclimate.com/github/janwh/selfhosted-podcast-archive/maintainability)
-[![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/selfhosted-podcast-archive/issues)
+[![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/selfhosted-podcast-archive/issues) [![Join the chat at https://gitter.im/tapedriveio/Lobby](https://badges.gitter.im/tapedriveio/Lobby.svg)](https://gitter.im/tapedriveio/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 </div>
 
