@@ -77,11 +77,5 @@ class AdminSettingsForm(ModelForm):
         model = PodcastsSettings
         exclude = []
 
-    def save(self):
-        instance = super().save(commit=False)
-        instance.storage_directory = os.path.expanduser(os.path.expandvars(instance.storage_directory))
-        # Workaound for default site missing its settings instance
-        # PodcastsSettings.objects.get_or_create(site=instance)
-
-        instance.save()
-        return instance
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

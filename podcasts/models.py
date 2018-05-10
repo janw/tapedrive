@@ -307,11 +307,6 @@ def create_user_listener(sender, instance, created, **kwargs):
         Listener.objects.create(user=instance)
 
 
-@receiver(post_save, sender=User)
-def save_user_listener(sender, instance, **kwargs):
-    instance.listener.save()
-
-
 class Episode(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -480,6 +475,19 @@ class PodcastsSettings(models.Model):
         validators=[validate_path, ],
         verbose_name=_('Storage Directory'),
     )
+
+    class Meta:
+        verbose_name = _('Podcasts Settings')
+        verbose_name_plural = _('Podcasts Settings')
+
+    def __str__(self):
+        return "%s Podcasts Settings" % self.site
+
+    def save(self, *args, **kwargs):
+        # Expand user and vars now once, to prevent future changes to cause unexpected directory changes
+        self.storage_directory = os.path.expanduser(os.path.expandvars(self.storage_directory))
+
+        super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Site)
