@@ -18,7 +18,7 @@ from PIL import Image
 from io import BytesIO
 
 from .conf import *
-from .validators import validate_path
+from .validators import validate_path, validate_naming_scheme
 from .utils import refresh_feed, timeit
 
 User = get_user_model()
@@ -475,6 +475,15 @@ class PodcastsSettings(models.Model):
         validators=[validate_path, ],
         verbose_name=_('Storage Directory'),
         help_text=_('Root directory of where the podcast episodes are downloaded to')
+    )
+    naming_scheme = models.CharField(
+        null=False,
+        blank=False,
+        max_length=255,
+        default=DEFAULT_NAMING_SCHEME,
+        validators=[validate_naming_scheme, ],
+        verbose_name=_('Episode Naming Scheme'),
+        help_text=_('Scheme used to compile the episode download filenames')
     )
 
     class Meta:

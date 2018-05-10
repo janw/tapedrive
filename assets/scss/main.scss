@@ -46,6 +46,18 @@ a.site-title {
   }
 }
 
+#accordionHelp .card-body {
+  font-size: 85%;
+  padding: 1rem;
+
+  & ul {
+    padding-left: 1.5rem;
+    margin-left: 0;
+  }
+  & ul > li {
+
+  }
+}
 
 
 .card-img-container {
