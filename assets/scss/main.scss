@@ -59,6 +59,24 @@ a.site-title {
   }
 }
 
+b,
+strong {
+  font-weight: $font-weight-bold;
+}
+
+.naming-scheme-segments > code {
+  @extend .bg-light;
+  @extend .border;
+  @extend .border-light;
+  @extend .rounded;
+  padding: 0.2rem;
+  margin: 0.1rem;
+
+}
+
+#id_app-naming_scheme {
+  @extend .text-monospace;
+}
 
 .card-img-container {
   width: 250px;

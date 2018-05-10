@@ -42,6 +42,39 @@ function fireApiCall(url, successfn) {
     });
 }
 
+
+function insertAtCaret(txtarea, text) {
+    var strPos = 0;
+    var br = ((txtarea[0].selectionStart || txtarea[0].selectionStart == '0') ?
+        "ff" : (document.selection ? "ie" : false ) );
+    if (br == "ie") {
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.val().length);
+        strPos = range.text.length;
+    }
+    else if (br == "ff") {
+        strPos = txtarea[0].selectionStart;
+    }
+
+    var front = (txtarea.val()).substring(0,strPos);
+    var back = (txtarea.val()).substring(strPos,txtarea.val().length);
+    txtarea.val(front+text+back);
+    strPos = strPos + text.length;
+    if (br == "ie") {
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.val().length);
+        range.moveStart ('character', strPos);
+        range.moveEnd ('character', 0);
+        range.select();
+    }
+    else if (br == "ff") {
+        txtarea[0].setSelectionRange(strPos, strPos);
+        txtarea.focus();
+    }
+}
+
 $('.ajax-call-reload').click(function() {
     var $a = $(this);
     $a.prop("disabled",true).addClass("disabled")
@@ -66,3 +99,12 @@ $('button#unsubscribe').click(function() {
     })
     return false;
 });
+
+
+$('.naming-scheme-segments > code').click(function() {
+    var $input = $('#id_app-naming_scheme')
+    insertAtCaret($input, $(this).text())
+    // $input.focus()
+
+})
+

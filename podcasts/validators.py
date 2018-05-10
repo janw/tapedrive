@@ -1,23 +1,16 @@
 from django import forms
 from django.utils.translation import gettext as _
 
+from .utils import (AVAILABLE_PODCAST_SEGMENTS,
+                    AVAILABLE_EPISODE_SEGMENTS,
+                    UNIFYING_EPISODE_SEGMENTS)
+
 import os
 import re
 
 
 RE_MATCH_POSSIBLE_EXTENSION = re.compile(r'.*(\.[0-9a-zA-Z]{1,4})$')
 RE_MATCH_EPISODE_SEGMENT = re.compile(r'\{episode\_\w+\}')
-
-
-AVAILABLE_EPISODE_SEGMENTS = [
-    '{episode_slug}', '{episode_id}', '{episode_date}', '{episode_number}',
-    '{episode_origname}', '{episode_sha256}'
-]
-
-UNIFYING_EPISODE_SEGMENTS = [
-    '{episode_slug}', '{episode_id}', '{episode_date}', '{episode_number}',
-    '{episode_origname}', '{episode_sha256}'
-]
 
 
 def validate_path(path):
