@@ -44,10 +44,10 @@ class ListenerSettingsForm(ModelForm):
     subscribed_podcasts = forms.ModelMultipleChoiceField(
         queryset=None,
         widget=forms.CheckboxSelectMultiple(),
+        label=_('Subscribed Podcasts'),  # Case otherwise not enforced on the model fields verbose_name
         help_text=_('Podcasts checked here will be included in periodic feed refreshes'),
         required=False,  # When all podcasts are deselected, it's technically empty
     )
-
 
     class Meta:
         model = Listener
