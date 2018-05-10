@@ -1,3 +1,4 @@
+
 <div align="center">
 <img src="assets/img/icon@2x.png" alt="Tape Drive Logo" />
 <h1>Tape Drive, the selfhosted Podcast Client and Archival server</h1>
@@ -30,4 +31,9 @@ Currently the main 'todo' is completing the sought out feature set around archiv
 * Smart handling of duplicate downloads if applicable (hashing, filename comparison, etc.)
 * Proper unittests
 
-## Author
+
+## Authors and License
+
+* **Jan Willhaus** - *Initial work*
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details
