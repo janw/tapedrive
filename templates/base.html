@@ -1,7 +1,7 @@
 <!DOCTYPE html>{% load i18n staticfiles podcasts_tags %}
 <html>
   <head>
-    <title>{% trans "Podcast Archive" %}</title>
+    <title>{% trans "Tape Drive" %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load compress %}
@@ -14,28 +14,35 @@
     {% block header %}
       <div class="bg-white border-bottom pt-3 p-md-3 px-md-4 mb-3">
         <div class="container d-flex flex-column flex-md-row align-items-center">
-        <a href="{% url 'podcasts:index' %}"><h5 class="my-0 text-dark">{% trans "Tape Drive" %} <small class="text-muted">{% trans "Podcast Archive" %}</small></h5></a>
-        <ul class="nav justify-content-center mt-2 my-md-0 ml-md-auto">
-          <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
-            <a class="nav-link"
-              href="{% url 'podcasts:podcasts-list' %}">
-              {% trans "Podcasts" %}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              {% trans "History" %}
-            </a>
-          </li>
-          <li class="nav-item {% add_active 'podcasts:settings' %}">
-            <a class="nav-link" href="{% url "podcasts:settings" %}">
-              {% trans "Settings" %}
-            </a>
-          </li>
-        </ul>
-        {% if user.is_authenticated %}
-          <p class="ml-3 mt-2 my-md-0 text-muted">{% trans "Logged in as" %} {{user.username|title}}</p>
-        {% endif %}
+          <a class="d-flex align-items-center align-items-center align-items-md-center site-title" href="{% url 'podcasts:index' %}">
+            <img class="mr-1" style="width: 42px;" src="{% static 'img/icon@2x.png' %}" alt="">
+
+            <h1>
+              {% trans "Tape Drive" %}
+              <small class="d-block d-md-inline-block text-muted">{% trans "Podcast Archive" %}</small>
+            </h1>
+
+          </a>
+          <ul class="nav justify-content-center mt-2 mt-md-0 ml-md-auto">
+            <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
+              <a class="nav-link"
+                href="{% url 'podcasts:podcasts-list' %}">
+                {% trans "Podcasts" %}
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                {% trans "History" %}
+              </a>
+            </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item {% add_active 'podcasts:settings' %}">
+                <a class="nav-link" href="{% url "podcasts:settings" %}">
+                  {% trans "Settings" %}
+                </a>
+              </li>
+            {% endif %}
+          </ul>
         </div>
       </div>
     {% endblock header %}
