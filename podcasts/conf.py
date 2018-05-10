@@ -20,3 +20,4 @@ SEEK_FORWARD_BY = _getattr('SEEK_FORWARD_BY', 45)
 SEEK_BACKWARD_BY = _getattr('SEEK_BACKWARD_BY', 30)
 
 STORAGE_DIRECTORY = '$HOME/'
+DEFAULT_NAMING_SCHEME = '{podcast_slug}/{episode_title}'

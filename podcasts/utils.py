@@ -164,14 +164,15 @@ def strip_url(link):
 
 
 def clean_html(html):
+    if html is not None:
 
-    allowed_tags = bleach.sanitizer.ALLOWED_TAGS
-    allowed_tags.append('img')
+        allowed_tags = bleach.sanitizer.ALLOWED_TAGS
+        allowed_tags.append('img')
 
-    allowed_attrs = bleach.sanitizer.ALLOWED_ATTRIBUTES
-    allowed_attrs['img'] = ['alt', 'title']
+        allowed_attrs = bleach.sanitizer.ALLOWED_ATTRIBUTES
+        allowed_attrs['img'] = ['alt', 'title']
 
-    return bleach.clean(
-        html,
-        tags=allowed_tags,
-        attributes=allowed_attrs)
+        return bleach.clean(
+            html,
+            tags=allowed_tags,
+            attributes=allowed_attrs)

@@ -96,6 +96,23 @@ class AdminSettingsForm(ModelForm):
                 <code>$USER</code> will be expanded only once before the
                 settings are saved.</p>
                 '''),
+            'naming_scheme': _('''
+                <p>The Episode Naming Scheme is used to create all filenames
+                when episodes are downloaded into the archive storage directory.
+                The scheme uses <a href="https://docs.python.org/3/library/'''
+                '''string.html#formatspec">Format Specification Mini-Language
+                </a> to compile filenames from the available episode and podcast
+                properties. The available properties are listed below:</p>
+                <ul>
+                    <li><code>{podcast_slug}</code>: Cleaned slug of the podcast name</li>
+                </ul>
+                <p>Please note that the scheme must contain at least one of
+                these segments to ensure a unique name:
+                <code>{episode_slug}</code>, <code>{episode_id}</code>,
+                <code>{episode_date}</code>, <code>{episode_number}</code>,
+                <code>{episode_origname}</code>, <code>{episode_sha256}</code>.
+                </p>
+                '''),
         }
 
 
