@@ -474,6 +474,7 @@ class PodcastsSettings(models.Model):
         default=STORAGE_DIRECTORY,
         validators=[validate_path, ],
         verbose_name=_('Storage Directory'),
+        help_text=_('Root directory of where the podcast episodes are downloaded to')
     )
 
     class Meta:

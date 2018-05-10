@@ -1,0 +1,14 @@
+{% if not no_help %}
+  <div class="card">
+    <div class="card-header" id="headingCollapse{{id}}" data-toggle="collapse" data-target="#collapseHelp{{id}}" aria-expanded="{% if show_initially %}true{% else %}false{% endif %}" aria-controls="collapseHelp{{id}}">
+      <h6 class="card-title mb-0">
+        {{label}}
+      </h6>
+    </div>
+    <div id="collapseHelp{{id}}" class="collapse {% if show_initially %}show{% endif %}" aria-labelledby="headingCollapse{{id}}" data-parent="#{{html_parent}}">
+      <div class="card-body">
+          {{help_text|safe}}
+      </div>
+    </div>
+  </div>
+{% endif %}

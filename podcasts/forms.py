@@ -1,7 +1,8 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.forms import ModelForm, Form
 from django.template.defaultfilters import slugify
 
@@ -59,6 +60,17 @@ class ListenerSettingsForm(ModelForm):
             'playback_seek_forward_by',
             'playback_seek_backward_by',
         ]
+        help_texts_long = {
+            'subscribed_podcasts': _('''
+                <p>Contains a list of checkboxes for all the podcasts you have
+                added to the archive. When a podcast is checked, it is
+                'subscribed to' and will therefore be included not only in the
+                periodic feed refreshes (i.e. gathering newly published episodes
+                ), but also have new episodes downloaded automatically.</p>
+                <p>This setting is also available on each podcast's individual
+                details page as the <span class="btn btn-outline-secondary
+                btn-sm disabled text-dark py-0">Subscribe</span> toggle.</p>'''),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -70,12 +82,47 @@ class ListenerSettingsForm(ModelForm):
 
 
 class AdminSettingsForm(ModelForm):
-    test = forms.CharField(required=False)
-    pub_date = forms.DateField(required=False)
-
     class Meta:
         model = PodcastsSettings
-        exclude = []
+        exclude = ['site', ]
+        help_texts_long = {
+            'storage_directory': _('''
+                <p>The Storage Directory is the root of all your downloaded
+                podcast episodes. It has to be set once before any episodes are
+                downloaded. Changing it later on is not officially supported and
+                strongly advised against.</p>
+                <p>References to the user's home <code>~</code>, and available
+                environment variables like <code>$HOME</code> and
+                <code>$USER</code> will be expanded only once before the
+                settings are saved.</p>
+                '''),
+        }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+class SiteSettingsForm(ModelForm):
+    class Meta:
+        model = Site
+        exclude = ['name']
+        labels = {
+            'domain': _('Site Domain'),
+        }
+        help_texts = {
+            'domain': _('Will be used to prefix absolute URLs (for example links in emails)'),
+        }
+        help_texts_long = {
+            'domain': _('''
+                <p>The Site Domain is a site-wide setting that affects places
+                where an absolute URL of a page is generated. This mostly
+                applies to emails sent by the system that contain links to
+                pages.</p>
+                <p class="mb-0">In case you are running the app in a subfolder
+                behind a reverse-proxy, you should include the subfolder in the
+                Site Domain to make sure internal (i.e. relative) URLs resolve
+                properly:</p>
+                <p><code>example.com/fancysubfolder/</code></p>
+                <p class="mb-0">In case you are running the app via HTTPS
+                with no redirects from HTTP, your Site Domain should include the
+                protocol:</p>
+                <p><code>https://example.com/</code></p>
+                '''),
+        }
