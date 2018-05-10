@@ -17,6 +17,7 @@ $theme-colors: (
 );
 
 @import "../vendor/scss/bootstrap/bootstrap";
+@import "borders-responsive";
 
 .card-img-container {
   width: 250px;

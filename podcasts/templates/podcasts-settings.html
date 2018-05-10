@@ -1,44 +1,65 @@
-{% extends "base.html" %}{% load i18n bootstrap4 %}
+{% extends "base.html" %}{% load i18n bootstrap4 podcasts_tags %}
 
 {% block content %}
 <h1>{% trans "Settings" %}</h1>
-<h2 class="text-muted">{% trans "User Preferences" %}</h2>
-<p class="lead">{% trans "Your personal preferences on the behaviour of the Podcast Archive." %}</p>
 
 <div class="row">
-  <div class="col mb-4">
+  <div class="col-md-7 col-lg-8 mb-4 pr-md-4 pr-xl-5">
     <form action="{% url 'podcasts:settings' %}" method="post" class="form">
       {% csrf_token %}
-      {% bootstrap_form listener_form layout='horizontal' horizontal_label_class='col-md-2' horizontal_field_class='col-md-6' %}
-      <div class="form-group row">
-        <div class="offset-md-2 col-md-6 mt-3">
-          <button type="submit" class="btn btn-outline-secondary px-4">{% trans "Save Changes" %}</button>
-        </div>
-      </div>
+
+      <h2 class="text-muted">{% trans "User Preferences" %}</h2>
+      <p class="lead">{% trans "Your personal preferences on the behaviour of the Podcast Archive." %}</p>
+
+      {% if listener_form %}
+        {% include "_settings_form_section.html" with form=listener_form %}
+      {% endif %}
+
+      {% include "podcasts/_settings_form_submitter.html" %}
+
+      {% if app_admin_form or site_admin_form %}
+        <h2 class="text-muted">{% trans "Administration" %}</h2>
+        <p class="lead">{% trans "You are an admin on this server, therefore you have access to all global settings." %}</p>
+      {% endif %}
+
+      {% if app_admin_form %}
+        {% include "_settings_form_section.html" with form=app_admin_form %}
+      {% endif %}
+      {% if site_admin_form %}
+        {% include "_settings_form_section.html" with form=site_admin_form %}
+      {% endif %}
+
+      {% include "podcasts/_settings_form_submitter.html" %}
     </form>
+  </div>
+
+  <div id="help-col" class="col-md-5 col-lg-4 mb-4 pl-md-4 pl-xl-5 border-md-left">
+    <h2 class="text-muted">{% trans "Help" %}</h2>
+    <p class="lead">{% trans "Cannot figure out, what all this is? Click on the sections below to get help." %}</p>
+    <div class="pt-3 sticky-top">
+    <div class="accordion" id="accordionHelp">
+
+      {% for field in listener_form.visible_fields  %}
+        {% if forloop.first %}
+          {% field_help_long listener_form field "accordionHelp" show_initially=True %}
+        {% else %}
+          {% field_help_long listener_form field "accordionHelp" %}
+        {% endif %}
+      {% endfor %}
+
+      {% for field in app_admin_form.visible_fields  %}
+        {% field_help_long app_admin_form field "accordionHelp"  %}
+      {% endfor %}
+
+      {% for field in site_admin_form.visible_fields  %}
+        {% field_help_long site_admin_form field "accordionHelp"  %}
+      {% endfor %}
+
+    </div>
+    </div>
   </div>
 </div>
 
-{% if admin_form %}
 
-<h2 class="text-muted">{% trans "Administration" %}</h2>
-
-<p class="lead">{% trans "You are an admin on this server, therefore you have access to all global settings." %}</p>
-
-<div class="row">
-  <div class="col mb-4">
-    <form action="{% url 'podcasts:settings' %}" method="post" class="form">
-      {% csrf_token %}
-      {% bootstrap_form admin_form layout='horizontal' horizontal_label_class='col-md-2' horizontal_field_class='col-md-6' %}
-      <div class="form-group row">
-        <div class="offset-md-2 col-md-6 mt-3">
-          <button type="submit" class="btn btn-outline-secondary px-4">{% trans "Save Changes" %}</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-{% endif %}
 
 {% endblock content %}

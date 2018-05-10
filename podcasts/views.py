@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm
+from .forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
 from .models import Podcast, Episode, EpisodePlaybackState, Listener, PodcastsSettings
 from .utils import refresh_feed, chunks
 
@@ -103,25 +103,31 @@ def podcasts_refresh_feed(request, slug):
 
 
 def settings(request):
-    current_site = get_current_site(request)
-    current_settings, created = PodcastsSettings.objects.get_or_create(site=current_site)
+    current_site_settings = get_current_site(request)
+    current_podcasts_settings = current_site_settings.podcastssettings
     if request.method == 'POST':
         listener_form = ListenerSettingsForm(request.POST, request.FILES, instance=request.user.listener, prefix='listener')
-        admin_form = AdminSettingsForm(request.POST, request.FILES, instance=current_settings, prefix='admin')
+        app_admin_form = AdminSettingsForm(request.POST, request.FILES, instance=current_podcasts_settings, prefix='app')
+        site_admin_form = SiteSettingsForm(request.POST, request.FILES, instance=current_site_settings, prefix='site')
 
-        if listener_form.is_valid() and (not request.user.is_superuser or admin_form.is_valid()):
+        if listener_form.is_valid() and (not request.user.is_superuser or (app_admin_form.is_valid() and site_admin_form.is_valid())):
             listener_form.save()
 
             if request.user.is_superuser:
-                admin_form.save()
+                app_admin_form.save()
+                site_admin_form.save()
 
             # do something with the cleaned_data on the formsets.
             next = request.GET.get('next', '/')
             return redirect(next)
     else:
         listener_form = ListenerSettingsForm(instance=request.user.listener, prefix='listener')
-        admin_form = None
+        app_admin_form = None
+        site_admin_form = None
         if request.user.is_superuser:
-            admin_form = AdminSettingsForm(instance=current_settings, prefix='admin')
+            app_admin_form = AdminSettingsForm(instance=current_podcasts_settings, prefix='app')
+            site_admin_form = SiteSettingsForm(instance=current_site_settings, prefix='site')
 
-    return render(request, 'podcasts-settings.html', {'listener_form': listener_form, 'admin_form': admin_form})
+    return render(request, 'podcasts-settings.html', {'listener_form': listener_form,
+                                                      'app_admin_form': app_admin_form,
+                                                      'site_admin_form': site_admin_form})
