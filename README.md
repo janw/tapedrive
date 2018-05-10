@@ -1,13 +1,12 @@
-
-# Tape Drive, the selfhosted Podcast Client and Archival server
+<div align="center">
+<img src="assets/img/icon@2x.png" alt="Tape Drive Logo" />
+<h1>Tape Drive, the selfhosted Podcast Client and Archival server</h1>
 
 [![Build Status](https://travis-ci.org/janwh/selfhosted-podcast-archive.svg?branch=master)](https://travis-ci.org/janwh/selfhosted-podcast-archive)
 [![Coverage Status](https://coveralls.io/repos/github/janwh/selfhosted-podcast-archive/badge.svg?branch=master)](https://coveralls.io/github/janwh/selfhosted-podcast-archive?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/540e17f78c60b290b84e/maintainability)](https://codeclimate.com/github/janwh/selfhosted-podcast-archive/maintainability)
 [![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/selfhosted-podcast-archive/issues)
 
-<div align="center">
-  <img src="assets/img/icon@2x.png" alt="Tape Drive Logo" />
 </div>
 
 Tape Drive is a self-hostable podcast client with built-in archiving features. By default, all subscribed podcasts will be properly organized on disk based on a user-chosen naming scheme, and including the available meta data.
