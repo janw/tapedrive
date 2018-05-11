@@ -10,7 +10,8 @@ import re
 
 
 RE_MATCH_POSSIBLE_EXTENSION = re.compile(r'.*(\.[0-9a-zA-Z]{1,4})$')
-RE_MATCH_EPISODE_SEGMENT = re.compile(r'\{episode\_\w+\}')
+RE_MATCH_EPISODE_SEGMENT = re.compile(r'\{(episode\_\w+)\}')
+RE_MATCH_PODCAST_SEGMENT = re.compile(r'\{(podcast\_\w+)\}')
 
 
 def validate_path(path):
@@ -38,7 +39,26 @@ def validate_naming_scheme(scheme):
     if match:
         raise forms.ValidationError(_('Ending %(possible_extension)s is too similar to a file extension'),
                                     params={'scheme': scheme, 'possible_extension': match.group(1)})
+
     episode_segments = RE_MATCH_EPISODE_SEGMENT.findall(scheme)
-    if len(episode_segments) == 0:
-        raise forms.ValidationError(_('Scheme must contain at least one episode segment'),
+    unifying_segments = [s for s in episode_segments if s in UNIFYING_EPISODE_SEGMENTS]
+    if len(unifying_segments) == 0:
+        raise forms.ValidationError(_('Scheme must contain at least one unifying episode segment'),
                                     params={'scheme': scheme})
+
+    invalid_segments = [s for s in episode_segments if s not in AVAILABLE_EPISODE_SEGMENTS]
+    if len(invalid_segments) == 1:
+        raise forms.ValidationError(_('Segment \'%(invalid_segment)s\' is not a valid episode segment'),
+                                    params={'invalid_segment': invalid_segments[0]})
+    elif len(invalid_segments) > 1:
+        raise forms.ValidationError(_('Segments \'%(invalid_segments)s\' are not valid episode segments'),
+                                    params={'invalid_segments': '\', \''.join(invalid_segments)})
+
+    podcast_segments = RE_MATCH_PODCAST_SEGMENT.findall(scheme)
+    invalid_segments = [s for s in podcast_segments if s not in AVAILABLE_PODCAST_SEGMENTS]
+    if len(invalid_segments) == 1:
+        raise forms.ValidationError(_('Segment \'%(invalid_segment)s\' is not a valid podcast segment'),
+                                    params={'invalid_segment': invalid_segments[0]})
+    elif len(invalid_segments) > 1:
+        raise forms.ValidationError(_('Segments \'%(invalid_segments)s\' are not valid podcast segments'),
+                                    params={'invalid_segments': '\', \''.join(invalid_segments)})
