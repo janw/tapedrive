@@ -1,5 +1,6 @@
 from django.contrib import admin
-from podcasts.models.podcast import Podcast, Episode
+from podcasts.models.podcast import Podcast
+from podcasts.models.episode import Episode
 from podcasts.models.listener import EpisodePlaybackState
 
 

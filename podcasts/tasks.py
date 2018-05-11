@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
-from .models import Podcast, Episode
+from podcasts.models.episode import Episode
 from .utils import download_file, strip_url
 from .conf import *
 

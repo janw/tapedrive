@@ -10,7 +10,8 @@ from django.http import (
 )
 
 from podcasts.models.listener import EpisodePlaybackState, Listener
-from podcasts.models.podcast import Podcast, Episode
+from podcasts.models.podcast import Podcast
+from podcasts.models.episode import Episode
 
 
 class HttpResponseNoContent(HttpResponse):
