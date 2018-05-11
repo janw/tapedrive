@@ -11,13 +11,13 @@
     <button id="subscribe"
             type="button"
             data-href="{% url 'podcasts:api-subscribe' podcast.slug %}"
-            class="btn btn-outline-secondary {% if user_is_subscriber %}disabled{% endif %}">
+            class="btn btn-outline-secondary {% if user_is_subscriber %}disabled{% endif %} subscribe-toggle">
       {% trans "Subscribe" %}
     </button>
     <button id="unsubscribe"
             type="button"
             data-href="{% url 'podcasts:api-unsubscribe' podcast.slug %}"
-            class="btn btn-outline-secondary {% if not user_is_subscriber %}disabled{% endif %}">
+            class="btn btn-outline-secondary {% if not user_is_subscriber %}disabled{% endif %} subscribe-toggle">
       {% trans "Unsubscribe" %}
     </button>
   </div>
