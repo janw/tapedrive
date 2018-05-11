@@ -1,17 +1,17 @@
 from django import forms
-from django.utils.text import format_lazy
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.forms import ModelForm, Form
 from django.template.defaultfilters import slugify
 
-from .models import Podcast, Listener, PodcastsSettings
-from .utils import (refresh_feed, get_segments_html, resolve_segments,
+from podcasts.models import PodcastsSettings
+from podcasts.models.podcast import Podcast
+from podcasts.models.listener import Listener
+
+from podcasts.utils import (refresh_feed, get_segments_html, resolve_segments,
     AVAILABLE_PODCAST_SEGMENTS, AVAILABLE_EPISODE_SEGMENTS, UNIFYING_EPISODE_SEGMENTS)
 import itertools
-import os
 
 
 class NewFromURLForm(ModelForm):

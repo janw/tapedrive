@@ -1,52 +1,22 @@
 from django.core.files import File
 from django.db import models
-from django.db.models.signals import post_save
 from django.db.transaction import atomic
-from django.dispatch import receiver
-from django.contrib.auth import get_user_model
-from django.contrib.sites.models import Site
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
 
 import uuid
-import os
 from urllib.parse import urlparse
 import urllib
 from PIL import Image
 from io import BytesIO
 
-from .conf import *
-from .validators import validate_path, validate_naming_scheme
-from .utils import refresh_feed, timeit
-
-User = get_user_model()
+from podcasts.conf import *
+from podcasts.utils import refresh_feed
+from podcasts.models import BigPositiveIntegerField, cover_image_filename
 
 
-def cover_image_filename(instance, filename):
-    ext = os.path.splitext(filename)[-1]
-    filename = "%s-cover%s" % (instance.slug, ext)
-    return filename
-
-
-class IntegerRangeField(models.IntegerField):
-    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
-        self.min_value, self.max_value = min_value, max_value
-        models.IntegerField.__init__(self, verbose_name, name, **kwargs)
-
-    def formfield(self, **kwargs):
-        defaults = {'min_value': self.min_value, 'max_value': self.max_value}
-        defaults.update(kwargs)
-        return super().formfield(**defaults)
-
-
-class BigPositiveIntegerField(models.PositiveIntegerField):
-    def db_type(self, connection):
-        return 'bigint unsigned'
-
-
-# Create your models here.
 class PodcastManager(models.Manager):
 
     @atomic
@@ -254,59 +224,6 @@ class Podcast(models.Model):
         return info
 
 
-class Listener(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    subscribed_podcasts = models.ManyToManyField(
-        Podcast,
-        verbose_name=_('Subscribed Podcasts'),
-        related_name='subscribers',
-    )
-    interested_podcasts = models.ManyToManyField(
-        Podcast,
-        verbose_name=_('Added Podcasts'),
-        related_name='followers',
-    )
-
-    # Settings for future playback functionality
-    playback_seek_forward_by = IntegerRangeField(
-        null=True,
-        blank=True,
-        default=SEEK_FORWARD_BY,
-        min_value=1,
-        max_value=360,
-        verbose_name=_('Seek Duration Forward'),
-    )
-    playback_seek_backward_by = IntegerRangeField(
-        null=True,
-        blank=True,
-        default=SEEK_BACKWARD_BY,
-        min_value=1,
-        max_value=360,
-        verbose_name=_('Seek Duration Backward'),
-    )
-
-    def __str__(self):
-        return _("User %(user)s") % {'user': self.user.username}
-
-    def has_played(self, episode):
-        if not EpisodePlaybackState.objects.get(episode=episode, listener=self):
-            return False
-
-    def subscribe_to_podcast(self, podcast):
-        self.subscribed_podcasts.add(podcast)
-        self.save()
-
-    def follow_podcast(self, podcast):
-        self.followers.add(listener)
-        self.save()
-
-
-@receiver(post_save, sender=User)
-def create_user_listener(sender, instance, created, **kwargs):
-    if created:
-        Listener.objects.create(user=instance)
-
-
 class Episode(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -423,7 +340,7 @@ class Episode(models.Model):
 
     # Listeners and states
     listeners = models.ManyToManyField(
-        Listener,
+        'podcasts.Listener',
         through='EpisodePlaybackState',
         through_fields=('episode', 'listener'),
         verbose_name=_('Episodes\' Listeners'),
@@ -435,72 +352,3 @@ class Episode(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class EpisodePlaybackState(models.Model):
-    episode = models.ForeignKey(
-        Episode,
-        on_delete=models.CASCADE,
-        related_name='playbackstates',
-    )
-    listener = models.ForeignKey(
-        Listener,
-        on_delete=models.CASCADE,
-        related_name='playbackstates',
-    )
-    position = models.PositiveIntegerField(
-        default=0,
-        verbose_name=_('Playback Position'),
-    )
-    completed = models.BooleanField(
-        default=False,
-        verbose_name=_('Playback Completed'),
-    )
-
-    def __str__(self):
-        return "%(user)s's state on %(episode)s" % {'user': self.listener,
-                                                    'episode': self.episode}
-
-
-class PodcastsSettings(models.Model):
-    site = models.OneToOneField(
-        Site,
-        on_delete=models.CASCADE,
-    )
-    storage_directory = models.CharField(
-        null=False,
-        blank=False,
-        max_length=255,
-        default=STORAGE_DIRECTORY,
-        validators=[validate_path, ],
-        verbose_name=_('Storage Directory'),
-        help_text=_('Root directory of where the podcast episodes are downloaded to')
-    )
-    naming_scheme = models.CharField(
-        null=False,
-        blank=False,
-        max_length=255,
-        default=DEFAULT_NAMING_SCHEME,
-        validators=[validate_naming_scheme, ],
-        verbose_name=_('Episode Naming Scheme'),
-        help_text=_('Scheme used to compile the episode download filenames')
-    )
-
-    class Meta:
-        verbose_name = _('Podcasts Settings')
-        verbose_name_plural = _('Podcasts Settings')
-
-    def __str__(self):
-        return "%s Podcasts Settings" % self.site
-
-    def save(self, *args, **kwargs):
-        # Expand user and vars now once, to prevent future changes to cause unexpected directory changes
-        self.storage_directory = os.path.expanduser(os.path.expandvars(self.storage_directory))
-
-        super().save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Site)
-def create_site_settings(sender, instance, created, **kwargs):
-    if created:
-        PodcastsSettings.objects.create(site=instance)

@@ -1,5 +1,5 @@
 from django.db.transaction import atomic
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -9,14 +9,8 @@ from django.http import (
     HttpResponseForbidden, HttpResponse
 )
 
-
-
-from .forms import NewFromURLForm
-from .models import Podcast, Episode, EpisodePlaybackState, Listener
-from .utils import refresh_feed, chunks
-
-import json
-import urllib
+from podcasts.models.listener import EpisodePlaybackState, Listener
+from podcasts.models.podcast import Podcast, Episode
 
 
 class HttpResponseNoContent(HttpResponse):

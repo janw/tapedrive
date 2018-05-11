@@ -1,12 +1,11 @@
-from django.db.transaction import atomic
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
-from .models import Podcast, Episode, EpisodePlaybackState, Listener, PodcastsSettings
-from .utils import refresh_feed, chunks
+from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
+from podcasts.models.podcast import Podcast
+from podcasts.utils import refresh_feed, chunks
 
 import json
 import urllib
