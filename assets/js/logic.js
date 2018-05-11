@@ -82,24 +82,22 @@ $('.ajax-call-reload').click(function() {
     return false;
 });
 
-$('button#subscribe').click(function() {
+$('button.subscribe-toggle').click(function() {
     var $a = $(this);
+    if ($a.attr('id') == 'subscribe') {
+        var successfn = function(msg){
+            $('button#unsubscribe').prop("disabled",false).removeClass("disabled")
+        }
+    }
+    else {
+        var successfn = function(msg){
+            $('button#subscribe').prop("disabled",false).removeClass("disabled")
+        }
+    }
     $a.prop("disabled",true).addClass("disabled")
-    fireApiCall($a.data('href'), function(msg){
-        $('button#unsubscribe').prop("disabled",false).removeClass("disabled")
-    })
+    fireApiCall($a.data('href'), successfn)
     return false;
 });
-
-$('button#unsubscribe').click(function() {
-    var $a = $(this);
-    $a.prop("disabled",true).addClass("disabled")
-    fireApiCall($a.data('href'), function(msg){
-        $('button#subscribe').prop("disabled",false).removeClass("disabled")
-    })
-    return false;
-});
-
 
 $('.naming-scheme-segments > code').click(function() {
     var $input = $('#id_app-naming_scheme')
