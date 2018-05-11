@@ -3,11 +3,11 @@
 <img src="assets/img/icon@2x.png" alt="Tape Drive Logo" />
 <h1>Tape Drive, the selfhosted Podcast Client and Archival server</h1>
 
-[![Build Status](https://travis-ci.org/janwh/selfhosted-podcast-archive.svg?branch=master)](https://travis-ci.org/janwh/selfhosted-podcast-archive)
-[![Coverage Status](https://coveralls.io/repos/github/janwh/selfhosted-podcast-archive/badge.svg?branch=master)](https://coveralls.io/github/janwh/selfhosted-podcast-archive?branch=master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/540e17f78c60b290b84e/maintainability)](https://codeclimate.com/github/janwh/selfhosted-podcast-archive/maintainability)
-[![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/selfhosted-podcast-archive/issues)
-[![Join the chat at https://gitter.im/tapedriveio/Lobby](https://badges.gitter.im/tapedriveio/Lobby.svg)](https://gitter.im/tapedriveio/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/janwh/tapedrive.svg?branch=master)](https://travis-ci.org/janwh/tapedrive.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/janwh/tapedrive/badge.svg?branch=master)](https://coveralls.io/github/janwh/tapedrive?branch=master)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/janwh/tapedrive.svg)](https://codeclimate.com/github/janwh/tapedrive)
+[![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/tapedrive/issues)
+[![Join the chat at https://gitter.im/tapedriveio/Lobby](https://badges.gitter.im/tapedriveio/Lobby.svg)](https://gitter.im/tapedriveio/Lobby)
 
 [![Receiving via Liberapay](https://img.shields.io/liberapay/receives/janw.svg)](https://liberapay.com/janw/)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/janwh)
