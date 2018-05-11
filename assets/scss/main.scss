@@ -65,12 +65,18 @@ strong {
 }
 
 .naming-scheme-segments > code {
-  @extend .bg-light;
+  background-color: $gray-100;
   @extend .border;
-  @extend .border-light;
   @extend .rounded;
-  padding: 0.2rem;
+  border-color:$gray-300;
+  padding: 1px;
   margin: 0.1rem;
+
+  &:hover {
+    color: darken($code-color, 10%) !important;
+    border-color: lighten($code-color, 30%) !important;
+    background-color: lighten($code-color, 40%) !important;
+  }
 
 }
 
