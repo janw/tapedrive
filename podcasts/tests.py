@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
-from .models import Podcast
+from podcasts.models.podcast import Podcast
 # Create your tests here.
 
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'

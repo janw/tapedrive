@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.urls import include, path
-from . import views
-from . import api
+from podcasts import views, api
 
 app_name = 'podcasts'
 
