@@ -49,6 +49,7 @@ AVAILABLE_EPISODE_SEGMENTS = {
     'episode_date': 'published',
     'episode_number': 'itunes_episode',
     'episode_type': 'itunes_episodetype',
+    'episode_title': 'title',
 }
 
 UNIFYING_EPISODE_SEGMENTS = [
@@ -56,11 +57,13 @@ UNIFYING_EPISODE_SEGMENTS = [
     'episode_id',
     'episode_date',
     'episode_number',
+    'episode_title',
 ]
 
 
 def resolve_segments(string):
-    return format_lazy(string,
+    return format_lazy(
+        string,
         podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS, wrap_in='code'),
         episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS, wrap_in='code'),
         unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS, wrap_in='code'),
