@@ -154,9 +154,5 @@ class SiteSettingsForm(ModelForm):
                 Site Domain to make sure internal (i.e. relative) URLs resolve
                 properly:</p>
                 <p><code>example.com/fancysubfolder/</code></p>
-                <p class="mb-0">In case you are running the app via HTTPS
-                with no redirects from HTTP, your Site Domain should include the
-                protocol:</p>
-                <p><code>https://example.com/</code></p>
                 '''),
         }
