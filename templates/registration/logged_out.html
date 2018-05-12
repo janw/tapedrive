@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% load i18n bootstrap4 staticfiles compress %}
+
+{% block title %}{% trans "Logged out" %} | {{block.super}}{% endblock title %}
+
+{% block extra_head %}
+	{% compress css inline %}
+		<style>
+			html, body {
+			  height: 100%
+			}
+		</style>
+	{% endcompress %}
+{% endblock extra_head %}
+
+{% block body %}
+	<body class="h-100 d-flex align-items-center py-5 text-center">
+		<div class="form-signin" method="post">
+			<img class="img-logo w-50" src="{% static 'img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
+			<h1 class="my-4">{% trans "Logged out" %}</h1>
+	    	<a href="{% url 'login' %}" class="btn btn-outline-secondary mt-5 px-3" role="button">{% trans "Sign Back In" %}</a>
+	  	</div>
+	</body>
+{% endblock body %}
