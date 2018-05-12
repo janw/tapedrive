@@ -22,7 +22,9 @@ def create_default_settings(app_config, verbosity=2, interactive=True, using=DEF
         # dependency on the default Site to create the initial settings object.
         site = Site.objects.get(pk=getattr(settings, 'SITE_ID', 1))
         if verbosity >= 2:
-            print("Creating default PodcastsSettings object")
+            print("Creating default PodcastsSettings, setting site name")
+        site.name = getattr(settings, 'SITE_NAME', 'example.com')
+        site.save(using=using)
         PodcastsSettings(site=site).save(using=using)
 
 
