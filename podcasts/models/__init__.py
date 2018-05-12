@@ -61,7 +61,7 @@ class PodcastsSettings(models.Model):
         verbose_name_plural = _('Podcasts Settings')
 
     def __str__(self):
-        return "%s Podcasts Settings" % self.site
+        return "%s Podcasts Settings" % self.site.name
 
     def save(self, *args, **kwargs):
         # Expand user and vars now once, to prevent future changes to cause unexpected directory changes
