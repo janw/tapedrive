@@ -14,6 +14,8 @@ class Episode(models.Model):
         editable=False,
     )
     guid = models.CharField(
+        blank=False,
+        null=False,
         unique=True,
         max_length=255,
         editable=False,
@@ -21,8 +23,8 @@ class Episode(models.Model):
     )
     podcast = models.ForeignKey(
         'podcasts.Podcast',
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         on_delete=models.CASCADE,
         related_name='episodes',
         verbose_name=_('Podcast'),
@@ -134,4 +136,8 @@ class Episode(models.Model):
         verbose_name_plural = _('Episodes')
 
     def __str__(self):
-        return self.title
+        if self.title is not None:
+            return self.title
+        else:
+            return "%(podcast)s's Episode" % {'podcast': self.podcast}
+

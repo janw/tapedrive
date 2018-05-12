@@ -1,5 +1,7 @@
 from django.test import TestCase
+from django.db import transaction
 from django.db.utils import IntegrityError
+from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
 from podcasts.models import PodcastsSettings
 from django.contrib.sites.models import Site
@@ -58,3 +60,37 @@ class PodcastsSettingsModelTestCase(TestCase):
         self.assertEqual(str(settings), 'Test Site Podcasts Settings')
 
         # settings"%s Podcasts Settings" % self.site
+
+
+class EpisodeModelTestCase(TestCase):
+    def setUp(self):
+        self.podcast = Podcast.objects.create(feed_url=TEST_FEED)
+        self.podcast.update()
+
+    def test_episode_model(self):
+
+        # Episode object cannot be created empty (requires GUID and Podcast)
+        with transaction.atomic():
+            with self.assertRaises(IntegrityError):
+                episode = Episode.objects.create()
+        with transaction.atomic():
+            with self.assertRaises(IntegrityError):
+                episode = Episode.objects.create(guid='testguid')
+
+        with transaction.atomic():
+            episode = Episode.objects.create(
+                guid='/testguid1/',
+                podcast=self.podcast,
+            )
+        self.assertEqual(str(episode), 'Killing Time\'s Episode')
+
+
+        with transaction.atomic():
+            episode = Episode.objects.create(
+                guid='/testguid2/',
+                podcast=self.podcast,
+                title='Fancy Test Episode',
+            )
+        self.assertEqual(str(episode), 'Fancy Test Episode')
+
+        # episode = Episode.objects.create()
