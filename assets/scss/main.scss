@@ -75,8 +75,6 @@ $theme-colors: (
 
 
 
-
-
 .bg-white-transparent {
   background-color: rgba($white, 0.9);
 }
@@ -210,19 +208,26 @@ input[name="listener-subscribed_podcasts"] {
 }
 
 html {
+  position: relative;
   min-height: 100%;
 }
 body {
-  margin-bottom: 60px; /* Margin bottom by footer height */
+  margin-bottom: 80px; /* Margin bottom by footer height */
 }
 footer.footer {
-  @extend .bg-light;
+  @extend .border-top;
+  // @extend .bg-light;
   text-align: center;
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 60px;
-  line-height: 60px;
+  line-height: 57px;
+
+  .text-muted a {
+    color: $gray-900;
+  }
+
 }
 
 @include  media-breakpoint-down(md) {
@@ -305,9 +310,10 @@ footer.footer {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  animation: filter-animation 4s;
   opacity: 0.5;
+  animation: filter-animation 4s;
 }
+
 @keyframes filter-animation {
   0%, 25% {
     opacity: 0;
