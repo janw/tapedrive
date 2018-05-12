@@ -131,6 +131,7 @@ class Common(Configuration):
     ]
 
     SITE_ID = 1
+    SITE_NAME = 'Tape Drive'
 
     # Internationalization
     # https://docs.djangoproject.com/en/2.0/topics/i18n/
