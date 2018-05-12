@@ -1,0 +1,18 @@
+{% extends 'base.html' %}{% load i18n bootstrap4 staticfiles compress %}
+
+{% block extra_head %}
+	{{block.super}}
+	<style>html, body { height: 100% }</style>
+{% endblock extra_head %}
+
+{% block body %}
+<body class="h-100 d-flex align-items-center py-5 text-center">
+
+	<div class="form-signin">
+		{% block content %}
+		{% endblock content %}
+  	</div>
+
+    <div class="backdrop"></div>
+</body>
+{% endblock body %}
