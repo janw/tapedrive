@@ -122,6 +122,9 @@ class Common(Configuration):
         },
     ]
 
+    LOGIN_URL = '/login'
+    LOGOUT_URL = '/logout'
+    LOGIN_REDIRECT_URL = 'podcasts:podcasts-list'
     LOGIN_EXEMPT_URLS = [
         'admin/'
     ]
@@ -208,6 +211,8 @@ class Development(Common):
         ('podcasts.utils', '*'),
         ('feedparser'),
     ]
+
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 class Staging(Common):
