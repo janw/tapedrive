@@ -26,20 +26,27 @@
   </head>
   {% block body %}
     <body>
-      {% block header %}
-        {% include "_navbar.html" %}
-      {% endblock header %}
+        <header id="navbar" class="border-bottom pt-3 p-md-2 mb-3">
+          {% block header %}
+            {% include "_navbar.html" %}
+          {% endblock header %}
+        </header>
 
       <main role="main" class="container py-3">
         {% block content %}{% endblock content %}
-
       </main>
+
       {% block post_content %}{% endblock post_content %}
+
+      <div class="backdrop backdrop-static backdrop-lighter"></div>
 
       <footer class="footer">
         <div class="container">
           <small class="my-0 text-muted">
-            lalala
+            {% blocktrans %}
+              <a href="http://tapedrive.io">Tape Drive</a> is licensed under the Apache License 2.0. Thank you for using it.
+             {% endblocktrans %}
+             {# {{request.site.name}} #}
           </small>
         </div>
       </footer>

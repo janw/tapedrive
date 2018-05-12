@@ -1,5 +1,5 @@
 {% load i18n podcasts_tags %}
-<div class="card flex-md-row mb-4 box-shadow">
+<div class="card flex-md-row mb-4">
   <a class="card-full-link" href="{% url 'podcasts:podcasts-details' item.slug %}" aria-label"{% trans "Open Podcast Details" %}"></a>
   {% if item.image %}
     <img class="card-img-top d-md-none" src="{{ item.image.url }}" alt="Card image cap">
