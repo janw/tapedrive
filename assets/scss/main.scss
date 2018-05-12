@@ -225,14 +225,24 @@ footer.footer {
   line-height: 60px;
 }
 
+@include  media-breakpoint-down(md) {
+    #fullscreen_background, #credit_badge {
+    display: none !important;
+  }
+}
+
 .form-signin {
   @extend .border;
   @extend .rounded;
   @extend .shadow;
   width: 100%;
   max-width: 400px;
-  padding: 60px;
   margin: auto;
+  padding: 20px;
+
+  @include  media-breakpoint-up(sm) {
+    padding: 60px;
+  }
 
   &, & input {
     -webkit-backdrop-filter: blur(5px);
