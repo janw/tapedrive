@@ -14,6 +14,7 @@ from io import BytesIO
 from podcasts.conf import *
 from podcasts.utils import refresh_feed
 from podcasts.models import cover_image_filename
+from podcasts.models.episode import Episode
 
 
 class PodcastManager(models.Manager):
