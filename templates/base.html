@@ -1,7 +1,7 @@
 <!DOCTYPE html>{% load i18n staticfiles podcasts_tags %}
 <html>
   <head>
-    <title>{% trans "Tape Drive" %}</title>
+    <title>{% block title %}{% trans "Tape Drive" %}{% endblock title %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load compress %}
@@ -9,58 +9,40 @@
       <link rel="stylesheet" href="/static/scss/main.scss" type="text/x-scss" charset="utf-8">
     {% endcompress %}
 
-  </head>
-  <body>
-    {% block header %}
-      <div class="bg-white border-bottom pt-3 p-md-3 px-md-4 mb-3">
-        <div class="container d-flex flex-column flex-md-row align-items-center">
-          <a class="d-flex align-items-center align-items-center align-items-md-center site-title" href="{% url 'podcasts:index' %}">
-            <img class="mr-1" style="width: 42px;" src="{% static 'img/icon@2x.png' %}" alt="">
 
-            <h1>
-              {% trans "Tape Drive" %}
-              <small class="d-block d-md-inline-block text-muted">{% trans "Podcast Archive" %}</small>
-            </h1>
-
-          </a>
-          <ul class="nav justify-content-center mt-2 mt-md-0 ml-md-auto">
-            <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
-              <a class="nav-link"
-                href="{% url 'podcasts:podcasts-list' %}">
-                {% trans "Podcasts" %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                {% trans "History" %}
-              </a>
-            </li>
-            {% if user.is_authenticated %}
-              <li class="nav-item {% add_active 'podcasts:settings' %}">
-                <a class="nav-link" href="{% url "podcasts:settings" %}">
-                  {% trans "Settings" %}
-                </a>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
-      </div>
-    {% endblock header %}
-
-    <div class="container py-3">
-      {% block content %}{% endblock content %}
-    </div>
     {% block load_javascript %}
-      <script src="{% static 'vendor/js/jquery-3.3.1.min.js' %}"
+      <script defer src="{% static 'vendor/js/jquery-3.3.1.min.js' %}"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
-      <script src="{% static 'vendor/js/popper.1.14.3.min.js' %}"
+      <script defer src="{% static 'vendor/js/popper.1.14.3.min.js' %}"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"></script>
-      <script src="{% static 'vendor/js/bootstrap/bootstrap.min.js' %}"
+      <script defer src="{% static 'vendor/js/bootstrap/bootstrap.min.js' %}"
         integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"></script>
-        <script src="{% static 'vendor/js/holder.min.js' %}"></script>
-        <script src="{% static 'js/logic.js' %}"></script>
-
-
+        <script defer src="{% static 'vendor/js/holder.min.js' %}"></script>
+        <script defer src="{% static 'js/logic.js' %}"></script>
     {% endblock load_javascript %}
-  </body>
+
+    {% block extra_head %}{% endblock extra_head %}
+
+  </head>
+  {% block body %}
+    <body>
+      {% block header %}
+        {% include "_navbar.html" %}
+      {% endblock header %}
+
+      <main role="main" class="container py-3">
+        {% block content %}{% endblock content %}
+
+      </main>
+      {% block post_content %}{% endblock post_content %}
+
+      <footer class="footer">
+        <div class="container">
+          <small class="my-0 text-muted">
+            lalala
+          </small>
+        </div>
+      </footer>
+    </body>
+  {% endblock body %}
 </html>

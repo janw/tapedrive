@@ -1,0 +1,34 @@
+{% load i18n staticfiles podcasts_tags %}
+<div id="navbar" class="border-bottom pt-3 p-md-2 mb-3 bg-white-transparent">
+  <div class="container px-3 d-flex flex-column flex-md-row align-items-center">
+    <a class="d-flex align-items-center align-items-center align-items-md-center site-title" href="{% url 'podcasts:index' %}">
+      <img class="img-logo" src="{% static 'img/icon@2x.png' %}" alt="">
+
+      <h1>
+        {% trans "Tape Drive" %}
+        <small class="d-block d-md-inline-block text-muted">{% trans "Podcast Archive" %}</small>
+      </h1>
+
+    </a>
+    <ul class="nav justify-content-center mt-2 mt-md-0 ml-md-auto">
+      {% if user.is_authenticated %}
+      <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
+        <a class="nav-link"
+          href="{% url 'podcasts:podcasts-list' %}">
+          {% trans "Podcasts" %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          {% trans "History" %}
+        </a>
+      </li>
+        <li class="nav-item {% add_active 'podcasts:settings' %}">
+          <a class="nav-link" href="{% url "podcasts:settings" %}">
+            {% trans "Settings" %}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
