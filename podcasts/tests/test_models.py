@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.db.utils import IntegrityError
 from podcasts.models.podcast import Podcast
+from podcasts.models import PodcastsSettings
+from django.contrib.sites.models import Site
 # Create your tests here.
 
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'
@@ -15,7 +17,7 @@ class PodcastModelTestCase(TestCase):
         Podcast.objects.create(feed_url=TEST_FEED)
 
     def test_podcast_model(self):
-        """Test that the Podcast model is created and updated properly from all angles"""
+        """Test creation of Podcast model from different inputs"""
         podcast = Podcast.objects.get(feed_url=TEST_FEED)
         self.assertEqual(podcast.title, '')
 
@@ -37,3 +39,22 @@ class PodcastModelTestCase(TestCase):
         self.assertEqual(podcast.get_absolute_url(), '/podcasts/killing-time/')
 
         podcast.create_episodes()
+
+class PodcastsSettingsModelTestCase(TestCase):
+    def test_settings_model(self):
+        site = Site.objects.create(name='Test Site', domain='testsite.local')
+
+        # Creating a Site object, fires a post_save creation of PodcastsSettings
+        # therefore trying to create another PS object with the same Site should
+        # cause the unique constraint to kick in
+        with self.assertRaises(IntegrityError):
+            PodcastsSettings.objects.create(site=site)
+
+        # OneToOne rel should contain the PS instance
+        settings = site.podcastssettings
+        self.assertIsInstance(settings, PodcastsSettings)
+
+        # Return the proper __str__ based on the Site.name
+        self.assertEqual(str(settings), 'Test Site Podcasts Settings')
+
+        # settings"%s Podcasts Settings" % self.site
