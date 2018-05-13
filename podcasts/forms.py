@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.forms import ModelForm, Form
 from django.template.defaultfilters import slugify
@@ -9,8 +10,7 @@ from podcasts.models import PodcastsSettings
 from podcasts.models.podcast import Podcast
 from podcasts.models.listener import Listener
 
-from podcasts.utils import (refresh_feed, get_segments_html, resolve_segments,
-    AVAILABLE_PODCAST_SEGMENTS, AVAILABLE_EPISODE_SEGMENTS, UNIFYING_EPISODE_SEGMENTS)
+from podcasts.utils import refresh_feed, resolve_segments
 import itertools
 
 
@@ -18,6 +18,10 @@ class NewFromURLForm(ModelForm):
     class Meta:
         model = Podcast
         fields = ['feed_url', ]
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
 
     def save(self):
         instance = super().save(commit=False)
@@ -36,11 +40,23 @@ class NewFromURLForm(ModelForm):
         super().clean()
 
         self.cleaned_data['info'] = refresh_feed(self.cleaned_data['feed_url'])
-
         if self.cleaned_data['info'] is None:
             raise forms.ValidationError(_('The URL did not return a valid podcast feed'))
 
         return self.cleaned_data
+
+    def validate_unique(self):
+        # Skip unique validation since the view will take care of
+        # redirecting to the already existing instance. If the particular
+        # listener already has added that feed, create an info message
+        not_unique_for_listener = Podcast.objects.filter(
+            feed_url=self.cleaned_data['feed_url'],
+            followers=self.request.user.listener).exists()
+
+        if not_unique_for_listener:
+            messages.add_message(
+                self.request,
+                messages.INFO, _('You already added this podcast feed. You have been subscribed.'))
 
 
 class ListenerSettingsForm(ModelForm):

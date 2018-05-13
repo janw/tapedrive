@@ -42,7 +42,6 @@ class PodcastsList(ListView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
-        # context['now'] = timezone.now()
         return context
 
 
@@ -66,14 +65,15 @@ def podcasts_list(request):
 
 def podcasts_new(request):
     if request.method == 'POST':
-        form = NewFromURLForm(request.POST, request.FILES)
+        form = NewFromURLForm(request.POST, request.FILES, request=request)
         if form.is_valid():
-            podcast = Podcast.objects.create_from_feed_url(
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(
                 form.cleaned_data['feed_url'],
-                form.cleaned_data['info'])
-            if request.user is not None:
-                podcast.add_subscriber(request.user.listener)
-                podcast.add_follower(request.user.listener)
+                form.cleaned_data['info']
+            )
+            podcast.add_subscriber(request.user.listener)
+            podcast.add_follower(request.user.listener)
+
             return redirect('podcasts:podcasts-details', slug=podcast.slug)
     else:
         form = NewFromURLForm()
