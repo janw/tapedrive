@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% load i18n %}
 
 {% block content %}
-{% if items %}
+{% if object_list %}
 
   <div class="d-flex w-100 justify-content-between">
     <div class="mb-4 w-100 text-center text-sm-left">
@@ -26,7 +26,7 @@
 
   <div class="row">
     <div class="col">
-      {% for item in items %}
+      {% for object in object_list %}
         {% include "_podcast_card.html" %}
       {% endfor %}
     </div>
@@ -34,24 +34,24 @@
 
 {% else %}
 
-      <div class="mt-sm-5 offset-md-1 col-md-10 offset-lg-2 col-lg-8 text-center text-md-left">
+  <div class="mt-sm-5 offset-md-1 col-md-10 offset-lg-2 col-lg-8 text-center text-md-left">
 
-          <h1 class="mt-md-5">{% trans "Welcome to your future Podcast Archive. 👋 " %}</h1>
-          <p class="lead mb-4">{% blocktrans %}
-              Hi! Nice to see you here. It means that you probably like podcasts and hoarding data. Unfortunately your podcast list is currently empty. How about adding some of your favorite feeds?
-          {% endblocktrans %}</p>
+    <h1 class="mt-md-5">{% trans "Welcome to your future Podcast Archive. 👋 " %}</h1>
+    <p class="lead mb-4">{% blocktrans %}
+        Hi! Nice to see you here. It means that you probably like podcasts and hoarding data. Unfortunately your podcast list is currently empty. How about adding some of your favorite feeds?
+    {% endblocktrans %}</p>
 
-      <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "Have a particular feed in mind, and the URL handy?" %}</p>
-      <a href="{% url 'podcasts:podcasts-new' %}" class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Add Feed" %}</a>
+  <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "Have a particular feed in mind, and the URL handy?" %}</p>
+  <a href="{% url 'podcasts:podcasts-new' %}" class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Add Feed" %}</a>
 
-      <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "Moving over from another podcast client with an OPML file?" %}</p>
-      <a href="#"  class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Import OPML" %}</a>
+  <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "Moving over from another podcast client with an OPML file?" %}</p>
+  <a href="#"  class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Import OPML" %}</a>
 
-      <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "URL? File? What? Just show me something to start with!" %}</p>
-        <a href="{% url 'podcasts:podcasts-discover' %}"  class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Discover" %}</a>
-      </div>
+  <p class="mb-0 d-md-inline-block mb-md-4">— {% trans "URL? File? What? Just show me something to start with!" %}</p>
+    <a href="{% url 'podcasts:podcasts-discover' %}"  class="btn btn-outline-secondary mb-4 mb-md-1">{% trans "Discover" %}</a>
+  </div>
 
-  {% endif %}
+{% endif %}
 
 
 

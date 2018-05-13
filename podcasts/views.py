@@ -2,10 +2,14 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count, Max
+from django.views.generic.list import ListView
 
+from podcasts.conf import * # noqa
 from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
 from podcasts.models.podcast import Podcast
 from podcasts.utils import refresh_feed, chunks
+
 
 import json
 import urllib
@@ -15,6 +19,31 @@ import urllib
 def index(request):
     # return render(request, 'index.html')
     return redirect('podcasts:podcasts-list')
+
+
+class PodcastsList(ListView):
+    model = Podcast
+    paginate_by = PODCASTS_PER_PAGE
+    template_name = 'podcasts-list.html'
+
+    def get_queryset(self, **kwargs):
+        queryset = (
+            Podcast.objects
+            .prefetch_related('subscribers', 'subscribers')
+            .prefetch_related('followers', 'followers')
+            .annotate(num_episodes=Count('episodes'))
+            .annotate(last_episode_date=Max('episodes__published'))
+            .filter(followers=self.request.user.listener)
+        )
+
+        print(queryset)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        # context['now'] = timezone.now()
+        return context
 
 
 def podcasts_list(request):
