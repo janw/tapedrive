@@ -181,6 +181,14 @@ class Common(Configuration):
     # Project settings
     COVER_IMAGE_SIZE = (500, 500)
 
+    MESSAGE_TAGS = {
+        10: 'alert-dark',
+        20: 'alert-info',
+        25: 'alert-success',
+        30: 'alert-warning',
+        40: 'alert-danger',
+    }
+
 
 class Development(Common):
     """
