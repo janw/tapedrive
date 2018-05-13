@@ -11,7 +11,7 @@
 
 
     {% block load_javascript %}
-      <script defer src="{% static 'vendor/js/jquery-3.3.1.min.js' %}"
+      <script {% if not debug %}defer{% endif %} src="{% static 'vendor/js/jquery-3.3.1.min.js' %}"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
       <script defer src="{% static 'vendor/js/popper.1.14.3.min.js' %}"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"></script>
