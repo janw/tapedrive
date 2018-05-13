@@ -85,24 +85,29 @@ $('.ajax-call-reload').click(function() {
 $('button.subscribe-toggle').click(function() {
     var $a = $(this);
     if ($a.attr('id') == 'subscribe') {
-        var successfn = function(msg){
-            $('button#unsubscribe').prop("disabled",false).removeClass("disabled")
-        }
+        var antagonist = 'button#unsubscribe'
     }
     else {
-        var successfn = function(msg){
-            $('button#subscribe').prop("disabled",false).removeClass("disabled")
-        }
+        var antagonist = 'button#subscribe'
     }
     $a.prop("disabled",true).addClass("disabled")
-    fireApiCall($a.data('href'), successfn)
+    fireApiCall($a.data('href'), function(msg){
+        $(antagonist).prop("disabled",false).removeClass("disabled")
+    })
     return false;
 });
+
+
+$('button.download-toggle').click(function() {
+    var $a = $(this);
+    $a.prop("disabled",true).addClass("disabled")
+    fireApiCall($a.data('href'));
+    return false;
+});
+
 
 $('.naming-scheme-segments > code').click(function() {
     var $input = $('#id_app-naming_scheme')
     insertAtCaret($input, $(this).text())
-    // $input.focus()
-
 })
 

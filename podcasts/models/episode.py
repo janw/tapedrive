@@ -1,10 +1,12 @@
 from django.db import models
+from django.db.transaction import atomic
 from django.utils.translation import gettext as _
 
 import uuid
 
 from podcasts.conf import *
 from podcasts.models import BigPositiveIntegerField
+from podcasts.utils import MapThroughDict, AVAILABLE_PODCAST_SEGMENTS, AVAILABLE_EPISODE_SEGMENTS, strip_url
 
 
 class Episode(models.Model):
@@ -131,6 +133,14 @@ class Episode(models.Model):
         verbose_name=_('Episodes\' Listeners'),
     )
 
+    download_task = models.OneToOneField(
+        'background_task.Task',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_('Associated Download Task'),
+    )
+
     class Meta:
         verbose_name = _('Episode')
         verbose_name_plural = _('Episodes')
@@ -141,3 +151,21 @@ class Episode(models.Model):
         else:
             return "%(podcast)s's Episode" % {'podcast': self.podcast}
 
+    def construct_file_path(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
+        linkpath, extension = strip_url(self.media_url)
+
+        file_path_tmp = naming_scheme.format_map(
+            MapThroughDict(AVAILABLE_PODCAST_SEGMENTS, self.podcast))
+        file_path = file_path_tmp.format_map(
+            MapThroughDict(AVAILABLE_EPISODE_SEGMENTS, self))
+
+        self.file_path = os.path.join(storage_directory, file_path + extension)
+        self.save()
+
+    @atomic
+    def queue_download_task(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
+        self.construct_file_path(storage_directory, naming_scheme)
+
+        from podcasts.tasks import download_episode # noqa
+        self.download_task = download_episode(self.media_url, self.file_path, str(self.id))
+        self.save()

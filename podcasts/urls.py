@@ -6,6 +6,8 @@ app_name = 'podcasts'
 
 episodes_patterns = [
     path('<uuid:id>/', include([
+        path('download/', api.episode_queue_download, name='api-episode-queue-download'),
+
         # path('position/<int:position>', views.podcasts_refresh_feed, name='podcasts-refresh-feed'),
         path('played/', api.episodes_mark_played, name='episodes-mark-played'),
         # path('unplayed/', views.episodes_mark_unplayed, name='episodes-mark-unplayed'),
@@ -16,7 +18,6 @@ podcasts_api_patterns = [
     path('refresh-feed/', api.podcast_refresh_feed, name='api-refresh-feed'),
     path('subscribe/', api.podcast_subscribe, name='api-subscribe'),
     path('unsubscribe/', api.podcast_unsubscribe, name='api-unsubscribe'),
-    # path('episodes/', include(episodes_patterns)),
 ]
 
 
@@ -34,5 +35,6 @@ podcasts_patterns = [
 urlpatterns = [
     path('', views.index, name='index'),
     path('podcasts/', include(podcasts_patterns)),
+    path('episodes/', include(episodes_patterns)),
     path('settings/', views.settings, name='settings'),
 ]

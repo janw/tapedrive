@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+
 from podcasts.models.episode import Episode
-from .utils import download_file, strip_url
-from .conf import *
+from podcasts.utils import construct_download_filename, download_file, strip_url
+from podcasts.conf import *
 
 from background_task import background
 import os
@@ -11,20 +12,13 @@ User = get_user_model()
 
 
 @background()
-def download_episode(**kwargs):
+def download_episode(media_url, file_path, id):
 
-    episode = Episode.objects.get(**kwargs)
-    linkpath, extension = strip_url(episode.media_url)
+    # Download the file
+    filesize = download_file(media_url, file_path)
 
-    # Get filename
-    filename = "{podcast_slug}/{episode_title}".format(
-        podcast_slug=episode.podcast.slug,
-        episode_title=episode.title,
-    ) + extension
-    target = os.path.join(STORAGE_DIRECTORY, filename)
-    filesize = download_file(episode.media_url, target)
-
-    episode.file_path = target
+    # Update Episode after download
+    episode = Episode.objects.get(id=id)
     episode.file_size = filesize
     episode.downloaded = timezone.now()
     episode.save()

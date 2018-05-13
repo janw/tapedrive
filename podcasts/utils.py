@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.utils.text import format_lazy
 import feedparser
 from feedparser import CharacterEncodingOverride
@@ -91,13 +89,10 @@ class MapThroughDict(object):
         return attr_value
 
 
-def construct_download_filename(episode):
-    site = Site.objects.get(pk=getattr(settings, 'SITE_ID', 1))
-    filename = site.podcastssettings.naming_scheme
-
-    filename = filename.format_map(
+def construct_download_filename(naming_scheme, episode):
+    filename_tmp = naming_scheme.format_map(
         MapThroughDict(AVAILABLE_PODCAST_SEGMENTS, episode.podcast))
-    filename = filename.format_map(
+    filename = filename_tmp.format_map(
         MapThroughDict(AVAILABLE_EPISODE_SEGMENTS, episode))
     return filename
 
