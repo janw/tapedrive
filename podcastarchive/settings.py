@@ -123,12 +123,12 @@ class Common(Configuration):
         },
     ]
 
-    LOGIN_URL = '/login'
-    LOGOUT_URL = '/logout'
+    LOGIN_URL = '/login/'
+    LOGOUT_URL = '/logout/'
     LOGIN_REDIRECT_URL = 'podcasts:podcasts-list'
     LOGIN_EXEMPT_URLS = [
-        'admin/',
-        'password/reset/'
+        '/admin/',
+        '/password/reset/'
     ]
 
     SITE_ID = 1
