@@ -1,17 +1,26 @@
-{% load i18n %}
+{% load i18n humanize %}
 <div class="container-fluid">
   <div class="row mb-4">
-    <div class="col-12 col-sm-6 text-sm-right">
-      {% trans "Published" %} {{episode.published|date}}
-    </div>
-    <div class="col-12 col-sm-6">
-      {% if episode.downloaded %}
-        {% trans "Downloaded" %} {{episode.downloaded|date}}
-      {% else %}
-        <span class="badge badge-secondary">{% trans "Download Pending" %}</span>
-      {% endif %}
+    <div class="col">
+      <div class="d-flex justify-content-around flex-wrap px-0 py-2 border-top border-bottom text-center">
+        <div class="">
+          <p class="text-muted mb-0">{% trans "Published" %}</p>
+          <p class="mb-0">
+            {{episode.published|naturalday:"SHORT_DATE_FORMAT"|title}},
+            {{episode.published|date:"TIME_FORMAT"}}</p>
+        </div>
+        {% if episode.downloaded %}
+          <div class="">
+            <p class="text-muted mb-0">{% trans "Downloaded" %}</p>
+            <p class="mb-0">
+              {{episode.downloaded|naturalday:"SHORT_DATE_FORMAT"|title}},
+              {{episode.downloaded|date:"TIME_FORMAT"}}</p>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
+
   <div class="row mb-3">
     <div class="col px-0">
       <h4>{% trans "Episode Summary" %}</h4>

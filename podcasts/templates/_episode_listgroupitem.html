@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n humanize %}
 <a href="#" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}"
    class="list-group-item {% if not episode.downloaded %}list-group-item-lighter{% else %}text-dark{% endif %} flex-column align-items-start">
   <div class="d-flex w-100 justify-content-between">
@@ -8,7 +8,30 @@
   {% if episode.subtitle %}
     <h5 class="mb-2 text-muted">{{episode.subtitle|escape}}</h5>
   {% endif %}
-  {# <p>{{episode.description | default_if_none:'' | truncatewords_html:20 }}</p> #}
+  <div class="mb-2 text-right">
+    {% if episode.downloaded %}
+      <button class="btn btn-outline-success disabled btn-sm px-3">
+        {% trans "Downloaded:" %}
+        {{episode.downloaded|naturalday:"SHORT_DATE_FORMAT"|title}},
+        {{episode.downloaded|date:"TIME_FORMAT"}}
+      </button>
+    {% elif episode.download_task %}
+      {% if episode.download_task.last_error %}
+        <button class="btn btn-outline-danger disabled btn-sm px-3">
+          {% trans "Download Failed" %}
+        </button>
+      {% else %}
+        <button class="btn btn-outline-secondary disabled btn-sm px-3">
+          {% trans "Queued for Download" %}
+        </button>
+      {% endif %}
+    {% else %}
+      <button class="btn btn-outline-primary btn-sm px-3 download-toggle" type="button"
+          data-href="{% url 'podcasts:api-episode-queue-download' episode.id %}">
+        {% trans "Download Now" %}
+      </button>
+    {% endif %}
+  </div>
 </a>
 <div>
 {% include "_episode_details_modal.html" %}

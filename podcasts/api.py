@@ -2,6 +2,7 @@ from django.db.transaction import atomic
 from django.shortcuts import redirect, reverse
 from django.shortcuts import get_object_or_404
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.http import (
@@ -57,3 +58,15 @@ def episodes_mark_played(request, id):
 
     next = request.GET.get('next', reverse('podcasts:podcasts-details', kwargs={'slug': object.podcast.slug}))
     return redirect(next)
+
+
+@require_POST
+def episode_queue_download(request, id):
+    site = get_current_site(request)
+    site.podcastssettings.storage_directory
+    object = get_object_or_404(Episode, id=id)
+    object.queue_download_task(
+        site.podcastssettings.storage_directory,
+        site.podcastssettings.naming_scheme
+    )
+    return HttpResponseNoContent()
