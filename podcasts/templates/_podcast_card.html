@@ -1,29 +1,31 @@
-{% load i18n podcasts_tags %}
+{% load i18n podcasts_tags humanize %}
 <div class="card flex-md-row mb-4">
-  <a class="card-full-link" href="{% url 'podcasts:podcasts-details' item.slug %}" aria-label"{% trans "Open Podcast Details" %}"></a>
-  {% if item.image %}
-    <img class="card-img-top d-md-none" src="{{ item.image.url }}" alt="Card image cap">
+  <a class="card-full-link" href="{% url 'podcasts:podcasts-details' object.slug %}" aria-label"{% trans "Open Podcast Details" %}"></a>
+  {% if object.image %}
+    <img class="card-img-top d-md-none" src="{{ object.image.url }}" alt="Card image cap">
   {% endif %}
 
-  <div class="card-body d-flex flex-column align-items-start">
+  <div class="card-body d-flex flex-column align-objects-start">
     <h3 class="card-title">
-    {{item.title}}
+    {{object.title}}
     </h3>
-    {% if item.subtitle %}
-      <h6 class="card-subtitle mb-2 text-muted">{{ item.subtitle|safe }}</h6>
+    {% if object.subtitle %}
+      <h6 class="card-subtitle mb-2 text-muted">{{ object.subtitle|safe }}</h6>
     {% endif %}
-    {% if item.summary %}
+    {% if object.summary %}
       <p class="card-text text-smaller text-md-normal">
-        {{ item.summary | truncatechars_html:450|safe }}
+        {{ object.summary | truncatechars_html:450|safe }}
       </p>
     {% endif %}
+
+    <p class="card-text"><small class="text-muted">{% blocktrans with num_episodes=object.num_episodes %}{{num_episodes}} episodes{% endblocktrans %}, {% blocktrans with time=object.last_episode_date|naturaltime %} last one published {{time}}{% endblocktrans %}</small></p>
   </div>
   <div class="bg-light card-img-container">
-    <div class="d-none d-md-flex flex-column h-100 justify-content-center align-items-center bd-highlight">
-      {% if item.image %}
-        <img class="card-img-right align-self-start" src="{{ item.image.url }}">
+    <div class="d-none d-md-flex flex-column h-100 justify-content-center align-objects-center bd-highlight">
+      {% if object.image %}
+        <img class="card-img-right align-self-start" src="{{ object.image.url }}">
       {% else %}
-        <h6 class="mx-3 mt-3 text-muted">{{item.title}}</h6>
+        <h6 class="mx-3 mt-3 text-muted">{{object.title}}</h6>
         <p class="mx-3 text-muted">{% trans "(No Cover)" %}</p>
       {% endif %}
     </div>

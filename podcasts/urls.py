@@ -21,7 +21,7 @@ podcasts_api_patterns = [
 
 
 podcasts_patterns = [
-    path('', views.podcasts_list, name='podcasts-list'),
+    path('', views.PodcastsList.as_view(), name='podcasts-list'),
     path('discover/', views.podcasts_discover, name='podcasts-discover'),
     path('new/', views.podcasts_new, name='podcasts-new'),
     path('<slug:slug>/', include([
