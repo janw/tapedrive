@@ -163,9 +163,13 @@ class Episode(models.Model):
         self.save()
 
     @atomic
-    def queue_download_task(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
-        self.construct_file_path(storage_directory, naming_scheme)
-
+    def queue_download_task(self,
+                            storage_directory=STORAGE_DIRECTORY,
+                            naming_scheme=DEFAULT_NAMING_SCHEME,
+                            overwrite=False):
         from podcasts.tasks import download_episode # noqa
-        self.download_task = download_episode(self.media_url, self.file_path, str(self.id))
-        self.save()
+
+        self.construct_file_path(storage_directory, naming_scheme)
+        if not os.path.isfile(self.file_path) or overwrite:
+            self.download_task = download_episode(self.media_url, self.file_path, str(self.id))
+            self.save()

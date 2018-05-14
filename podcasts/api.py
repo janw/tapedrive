@@ -70,3 +70,15 @@ def episode_queue_download(request, id):
         site.podcastssettings.naming_scheme
     )
     return HttpResponseNoContent()
+
+
+@require_POST
+def podcast_queue_download(request, slug):
+    site = get_current_site(request)
+    site.podcastssettings.storage_directory
+    object = get_object_or_404(Podcast.objects.prefetch_related('episodes'), slug=slug)
+    object.queue_missing_episodes_download_tasks(
+        site.podcastssettings.storage_directory,
+        site.podcastssettings.naming_scheme
+    )
+    return HttpResponseNoContent()
