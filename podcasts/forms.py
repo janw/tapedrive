@@ -145,7 +145,9 @@ class AdminSettingsForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['naming_scheme'].help_text = resolve_segments(self.fields['naming_scheme'].help_text)
+        self.fields['naming_scheme'].help_text = resolve_segments(
+            self.fields['naming_scheme'].help_text,
+            wrap_in='code')
         self.fields['naming_scheme'].label = _('Episode Naming Scheme')
 
 
