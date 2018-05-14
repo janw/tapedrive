@@ -65,6 +65,6 @@ class PodcastsListTest(AuthorizedViewTestCase):
         self.assertEqual(response.url, self.view_url)
 
     def test_empty_page_request(self):
-        """Soft-failing request of empty/nonexistent pagination page"""
+        """404 for request of empty/nonexistent pagination page"""
         response = self.client.get(self.view_url + '?page=9999')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
