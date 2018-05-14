@@ -79,3 +79,9 @@ class FeedRefreshTestCase(TestCase):
 
         content = utils.refresh_feed(TEST_FEED_HTTPERROR)
         self.assertIsNone(content)
+
+    def test_long_subtitle_feed(self):
+        """Test if an overly long subtitle is properly truncated"""
+        content = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
+        self.assertTrue(len(content['subtitle']) == 255)
+        self.assertTrue(content['subtitle'].endswith('…'))
