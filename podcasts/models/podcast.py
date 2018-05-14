@@ -222,3 +222,9 @@ class Podcast(models.Model):
             self.create_episodes(info_or_episodes=episodes, initial=False)
 
         return info
+
+    @atomic
+    def queue_missing_episodes_download_tasks(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
+        for episode in self.episodes.filter(downloaded=None):
+            print(episode)
+            episode.queue_download_task(storage_directory, naming_scheme)

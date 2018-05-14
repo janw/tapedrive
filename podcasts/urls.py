@@ -15,6 +15,7 @@ episodes_patterns = [
 ]
 
 podcasts_api_patterns = [
+    path('download/', api.podcast_queue_download, name='api-podcast-queue-download'),
     path('refresh-feed/', api.podcast_refresh_feed, name='api-refresh-feed'),
     path('subscribe/', api.podcast_subscribe, name='api-subscribe'),
     path('unsubscribe/', api.podcast_unsubscribe, name='api-unsubscribe'),
