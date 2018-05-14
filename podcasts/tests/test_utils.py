@@ -4,6 +4,10 @@ from podcasts.models.podcast import Podcast
 from datetime import datetime, timezone
 
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'
+TEST_FEED_NONEXISTENT = 'http://localhost/killingnothing'
+TEST_FEED_HTTPERROR = 'https://github.com/janwh/nonexistenturl'
+TEST_FEED_SUBTITLE_TOO_LONG = 'https://rss.art19.com/caliphate'
+
 TEST_PODCAST = {
     'feed_url': 'http://example.com/feed',
     'title': 'Test Feed',
@@ -43,12 +47,35 @@ class ResolveSegmentsTestCase(TestCase):
 
 class FilenameCreationTestCase(TestCase):
     valid_naming_scheme = '{podcast_type}/{podcast_slug}/{episode_date}_{episode_title}'
+    invalid_segment_scheme = '{podcast_type}/{podcast_slug}_{episode_testattr}'
 
     def setUp(self):
         self.podcast = Podcast.objects.create(**TEST_PODCAST)
         self.episode = self.podcast.episodes.create(**TEST_EPISODE)
 
     def test_valid_call(self):
+        """Check everything's fine with a valid naming scheme"""
         should_be = 'serial/test-feed/2018-03-12 10:00:00+00:00_Le fancey episode'
         filename = utils.construct_download_filename(self.valid_naming_scheme, self.episode)
         self.assertEqual(filename, should_be)
+
+    def test_invalid_segment(self):
+        """Check that an invalid segments is untouched"""
+        should_be = 'serial/test-feed_{episode_testattr}'
+        filename = utils.construct_download_filename(self.invalid_segment_scheme, self.episode)
+        self.assertEqual(filename, should_be)
+
+
+class FeedRefreshTestCase(TestCase):
+
+    def test_valid_feed(self):
+        content = utils.refresh_feed(TEST_FEED)
+        self.assertEqual(content['title'], 'Killing Time')
+
+    def test_invalid_feed(self):
+        """Querying an invalid feed should always fail softly, returning None"""
+        content = utils.refresh_feed(TEST_FEED_NONEXISTENT)
+        self.assertIsNone(content)
+
+        content = utils.refresh_feed(TEST_FEED_HTTPERROR)
+        self.assertIsNone(content)
