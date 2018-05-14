@@ -90,11 +90,16 @@ def podcasts_details(request, slug):
     podcast = get_object_or_404((
         Podcast.objects
         .prefetch_related('episodes', 'episodes')
-        .prefetch_related('subscribers', 'subscribers')),
+        .prefetch_related('subscribers', 'subscribers'))
+        .annotate(num_episodes=Count('episodes'))
+        .annotate(downloaded_episodes=Count(Case(
+            When(episodes__downloaded__isnull=False, then=1))))
+        .annotate(last_episode_date=Max('episodes__published')),
         slug=slug)
+
     user_ordering = request.user.listener.sort_order_episodes
 
-    user_is_subscriber = podcast.subscribers.filter(user=request.user).count() == 1
+    user_is_subscriber = podcast.subscribers.filter(user=request.user).exists()
     episodes = podcast.episodes.order_by(user_ordering)[:10]
 
     context = {

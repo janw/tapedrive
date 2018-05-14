@@ -22,6 +22,11 @@
     </div>
   {% endif %}
 
+    <div class="">
+      <p class="text-muted mb-0">{% trans "Episodes" %} <small>(DL'd)</small></p>
+      <p class="mb-0">{{podcast.num_episodes}} <small>({{podcast.downloaded_episodes}})</small></p>
+    </div>
+
   {% if podcast.fetched %}
     <div class="">
       <p class="text-muted mb-0">{% trans "Last fetched" %}</p>
