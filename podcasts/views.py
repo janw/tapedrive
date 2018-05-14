@@ -42,27 +42,8 @@ class PodcastsList(ListView):
         return queryset
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
         return context
-
-
-def podcasts_list(request):
-    queryset = Podcast.objects.order_by('title')
-
-    paginator = Paginator(queryset, 5)
-
-    page = request.GET.get('page')
-    try:
-        items = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        items = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        items = paginator.page(paginator.num_pages)
-
-    return render(request, 'podcasts-list.html', {'items': items})
 
 
 def podcasts_new(request):
