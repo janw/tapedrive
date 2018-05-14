@@ -6,7 +6,6 @@ import urllib
 from urllib.request import urlopen, Request
 from urllib.parse import urlparse
 from shutil import copyfileobj, move
-import time
 import os
 import tempfile
 import logging
@@ -17,10 +16,9 @@ from markdown import markdown
 logger = logging.getLogger(__name__)
 
 USER_AGENT = 'Podcast-Archive/0.1 (https://github.com/janwh/selfhosted-podcast-archive)'
-
 HEADERS = {'User-Agent': USER_AGENT}
 
- # summary, subtitle not included, parsed separately
+# Summary, Subtitle not included, parsed separately
 PODCAST_INFO_KEYS = ['author', 'language', 'link', 'title', 'image',
                      'itunes_explicit', 'itunes_type', 'generator', 'updated', ]
 
@@ -217,21 +215,6 @@ def chunks(l, n):
         yield l[i:i + n]
 
 
-def timeit(method):
-    def timed(*args, **kw):
-        ts = time.time()
-        result = method(*args, **kw)
-        te = time.time()
-        if 'log_time' in kw:
-            name = kw.get('log_name', method.__name__.upper())
-            kw['log_time'][name] = int((te - ts) * 1000)
-        else:
-            print('%r  %2.2f ms' %
-                  (method.__name__, (te - ts) * 1000))
-        return result
-    return timed
-
-
 def download_file(link, filename):
     logger = logging.getLogger('podcasts.utils.download_file')
 
@@ -275,22 +258,3 @@ def strip_url(link):
     linkpath = urlparse(link).path
     extension = os.path.splitext(linkpath)[1]
     return linkpath, extension
-
-
-def clean_html(html, remove=False):
-    if html is not None:
-
-        allowed_tags = []
-        allowed_attrs = []
-
-        if not remove:
-            print('nope')
-            allowed_tags = bleach.sanitizer.ALLOWED_TAGS
-            allowed_tags.append('img')
-            allowed_attrs = bleach.sanitizer.ALLOWED_ATTRIBUTES
-            allowed_attrs['img'] = ['alt', 'title']
-
-        return bleach.clean(
-            html,
-            tags=allowed_tags,
-            attributes=allowed_attrs)
