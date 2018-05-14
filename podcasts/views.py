@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Case, When
 from django.views.generic.list import ListView
 
 from podcasts.conf import * # noqa
@@ -33,6 +33,8 @@ class PodcastsList(ListView):
             .prefetch_related('subscribers', 'subscribers')
             .prefetch_related('followers', 'followers')
             .annotate(num_episodes=Count('episodes'))
+            .annotate(downloaded_episodes=Count(Case(
+                When(episodes__downloaded__isnull=False, then=1))))
             .annotate(last_episode_date=Max('episodes__published'))
             .filter(followers=self.request.user.listener)
             .order_by(user_ordering)

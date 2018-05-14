@@ -18,7 +18,26 @@
       </p>
     {% endif %}
 
-    <p class="card-text"><small class="text-muted">{% blocktrans with num_episodes=object.num_episodes %}{{num_episodes}} episodes{% endblocktrans %}, {% blocktrans with time=object.last_episode_date|naturaltime %} last one published {{time}}{% endblocktrans %}</small></p>
+    <p class="card-text">
+      <small class="text-muted">
+        {% blocktrans with num_episodes=object.num_episodes %}
+        {{num_episodes}} episodes{% endblocktrans %}
+
+        {% if object.num_episodes == object.downloaded_episodes %}
+          {% trans "(all downloaded)" %},
+        {% elif object.downloaded_episodes == 0%}
+          {% trans "(none downloaded)" %},
+        {% else %}
+          {% blocktrans with downloaded_episodes=object.downloaded_episodes trimmed %}
+            ({{downloaded_episodes}} downloaded)
+          {% endblocktrans %},
+        {% endif %}
+
+        {% blocktrans with time=object.last_episode_date|naturaltime %}
+          last one published {{time}}
+        {% endblocktrans %}
+      </small>
+    </p>
   </div>
   <div class="bg-light card-img-container">
     <div class="d-none d-md-flex flex-column h-100 justify-content-center align-objects-center bd-highlight">
