@@ -12,6 +12,35 @@ User = get_user_model()
 
 
 class Listener(models.Model):
+
+    PODCASTS_ORDER_CHOICES = (
+        (_('Content'), (
+                ('title', _('Title')),
+            )
+        ),
+        (_('Metadata'), (
+                ('last_episode_date', _('Last Published Episode')),
+                ('num_episodes', _('Number of Episodes')),
+            )
+        ),
+    )
+
+    EPISODES_ORDER_CHOICES = (
+        (_('Content'), (
+                ('title', _('Title')),
+            )
+        ),
+        (_('Metadata'), (
+                ('downloaded', _('Download Date (Earliest First)')),
+                ('-downloaded', _('Download Date (Latest First)')),
+                ('published', _('Publishing Date (Earliest First)')),
+                ('-published', _('Publishing Date (Latest First)')),
+                ('itunes_duration', _('Duration (Shortest First)')),
+                ('-itunes_duration', _('Duration (Longest First)')),
+            )
+        ),
+    )
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     subscribed_podcasts = models.ManyToManyField(
         'podcasts.Podcast',
@@ -23,6 +52,21 @@ class Listener(models.Model):
         verbose_name=_('Added Podcasts'),
         related_name='followers',
     )
+
+    # Display settings
+    sort_order_podcasts = models.CharField(
+        choices=PODCASTS_ORDER_CHOICES,
+        default=DEFAULT_PODCASTS_ORDER,
+        max_length=16,
+        verbose_name=_('Sort Podcasts By')
+    )
+    sort_order_episodes = models.CharField(
+        choices=EPISODES_ORDER_CHOICES,
+        default=DEFAULT_EPISODES_ORDER,
+        max_length=16,
+        verbose_name=_('Sort Episodes By')
+    )
+
 
     # Settings for future playback functionality
     playback_seek_forward_by = IntegerRangeField(

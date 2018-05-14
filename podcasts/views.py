@@ -27,6 +27,7 @@ class PodcastsList(ListView):
     template_name = 'podcasts-list.html'
 
     def get_queryset(self, **kwargs):
+        user_ordering = self.request.user.listener.sort_order_podcasts
         queryset = (
             Podcast.objects
             .prefetch_related('subscribers', 'subscribers')
@@ -34,9 +35,8 @@ class PodcastsList(ListView):
             .annotate(num_episodes=Count('episodes'))
             .annotate(last_episode_date=Max('episodes__published'))
             .filter(followers=self.request.user.listener)
+            .order_by(user_ordering)
         )
-
-        print(queryset)
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -90,9 +90,10 @@ def podcasts_details(request, slug):
         .prefetch_related('episodes', 'episodes')
         .prefetch_related('subscribers', 'subscribers')),
         slug=slug)
+    user_ordering = request.user.listener.sort_order_episodes
 
     user_is_subscriber = podcast.subscribers.filter(user=request.user).count() == 1
-    episodes = podcast.episodes.order_by('-published')[:10]
+    episodes = podcast.episodes.order_by(user_ordering)[:10]
 
     context = {
         'user_is_subscriber': user_is_subscriber,

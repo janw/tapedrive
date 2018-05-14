@@ -15,6 +15,9 @@ def _getattr(variable, default):
 PODCASTS_PER_PAGE = _getattr('PODCASTS_PER_PAGE', 15)
 EPISODES_PER_PAGE = _getattr('EPISODES_PER_PAGE', 30)
 
+DEFAULT_PODCASTS_ORDER = _getattr('PODCASTS_ORDER', 'title')
+DEFAULT_EPISODES_ORDER = _getattr('EPISODES_ORDER', '-published')
+
 # Playback-related options (maybe in the future)
 SEEK_FORWARD_BY = _getattr('SEEK_FORWARD_BY', 45)
 SEEK_BACKWARD_BY = _getattr('SEEK_BACKWARD_BY', 30)
