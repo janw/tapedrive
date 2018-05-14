@@ -24,3 +24,4 @@ SEEK_BACKWARD_BY = _getattr('SEEK_BACKWARD_BY', 30)
 
 STORAGE_DIRECTORY = '$HOME/'
 DEFAULT_NAMING_SCHEME = '{podcast_slug}/{episode_title}'
+DEFAULT_DATE_FORMAT = _getattr('DEFAULT_DATE_FORMAT', '%Y-%m-%dT%H%M')

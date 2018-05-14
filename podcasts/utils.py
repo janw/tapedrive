@@ -11,21 +11,33 @@ import os
 import tempfile
 import logging
 import bleach
-
+from markdown import markdown
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 USER_AGENT = 'Podcast-Archive/0.1 (https://github.com/janwh/selfhosted-podcast-archive)'
 
-_headers = {'User-Agent': USER_AGENT}
-_global_info_keys = ['author', 'language', 'link', 'subtitle', 'title', 'image',
-                     'itunes_explicit', 'itunes_type', 'generator', 'updated', 'summary']
-_episode_info_keys = ['link', 'subtitle', 'title', 'published', 'description', 'guid']
+HEADERS = {'User-Agent': USER_AGENT}
+
+ # summary, subtitle not included, parsed separately
+PODCAST_INFO_KEYS = ['author', 'language', 'link', 'title', 'image',
+                     'itunes_explicit', 'itunes_type', 'generator', 'updated', ]
+
+EPISODE_INFO_KEYS = ['link', 'subtitle', 'title', 'published', 'description', 'guid']
 
 CLEAN_HTML_GLOBAL = ['summary', 'subtitle', ]
 CLEAN_HTML_EPISODE = ['description', 'subtitle', ]
 
+
+ALLOWED_HTML_TAGS = [
+    'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li', 'ol', 'p', 'strong', 'ul']
+
+ALLOWED_HTML_ATTRIBUTES = {
+    'a': ['href', 'title'],
+    'acronym': ['title'],
+    'abbr': [u'title']
+}
 
 # Mappings of usable segment => field name
 AVAILABLE_PODCAST_SEGMENTS = {
@@ -57,12 +69,12 @@ UNIFYING_EPISODE_SEGMENTS = [
 ]
 
 
-def resolve_segments(string):
+def resolve_segments(string, wrap_in='span'):
     return format_lazy(
         string,
-        podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS, wrap_in='code'),
-        episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS, wrap_in='code'),
-        unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS, wrap_in='code'),
+        podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS, wrap_in=wrap_in),
+        episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS, wrap_in=wrap_in),
+        unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS, wrap_in=wrap_in),
     )
 
 
@@ -117,31 +129,67 @@ def refresh_feed(feed_url):
     return parse_feed_info(feedobj)
 
 
-def parse_feed_info(feedobj):
-    feed_info_dict = {}
-    if 'feed' in feedobj:
-        for key in _global_info_keys:
-            feed_info_dict[key] = feedobj['feed'].get(key, None)
+def sanitize_subtitle(object):
+    # Properly process subtitle
+    if 'subtitle' in object:
+        # As per spec, subtitle should be plain text and up to 255 characters.
+        subtitle = bleach.clean(object['subtitle'], tags=[], strip=True)
+        if len(subtitle) > 255:
+            subtitle = subtitle[:254] + '…'
+        return subtitle
 
-            if key == 'updated' and feed_info_dict[key] is not None:
-                feed_info_dict[key] = dateparser.parse(feed_info_dict[key])
-            elif key == 'image' and 'href' in feed_info_dict[key].keys():
-                feed_info_dict[key] = feed_info_dict[key]['href']
-            if key in CLEAN_HTML_GLOBAL:
-                feed_info_dict[key] = clean_html(feed_info_dict[key])
 
-        episode_list = feedobj.get('items', False) or feedobj.get('entries', False)
-        if episode_list:
-            feed_info_dict['episodes'] = [parse_episode_info(episode) for episode in episode_list]
+def sanitize_summary(object):
+    # Properly process summary/description
+    if 'summary_detail' in object:
+        # If summary properly announces as markdown parse it out
+        if object['summary_detail']['type'] == 'text/markdown':
+            html = markdown(object['summary_detail']['value'])
         else:
-            feed_info_dict['episodes'] = []
+            html = object['summary_detail']['value']
+    elif 'summary' in object:
+        html = object.get('summary', '')
+    else:
+        html = object.get('description', '')
 
-    return feed_info_dict
+    # In any case, clean the thing from weird HTML shenanigans
+    return bleach.clean(
+        html,
+        tags=ALLOWED_HTML_TAGS,
+        attributes=ALLOWED_HTML_ATTRIBUTES,
+        strip=True)
+
+
+def parse_feed_info(parsed_feed):
+    feed_info = {}
+    if 'feed' not in parsed_feed:
+        raise Exception('Feed is incomplete')
+
+    feed = parsed_feed['feed']
+    for key in PODCAST_INFO_KEYS:
+        feed_info[key] = feed.get(key, None)
+
+        if key == 'updated' and feed_info[key] is not None:
+            feed_info[key] = dateparser.parse(feed_info[key])
+        elif key == 'image' and 'href' in feed_info[key].keys():
+            feed_info[key] = feed_info[key]['href']
+
+    feed_info['subtitle'] = sanitize_subtitle(feed)
+    feed_info['summary'] = sanitize_summary(feed)
+
+    # Process episode list separately
+    episode_list = parsed_feed.get('items', False) or parsed_feed.get('entries', False)
+    if episode_list:
+        feed_info['episodes'] = [parse_episode_info(episode) for episode in episode_list]
+    else:
+        feed_info['episodes'] = []
+
+    return feed_info
 
 
 def parse_episode_info(episode):
     episode_info = {}
-    for key in _episode_info_keys:
+    for key in EPISODE_INFO_KEYS:
         episode_info[key] = episode.get(key, None)
 
         if key == 'published' and episode_info[key] is not None:
@@ -150,17 +198,13 @@ def parse_episode_info(episode):
               episode_info.get(key, None) is not None and
               'href' in episode_info[key].keys()):
             episode_info[key] = episode_info[key]['href']
-        if key in CLEAN_HTML_GLOBAL:
-            episode_info[key] = clean_html(episode_info[key])
 
-    # media_url = None
+    episode_info['subtitle'] = sanitize_subtitle(episode)
+    episode_info['description'] = sanitize_summary(episode)
+
     episode_info['media_url'] = None
     for link in episode['links']:
         if 'rel' in link.keys() and link['rel'] == 'enclosure':
-            # if link['type'].startswith('audio'):
-                # media_url = link['href']
-            # elif link['type'].startswith('video'):
-                # media_url = link['href']
             episode_info['media_url'] = link['href']
 
     return episode_info
@@ -196,7 +240,7 @@ def download_file(link, filename):
         raise FileExistsError('File aready exists')
 
     # Begin downloading, resolve redirects
-    prepared_request = Request(link, headers=_headers)
+    prepared_request = Request(link, headers=HEADERS)
     try:
         with tempfile.NamedTemporaryFile(delete=False) as outfile:
             with urlopen(prepared_request) as response:
@@ -233,14 +277,18 @@ def strip_url(link):
     return linkpath, extension
 
 
-def clean_html(html):
+def clean_html(html, remove=False):
     if html is not None:
 
-        allowed_tags = bleach.sanitizer.ALLOWED_TAGS
-        allowed_tags.append('img')
+        allowed_tags = []
+        allowed_attrs = []
 
-        allowed_attrs = bleach.sanitizer.ALLOWED_ATTRIBUTES
-        allowed_attrs['img'] = ['alt', 'title']
+        if not remove:
+            print('nope')
+            allowed_tags = bleach.sanitizer.ALLOWED_TAGS
+            allowed_tags.append('img')
+            allowed_attrs = bleach.sanitizer.ALLOWED_ATTRIBUTES
+            allowed_attrs['img'] = ['alt', 'title']
 
         return bleach.clean(
             html,
