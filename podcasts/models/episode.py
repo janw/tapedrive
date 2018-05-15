@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.transaction import atomic
 from django.utils.translation import gettext as _
+from django.template.defaultfilters import slugify
 
 import uuid
 
@@ -22,6 +23,11 @@ class Episode(models.Model):
         max_length=255,
         editable=False,
         verbose_name=_('Episode GUID'),
+    )
+    slug = models.SlugField(
+        blank=False,
+        null=False,
+        editable=False,
     )
     podcast = models.ForeignKey(
         'podcasts.Podcast',
@@ -150,6 +156,12 @@ class Episode(models.Model):
             return self.title
         else:
             return "%(podcast)s's Episode" % {'podcast': self.podcast}
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+
+        super().save(*args, **kwargs)
 
     def construct_file_path(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
         linkpath, extension = strip_url(self.media_url)
