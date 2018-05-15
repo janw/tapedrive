@@ -1,15 +1,4 @@
 {% load i18n %}
 <div id="summary">
-  <p class="collapse" id="podcast-summary-collapse" aria-expanded="false">
-    {{podcast.summary|safe}}
-  </p>
-
-  <div>
-    <a id="summary-collapser" class="btn btn-outline-secondary btn-sm px-3 collapsed" data-toggle="collapse" href="#podcast-summary-collapse" role="button" aria-expanded="false" aria-controls="podcast-summary-collapse"></a>
-  </div>
-
-  <style type="text/css">
-      #summary a#summary-collapser.collapsed:after {content: '{% trans "Show Summary" %}'; }
-      #summary a#summary-collapser:not(.collapsed):after {content: '{% trans "Hide Summary" %}'; }
-  </style>
+  {{podcast.summary|safe}}
 </div>
