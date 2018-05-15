@@ -9,11 +9,14 @@
     <h3 class="card-title">
     {{object.title}}
     </h3>
-    {% if object.subtitle %}
-      <h5 class="card-text lead mb-2 text-muted">{{ object.subtitle|safe }}</h5>
+
+    {% if object.subtitle and not object.subtitle_is_title %}
+      <h5 class="card-text text-muted">{{ object.subtitle|safe }}</h5>
+    {% else %}
+      <h5 class="card-text text-muted">{{ object.summary|truncatechars_html:'255'|safe }}</h5>
     {% endif %}
 
-    <p class="mt-auto card-text">
+    <p class="card-text mt-auto">
       <small class="text-muted">
         {% blocktrans with num_episodes=object.num_episodes %}
         {{num_episodes}} episodes{% endblocktrans %}

@@ -204,6 +204,21 @@ class Podcast(models.Model):
         self.followers.remove(listener)
         self.save()
 
+    @property
+    def subtitle_is_summary(self, cutoff=10):
+        return self.subtitle[cutoff:-cutoff] in self.summary
+
+    @property
+    def subtitle_is_title(self):
+        return self.subtitle.strip() in self.title.strip()
+
+    @property
+    def summary_p(self):
+        if not self.summary.startswith('<p>'):
+            return '<p>' + self.summary + '</p>'
+        return self.summary
+
+
     @atomic
     def update(self, defaults=None, create_episodes=True, insert_image=True):
         if defaults is None:
