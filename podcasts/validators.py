@@ -1,17 +1,15 @@
 from django import forms
 from django.utils.translation import gettext as _, ngettext
-from podcasts.utils import (AVAILABLE_PODCAST_SEGMENTS,
-                            AVAILABLE_EPISODE_SEGMENTS,
-                            UNIFYING_EPISODE_SEGMENTS)
+from podcasts.utils import (UNIFYING_EPISODE_SEGMENTS,
+                            ALL_VALID_SEGMENTS)
 
 import os
 import re
+from string import Template
 
 
 RE_MATCH_POSSIBLE_EXTENSION = re.compile(r'.*(\.[0-9a-zA-Z]{1,4})$')
-RE_MATCH_ALL_SEGMENTS = re.compile(r'\{(\w+\_\w+)\}')
-
-ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
+RE_MATCH_ALL_SEGMENTS = re.compile(r'\$(' + Template.idpattern + ')')
 
 
 def validate_path(path):
@@ -38,6 +36,7 @@ def validate_naming_scheme(scheme):
                                     params={'scheme': scheme, 'possible_extension': match.group(1)})
 
     potential_segments = RE_MATCH_ALL_SEGMENTS.findall(scheme)
+    print(potential_segments)
     invalid_segments = [s for s in potential_segments if s not in ALL_VALID_SEGMENTS]
     if len(invalid_segments) > 0:
         raise forms.ValidationError(

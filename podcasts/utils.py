@@ -1,4 +1,5 @@
 from django.utils.text import format_lazy
+from django.template.defaultfilters import slugify, date as _date
 import feedparser
 from feedparser import CharacterEncodingOverride
 from dateutil import parser as dateparser
@@ -11,6 +12,7 @@ import tempfile
 import logging
 import bleach
 from markdown import markdown
+from string import Template
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -66,44 +68,38 @@ UNIFYING_EPISODE_SEGMENTS = [
     'episode_title',
 ]
 
+ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
 
-def resolve_segments(string, wrap_in='span'):
+
+def get_segments_html(segments):
+    if isinstance(segments, dict):
+        segments = list(segments.keys())
+    return '<code>$' + '</code>, <code>$'.join(segments) + '</code>'
+
+
+def resolve_segments(string):
     return format_lazy(
         string,
-        podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS, wrap_in=wrap_in),
-        episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS, wrap_in=wrap_in),
-        unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS, wrap_in=wrap_in),
+        podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS),
+        episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS),
+        unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS),
     )
 
 
-def get_segments_html(segments, wrap_in='span'):
-    if isinstance(segments, dict):
-        segments = list(segments.keys())
-    joined = (('}</' + wrap_in + '>, <' + wrap_in + '>{').join(segments))
-    return '<' + wrap_in + '>{' + joined + '}</' + wrap_in + '>'
-
-
-class MapThroughDict(object):
-    def __init__(self, mapping, object):
-        self.mapping = mapping
-        self.object = object
-
-    def __getitem__(self, key):
-        obj_attr_key = self.mapping.get(key)
-
-        if obj_attr_key is None:
-            return '{' + key + '}'
-
-        attr_value = getattr(self.object, obj_attr_key, None)
-        logger.debug('Mapping %s => %s => %s', (key, obj_attr_key, attr_value))
-        return attr_value
-
-
 def construct_download_filename(naming_scheme, episode):
-    filename_tmp = naming_scheme.format_map(
-        MapThroughDict(AVAILABLE_PODCAST_SEGMENTS, episode.podcast))
-    filename = filename_tmp.format_map(
-        MapThroughDict(AVAILABLE_EPISODE_SEGMENTS, episode))
+    info = {}
+    for key, value in AVAILABLE_EPISODE_SEGMENTS.items():
+        info[key] = getattr(episode, value, '')
+    for key, value in AVAILABLE_PODCAST_SEGMENTS.items():
+        info[key] = getattr(episode.podcast, value, '')
+
+        if key == 'episode_id':
+            info[key] = str(info[key])
+        # elif key.endswith('_date'):
+        #     info[key] = _date(info[key], )
+
+    filename = Template(naming_scheme)
+    filename = filename.safe_substitute(info)
     return filename
 
 
@@ -133,7 +129,7 @@ def sanitize_subtitle(object):
         # As per spec, subtitle should be plain text and up to 255 characters.
         subtitle = bleach.clean(object['subtitle'], tags=[], strip=True)
         if len(subtitle) > 255:
-            subtitle = subtitle[:254] + '…'
+            subtitle = subtitle[:251] + ' ...'
         return subtitle
 
 
@@ -196,6 +192,8 @@ def parse_episode_info(episode):
               episode_info.get(key, None) is not None and
               'href' in episode_info[key].keys()):
             episode_info[key] = episode_info[key]['href']
+        elif key == 'title':
+            episode_info['slug'] = slugify(episode_info['title'])
 
     episode_info['subtitle'] = sanitize_subtitle(episode)
     episode_info['description'] = sanitize_summary(episode)
