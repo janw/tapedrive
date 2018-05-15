@@ -1,20 +1,23 @@
 {% extends "base.html" %}{% load i18n podcasts_tags humanize %}
 
 {% block content %}
-<h1 class="mb-3 mb-md-0 text-center text-md-left">{{podcast.title}}</h1>
+<h1 class="mb-1 text-center text-md-left">{{podcast.title}}</h1>
 
 <div class="row">
-  <div class="col{% if podcast.image %}-md-8 col-lg-9 order-12 order-md-1{% endif %}">
-    {% if podcast.subtitle %}
-      <h5 class="text-muted mb-2">{{podcast.subtitle|safe}}</h5>
+  <div class="col{% if podcast.image %}-md-8 col-lg-8 order-12 order-md-1{% endif %}">
+
+    {% if not podcast.subtitle_is_summary and not podcast.subtitle_is_title %}
+      <h5 class="text-muted mb-1">{{podcast.subtitle|safe}}</h5>
     {% endif %}
 
     {% if podcast.summary %}
-      {% include "_per_podcast_summary.html" %}
+      <div id="podcast-summary" class="mb-4">
+        {{podcast.summary_p|safe}}
+      </div>
     {% endif %}
   </div>
   {% if podcast.image %}
-    <div class="mb-3 mb-md-0 offset-2 col-8 offset-md-0 col-md-4 col-lg-3 order-1 order-md-12">
+    <div class="mb-3 mb-md-0 offset-2 col-8 offset-md-0 col-md-4 col-lg-4 order-1 order-md-12">
       <img class="img-fluid rounded" src="{{ podcast.image.url }}">
     </div>
   {% endif %}

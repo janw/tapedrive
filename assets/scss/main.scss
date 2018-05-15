@@ -194,11 +194,11 @@ strong {
   height: 100%; width: 100%;
 }
 
-.podcast-summary {
-  overflow: hidden;
-  // white-space: nowrap;
-  text-overflow: ellipsis;
-  max-height: 100vh;
+#podcast-summary {
+  & > p:first-of-type() {
+    font-size: $lead-font-size;
+    font-weight: $lead-font-weight;
+  }
 }
 
 .text-smaller {

@@ -22,7 +22,8 @@ def get_secret_key(PROJECT_DIR):
     except IOError:
         try:
             import random
-            SECRET_KEY = ''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+            SECRET_KEY = ''.join([random.SystemRandom().choice(
+                'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
             with open(SECRET_FILE, 'w') as sf:
                 sf.write(SECRET_KEY)
         except IOError:
@@ -41,7 +42,7 @@ class Common(Configuration):
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
 
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = values.ListValue([], environ=True)
 
     # Application definition
     INSTALLED_APPS = [
@@ -239,7 +240,6 @@ class Staging(Common):
     SECURE_HSTS_SECONDS = values.IntegerValue(31536000)
     SECURE_REDIRECT_EXEMPT = values.ListValue([])
     SECURE_SSL_HOST = values.Value(None)
-    SECURE_SSL_REDIRECT = values.BooleanValue(True)
     SECURE_PROXY_SSL_HEADER = values.TupleValue(
         ('HTTP_X_FORWARDED_PROTO', 'https')
     )
