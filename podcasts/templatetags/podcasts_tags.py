@@ -39,9 +39,10 @@ def add_next_self(context):
 def clean_link(link, include_path=True):
     parsed = urlparse(link)
     netloc = parsed.netloc.lstrip('www.')
+    path = parsed.path.rstrip('/')
 
     if include_path:
-        return netloc + parsed.path
+        return netloc + path
     else:
         return netloc
 

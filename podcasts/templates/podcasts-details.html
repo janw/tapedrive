@@ -4,10 +4,14 @@
 <h1 class="mb-1 text-center text-md-left">{{podcast.title}}</h1>
 
 <div class="row">
-  <div class="col{% if podcast.image %}-md-8 col-lg-8 order-12 order-md-1{% endif %}">
+  <div class="col">
 
     {% if not podcast.subtitle_is_summary and not podcast.subtitle_is_title %}
       <h5 class="text-muted mb-1">{{podcast.subtitle|safe}}</h5>
+    {% endif %}
+
+    {% if podcast.image %}
+        <img class="img-fluid rounded float-right col-md-5 mt-3 mt-md-0 ml-md-4 mb-3 px-0" src="{{ podcast.image.url }}">
     {% endif %}
 
     {% if podcast.summary %}
@@ -16,11 +20,6 @@
       </div>
     {% endif %}
   </div>
-  {% if podcast.image %}
-    <div class="mb-3 mb-md-0 offset-2 col-8 offset-md-0 col-md-4 col-lg-4 order-1 order-md-12">
-      <img class="img-fluid rounded" src="{{ podcast.image.url }}">
-    </div>
-  {% endif %}
 </div>
 
 <div class="row">

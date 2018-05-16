@@ -6,35 +6,35 @@
     <h5 class="mb-2 text-muted">{{episode.subtitle|escape}}</h5>
   {% endif %}
 
-  <div class="d-flex w-100 justify-content-between">
+  <div class="w-100 d-md-flex justify-content-between">
     <small class="mt-3 text-muted">
       {% blocktrans with published=episode.published|date:"DATETIME_FORMAT" %}
         Published {{published}}
       {% endblocktrans %}
     </small>
 
-    <div class="mb-2">
-      <button class="btn btn-outline-secondary btn-sm px-3" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}">{% trans "Show Details" %}</button>
+    <div class="mt-2 text-center text-md-left">
+      <button class="btn btn-outline-secondary btn-sm mb-2 px-3" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}">{% trans "Show Details" %}</button>
 
       {% if episode.downloaded %}
-        <button class="btn btn-success disabled btn-sm px-3">
+        <button class="btn btn-success disabled btn-sm mb-2 px-3">
           {% trans "Downloaded:" %}
           {{episode.downloaded|naturalday:"SHORT_DATE_FORMAT"|title}},
           {{episode.downloaded|date:"TIME_FORMAT"}}
         </button>
       {% elif episode.download_task %}
         {% if episode.download_task.last_error %}
-          <button class="btn btn-outline-danger btn-sm px-3" data-toggle="modal" data-target="#episodeDownloadFailureDetailsModal{{episode.id}}">
+          <button class="btn btn-outline-danger btn-sm mb-2 px-3" data-toggle="modal" data-target="#episodeDownloadFailureDetailsModal{{episode.id}}">
             {% trans "Download Failed" %}
           </button>
           {% include "_episode_download_failure_modal.html" %}
         {% else %}
-          <button class="btn btn-outline-secondary disabled btn-sm px-3">
+          <button class="btn btn-outline-secondary disabled btn-sm mb-2 px-3">
             {% trans "Queued for Download" %}
           </button>
         {% endif %}
       {% else %}
-        <button class="btn btn-outline-primary btn-sm px-3 download-toggle" type="button"
+        <button class="btn btn-outline-primary btn-sm mb-2 px-3 download-toggle" type="button"
             data-href="{% url 'podcasts:api-episode-queue-download' episode.id %}">
           {% trans "Download Now" %}
         </button>
