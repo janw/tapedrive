@@ -25,29 +25,18 @@ class ResolveSegmentsTestCase(TestCase):
     string = '{podcast_segments}||{episode_segments}||{unifying_segments}'
 
     def test_valid_help_string(self):
-        should_become = ('<span>{podcast_slug}</span>, <span>{podcast_type}</span>, <span>{podcast_title}</span>, ' +
-        '<span>{podcast_subtitle}</span>, <span>{podcast_author}</span>, <span>{podcast_language}</span>, ' +
-        '<span>{podcast_explicit}</span>, <span>{podcast_updated}</span>||<span>{episode_slug}</span>, ' +
-        '<span>{episode_id}</span>, <span>{episode_date}</span>, <span>{episode_number}</span>, ' +
-        '<span>{episode_type}</span>, <span>{episode_title}</span>||<span>{episode_slug}</span>, ' +
-        '<span>{episode_id}</span>, <span>{episode_date}</span>, <span>{episode_number}</span>, ' +
-        '<span>{episode_title}</span>')
+        should_become = ('<code>$podcast_slug</code>, <code>$podcast_type</code>, <code>$podcast_title</code>, <code>$p'
+                         'odcast_subtitle</code>, <code>$podcast_author</code>, <code>$podcast_language</code>, <code>$'
+                         'podcast_explicit</code>, <code>$podcast_updated</code>||<code>$episode_slug</code>, <code>$ep'
+                         'isode_id</code>, <code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_typ'
+                         'e</code>, <code>$episode_title</code>||<code>$episode_slug</code>, <code>$episode_id</code>, '
+                         '<code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_title</code>')
         self.assertEqual(utils.resolve_segments(self.string), should_become)
-
-    def test_changed_wrapper(self):
-        should_become = ('<code>{podcast_slug}</code>, <code>{podcast_type}</code>, <code>{podcast_title}</code>, ' +
-        '<code>{podcast_subtitle}</code>, <code>{podcast_author}</code>, <code>{podcast_language}</code>, ' +
-        '<code>{podcast_explicit}</code>, <code>{podcast_updated}</code>||<code>{episode_slug}</code>, ' +
-        '<code>{episode_id}</code>, <code>{episode_date}</code>, <code>{episode_number}</code>, ' +
-        '<code>{episode_type}</code>, <code>{episode_title}</code>||<code>{episode_slug}</code>, ' +
-        '<code>{episode_id}</code>, <code>{episode_date}</code>, <code>{episode_number}</code>, ' +
-        '<code>{episode_title}</code>')
-        self.assertEqual(utils.resolve_segments(self.string, wrap_in='code'), should_become)
 
 
 class FilenameCreationTestCase(TestCase):
-    valid_naming_scheme = '{podcast_type}/{podcast_slug}/{episode_date}_{episode_title}'
-    invalid_segment_scheme = '{podcast_type}/{podcast_slug}_{episode_testattr}'
+    valid_naming_scheme = '$podcast_type/$podcast_slug/${episode_date}_$episode_title'
+    invalid_segment_scheme = '$podcast_type/${podcast_slug}_$episode_testattr'
 
     def setUp(self):
         self.podcast = Podcast.objects.create(**TEST_PODCAST)
@@ -61,7 +50,7 @@ class FilenameCreationTestCase(TestCase):
 
     def test_invalid_segment(self):
         """Check that an invalid segments is untouched"""
-        should_be = 'serial/test-feed_{episode_testattr}'
+        should_be = 'serial/test-feed_$episode_testattr'
         filename = utils.construct_download_filename(self.invalid_segment_scheme, self.episode)
         self.assertEqual(filename, should_be)
 
@@ -84,4 +73,4 @@ class FeedRefreshTestCase(TestCase):
         """Test if an overly long subtitle is properly truncated"""
         content = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
         self.assertTrue(len(content['subtitle']) == 255)
-        self.assertTrue(content['subtitle'].endswith('…'))
+        self.assertTrue(content['subtitle'].endswith(' ...'))
