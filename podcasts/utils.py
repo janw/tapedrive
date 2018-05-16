@@ -90,13 +90,18 @@ def construct_download_filename(naming_scheme, episode):
     info = {}
     for key, value in AVAILABLE_EPISODE_SEGMENTS.items():
         info[key] = getattr(episode, value, '')
-    for key, value in AVAILABLE_PODCAST_SEGMENTS.items():
-        info[key] = getattr(episode.podcast, value, '')
 
         if key == 'episode_id':
             info[key] = str(info[key])
-        # elif key.endswith('_date'):
-        #     info[key] = _date(info[key], )
+        if info[key] is None:
+            info[key] = ''
+
+    for key, value in AVAILABLE_PODCAST_SEGMENTS.items():
+        info[key] = getattr(episode.podcast, value, '')
+
+        if info[key] is None:
+            info[key] = ''
+
 
     filename = Template(naming_scheme)
     filename = filename.safe_substitute(info)
