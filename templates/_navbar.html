@@ -11,6 +11,12 @@
   </a>
   <ul class="nav justify-content-center mt-2 mt-md-0 ml-md-auto">
     {% if user.is_authenticated %}
+    <li class="nav-item {% add_active 'podcasts:podcasts-new' %}">
+      <a class="nav-link"
+        href="{% url 'podcasts:podcasts-new' %}">
+        {% trans "Add New" %}
+      </a>
+    </li>
     <li class="nav-item {% add_active 'podcasts:podcasts-list' %}">
       <a class="nav-link"
         href="{% url 'podcasts:podcasts-list' %}">

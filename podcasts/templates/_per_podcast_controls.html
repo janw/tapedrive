@@ -9,7 +9,7 @@
 
   <button type="button"
           data-href="{% url 'podcasts:api-podcast-queue-download' podcast.slug %}"
-           class="btn btn-outline-secondary mt-2 mt-md-0 mx-2 download-toggle {% if podcast.downloaded_episodes == podcast.num_episodes %}disabled{% endif %}">
+          class="btn btn-outline-secondary mt-2 mt-md-0 mx-2 download-toggle {% if podcast.downloaded_episodes == podcast.num_episodes %}disabled{% endif %}">
     {% trans "Download Missing Episodes" %}
   </button>
   <div class="btn-group mt-2 mt-md-0 mx-2">
