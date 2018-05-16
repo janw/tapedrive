@@ -4,10 +4,11 @@ from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify
 
 import uuid
+import os
 
 from podcasts.conf import *
 from podcasts.models import BigPositiveIntegerField
-from podcasts.utils import MapThroughDict, AVAILABLE_PODCAST_SEGMENTS, AVAILABLE_EPISODE_SEGMENTS, strip_url
+from podcasts.utils import construct_download_filename, strip_url
 
 
 class Episode(models.Model):
@@ -165,14 +166,10 @@ class Episode(models.Model):
 
     def construct_file_path(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
         linkpath, extension = strip_url(self.media_url)
-
-        file_path_tmp = naming_scheme.format_map(
-            MapThroughDict(AVAILABLE_PODCAST_SEGMENTS, self.podcast))
-        file_path = file_path_tmp.format_map(
-            MapThroughDict(AVAILABLE_EPISODE_SEGMENTS, self))
-
-        self.file_path = os.path.join(storage_directory, file_path + extension)
+        filename = construct_download_filename(naming_scheme, self)
+        self.file_path = os.path.join(storage_directory, filename + extension)
         self.save()
+        return self.file_path
 
     @atomic
     def queue_download_task(self,
