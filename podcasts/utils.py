@@ -12,7 +12,6 @@ import tempfile
 import logging
 import bleach
 from markdown import markdown
-from string import Template
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -84,28 +83,6 @@ def resolve_segments(string):
         episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS),
         unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS),
     )
-
-
-def construct_download_filename(naming_scheme, episode):
-    info = {}
-    for key, value in AVAILABLE_EPISODE_SEGMENTS.items():
-        info[key] = getattr(episode, value, '')
-
-        if key == 'episode_id':
-            info[key] = str(info[key])
-        if info[key] is None:
-            info[key] = ''
-
-    for key, value in AVAILABLE_PODCAST_SEGMENTS.items():
-        info[key] = getattr(episode.podcast, value, '')
-
-        if info[key] is None:
-            info[key] = ''
-
-
-    filename = Template(naming_scheme)
-    filename = filename.safe_substitute(info)
-    return filename
 
 
 def refresh_feed(feed_url):

@@ -35,3 +35,5 @@ class PodcastsConfig(AppConfig):
 
     def ready(self):
         post_migrate.connect(create_default_settings, sender=self)
+
+        print('Fire!')

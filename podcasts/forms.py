@@ -135,11 +135,18 @@ class AdminSettingsForm(ModelForm):
                 </p>
                 <p>Please note that the scheme must contain at least one of
                 these segments to ensure a unique name:
-                <code>{{episode_slug}}</code>,
-                <code>{{episode_id}}</code>,
-                <code>{{episode_date}}</code>,
-                <code>{{episode_number}}</code>
+                <code>$episode_slug</code>,
+                <code>$episode_id</code>,
+                <code>$episode_date</code>,
+                <code>$episode_number</code>
                 </p>
+                '''),
+            'inpath_dateformat': _('''
+                <p>When using one of the date segments (currently <code>$podcast_updated</code> and <code>$episode_date
+                </code>), the format given in the in-path date format will be used to compile the date. The elements in
+                the date are also properly localized according to the locale set. The usable format identifiers can be
+                found <a href="https://docs.djangoproject.com/en/2.0/ref/templates/builtins/#date" rel="nofollow">here
+                in the Django documentation</a>.</p>
                 '''),
         }
 

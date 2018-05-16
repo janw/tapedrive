@@ -1,14 +1,15 @@
 from django.db import models
 from django.db.transaction import atomic
 from django.utils.translation import gettext as _
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, date as _date
 
 import uuid
 import os
+from string import Template
 
 from podcasts.conf import *
 from podcasts.models import BigPositiveIntegerField
-from podcasts.utils import construct_download_filename, strip_url
+from podcasts.utils import strip_url, AVAILABLE_EPISODE_SEGMENTS, AVAILABLE_PODCAST_SEGMENTS
 
 
 class Episode(models.Model):
@@ -164,9 +165,32 @@ class Episode(models.Model):
 
         super().save(*args, **kwargs)
 
-    def construct_file_path(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
+    def construct_file_path(self,
+                            storage_directory=STORAGE_DIRECTORY,
+                            naming_scheme=DEFAULT_NAMING_SCHEME,
+                            inpath_dateformat=DEFAULT_DATE_FORMAT):
         linkpath, extension = strip_url(self.media_url)
-        filename = construct_download_filename(naming_scheme, self)
+
+        info = {}
+        for key, value in AVAILABLE_EPISODE_SEGMENTS.items():
+            info[key] = getattr(self, value, '')
+
+            if key == 'episode_id':
+                info[key] = str(info[key])
+            elif key == 'podcast_updated' or key.endswith('_date'):
+                info[key] = _date(info[key], inpath_dateformat)
+            if info[key] is None:
+                info[key] = ''
+
+        for key, value in AVAILABLE_PODCAST_SEGMENTS.items():
+            info[key] = getattr(self.podcast, value, '')
+
+            if info[key] is None:
+                info[key] = ''
+
+        filename = Template(naming_scheme)
+        filename = filename.safe_substitute(info)
+
         self.file_path = os.path.join(storage_directory, filename + extension)
         self.save()
         return self.file_path
@@ -175,10 +199,11 @@ class Episode(models.Model):
     def queue_download_task(self,
                             storage_directory=STORAGE_DIRECTORY,
                             naming_scheme=DEFAULT_NAMING_SCHEME,
+                            inpath_dateformat=DEFAULT_DATE_FORMAT,
                             overwrite=False):
         from podcasts.tasks import download_episode # noqa
 
-        self.construct_file_path(storage_directory, naming_scheme)
+        self.construct_file_path(storage_directory, naming_scheme, inpath_dateformat)
         if not os.path.isfile(self.file_path) or overwrite:
             self.download_task = download_episode(self.media_url, self.file_path, str(self.id))
             self.save()
