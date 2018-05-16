@@ -4,7 +4,7 @@
 <h1>{% trans "Settings" %}</h1>
 
 <div class="row">
-  <div class="col-md-7 col-lg-8 mb-4 pr-md-4 pr-xl-5">
+  <div class="col-md-7 col-lg-8 mb-4">
     <form action="{% url 'podcasts:settings' %}" method="post" class="form">
       {% csrf_token %}
 
@@ -33,7 +33,7 @@
     </form>
   </div>
 
-  <div id="help-col" class="col-md-5 col-lg-4 mb-4 pl-md-4 pl-xl-5 border-md-left">
+  <div id="help-col" class="col-md-5 col-lg-4 mb-4 border-md-left">
     <h2 class="text-muted">{% trans "Help" %}</h2>
     <p class="lead">{% trans "Cannot figure out, what all this is? Click on the sections below to get help." %}</p>
     <div class="pt-3 sticky-top">
