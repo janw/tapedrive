@@ -17,16 +17,17 @@
       <button class="btn btn-outline-secondary btn-sm px-3" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}">{% trans "Show Details" %}</button>
 
       {% if episode.downloaded %}
-        <button class="btn btn-outline-success disabled btn-sm px-3">
+        <button class="btn btn-success disabled btn-sm px-3">
           {% trans "Downloaded:" %}
           {{episode.downloaded|naturalday:"SHORT_DATE_FORMAT"|title}},
           {{episode.downloaded|date:"TIME_FORMAT"}}
         </button>
       {% elif episode.download_task %}
         {% if episode.download_task.last_error %}
-          <button class="btn btn-outline-danger disabled btn-sm px-3">
+          <button class="btn btn-outline-danger btn-sm px-3" data-toggle="modal" data-target="#episodeDownloadFailureDetailsModal{{episode.id}}">
             {% trans "Download Failed" %}
           </button>
+          {% include "_episode_download_failure_modal.html" %}
         {% else %}
           <button class="btn btn-outline-secondary disabled btn-sm px-3">
             {% trans "Queued for Download" %}

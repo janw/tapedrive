@@ -239,7 +239,9 @@ class Podcast(models.Model):
         return info
 
     @atomic
-    def queue_missing_episodes_download_tasks(self, storage_directory=STORAGE_DIRECTORY, naming_scheme=DEFAULT_NAMING_SCHEME):
+    def queue_missing_episodes_download_tasks(self,
+                                              storage_directory=STORAGE_DIRECTORY,
+                                              naming_scheme=DEFAULT_NAMING_SCHEME,
+                                              inpath_dateformat=DEFAULT_DATE_FORMAT):
         for episode in self.episodes.filter(downloaded=None):
-            print(episode)
-            episode.queue_download_task(storage_directory, naming_scheme)
+            episode.queue_download_task(storage_directory, naming_scheme, inpath_dateformat)
