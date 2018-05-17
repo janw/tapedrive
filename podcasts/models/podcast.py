@@ -13,7 +13,7 @@ from io import BytesIO
 import itertools
 
 from podcasts.conf import *
-from podcasts.utils import refresh_feed
+from podcasts.utils import refresh_feed, feed_info
 from podcasts.models import cover_image_filename
 from podcasts.models.episode import Episode
 
@@ -21,7 +21,7 @@ from podcasts.models.episode import Episode
 class PodcastManager(models.Manager):
 
     @atomic
-    def create_from_feed_url(self, feed_url, info=None):
+    def create_from_feed_url(self, feed_url, info=None, create_episodes=True):
         if info is None:
             info = refresh_feed(feed_url)
 
@@ -34,8 +34,8 @@ class PodcastManager(models.Manager):
 
         if image is not None:
             podcast.insert_cover(image)
-
-        podcast.create_episodes(info_or_episodes=episodes, initial=True)
+        if create_episodes:
+            podcast.create_episodes(info_or_episodes=episodes, initial=True)
         return podcast
 
     def get_or_create_from_feed_url(self, feed_url, info=None):
@@ -45,7 +45,7 @@ class PodcastManager(models.Manager):
         try:
             return self.get(feed_url=info.url), False
         except self.model.DoesNotExist:
-            return self.create_from_feed_url(info.url, info=info), True
+            return self.create_from_feed_url(info.url, info=info, create_episodes=False), True
 
 
 class Podcast(models.Model):
@@ -154,20 +154,25 @@ class Podcast(models.Model):
     def get_absolute_url(self):
         return reverse('podcasts:podcasts-details', kwargs={'slug': self.slug})
 
+    @atomic
     def create_episodes(self, info_or_episodes=None, initial=False):
         if info_or_episodes is None:
-            episode_info = refresh_feed(self.feed_url)['episodes']
+            feed_info_obj = refresh_feed(self.feed_url)
+            episode_info = feed_info_obj.data['episodes']
         elif isinstance(info_or_episodes, dict):
             episode_info = info_or_episodes['episodes']
+        elif isinstance(info_or_episodes, feed_info):
+            episode_info = info_or_episodes.data['episodes']
         else:
             episode_info = info_or_episodes
 
-        if initial:
-            objects = (Episode(podcast=self, **ep) for ep in episode_info)
-            Episode.objects.bulk_create(objects)
-        else:
-            for ep in episode_info:
-                episode, created = Episode.objects.update_or_create(podcast=self, guid=ep['guid'], defaults=ep)
+        # if initial:
+        #     objects = (Episode(podcast=self, **ep) for ep in episode_info)
+        #     Episode.objects.bulk_create(objects)
+        # else:
+        for ep in episode_info:
+            ep['podcast'] = self
+            episode, created = Episode.objects.update_or_create(guid=ep['guid'], defaults=ep)
 
     def insert_cover(self, info_or_img_url=None):
         if info_or_img_url is None:
@@ -239,12 +244,15 @@ class Podcast(models.Model):
             return '<p>' + self.summary + '</p>'
         return self.summary
 
-
     @atomic
     def update(self, defaults=None, create_episodes=True, insert_image=True):
         if defaults is None:
-            defaults = refresh_feed(self.feed_url)
-        info = defaults
+            feed_info = refresh_feed(self.feed_url)
+            defaults = feed_info.data
+            defaults['feed_url'] = feed_info.url
+
+        # TODO: Implement paged feed fetching HERE #
+
         defaults['fetched'] = timezone.now()
         episodes = defaults.pop('episodes', None)
         image = defaults.pop('image', None)
@@ -257,7 +265,7 @@ class Podcast(models.Model):
         if create_episodes:
             self.create_episodes(info_or_episodes=episodes, initial=False)
 
-        return info
+        return defaults
 
     @atomic
     def queue_missing_episodes_download_tasks(self,
