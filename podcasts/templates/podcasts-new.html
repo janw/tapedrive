@@ -1,14 +1,30 @@
 {% extends "base.html" %}{% load i18n bootstrap4 %}
 
 {% block content %}
-<h1>{% trans "Add New Podcasts" %}</h1>
+<h1>{% trans "Add new podcasts" %}</h1>
 <div class="row">
   <div class="col mb-4 text-center text-md-left">
-    <form action="{% url 'podcasts:podcasts-new' %}" method="post" class="form">
+    <form enctype="multipart/form-data" action="{% url 'podcasts:podcasts-new' %}" method="post" class="form">
       {% csrf_token %}
-      {% bootstrap_form form %}
+
+      {% for field in form %}
+
+        {% if field.name == 'opml_file' %}
+          <div class="form-group">
+            {% bootstrap_label field.label label_for=field.id_for_label %}
+            <div class="custom-file">
+              <label id="{{field.id_for_label}}_inner" class="custom-file-label" for="{{field.id_for_label}}">{% trans "Choose file" %}</label>
+              <input name="{{field.html_name}}" id="{{field.id_for_label}}" type="file" class="custom-file-input">
+            </div>
+            <small class="form-text text-muted">{{field.help_text}}</small>
+          </div>
+        {% else %}
+          {% bootstrap_field field %}
+        {% endif %}
+      {% endfor %}
+
       {% buttons %}
-          <button type="submit" class="btn btn-primary">{% trans "Add Feed" %}</button>
+          <button type="submit" class="btn btn-secondary btn-lg my-3">{% trans "Add new podcasts" %}</button>
       {% endbuttons %}
     </form>
   </div>
@@ -23,7 +39,6 @@
             <li><a href="http://feeds.5by5.tv/killingtime">Killing Time</a></li>
             <li><a href="https://feeds.publicradio.org/public_feeds/in-the-dark/itunes/rss">In The Dark</a></li>
             <li><a href="https://rss.art19.com/caliphate">Caliphate</a></li>
-
         </ul>
     </div>
 </div>

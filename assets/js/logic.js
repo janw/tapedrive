@@ -97,7 +97,6 @@ $('button.subscribe-toggle').click(function() {
     return false;
 });
 
-
 $('button.download-toggle').click(function() {
     var $a = $(this);
     $a.prop("disabled",true).addClass("disabled")
@@ -111,3 +110,13 @@ $('.naming-scheme-segments > code').click(function() {
     insertAtCaret($input, $(this).text())
 })
 
+
+$('#id_opml_file').change(function() {
+    var input = this.files[0];
+    if (input) {
+        $('#id_opml_file_inner').text(input.name);
+    }
+    else {
+        $('#id_opml_file_inner').text('');
+    };
+})

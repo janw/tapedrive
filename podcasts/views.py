@@ -8,8 +8,7 @@ from django.views.generic.list import ListView
 from podcasts.conf import * # noqa
 from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
 from podcasts.models.podcast import Podcast
-from podcasts.utils import refresh_feed, chunks
-
+from podcasts.utils import refresh_feed, chunks, handle_uploaded_file, parse_opml_file
 
 import json
 import urllib
@@ -50,14 +49,30 @@ def podcasts_new(request):
     if request.method == 'POST':
         form = NewFromURLForm(request.POST, request.FILES, request=request)
         if form.is_valid():
-            podcast, created = Podcast.objects.get_or_create_from_feed_url(
-                form.cleaned_data['feed_url'],
-                form.cleaned_data['info']
-            )
-            podcast.add_subscriber(request.user.listener)
-            podcast.add_follower(request.user.listener)
+            if form.cleaned_data['feed_url']:
+                podcast, created = Podcast.objects.get_or_create_from_feed_url(
+                    form.cleaned_data['feed_url'],
+                )
+                podcast.add_subscriber(request.user.listener)
+                podcast.add_follower(request.user.listener)
 
-            return redirect('podcasts:podcasts-details', slug=podcast.slug)
+            print(form.cleaned_data)
+            # if 'opml_file' in request.FILES:
+
+            tempfile = handle_uploaded_file(request.FILES['opml_file'])
+            feeds = parse_opml_file(tempfile)
+
+            for feed in feeds:
+                podcast, created = Podcast.objects.get_or_create_from_feed_url(feed)
+                if podcast is not None:
+                    podcast.add_subscriber(request.user.listener)
+                    podcast.add_follower(request.user.listener)
+
+            if form.cleaned_data['feed_url'] and not form.cleaned_data['opml_file']:
+                return redirect('podcasts:podcasts-details', slug=podcast.slug)
+            else:
+                return redirect('podcasts:podcasts-list')
+
     else:
         form = NewFromURLForm()
 
@@ -113,7 +128,7 @@ def podcasts_discover(request):
 def podcasts_refresh_feed(request, slug):
     podcast = get_object_or_404(Podcast, slug=slug)
     info = refresh_feed(object.feed_url)
-    podcast.create_episodes(info)
+    podcast.create_episodes(info.data)
 
     next = request.GET.get('next', '/')
     return redirect(next)
