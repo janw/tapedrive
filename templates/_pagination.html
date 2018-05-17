@@ -36,7 +36,7 @@
       {% if page_obj.has_next %}
         <li class="page-item">
           <a class="page-link px-3" href="?page={{ page_obj.next_page_number }}">
-            &laquo; <span class="sr-only">{% trans "Next" %}</span>
+            <span class="sr-only">{% trans "Next" %}</span> &raquo;
           </a>
         </li>
       {% else %}
