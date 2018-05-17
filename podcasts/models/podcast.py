@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 import urllib
 from PIL import Image
 from io import BytesIO
+import itertools
 
 from podcasts.conf import *
 from podcasts.utils import refresh_feed
@@ -24,9 +25,12 @@ class PodcastManager(models.Manager):
         if info is None:
             info = refresh_feed(feed_url)
 
-        episodes = info.pop('episodes', None)
-        image = info.pop('image', None)
-        podcast = self.create(feed_url=feed_url, **info)
+        if info.data is None:
+            return
+
+        episodes = info.data.pop('episodes', None)
+        image = info.data.pop('image', None)
+        podcast = self.create(feed_url=info.url, **info.data)
 
         if image is not None:
             podcast.insert_cover(image)
@@ -34,12 +38,14 @@ class PodcastManager(models.Manager):
         podcast.create_episodes(info_or_episodes=episodes, initial=True)
         return podcast
 
-    def get_or_create_from_feed_url(self, feed_url, info=None, **kwargs):
+    def get_or_create_from_feed_url(self, feed_url, info=None):
         self._for_write = True
+        info = refresh_feed(feed_url)
+
         try:
-            return self.get(feed_url=feed_url), False
+            return self.get(feed_url=info.url), False
         except self.model.DoesNotExist:
-            return self.create_from_feed_url(feed_url, info=info, **kwargs), True
+            return self.create_from_feed_url(info.url, info=info), True
 
 
 class Podcast(models.Model):
@@ -136,7 +142,12 @@ class Podcast(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = slugify(self.title)
+            max_length = self._meta.get_field('slug').max_length
+            self.slug = orig = slugify(self.title)
+            for x in itertools.count(1):
+                if not Podcast.objects.filter(slug=self.slug).exists():
+                    break
+                self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         super().save(*args, **kwargs)
 
@@ -177,6 +188,16 @@ class Podcast(models.Model):
 
             # Resize the image (from https://djangosnippets.org/snippets/10597/)
             im.thumbnail(img_size)
+
+            # If the downloaded image has an alpha-channel: fill background
+            if im.mode in ('RGBA', 'LA'):
+                fill_color = (255, 255, 255, 255)
+                background = Image.new(im.mode[:-1], im.size, fill_color)
+                background.paste(im, im.split()[-1])
+                im = background
+
+            if im.mode != 'RGB':
+                im = im.convert('RGB')
 
             # After modifications, save it to the output
             im.save(output, format='JPEG', quality=95)

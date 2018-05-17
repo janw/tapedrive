@@ -59,18 +59,18 @@ class FeedRefreshTestCase(TestCase):
 
     def test_valid_feed(self):
         content = utils.refresh_feed(TEST_FEED)
-        self.assertEqual(content['title'], 'Killing Time')
+        self.assertEqual(content.info['title'], 'Killing Time')
 
     def test_invalid_feed(self):
         """Querying an invalid feed should always fail softly, returning None"""
         content = utils.refresh_feed(TEST_FEED_NONEXISTENT)
-        self.assertIsNone(content)
+        self.assertIsNone(content.info)
 
         content = utils.refresh_feed(TEST_FEED_HTTPERROR)
-        self.assertIsNone(content)
+        self.assertIsNone(content.info)
 
     def test_long_subtitle_feed(self):
         """Test if an overly long subtitle is properly truncated"""
         content = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
-        self.assertTrue(len(content['subtitle']) == 255)
+        self.assertTrue(len(content.info['subtitle']) == 255)
         self.assertTrue(content['subtitle'].endswith(' ...'))

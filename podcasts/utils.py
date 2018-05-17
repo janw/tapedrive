@@ -6,12 +6,15 @@ from dateutil import parser as dateparser
 import urllib
 from urllib.request import urlopen, Request
 from urllib.parse import urlparse
+import requests
 from shutil import copyfileobj, move
 import os
 import tempfile
 import logging
 import bleach
 from markdown import markdown
+import xml.etree.ElementTree as etree
+from collections import namedtuple
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -86,13 +89,15 @@ def resolve_segments(string):
 
 
 def refresh_feed(feed_url):
-    feedparser.USER_AGENT = USER_AGENT
-    feedobj = feedparser.parse(feed_url)
+    feed_info = namedtuple("feed_info", ["data", "url"])
+    response = requests.get(feed_url, headers=HEADERS, allow_redirects=True)
 
     # Escape improper feed-URL
-    if 'status' in feedobj.keys() and feedobj['status'] >= 400:
-        print("\nQuery returned HTTP error", feedobj['status'])
-        return None
+    if response.status_code >= 400:
+        print("\nQuery returned HTTP error", response.status_code, response.reason)
+        return feed_info(None, '')
+
+    feedobj = feedparser.parse(response.content)
 
     # Escape malformatted XML
     if feedobj['bozo'] == 1:
@@ -100,9 +105,9 @@ def refresh_feed(feed_url):
         # If character encoding is wrong, we continue when reparsing succeeded
         if type(feedobj['bozo_exception']) is not CharacterEncodingOverride:
             print('\nDownloaded feed is malformatted on', feed_url)
-            return None
+            return feed_info(None, '')
 
-    return parse_feed_info(feedobj)
+    return feed_info(parse_feed_info(feedobj), response.url)
 
 
 def sanitize_subtitle(object):
@@ -238,3 +243,18 @@ def strip_url(link):
     linkpath = urlparse(link).path
     extension = os.path.splitext(linkpath)[1]
     return linkpath, extension
+
+
+def handle_uploaded_file(f):
+    with tempfile.NamedTemporaryFile(delete=False) as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return destination.name
+
+
+def parse_opml_file(filename):
+    with open(filename) as file:
+        tree = etree.fromstringlist(file)
+    return [node.get('xmlUrl') for node
+            in tree.findall("*/outline/[@type='rss']")
+            if node.get('xmlUrl') is not None]
