@@ -56,17 +56,15 @@ def podcasts_new(request):
                 podcast.add_subscriber(request.user.listener)
                 podcast.add_follower(request.user.listener)
 
-            print(form.cleaned_data)
-            # if 'opml_file' in request.FILES:
+            if 'opml_file' in request.FILES:
+                tempfile = handle_uploaded_file(request.FILES['opml_file'])
+                feeds = parse_opml_file(tempfile)
 
-            tempfile = handle_uploaded_file(request.FILES['opml_file'])
-            feeds = parse_opml_file(tempfile)
-
-            for feed in feeds:
-                podcast, created = Podcast.objects.get_or_create_from_feed_url(feed)
-                if podcast is not None:
-                    podcast.add_subscriber(request.user.listener)
-                    podcast.add_follower(request.user.listener)
+                for feed in feeds:
+                    podcast, created = Podcast.objects.get_or_create_from_feed_url(feed)
+                    if podcast is not None:
+                        podcast.add_subscriber(request.user.listener)
+                        podcast.add_follower(request.user.listener)
 
             if form.cleaned_data['feed_url'] and not form.cleaned_data['opml_file']:
                 return redirect('podcasts:podcasts-details', slug=podcast.slug)

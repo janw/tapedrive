@@ -72,6 +72,8 @@ UNIFYING_EPISODE_SEGMENTS = [
 
 ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
 
+feed_info = namedtuple("feed_info", ["data", "url"])
+
 
 def get_segments_html(segments):
     if isinstance(segments, dict):
@@ -89,7 +91,6 @@ def resolve_segments(string):
 
 
 def refresh_feed(feed_url):
-    feed_info = namedtuple("feed_info", ["data", "url"])
     response = requests.get(feed_url, headers=HEADERS, allow_redirects=True)
 
     # Escape improper feed-URL

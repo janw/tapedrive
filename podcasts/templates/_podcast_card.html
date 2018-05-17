@@ -18,22 +18,26 @@
 
     <p class="card-text mt-auto">
       <small class="text-muted">
-        {% blocktrans with num_episodes=object.num_episodes %}
-        {{num_episodes}} episodes{% endblocktrans %}
+        {% if object.fetched %}
+          {% blocktrans with num_episodes=object.num_episodes %}
+          {{num_episodes}} episodes{% endblocktrans %}
 
-        {% if object.num_episodes == object.downloaded_episodes %}
-          {% trans "(all downloaded)" %},
-        {% elif object.downloaded_episodes == 0%}
-          {% trans "(none downloaded)" %},
+          {% if object.num_episodes == object.downloaded_episodes %}
+            {% trans "(all downloaded)" %},
+          {% elif object.downloaded_episodes == 0%}
+            {% trans "(none downloaded)" %},
+          {% else %}
+            {% blocktrans with downloaded_episodes=object.downloaded_episodes trimmed %}
+              ({{downloaded_episodes}} downloaded)
+            {% endblocktrans %},
+          {% endif %}
+
+          {% blocktrans with time=object.last_episode_date|naturaltime %}
+            last one published {{time}}
+          {% endblocktrans %}
         {% else %}
-          {% blocktrans with downloaded_episodes=object.downloaded_episodes trimmed %}
-            ({{downloaded_episodes}} downloaded)
-          {% endblocktrans %},
+          {% trans "Episodes have not been fetched yet" %}
         {% endif %}
-
-        {% blocktrans with time=object.last_episode_date|naturaltime %}
-          last one published {{time}}
-        {% endblocktrans %}
       </small>
     </p>
   </div>
