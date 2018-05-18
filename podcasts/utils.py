@@ -72,7 +72,7 @@ UNIFYING_EPISODE_SEGMENTS = [
 
 ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
 
-feed_info = namedtuple("feed_info", ["data", "url"])
+feed_info = namedtuple("feed_info", ['data', 'url', 'next_page', 'last_page'])
 
 
 def get_segments_html(segments):
@@ -108,7 +108,14 @@ def refresh_feed(feed_url):
             print('\nDownloaded feed is malformatted on', feed_url)
             return feed_info(None, '')
 
-    return feed_info(parse_feed_info(feedobj), response.url)
+    if 'feed' not in feedobj:
+        raise Exception('Feed is incomplete')
+
+    links = feedobj['feed'].get('links', [])
+    next_page = next((item for item in links if item["rel"] == "next"), {}).get('href')
+    last_page = next((item for item in links if item["rel"] == "last"), {}).get('href')
+
+    return feed_info(parse_feed_info(feedobj), response.url, next_page, last_page)
 
 
 def sanitize_subtitle(object):
@@ -144,8 +151,6 @@ def sanitize_summary(object):
 
 def parse_feed_info(parsed_feed):
     feed_info = {}
-    if 'feed' not in parsed_feed:
-        raise Exception('Feed is incomplete')
 
     feed = parsed_feed['feed']
     for key in PODCAST_INFO_KEYS:
