@@ -125,9 +125,7 @@ def podcasts_discover(request):
 
 def podcasts_refresh_feed(request, slug):
     podcast = get_object_or_404(Podcast, slug=slug)
-    info = refresh_feed(object.feed_url)
-    podcast.create_episodes(info.data)
-
+    podcast.update(update_all=True)
     next = request.GET.get('next', '/')
     return redirect(next)
 

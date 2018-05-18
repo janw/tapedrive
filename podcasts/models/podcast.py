@@ -11,11 +11,15 @@ import urllib
 from PIL import Image
 from io import BytesIO
 import itertools
+import logging
 
 from podcasts.conf import *
 from podcasts.utils import refresh_feed, feed_info
 from podcasts.models import cover_image_filename
 from podcasts.models.episode import Episode
+
+
+logger = logging.getLogger(__name__)
 
 
 class PodcastManager(models.Manager):
@@ -166,13 +170,12 @@ class Podcast(models.Model):
         else:
             episode_info = info_or_episodes
 
-        # if initial:
-        #     objects = (Episode(podcast=self, **ep) for ep in episode_info)
-        #     Episode.objects.bulk_create(objects)
-        # else:
+        all_created = []
         for ep in episode_info:
             ep['podcast'] = self
             episode, created = Episode.objects.update_or_create(guid=ep['guid'], defaults=ep)
+            all_created.append(created)
+        return all_created
 
     def insert_cover(self, info_or_img_url=None):
         if info_or_img_url is None:
@@ -245,15 +248,14 @@ class Podcast(models.Model):
         return self.summary
 
     @atomic
-    def update(self, defaults=None, create_episodes=True, insert_image=True):
-        if defaults is None:
-            feed_info = refresh_feed(self.feed_url)
-            defaults = feed_info.data
-            defaults['feed_url'] = feed_info.url
-
-        # TODO: Implement paged feed fetching HERE #
-
+    def update(self, create_episodes=True, insert_image=True, update_all=False):
+        feed_info = refresh_feed(self.feed_url)
+        defaults = feed_info.data
+        defaults['feed_url'] = feed_info.url
         defaults['fetched'] = timezone.now()
+
+        logger.info('Fetched %(podcast)s at %(timestamp)s' % {'podcast': self.title, 'timestamp': defaults['fetched']})
+
         episodes = defaults.pop('episodes', None)
         image = defaults.pop('image', None)
         for key, value in defaults.items():
@@ -263,8 +265,25 @@ class Podcast(models.Model):
             self.insert_cover(image)
 
         if create_episodes:
-            self.create_episodes(info_or_episodes=episodes, initial=False)
+            logger.info('Inserting episodes from first page.')
+            all_created = self.create_episodes(info_or_episodes=episodes, initial=False)
 
+            # Parse pages of paginated feed
+            while feed_info.next_page and (False not in all_created or update_all):
+                logger.info('Fetching next page %s ...' % feed_info.next_page)
+
+                feed_info = refresh_feed(feed_info.next_page)
+                episodes = feed_info.data.pop('episodes', None)
+                all_created = self.create_episodes(info_or_episodes=episodes, initial=False)
+
+                if False in all_created:
+                    logger.info('Found existing episodes.')
+                if not feed_info.next_page:
+                    logger.info('No next page found.')
+
+
+        logger.info('All done. ')
+        self.save()
         return defaults
 
     @atomic

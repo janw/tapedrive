@@ -74,7 +74,7 @@ class Common(Configuration):
         'django.middleware.locale.LocaleMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
-         'django.contrib.sites.middleware.CurrentSiteMiddleware',
+        'django.contrib.sites.middleware.CurrentSiteMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'podcastarchive.users.middleware.LoginRequiredMiddleware',
     ]
@@ -128,8 +128,8 @@ class Common(Configuration):
     LOGOUT_URL = '/logout/'
     LOGIN_REDIRECT_URL = 'podcasts:podcasts-list'
     LOGIN_EXEMPT_URLS = [
-        '/admin/',
-        '/password/reset/'
+        'admin/',
+        'password/reset/'
     ]
 
     SITE_ID = 1
@@ -227,6 +227,26 @@ class Development(Common):
     ]
 
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'INFO',
+            },
+            'podcasts': {
+                'handlers': ['console'],
+                'level': 'INFO',
+            },
+        },
+    }
 
 
 class Staging(Common):

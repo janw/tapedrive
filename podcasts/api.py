@@ -22,7 +22,7 @@ class HttpResponseNoContent(HttpResponse):
 def podcast_refresh_feed(request, slug=None):
     podcast = get_object_or_404(Podcast, slug=slug)
     response_data = {}
-    response_data['info'] = podcast.update()
+    response_data['info'] = podcast.update(update_all=True)
 
     return JsonResponse(response_data)
 
