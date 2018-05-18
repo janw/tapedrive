@@ -134,6 +134,7 @@ strong {
 
 .card-img-container {
   width: 250px;
+  min-height: 250px;
 
   & div {
     width: 250px;
@@ -142,8 +143,8 @@ strong {
 
 .card-img-right {
   border-radius: 0 3px 3px 0;
-  max-width: 250px;
-  max-height: 250px;
+  min-width: 250px;
+  height: 250px;
 }
 
 #summary p.collapse:not(.show) {
