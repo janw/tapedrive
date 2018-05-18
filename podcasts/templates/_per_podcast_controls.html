@@ -12,7 +12,7 @@
           class="btn btn-outline-secondary mt-2 mt-md-0 mx-2 download-toggle {% if podcast.downloaded_episodes == podcast.num_episodes %}disabled{% endif %}">
     {% trans "Download Missing Episodes" %}
   </button>
-  <div class="btn-group mt-2 mt-md-0 mx-2">
+  <div class="btn-group mt-3 mt-md-0 mx-2">
     <button id="subscribe"
             type="button"
             data-href="{% url 'podcasts:api-subscribe' podcast.slug %}"
@@ -26,4 +26,9 @@
       {% trans "Unsubscribe" %}
     </button>
   </div>
+  <a href="{% url 'podcasts:delete' podcast.slug %}"
+    role="button" id="delete"
+    class="btn btn-outline-danger mt-3 mt-md-0 mx-2">
+    {% trans "Delete" %}
+  </a>
 </div>

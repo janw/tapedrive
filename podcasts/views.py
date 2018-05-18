@@ -3,7 +3,9 @@ from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count, Max, Case, When
+from django.urls import reverse_lazy
 from django.views.generic.list import ListView
+from django.views.generic.edit import DeleteView
 
 from podcasts.conf import * # noqa
 from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
@@ -102,6 +104,13 @@ def podcasts_details(request, slug):
         'episodes': episodes,
     }
     return render(request, 'podcasts-details.html', context)
+
+
+class PodcastDeleteView(DeleteView):
+    model = Podcast
+    context_object_name = 'podcast'
+    success_url = reverse_lazy('podcasts:podcasts-list')
+    template_name = 'podcasts/podcast_check_delete.html'
 
 
 def podcasts_discover(request):

@@ -1,0 +1,18 @@
+{% extends "bare.html" %}{% load i18n podcasts_tags bootstrap4 static %}
+
+{% block content %}
+  <form method="post">
+    {% if podcast.image %}
+      <img class="img-logo w-50 filter-fade border rounded" src="{{podcast.image.url}}" alt="{% blocktrans with title=podcast.title %}{{title}}'s Logo{% endblocktrans %}">
+    {% else %}
+      <img class="img-logo w-50 filter-fade" src="{% static 'img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
+    {% endif %}
+    <h1 class="my-4">{% trans "Delete" %} {{podcast.title}}?</h1>
+    {% csrf_token %}
+
+    {% blocktrans with podcast=podcast %}
+      <p>Are you sure you want to delete "{{ podcast }}" and all of its episodes from Tape Drive?</p>
+    {% endblocktrans %}
+      <button role="button" class="btn btn-danger px-4" type="submit">{% trans "Confirm" %}</button>
+  </form>
+{% endblock content %}

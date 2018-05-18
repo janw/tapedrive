@@ -30,6 +30,7 @@ podcasts_patterns = [
         path('', views.podcasts_details, name='podcasts-details'),
         path('api/', include(podcasts_api_patterns)),
         path('refresh/', views.podcasts_refresh_feed, name='podcasts-refresh-feed'),
+        path('delete/', views.PodcastDeleteView.as_view(), name='delete'),
     ]))
 ]
 

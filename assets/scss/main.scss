@@ -321,6 +321,11 @@ footer.footer {
   width: 42px;
 }
 
+.filter-fade {
+    filter: grayscale(1) brightness(60%) contrast(150%);
+    opacity: 0.5;
+}
+
 .backdrop {
   background-color: $white;
   display: block;
