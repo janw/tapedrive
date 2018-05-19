@@ -1,44 +1,37 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
-werkzeug = "==0.12.2"
-ipython = {extras = ["notebook"]}
+werkzeug = "==0.14.1"
+ipython = { extras = [ "notebook",] }
 django-silk = "*"
 coverage = "*"
 django-livereload-server = "*"
 watchdog = "*"
 
-
 [packages]
-
-dj-database-url = "==0.4.2"
+dj-database-url = "==0.5.0"
 django-configurations = "==2.0.0"
 django-debug-toolbar = "==1.9.1"
-django-extensions = "==1.9.7"
-django = "==2.0"
-"psycopg2" = "==2.7.3.2"
-gunicorn = "==19.7.1"
-newrelic = "==2.98.0.81"
+django-extensions = "==2.0.7"
+django = "==2.0.5"
+psycopg2 = "==2.7.4"
+gunicorn = "==19.8.1"
+newrelic = "==3.2.1.93"
 whitenoise = "==4.0b4"
 django-compressor = "*"
 django-libsass = "*"
 pillow = "*"
 feedparser = "*"
 dateutils = "*"
-"django-bootstrap4" = "*"
+django-bootstrap4 = "*"
 django-background-tasks = "*"
 langcodes = "*"
 bleach = "*"
 markdown = "*"
 requests = "*"
 
-
 [requires]
-
 python_version = "3.6"
