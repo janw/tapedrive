@@ -21,6 +21,12 @@ Tape Drive is a self-hostable podcast client with built-in archiving features. B
 Tape Drive is built using [Django](https://djangoproject.com) **and currently in active development on `master` branch**. As soon as the initial feature set has been stabilized, day-to-day development work will move to the `develop` branch, and master will contain stable versions.
 
 
+Podcasts List View         |  Podcast Detail View
+:-------------------------:|:-------------------------:
+![](assets/img/screenshots/podcasts-list.png)  |  ![](![](assets/img/screenshots/podcasts-list.png)
+
+
+
 ## Todos
 
 Currently the main 'todo' is completing the sought out feature set around archiving. This mostly entails

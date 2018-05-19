@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% load i18n bootstrap4 %}
 
 {% block content %}
-<h1>{% trans "Add new podcasts" %}</h1>
+<h1>{% trans "Add New Podcasts" %}</h1>
 <div class="row">
   <div class="col mb-4 text-center text-md-left">
     <form enctype="multipart/form-data" action="{% url 'podcasts:podcasts-new' %}" method="post" class="form">
@@ -24,37 +24,30 @@
       {% endfor %}
 
       {% buttons %}
-          <button type="submit" class="btn btn-secondary btn-lg mt-3">{% trans "Add new podcasts" %}</button>
+          <button type="submit" class="btn btn-secondary btn-lg mt-3">{% trans "Add New Podcasts" %}</button>
       {% endbuttons %}
     </form>
   </div>
 </div>
 {% if discovery %}
-<div class="row border-top">
-    <div class="col mt-4">
-<h3 class="mb-0 text-muted ">{% trans "Don't know what to add?" %}</h3>
-<h1>{% trans "Discover New Podcasts" %}</h1>
-        <div class="card-columns">
-          {% for row in discovery.feeds %}
-              {% for item in row %}
-                {% include "_podcast_card_discovery.html" %}
-              {% endfor %}
-          {% endfor %}
-        </div>
-
-        <div class="text-center my-3">
-          <p class="text-muted">{% blocktrans with aggregator=discovery.aggregator copyright=discovery.copyright trimmed %}
-              Aggregation and Content from {{aggregator}}, {{copyright}}.
-          {% endblocktrans %}</p>
-        </div>
+  <div class="row">
+    <div class="col">
+      <h3 class="mb-0 text-muted ">{% trans "Don't know what to add?" %}</h3>
+      <h1>{% trans "Discover Something New" %}</h1>
     </div>
-</div>
+  </div>
+  <div class="row">
+    {% for row in discovery.feeds %}
+      {% for item in row %}
+        {% include "_podcast_card_discovery.html" %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+
+  <div class="text-center my-3">
+    <p class="text-muted">{% blocktrans with aggregator=discovery.aggregator copyright=discovery.copyright trimmed %}
+        Aggregation and Content from {{aggregator}}, {{copyright}}
+    {% endblocktrans %}</p>
+  </div>
 {% endif %}
-
-<ul class="list-inline">
-    <li class="list-inline-item"><a href="http://feeds.5by5.tv/killingtime">Killing Time</a></li>
-    <li class="list-inline-item"><a href="https://feeds.publicradio.org/public_feeds/in-the-dark/itunes/rss">In The Dark</a></li>
-    <li class="list-inline-item"><a href="https://rss.art19.com/caliphate">Caliphate</a></li>
-</ul>
-
 {% endblock content %}

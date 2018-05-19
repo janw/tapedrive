@@ -6,15 +6,12 @@ from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
 
-from urllib.parse import urlparse
-import urllib
-from PIL import Image
 from io import BytesIO
 import itertools
 import logging
 
 from podcasts.conf import *
-from podcasts.utils import refresh_feed, feed_info
+from podcasts.utils import refresh_feed, feed_info, download_cover
 from podcasts.models import cover_image_filename
 from podcasts.models.episode import Episode
 
@@ -185,37 +182,12 @@ class Podcast(models.Model):
         else:
             img_url = info_or_img_url
 
-        name = urlparse(img_url).path.split('/')[-1]
+        output = BytesIO()
+        name = download_cover(img_url, output)
 
-        try:
-            content, headers = urllib.request.urlretrieve(img_url)
-            img_size = getattr(settings, 'COVER_IMAGE_SIZE', (250, 250))
-
-            im = Image.open(content)
-            output = BytesIO()
-
-            # Resize the image (from https://djangosnippets.org/snippets/10597/)
-            im.thumbnail(img_size)
-
-            # If the downloaded image has an alpha-channel: fill background
-            if im.mode in ('RGBA', 'LA'):
-                fill_color = (255, 255, 255, 255)
-                background = Image.new(im.mode[:-1], im.size, fill_color)
-                background.paste(im, im.split()[-1])
-                im = background
-
-            if im.mode != 'RGB':
-                im = im.convert('RGB')
-
-            # After modifications, save it to the output
-            im.save(output, format='JPEG', quality=95)
-            output.seek(0)
-
-            # See also: http://docs.djangoproject.com/en/dev/ref/files/file/
+        if name:
             self.image.save(name, File(output), save=True)
 
-        except urllib.error.HTTPError as err:
-            print('Oops', err.code)
 
     def add_subscriber(self, listener):
         self.subscribers.add(listener)
@@ -280,7 +252,6 @@ class Podcast(models.Model):
                     logger.info('Found existing episodes.')
                 if not feed_info.next_page:
                     logger.info('No next page found.')
-
 
         logger.info('All done. ')
         self.save()

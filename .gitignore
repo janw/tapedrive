@@ -99,7 +99,7 @@ assets/CACHE/
 
 # Files uploaded / saved from podcasts
 mediafiles/
-
+$HOME/
 
 ### Sublime Text ###
 *.sublime-*

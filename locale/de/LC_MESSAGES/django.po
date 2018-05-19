@@ -10,9 +10,9 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-05-19 10:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: janwh, 2018\n"
+"Language-Team: German (https://www.transifex.com/janwh/teams/86591/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,42 +20,46 @@ msgstr ""
 
 #: podcastarchive/settings.py:151
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
 #: podcastarchive/settings.py:152
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: podcasts/apps.py:33 podcasts/apps.py:34 podcasts/models/podcast.py:142
 #: templates/_navbar.html:23
 msgid "Podcasts"
-msgstr ""
+msgstr "Podcasts"
 
 #: podcasts/forms.py:26 podcasts/models/podcast.py:78
 msgid "Feed URL"
-msgstr ""
+msgstr "Feed-URL"
 
 #: podcasts/forms.py:27
 msgid "Named by the format, this is often also called \"RSS feed\""
-msgstr ""
+msgstr "Benannt nach dem Dateiformat oft auch als \"RSS-Feed\" bezeichnet"
 
 #: podcasts/forms.py:32
 msgid "OPML File"
-msgstr ""
+msgstr "OPML-Datei"
 
 #: podcasts/forms.py:33
 msgid ""
 "Many podcast clients allow you to export all you subscriptions at once as an "
 "OPML file"
 msgstr ""
+"Viele Podcast-Clients können alle deine Abonnements auf einmal als OPML-"
+"Datei exportieren"
 
 #: podcasts/forms.py:83 podcasts/models/listener.py:47
 msgid "Subscribed Podcasts"
-msgstr ""
+msgstr "Abonnierte Podcasts"
 
 #: podcasts/forms.py:84
 msgid "Podcasts checked here will be included in periodic feed refreshes"
 msgstr ""
+"Hier ausgewählte Podcasts werden bei der regelmäßigen Aktualisierung "
+"eingeschlossen"
 
 #: podcasts/forms.py:99
 msgid ""
@@ -73,10 +77,22 @@ msgid ""
 "                details page as the <span class=\"btn btn-outline-secondary\n"
 "                btn-sm disabled text-dark py-0\">Subscribe</span> toggle.</p>"
 msgstr ""
+"\n"
+"<p>Enthält eine Liste von Kontrollkästchen für alle von dir hinzugefügten "
+"Podcasts. Wenn ein Podcast ausgewählt ist, hast du ihn abonniert. Er wird "
+"dann bei regelmäßigen Aktualisierungen der Podcasts (also dem Hinzufügen neu "
+"veröffentlichter Episoden) eingeschlossen und neue Episoden werden "
+"automatisch heruntergeladen.</p>\n"
+"<p>Diese Einstellung wird auch auf jeder Podacst-Detailseite als <span class="
+"\"btn btn-outline-secondary\n"
+"                btn-sm disabled text-dark py-0\">Abonnieren</span>-Auswahl "
+"angezeigt.</p>"
 
 #: podcasts/forms.py:116
 msgid "(Podcasts you add will appear here to refresh them periodically)"
 msgstr ""
+"(Von dir hinzugefügte Podcasts erscheinen hier und werden regelmäßig "
+"aktualisiert)"
 
 #: podcasts/forms.py:134
 msgid ""
@@ -94,6 +110,14 @@ msgid ""
 "                settings are saved.</p>\n"
 "                "
 msgstr ""
+"\n"
+"<p>Der Speicherort ist das Hauptverzeichnis aller heruntergeladenen Podcast-"
+"Episoden. Er muss gesetzt werden, bevor Episoden heruntergeladen werden. Ihn "
+"später zu ändern wird momentan nicht offiziell unterstützt und sollte "
+"dringend vermieden werden.</p>\n"
+"<p>Das Nutzer-Homeverzeichnis <code>˜</code> und Umgebungsvariablen wie "
+"<code>$HOME</code> und <code>$USER</code> werden beim Speichern einmalig "
+"aufgelöst."
 
 #: podcasts/forms.py:144
 msgid ""
@@ -135,18 +159,26 @@ msgid ""
 "                in the Django documentation</a>.</p>\n"
 "                "
 msgstr ""
+"\n"
+"<p>Wenn Datumssegmente (momentan $podcast_updated und <code>$episode_date</"
+"code>) im Namensschema verwendet werden, werden die Daten nach diesem Format "
+"aufgelöst. Die Elemente im Datum werden zudem nach der eingestellten Sprache "
+"übersetzt. Die verfügbaren Elemente findest du <a href=\"https://docs."
+"djangoproject.com/en/2.0/ref/templates/builtins/#date\" rel=\"nofollow"
+"\">hier in der Django-Dokumentation</a>.</p>"
 
 #: podcasts/forms.py:174 podcasts/models/__init__.py:55
 msgid "Episode Naming Scheme"
-msgstr ""
+msgstr "Episoden-Benennungsschema"
 
 #: podcasts/forms.py:182
 msgid "Site Domain"
-msgstr ""
+msgstr "Seiten-Domain"
 
 #: podcasts/forms.py:185
 msgid "Will be used to prefix absolute URLs (for example links in emails)"
 msgstr ""
+"Wird als Präfix für absolute URLs (z.B. für Links in E-Mails) verwendet"
 
 #: podcasts/forms.py:188
 msgid ""
@@ -166,288 +198,297 @@ msgid ""
 "                <p><code>example.com/fancysubfolder/</code></p>\n"
 "                "
 msgstr ""
+"\n"
+"<p>Die Seiten-Domain ist eine globale Einstellung, die alle Stellen "
+"betrifft, wo die absolute URL einer Seite generiert wird. Das betrifft im "
+"Wesentlichen System-E-Mails die Links auf eine Seite enthalten</p>\n"
+"<p class=\"mb-0\">Falls du die App in einem Unterverzeichnis hinter einem "
+"Reverse-Proxy betreibst, solltest du das Unterverzeichnis an die Domain "
+"anhängen, damit interne (also relative) URLs richtig aufgelöst werden:</p>\n"
+"<p><code>example.com/coolesunterverzeichnis/</code></p>"
 
 #: podcasts/models/__init__.py:46
 msgid "Storage Directory"
-msgstr ""
+msgstr "Speicherort"
 
 #: podcasts/models/__init__.py:47
 msgid "Root directory of where the podcast episodes are downloaded to"
-msgstr ""
+msgstr "Hauptverzeichnis in das Podcast-Episoden heruntergeladen werden"
 
 #: podcasts/models/__init__.py:56
 msgid "Scheme used to compile the episode download filenames"
-msgstr ""
+msgstr "Schema nach dem heruntergeladene Episoden benannt werden"
 
 #: podcasts/models/__init__.py:64
 msgid "In-Path Date Format"
-msgstr ""
+msgstr "In-Pfad Datumsformat"
 
 #: podcasts/models/__init__.py:65
 msgid "Scheme used to compile date segments in episode download filenames"
 msgstr ""
+"Schema nach dem Datumssegmente in Dateinamen von Episoden gebildet werden"
 
 #: podcasts/models/__init__.py:69 podcasts/models/__init__.py:70
 msgid "Podcasts Settings"
-msgstr ""
+msgstr "Podcasts-Einstellungen"
 
 #: podcasts/models/episode.py:27
 msgid "Episode GUID"
-msgstr ""
+msgstr "Episoden-GUID"
 
 #: podcasts/models/episode.py:40 podcasts/models/podcast.py:141
 msgid "Podcast"
-msgstr ""
+msgstr "Podcast"
 
 #: podcasts/models/episode.py:45
 msgid "Episode Title"
-msgstr ""
+msgstr "Episodentitel"
 
 #: podcasts/models/episode.py:52
 msgid "Episode Subtitle"
-msgstr ""
+msgstr "Episodenuntertitel"
 
 #: podcasts/models/episode.py:57
 #: podcasts/templates/_episode_details_body.html:26
 msgid "Episode Summary"
-msgstr ""
+msgstr "Episodenzusammenfassung"
 
 #: podcasts/models/episode.py:62
 msgid "Episode Link"
-msgstr ""
+msgstr "Episoden-Link"
 
 #: podcasts/models/episode.py:68
 msgid "Media URL"
-msgstr ""
+msgstr "Medien-URL"
 
 #: podcasts/models/episode.py:73
 #: podcasts/templates/_episode_details_body.html:7
 msgid "Published"
-msgstr ""
+msgstr "Veröffentlicht"
 
 #: podcasts/models/episode.py:79
 #: podcasts/templates/_episode_details_body.html:14
 msgid "Downloaded"
-msgstr ""
+msgstr "Heruntergeladen"
 
 #: podcasts/models/episode.py:87
 msgid "Duration"
-msgstr ""
+msgstr "Laufzeit"
 
 #: podcasts/models/episode.py:93
 msgid "Season"
-msgstr ""
+msgstr "Staffel"
 
 #: podcasts/models/episode.py:99
 msgid "Episode Number"
-msgstr ""
+msgstr "Episodennummer"
 
 #: podcasts/models/episode.py:105
 msgid "Episode Type"
-msgstr ""
+msgstr "Episodentyp"
 
 #: podcasts/models/episode.py:113
 msgid "Original Filename"
-msgstr ""
+msgstr "Ursprünglicher Dateiname"
 
 #: podcasts/models/episode.py:122
 msgid "File Location"
-msgstr ""
+msgstr "Speicherort"
 
 #: podcasts/models/episode.py:127
 msgid "File Size"
-msgstr ""
+msgstr "Dateigröße"
 
 #: podcasts/models/episode.py:132
 msgid "File Hash (SHA256)"
-msgstr ""
+msgstr "Datei-Hash (SHA256)"
 
 #: podcasts/models/episode.py:141
 msgid "Episodes' Listeners"
-msgstr ""
+msgstr "Hörer der Episode"
 
 #: podcasts/models/episode.py:149
 msgid "Associated Download Task"
-msgstr ""
+msgstr "Verknüpfter Download-Auftrag"
 
 #: podcasts/models/episode.py:153
 msgid "Episode"
-msgstr ""
+msgstr "Episode"
 
 #: podcasts/models/episode.py:154
 #: podcasts/templates/_per_podcast_attributes.html:26
 msgid "Episodes"
-msgstr ""
+msgstr "Episoden"
 
 #: podcasts/models/listener.py:17 podcasts/models/listener.py:29
 msgid "Content"
-msgstr ""
+msgstr "Inhalt"
 
 #: podcasts/models/listener.py:18 podcasts/models/listener.py:30
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: podcasts/models/listener.py:21 podcasts/models/listener.py:33
 msgid "Metadata"
-msgstr ""
+msgstr "Metadaten"
 
 #: podcasts/models/listener.py:22
 msgid "Last Published Episode"
-msgstr ""
+msgstr "Zuletzt veröffentlichte Episode"
 
 #: podcasts/models/listener.py:23
 msgid "Number of Episodes"
-msgstr ""
+msgstr "Anzahl der Episoden"
 
 #: podcasts/models/listener.py:34
 msgid "Download Date (Earliest First)"
-msgstr ""
+msgstr "Download-Datum (frühe zuerst)"
 
 #: podcasts/models/listener.py:35
 msgid "Download Date (Latest First)"
-msgstr ""
+msgstr "Download-Datum (späte zuerst)"
 
 #: podcasts/models/listener.py:36
 msgid "Publishing Date (Earliest First)"
-msgstr ""
+msgstr "Veröffentlichungsdatum (frühe zuerst)"
 
 #: podcasts/models/listener.py:37
 msgid "Publishing Date (Latest First)"
-msgstr ""
+msgstr "Veröffentlichungsdatum (späte zuerst)"
 
 #: podcasts/models/listener.py:38
 msgid "Duration (Shortest First)"
-msgstr ""
+msgstr "Laufzeit (kurze zuerst)"
 
 #: podcasts/models/listener.py:39
 msgid "Duration (Longest First)"
-msgstr ""
+msgstr "Laufzeit (lange zuerst)"
 
 #: podcasts/models/listener.py:52
 msgid "Added Podcasts"
-msgstr ""
+msgstr "Hinzugefügte Podcasts"
 
 #: podcasts/models/listener.py:61
 msgid "Sort Podcasts By"
-msgstr ""
+msgstr "Sortiere Podcasts nach"
 
 #: podcasts/models/listener.py:67
 msgid "Sort Episodes By"
-msgstr ""
+msgstr "Sortiere Episoden nach"
 
 #: podcasts/models/listener.py:78
 msgid "Seek Duration Forward"
-msgstr ""
+msgstr "Vorspulzeitraum"
 
 #: podcasts/models/listener.py:86
 msgid "Seek Duration Backward"
-msgstr ""
+msgstr "Zurückspulzeitraum"
 
 #: podcasts/models/listener.py:90
 #, python-format
 msgid "User %(user)s"
-msgstr ""
+msgstr "Nutzer %(user)s"
 
 #: podcasts/models/listener.py:124
 msgid "Playback Position"
-msgstr ""
+msgstr "Abspielposition"
 
 #: podcasts/models/listener.py:128
 msgid "Playback Completed"
-msgstr ""
+msgstr "Vollständig abgespielt"
 
 #: podcasts/models/podcast.py:60
 msgid "Podcast Title"
-msgstr ""
+msgstr "Podcasttitel"
 
 #: podcasts/models/podcast.py:66
 msgid "Podcast Subtitle"
-msgstr ""
+msgstr "Podcastuntertitel"
 
 #: podcasts/models/podcast.py:84
 msgid "Feed Fetched Last"
-msgstr ""
+msgstr "Feed zuletzt abgerufen"
 
 #: podcasts/models/podcast.py:90
 msgid "Last Feed Update"
-msgstr ""
+msgstr "Feed zuletzt aktualisiert"
 
 #: podcasts/models/podcast.py:96
 msgid "Podcast Author"
-msgstr ""
+msgstr "Podcastautor"
 
 #: podcasts/models/podcast.py:103
 msgid "Main Language"
-msgstr ""
+msgstr "Hauptsprache"
 
 #: podcasts/models/podcast.py:109
 msgid "Podcast Link"
-msgstr ""
+msgstr "Podcast-Link"
 
 #: podcasts/models/podcast.py:115
 msgid "Cover Image"
-msgstr ""
+msgstr "Cover-Bild"
 
 #: podcasts/models/podcast.py:118
 msgid "Explicit Tag"
-msgstr ""
+msgstr "Explicit-Tag"
 
 #: podcasts/models/podcast.py:124
 msgid "iTunes Type"
-msgstr ""
+msgstr "iTunes-Typ"
 
 #: podcasts/models/podcast.py:130
 msgid "Feed Generator"
-msgstr ""
+msgstr "Feed-Generator"
 
 #: podcasts/models/podcast.py:135
 msgid "Podcast Summary"
-msgstr ""
+msgstr "Podcastzusammenfassung"
 
 #: podcasts/templates/_episode_details_modal.html:7
 msgid "Episode Details"
-msgstr ""
+msgstr "Episodendetails"
 
 #: podcasts/templates/_episode_details_modal.html:22
 msgid "Queue Download"
-msgstr ""
+msgstr "Download einreihen"
 
 #: podcasts/templates/_episode_details_modal.html:24
 #: podcasts/templates/_episode_download_failure_modal.html:61
 #: templates/_messages.html:7
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: podcasts/templates/_episode_download_failure_modal.html:8
 msgid "Failure Details"
-msgstr ""
+msgstr "Fehlerdetails"
 
 #: podcasts/templates/_episode_download_failure_modal.html:23
 msgid "Priority"
-msgstr ""
+msgstr "Priorität"
 
 #: podcasts/templates/_episode_download_failure_modal.html:27
 msgid "Run At"
-msgstr ""
+msgstr "Gestartet am"
 
 #: podcasts/templates/_episode_download_failure_modal.html:34
 msgid "Attempts"
-msgstr ""
+msgstr "Versuche"
 
 #: podcasts/templates/_episode_download_failure_modal.html:40
 msgid "Failed At"
-msgstr ""
+msgstr "Fehlgeschlagen am"
 
 #: podcasts/templates/_episode_download_failure_modal.html:54
 #: podcasts/templates/_per_podcast_controls.html:32
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: podcasts/templates/_episode_download_failure_modal.html:58
 #: podcasts/templates/_episode_listgroupitem.html:17
 #: podcasts/templates/_podcast_card_discovery.html:8
 msgid "Show Details"
-msgstr ""
+msgstr "Details anzeigen"
 
 #: podcasts/templates/_episode_listgroupitem.html:11
 #, python-format
@@ -459,98 +500,109 @@ msgstr ""
 
 #: podcasts/templates/_episode_listgroupitem.html:21
 msgid "Downloaded:"
-msgstr ""
+msgstr "Heruntergeladen:"
 
 #: podcasts/templates/_episode_listgroupitem.html:28
 msgid "Download Failed"
-msgstr ""
+msgstr "Download fehlgeschlagen"
 
 #: podcasts/templates/_episode_listgroupitem.html:33
 msgid "Queued for Download"
-msgstr ""
+msgstr "Zum Download eingereiht"
 
 #: podcasts/templates/_episode_listgroupitem.html:39
 msgid "Download Now"
-msgstr ""
+msgstr "Jetzt herunterladen"
 
 #: podcasts/templates/_per_podcast_attributes.html:6
 msgid "From"
-msgstr ""
+msgstr "Von"
 
 #: podcasts/templates/_per_podcast_attributes.html:13
 msgid "Website"
-msgstr ""
+msgstr "Webseite"
 
 #: podcasts/templates/_per_podcast_attributes.html:20
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: podcasts/templates/_per_podcast_attributes.html:32
 msgid "Last fetched"
-msgstr ""
+msgstr "Zuletzt abgerufen"
 
 #: podcasts/templates/_per_podcast_attributes.html:41
 msgid "Feed updated"
-msgstr ""
+msgstr "Feed aktualisiert"
 
 #: podcasts/templates/_per_podcast_controls.html:6
 msgid "Refresh Feed"
-msgstr ""
+msgstr "Feed abrufen"
 
 #: podcasts/templates/_per_podcast_controls.html:13
 msgid "Download Missing Episodes"
-msgstr ""
+msgstr "Fehlende Episoden herunterladen"
 
 #: podcasts/templates/_per_podcast_controls.html:20
 msgid "Subscribe"
-msgstr ""
+msgstr "Abonnieren"
 
 #: podcasts/templates/_per_podcast_controls.html:26
 msgid "Unsubscribe"
-msgstr ""
+msgstr "Abbestellen"
 
 #: podcasts/templates/_podcast_card.html:3
 msgid "Open Podcast Details"
-msgstr ""
+msgstr "Podcastdetails öffnen"
 
 #: podcasts/templates/_podcast_card.html:21
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "          %(num_episodes)s episodes"
 msgid "%(num_episodes)s episodes"
 msgstr ""
+"\n"
+"%(num_episodes)s Episoden"
 
 #: podcasts/templates/_podcast_card.html:24
 msgid "(all downloaded)"
-msgstr ""
+msgstr "(alle heruntergeladen)"
 
 #: podcasts/templates/_podcast_card.html:26
 msgid "(none downloaded)"
-msgstr ""
+msgstr "(keine heruntergeladen)"
 
 #: podcasts/templates/_podcast_card.html:28
 #, python-format
 msgid "(%(downloaded_episodes)s downloaded)"
-msgstr ""
+msgstr "(%(downloaded_episodes)s heruntergeladen)"
 
 #: podcasts/templates/_podcast_card.html:33
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "            last one published %(time)s\n"
+#| "          "
 msgid "last one published %(time)s"
 msgstr ""
+"\n"
+"letzte veröffentlicht %(time)s"
 
 #: podcasts/templates/_podcast_card.html:37
 msgid "Episodes have not been fetched yet"
-msgstr ""
+msgstr "Episoden wurden noch nicht abgerufen"
 
 #: podcasts/templates/_podcast_card.html:47
 msgid "(No Cover)"
-msgstr ""
+msgstr "(Kein Cover)"
 
 #: podcasts/templates/_podcast_card_discovery.html:9
 msgid "Add To Archive"
-msgstr ""
+msgstr "Zum Archiv hinzufügen"
 
 #: podcasts/templates/podcasts-discover.html:4
 msgid "Discover New Podcasts"
-msgstr ""
+msgstr "Finde neue Podcasts"
 
 #: podcasts/templates/podcasts-discover.html:17
 msgid "Aggretation and Content from "
@@ -558,11 +610,11 @@ msgstr ""
 
 #: podcasts/templates/podcasts-list.html:4
 msgid "Your podcasts"
-msgstr ""
+msgstr "Deine Podcasts"
 
 #: podcasts/templates/podcasts-list.html:21
 msgid "Welcome to your future Podcast Archive. 👋 "
-msgstr ""
+msgstr "Willkommen in deinem zukünftigen Podcast-Archiv. 👋"
 
 #: podcasts/templates/podcasts-list.html:22
 msgid ""
@@ -600,11 +652,11 @@ msgstr ""
 #: podcasts/templates/podcasts-new.html:4
 #: podcasts/templates/podcasts-new.html:27
 msgid "Add new podcasts"
-msgstr ""
+msgstr "Neue Podcasts hinzufügen"
 
 #: podcasts/templates/podcasts-new.html:16
 msgid "Choose file"
-msgstr ""
+msgstr "Datei auswählen"
 
 #: podcasts/templates/podcasts-new.html:34
 msgid ""
@@ -615,36 +667,46 @@ msgstr ""
 
 #: podcasts/templates/podcasts-settings.html:4 templates/_navbar.html:33
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: podcasts/templates/podcasts-settings.html:11
 msgid "User Preferences"
-msgstr ""
+msgstr "Nutzereinstellungen"
 
 #: podcasts/templates/podcasts-settings.html:12
+#, fuzzy
+#| msgid "Your personal preferences on the behaviour of the Podcast Archive."
 msgid "Your personal preferences on the behaviour of Tape Drive."
-msgstr ""
+msgstr "Deine persönlichen Einstellungen zum Verhalten des Podcastarchivs."
 
 #: podcasts/templates/podcasts-settings.html:21
 msgid "Administration"
-msgstr ""
+msgstr "Verwaltung"
 
 #: podcasts/templates/podcasts-settings.html:22
+#, fuzzy
+#| msgid ""
+#| "You are an admin on this server, therefore you have access to all global "
+#| "settings."
 msgid "You are an admin on this server and have access to all global settings."
 msgstr ""
+"Du bist Admin auf diesem Server und hast deshalb Zugriff auf die globalen "
+"Einstellungen."
 
 #: podcasts/templates/podcasts-settings.html:37
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 #: podcasts/templates/podcasts-settings.html:38
 msgid ""
 "Cannot figure out, what all this is? Click on the sections below to get help."
 msgstr ""
+"Keine Ahnung, was all das soll? Wähle unten einen Abschnitt, um Hilfe zu "
+"erhalten."
 
 #: podcasts/templates/podcasts/_settings_form_submitter.html:4
 msgid "Save Changes"
-msgstr ""
+msgstr "Änderungen speichern"
 
 #: podcasts/templates/podcasts/podcast_check_delete.html:6
 #, python-format
@@ -660,7 +722,7 @@ msgstr ""
 #: templates/registration/password_reset_done.html:7
 #: templates/registration/password_reset_form.html:7
 msgid "Tape Drive Logo"
-msgstr ""
+msgstr "Tape Drive Logo"
 
 #: podcasts/templates/podcasts/podcast_check_delete.html:10
 #, python-format
@@ -681,25 +743,25 @@ msgstr ""
 #: podcasts/validators.py:18
 #, python-format
 msgid "Path %(path)s does not exist"
-msgstr ""
+msgstr "Pfad %(path)s existiert nicht"
 
 #: podcasts/validators.py:21
 #, python-format
 msgid "Path %(path)s is not writable"
-msgstr ""
+msgstr "Im Pfad %(path)s kann nicht geschrieben werden"
 
 #: podcasts/validators.py:27
 msgid "<p>Backslashes (\\) are not allowed in scheme."
-msgstr ""
+msgstr "<p>Ein Backslash (\\) ist im Schema nicht erlaubt."
 
 #: podcasts/validators.py:30
 msgid "Scheme must not begin or end with '/'"
-msgstr ""
+msgstr "Schema darf nicht mit '/' beginnen oder enden"
 
 #: podcasts/validators.py:35
 #, python-format
 msgid "Ending %(possible_extension)s is too similar to a file extension"
-msgstr ""
+msgstr "Die Endung %(possible_extension)s ist einer Dateiendung zu ähnlich"
 
 #: podcasts/validators.py:44
 #, python-format
@@ -710,39 +772,39 @@ msgstr[1] ""
 
 #: podcasts/validators.py:54
 msgid "Scheme must contain at least one unifying episode segment"
-msgstr ""
+msgstr "Schema muss mindestens ein eindeutiges Segment enthalten"
 
 #: templates/_navbar.html:7 templates/base.html:4
 msgid "Tape Drive"
-msgstr ""
+msgstr "Tape Drive"
 
 #: templates/_navbar.html:8
 msgid "Podcast Archive"
-msgstr ""
+msgstr "Podcast-Archiv"
 
 #: templates/_navbar.html:17
 msgid "Add New"
-msgstr ""
+msgstr "Neu hinzufügen"
 
 #: templates/_navbar.html:28
 msgid "History"
-msgstr ""
+msgstr "Historie"
 
 #: templates/_pagination.html:3
 msgid "Page navigation"
-msgstr ""
+msgstr "Seitennavigation"
 
 #: templates/_pagination.html:8 templates/_pagination.html:14
 msgid "Previous"
-msgstr ""
+msgstr "Vorherige"
 
 #: templates/_pagination.html:24
 msgid "(current)"
-msgstr ""
+msgstr "(aktuell)"
 
 #: templates/_pagination.html:39 templates/_pagination.html:45
 msgid "Next"
-msgstr ""
+msgstr "Nächste"
 
 #: templates/base.html:48
 msgid ""
@@ -751,81 +813,87 @@ msgid ""
 "under the Apache License 2.0. Thank you for using it.\n"
 "             "
 msgstr ""
+"\n"
+"<a href=\"http://tapedrive.io\">Tape Drive</a> steht unter Apache-Lizenz "
+"2.0. Danke, dass du es einsetzt."
 
 #: templates/registration/logged_out.html:14
 msgid "Logged out"
-msgstr ""
+msgstr "Abgemeldet"
 
 #: templates/registration/logged_out.html:15
 msgid "Thanks for spending some quality time with Tape Drive today."
 msgstr ""
+"Schön, dass du ein bisschen Quality-Time mit Tape Drive verbracht hast."
 
 #: templates/registration/logged_out.html:16
 msgid "Log in again"
-msgstr ""
+msgstr "Wieder anmelden"
 
 #: templates/registration/login.html:14 templates/registration/login.html:27
 #: templates/registration/password_reset_complete.html:11
 msgid "Log in"
-msgstr ""
+msgstr "Anmelden"
 
 #: templates/registration/login.html:17
 msgid "Please enter a correct username and password. "
-msgstr ""
+msgstr "Bitte gib Benutzernamen und Passwort korrekt ein."
 
 #: templates/registration/login.html:21 templates/registration/login.html:22
 msgid "Username"
-msgstr ""
+msgstr "Benutzername"
 
 #: templates/registration/login.html:23 templates/registration/login.html:24
 msgid "Password"
-msgstr ""
+msgstr "Passwort"
 
 #: templates/registration/login.html:28
 msgid "Forgotten your password or username?"
-msgstr ""
+msgstr "Passwort oder Benutzernamen vergessen?"
 
 #: templates/registration/password_change_done.html:3
 msgid "Documentation"
-msgstr ""
+msgstr "Dokumentation"
 
 #: templates/registration/password_change_done.html:3
 msgid "Change password"
-msgstr ""
+msgstr "Passwort ändern"
 
 #: templates/registration/password_change_done.html:3
 msgid "Log out"
-msgstr ""
+msgstr "Abmelden"
 
 #: templates/registration/password_change_done.html:6
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: templates/registration/password_change_done.html:7
 msgid "Password change"
-msgstr ""
+msgstr "Passwort ändern"
 
 #: templates/registration/password_change_done.html:14
 msgid "Your password was changed."
-msgstr ""
+msgstr "Dein Passwort wurde geändert."
 
 #: templates/registration/password_change_form.html:10
 msgid ""
 "Please enter your old password, for security's sake, and then enter your new "
 "password twice so we can verify you typed it in correctly."
 msgstr ""
+"Bitte gib dein bisheriges Passwort und dein neues Passwort zweimal zur "
+"Kontrolle ein."
 
 #: templates/registration/password_change_form.html:26
 #: templates/registration/password_change_form.html:27
 msgid "Old password"
-msgstr ""
+msgstr "Bisheriges Passwort"
 
 #: templates/registration/password_change_form.html:31
 #: templates/registration/password_change_form.html:32
 #: templates/registration/password_reset_confirm.html:19
 #: templates/registration/password_reset_confirm.html:20
 msgid "New password"
-msgstr ""
+msgstr "Neues Passwort"
 
 #: templates/registration/password_change_form.html:33
 #: templates/registration/password_reset_confirm.html:21
@@ -835,40 +903,48 @@ msgstr ""
 #: templates/registration/password_change_form.html:34
 #: templates/registration/password_reset_confirm.html:22
 msgid "New password confirmation"
-msgstr ""
+msgstr "Neues Passwort bestätigen"
 
 #: templates/registration/password_change_form.html:36
 #: templates/registration/password_reset_confirm.html:24
 msgid "Change my password"
-msgstr ""
+msgstr "Mein Passwort ändern"
 
 #: templates/registration/password_reset_complete.html:10
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
+msgstr "Dein Passwort wurde gesetzt. Du kannst dich nun anmelden."
 
 #: templates/registration/password_reset_confirm.html:12
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
 msgstr ""
+"Bitte gib dein Passwort zweimal ein, um sicherzugehen, dass du es richtig "
+"eingegeben hast."
 
 #: templates/registration/password_reset_confirm.html:30
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
+"Der Passwort-Zurücksetzen-Link war ungültig, weil er wahrscheinlich schon "
+"benutzt wurde. Bitte fordere einen neuen an."
 
 #: templates/registration/password_reset_done.html:10
 msgid ""
 "We've emailed you instructions for setting your password, if an account "
 "exists with the email you entered. You should receive them shortly."
 msgstr ""
+"Wir haben dir Anweisungen zum Zurücksetzen deines Passworts zugesendet, "
+"falls ein Konto mit der eingegebenen E-Mail-Adresse existiert."
 
 #: templates/registration/password_reset_done.html:12
 msgid ""
 "If you don't receive an email, please make sure you've entered the address "
 "you registered with, and check your spam folder."
 msgstr ""
+"Wenn du keine E-Mail bekommst, versichere dich, dass du die richtige E-Mail-"
+"Adresse eingegeben hast und überprüfe deinen Spam-Ordner."
 
 #: templates/registration/password_reset_email.html:2
 #, python-format
@@ -876,39 +952,43 @@ msgid ""
 "You're receiving this email because you requested a password reset for your "
 "account at %(site_name)s."
 msgstr ""
+"Du erhältst diese E-Mail, weil du das Zurücksetzen deines Passworts für "
+"%(site_name)s angefordert hast."
 
 #: templates/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
-msgstr ""
+msgstr "Bitte öffne die folgende Seite und wähle ein neues Passwort:"
 
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
-msgstr ""
+msgstr "Dein Benutzername, falls du ihn vergessen hast:"
 
 #: templates/registration/password_reset_email.html:10
 msgid "Thanks for using the service!"
-msgstr ""
+msgstr "Danke, dass du diesen Dienst nutzt!"
 
 #: templates/registration/password_reset_email.html:12
 #, python-format
 msgid "The creators of %(site_name)s"
-msgstr ""
+msgstr "Die Schöpfer von %(site_name)s"
 
 #: templates/registration/password_reset_form.html:10
 msgid ""
 "Forgotten your password? Enter your email address below, and we'll email "
 "instructions for setting a new one."
 msgstr ""
+"Du hast dein Passwort vergessen? Gib deine E-Mail-Adresse unten ein und wir "
+"senden dir Anweisungen zum Zurücksetzen per E-Mail."
 
 #: templates/registration/password_reset_form.html:14
 msgid "Please enter a valid email address."
-msgstr ""
+msgstr "Bitte gib eine gültige E-Mail-Adresse ein."
 
 #: templates/registration/password_reset_form.html:19
 #: templates/registration/password_reset_form.html:20
 msgid "Email address"
-msgstr ""
+msgstr "E-Mail-Adresse"
 
 #: templates/registration/password_reset_form.html:22
 msgid "Reset my password"
-msgstr ""
+msgstr "Mein Passwort zurücksetzen"

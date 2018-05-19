@@ -1,14 +1,8 @@
 {% load i18n podcasts_tags %}
-<div id="discover-podcast-card" class="card text-center pb-2 mb-3">
-  <img class="card-img-top" src="{{item.artworkUrl100}}" alt="Card image cap">
-  <div class="card-body">
-    <h5 class="card-title">{{item.name}}</h5>
-
-    <button type="button" class="btn btn-outline-primary btn-sm mt-3 mt-md-0 mr-3 mr-sm-0 mr-md-3"
-      data-toggle="modal" data-target="#discoverDetails{{item.id}}">{% trans "Show Details" %}</button>
-    <a href="#" class="btn btn-outline-secondary btn-sm mt-3 mt-md-0">{% trans "Add To Archive" %}</a>
-  </div>
-</div>
+<a href="#" class="discovery-cover"
+  data-toggle="modal" data-target="#discoverDetails{{item.id}}">
+  <img class="img-fluid" src="{{item.artworkUrl100}}" alt="Card image cap">
+</a>
 
 <!-- Modal{{item.id}} -->
 <div class="modal fade" id="discoverDetails{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="discoverDetailsTitle{{item.id}}" aria-hidden="true">

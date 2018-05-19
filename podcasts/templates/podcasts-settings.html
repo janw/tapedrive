@@ -1,5 +1,9 @@
 {% extends "base.html" %}{% load i18n bootstrap4 podcasts_tags %}
 
+{% block title %}
+  {% trans "Settings" %} | {{block.super}}
+{% endblock title %}
+
 {% block content %}
 <h1>{% trans "Settings" %}</h1>
 
@@ -9,7 +13,7 @@
       {% csrf_token %}
 
       <h2 class="text-muted">{% trans "User Preferences" %}</h2>
-      <p class="lead">{% trans "Your personal preferences on the behaviour of the Podcast Archive." %}</p>
+      <p class="lead">{% trans "Your personal preferences on the behaviour of Tape Drive." %}</p>
 
       {% if listener_form %}
         {% include "_settings_form_section.html" with form=listener_form %}
@@ -19,7 +23,7 @@
 
       {% if app_admin_form or site_admin_form %}
         <h2 class="text-muted">{% trans "Administration" %}</h2>
-        <p class="lead">{% trans "You are an admin on this server, therefore you have access to all global settings." %}</p>
+        <p class="lead">{% trans "You are an admin on this server and have access to all global settings." %}</p>
       {% endif %}
 
       {% if app_admin_form %}

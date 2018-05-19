@@ -13,7 +13,7 @@ from podcasts.models.podcast import Podcast
 from podcasts.utils import refresh_feed, chunks, handle_uploaded_file, parse_opml_file
 
 import json
-import urllib
+import requests
 
 
 # Create your views here.
@@ -76,8 +76,20 @@ def podcasts_new(request):
     else:
         form = NewFromURLForm()
 
+    url = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podcasts/all/25/explicit.json'
+    response = requests.get(url)
+
+    if response.status_code >= 400:
+        discovery = None
+    else:
+        discovery = json.loads(response.content)
+        discovery['feeds'] = list(chunks(discovery['feed']['results'][:15], 5))
+        discovery['aggregator'] = discovery['feed']['author']['name']
+        discovery['copyright'] = discovery['feed']['copyright']
+
     context = {
         'form': form,
+        'discovery': discovery,
     }
     return render(request, 'podcasts-new.html', context)
 
@@ -111,25 +123,6 @@ class PodcastDeleteView(DeleteView):
     context_object_name = 'podcast'
     success_url = reverse_lazy('podcasts:podcasts-list')
     template_name = 'podcasts/podcast_check_delete.html'
-
-
-def podcasts_discover(request):
-    url = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podcasts/all/25/explicit.json'
-    file, header = urllib.request.urlretrieve(url)
-
-    if header['Status'] == '200 OK':
-        with open(file) as fp:
-            content = json.load(fp)
-        feeds = list(chunks(content['feed']['results'], 3))
-
-        context = {
-            'content': content,
-            'feeds': feeds
-        }
-        # print(urllib.request.urlretrieve(url)[0])
-    else:
-        context = {}
-    return render(request, 'podcasts-discover.html', context)
 
 
 def podcasts_refresh_feed(request, slug):
