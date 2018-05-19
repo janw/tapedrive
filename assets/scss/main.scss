@@ -133,6 +133,7 @@ strong {
 }
 
 .card-img-container {
+  border-radius: 0 3px 3px 0;
   width: 250px;
   min-height: 250px;
 
@@ -158,30 +159,6 @@ strong {
 
 #summary p.collapsing {
     min-height: 69px !important;
-}
-
-.card-columns {
-  @include media-breakpoint-only(sm) {
-    column-count: 2;
-  }
-  @include media-breakpoint-only(md) {
-    column-count: 2;
-  }
-  @include media-breakpoint-only(lg) {
-    column-count: 3;
-  }
-  @include media-breakpoint-only(xl) {
-    column-count: 3;
-  }
-}
-
-#discover-podcast-card {
-  .card-title {
-    min-height: 64px;
-  }
-  .card-text {
-    min-height: 64px;
-  }
 }
 
 .list-group-item, .list-group-item:hover{ z-index: auto; }
@@ -387,3 +364,23 @@ footer.footer {
   }
 }
 
+
+$grid-columns: 10;
+
+.discovery-cover {
+  padding-bottom: $grid-gutter-width/2;
+  padding-top: $grid-gutter-width/2;
+  @include make-col-ready();
+    @include make-col(5);
+
+  @include media-breakpoint-up(sm) {
+    @include make-col(2);
+  }
+
+  & img {
+    @extend .border;
+    @extend .rounded;
+    @extend .shadow-sm;
+
+  }
+}

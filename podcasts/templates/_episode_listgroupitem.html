@@ -8,7 +8,7 @@
 
   <div class="w-100 d-md-flex justify-content-between">
     <small class="mt-3 text-muted">
-      {% blocktrans with published=episode.published|date:"DATETIME_FORMAT" %}
+      {% blocktrans with published=episode.published|date:"DATETIME_FORMAT" trimmed %}
         Published {{published}}
       {% endblocktrans %}
     </small>

@@ -18,8 +18,7 @@
 
     <p class="card-text mt-auto mb-0 text-muted">
       {% if object.fetched %}
-        {% blocktrans with num_episodes=object.num_episodes %}
-        {{num_episodes}} episodes{% endblocktrans %}
+        {% blocktrans with num_episodes=object.num_episodes %}{{num_episodes}} episodes{% endblocktrans %}
 
         {% if object.num_episodes == object.downloaded_episodes %}
           {% trans "(all downloaded)" %},
@@ -31,7 +30,7 @@
           {% endblocktrans %},
         {% endif %}
 
-        {% blocktrans with time=object.last_episode_date|naturaltime %}
+        {% blocktrans with time=object.last_episode_date|naturaltime trimmed %}
           last one published {{time}}
         {% endblocktrans %}
       {% else %}

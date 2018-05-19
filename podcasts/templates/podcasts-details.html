@@ -1,5 +1,9 @@
 {% extends "base.html" %}{% load i18n podcasts_tags humanize %}
 
+{% block title %}
+  {{podcast.title}} | {{block.super}}
+{% endblock title %}
+
 {% block content %}
 <h1 class="mb-1 text-center text-md-left">{{podcast.title}}</h1>
 
@@ -11,7 +15,7 @@
     {% endif %}
 
     {% if podcast.image %}
-        <img class="img-fluid rounded float-right col-md-5 mt-3 mt-md-0 ml-md-4 mb-3 px-0" src="{{ podcast.image.url }}">
+        <img class="img-fluid rounded float-right col-md-4 mt-3 mt-md-0 ml-md-4 mb-1 px-0" src="{{ podcast.image.url }}">
     {% endif %}
 
     {% if podcast.summary %}

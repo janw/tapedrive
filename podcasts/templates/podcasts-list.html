@@ -1,7 +1,12 @@
 {% extends "base.html" %}{% load i18n %}
 
+{% block title %}
+  {% trans "Your Podcasts" %} | {{block.super}}
+{% endblock title %}
+
+
 {% block content %}
-<h1>{% trans "Your podcasts" %}</h1>
+<h1>{% trans "Your Podcasts" %}</h1>
 
 {% if object_list %}
   <div class="row">

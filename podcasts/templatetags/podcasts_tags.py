@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language_from_request
 from urllib.parse import urlparse
 from langcodes import Language
+import os
 
 register = template.Library()
 
@@ -39,9 +40,13 @@ def add_next_self(context):
 def clean_link(link, include_path=True):
     parsed = urlparse(link)
     netloc = parsed.netloc.lstrip('www.')
-    path = parsed.path.rstrip('/')
 
     if include_path:
+        path = parsed.path.rstrip('/')
+        splits = str.split(path, '/')
+        if len(splits) > 2:
+            path = '/…/' + splits[-1]
+
         return netloc + path
     else:
         return netloc
