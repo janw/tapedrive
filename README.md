@@ -24,10 +24,11 @@ Tape Drive is built using [Django](https://djangoproject.com) **and currently in
 
 That's how Tape Drive looks like. Not a lot of pages but a few with reasonable information density.
 
+![Tape Drive login screen opening up](assets/img/screenshots/login-animated.gif)
+
 Podcasts List View         |  Podcast Detail View
 :-------------------------:|:-------------------------:
-![](assets/img/screenshots/podcasts-list.png)  |  ![](assets/img/screenshots/podcast-detail.png)
-
+![podcasts list view](assets/img/screenshots/podcasts-list.png)  |  ![podcast detail view](assets/img/screenshots/podcast-detail.png)
 
 ## Todos
 
