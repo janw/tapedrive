@@ -8,6 +8,8 @@ from django.contrib.sites.models import Site
 # Create your tests here.
 
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'
+TEST_FEED_PAGED = 'http://cre.fm/feed/m4a'
+TEST_FEED_PAGED_SECOND_PAGE = '?paged=2'
 
 
 class UtilFunctionsTestCase(TestCase):
@@ -26,21 +28,74 @@ class PodcastModelTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             Podcast.objects.create_from_feed_url(TEST_FEED)
 
-        podcast.update()
-        self.assertEqual(podcast.title, 'Killing Time')
+        with self.assertLogs('podcasts.models', level='INFO') as logs:
+            podcast.update()
+            self.assertEqual(podcast.title, 'Killing Time')
 
-        podcast2, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED)
-        self.assertEqual(podcast, podcast2)
-        self.assertFalse(created)
+        self.assertIn('INFO:podcasts.models.podcast:Fetched Killing Time', logs.output[0])
+        self.assertEqual(logs.output[1:], ['INFO:podcasts.models.podcast:Inserting cover image',
+                                           'INFO:podcasts.models.podcast:Inserting episodes from first page',
+                                           'INFO:podcasts.models.podcast:No next page found',
+                                           'INFO:podcasts.models.podcast:All done', ])
 
-        podcast.delete()
-        podcast, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED)
-        self.assertTrue(created)
-
-        self.assertEqual(str(podcast), 'Killing Time')
         self.assertEqual(podcast.get_absolute_url(), '/podcasts/killing-time/')
 
-        podcast.create_episodes()
+        # get_or_create should return the same podcast now
+        same_one, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED)
+        self.assertEqual(podcast, same_one)
+        self.assertFalse(created)
+
+        # Should have more than 0 episodes
+        self.assertGreaterEqual(Episode.objects.count(), 0)
+
+        # Deletion should remove Podcast and cascade to Episodes
+        podcast.delete()
+        self.assertEqual(Podcast.objects.count(), 0)
+        self.assertEqual(Episode.objects.count(), 0)
+
+        # Create complete Podcast from feed_url, with pages
+        with self.assertLogs('podcasts.models', level='INFO') as logs:
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED_PAGED)
+            self.assertTrue(created)
+
+        self.assertIn('INFO:podcasts.models.podcast:Fetched CRE', logs.output[0])
+        self.assertEqual(logs.output[1:4], ['INFO:podcasts.models.podcast:Inserting cover image',
+                                            'INFO:podcasts.models.podcast:Inserting episodes from first page',
+                                            'INFO:podcasts.models.podcast:Fetching next page %s%s ...' %
+                                            (TEST_FEED_PAGED, TEST_FEED_PAGED_SECOND_PAGE), ])
+        self.assertEqual(logs.output[-2:], ['INFO:podcasts.models.podcast:No next page found',
+                                            'INFO:podcasts.models.podcast:All done', ])
+
+        # Update Podcast, detection of existing episodes
+        with self.assertLogs('podcasts.models', level='INFO') as logs:
+            podcast.update(insert_cover=False)
+
+        self.assertEqual(logs.output[1:], ['INFO:podcasts.models.podcast:Inserting episodes from first page',
+                                           'INFO:podcasts.models.podcast:Found existing episodes',
+                                           'INFO:podcasts.models.podcast:All done', ])
+
+
+# class FilenameCreationTestCase(TestCase):
+#     valid_naming_scheme = '$podcast_type/$podcast_slug/${episode_date}_$episode_title'
+#     invalid_segment_scheme = '$podcast_type/${podcast_slug}_$episode_testattr'
+
+#     def setUp(self):
+#         self.podcast = Podcast.objects.create(**TEST_PODCAST)
+#         self.episode = self.podcast.episodes.create(**TEST_EPISODE)
+
+#     def test_valid_call(self):
+#         """Check everything's fine with a valid naming scheme"""
+#         should_be = 'serial/test-feed/2018-03-12 10:00:00+00:00_Le fancey episode'
+#         filename = utils.construct_download_filename(self.valid_naming_scheme, self.episode)
+#         self.assertEqual(filename, should_be)
+
+#     def test_invalid_segment(self):
+#         """Check that an invalid segments is untouched"""
+#         should_be = 'serial/test-feed_$episode_testattr'
+#         filename = utils.construct_download_filename(self.invalid_segment_scheme, self.episode)
+#         self.assertEqual(filename, should_be)
+
+
 
 class PodcastsSettingsModelTestCase(TestCase):
     def test_settings_model(self):
