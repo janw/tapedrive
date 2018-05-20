@@ -22,31 +22,27 @@ logger = logging.getLogger(__name__)
 class PodcastManager(models.Manager):
 
     @atomic
-    def create_from_feed_url(self, feed_url, info=None, create_episodes=True):
-        if info is None:
-            info = refresh_feed(feed_url)
-
-        if info.data is None:
+    def create_from_feed_url(self, feed_url, **kwargs):
+        feed_info = kwargs.pop('feed_info', None)
+        if not feed_info:
+            feed_info = refresh_feed(feed_url)
+        if feed_info is None:
             return
 
-        episodes = info.data.pop('episodes', None)
-        image = info.data.pop('image', None)
-        podcast = self.create(feed_url=info.url, **info.data)
+        podcast = Podcast(feed_url=feed_info.url)
+        return podcast.update(feed_info=feed_info, **kwargs)
 
-        if image is not None:
-            podcast.insert_cover(image)
-        if create_episodes:
-            podcast.create_episodes(info_or_episodes=episodes, initial=True)
-        return podcast
-
-    def get_or_create_from_feed_url(self, feed_url, info=None):
+    def get_or_create_from_feed_url(self, feed_url, **kwargs):
         self._for_write = True
-        info = refresh_feed(feed_url)
+        feed_info = kwargs.pop('feed_info', None)
+        if not feed_info:
+            feed_info = refresh_feed(feed_url)
 
         try:
-            return self.get(feed_url=info.url), False
+            return self.get(feed_url=feed_info.url), False
         except self.model.DoesNotExist:
-            return self.create_from_feed_url(info.url, info=info, create_episodes=False), True
+            # Args now include feed_info to prevent a second refresh happening down the line
+            return self.create_from_feed_url(feed_info.url, feed_info=feed_info, **kwargs), True
 
 
 class Podcast(models.Model):
@@ -142,7 +138,7 @@ class Podcast(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.id or not self.slug:
             max_length = self._meta.get_field('slug').max_length
             self.slug = orig = slugify(self.title)
             for x in itertools.count(1):
@@ -156,7 +152,7 @@ class Podcast(models.Model):
         return reverse('podcasts:podcasts-details', kwargs={'slug': self.slug})
 
     @atomic
-    def create_episodes(self, info_or_episodes=None, initial=False):
+    def create_episodes(self, info_or_episodes=None):
         if info_or_episodes is None:
             feed_info_obj = refresh_feed(self.feed_url)
             episode_info = feed_info_obj.data['episodes']
@@ -174,20 +170,12 @@ class Podcast(models.Model):
             all_created.append(created)
         return all_created
 
-    def insert_cover(self, info_or_img_url=None):
-        if info_or_img_url is None:
-            img_url = refresh_feed(self.feed_url)['image']
-        elif isinstance(info_or_img_url, dict):
-            img_url = info_or_img_url['image']
-        else:
-            img_url = info_or_img_url
-
+    def insert_cover(self, img_url):
         output = BytesIO()
         name = download_cover(img_url, output)
 
         if name:
             self.image.save(name, File(output), save=True)
-
 
     def add_subscriber(self, listener):
         self.subscribers.add(listener)
@@ -220,25 +208,29 @@ class Podcast(models.Model):
         return self.summary
 
     @atomic
-    def update(self, create_episodes=True, insert_image=True, update_all=False):
-        feed_info = refresh_feed(self.feed_url)
+    def update(self, feed_info=None, create_episodes=True, insert_cover=True, update_all=False):
+        if not feed_info:
+            feed_info = refresh_feed(self.feed_url)
+
         defaults = feed_info.data
         defaults['feed_url'] = feed_info.url
         defaults['fetched'] = timezone.now()
 
-        logger.info('Fetched %(podcast)s at %(timestamp)s' % {'podcast': self.title, 'timestamp': defaults['fetched']})
+        logger.info('Fetched %(podcast)s at %(timestamp)s' % {
+            'podcast': defaults['title'], 'timestamp': defaults['fetched']})
 
         episodes = defaults.pop('episodes', None)
         image = defaults.pop('image', None)
         for key, value in defaults.items():
             setattr(self, key, value)
 
-        if image is not None and insert_image:
+        if image is not None and insert_cover:
+            logger.info('Inserting cover image')
             self.insert_cover(image)
 
         if create_episodes:
-            logger.info('Inserting episodes from first page.')
-            all_created = self.create_episodes(info_or_episodes=episodes, initial=False)
+            logger.info('Inserting episodes from first page')
+            all_created = self.create_episodes(info_or_episodes=episodes)
 
             # Parse pages of paginated feed
             while feed_info.next_page and (False not in all_created or update_all):
@@ -246,16 +238,16 @@ class Podcast(models.Model):
 
                 feed_info = refresh_feed(feed_info.next_page)
                 episodes = feed_info.data.pop('episodes', None)
-                all_created = self.create_episodes(info_or_episodes=episodes, initial=False)
+                all_created = self.create_episodes(info_or_episodes=episodes)
 
-                if False in all_created:
-                    logger.info('Found existing episodes.')
-                if not feed_info.next_page:
-                    logger.info('No next page found.')
+            if False in all_created:
+                logger.info('Found existing episodes')
+            if not feed_info.next_page:
+                logger.info('No next page found')
 
-        logger.info('All done. ')
+        logger.info('All done')
         self.save()
-        return defaults
+        return self
 
     @atomic
     def queue_missing_episodes_download_tasks(self,
