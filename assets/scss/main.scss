@@ -227,8 +227,11 @@ footer.footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 60px;
-  line-height: 57px;
+
+  @include media-breakpoint-up(sm) {
+    height: 60px;
+    line-height: 57px;
+  }
 
   .text-muted a {
     color: $gray-900;
