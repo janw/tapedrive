@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'
 TEST_FEED_NONEXISTENT = 'http://localhost/killingnothing'
 TEST_FEED_HTTPERROR = 'https://github.com/janwh/nonexistenturl'
+TEST_FEED_MALFORMED = 'https://raw.githubusercontent.com/kurtmckee/feedparser/develop/tests/illformed/aaa_illformed.xml'
+TEST_FEED_NEXT_PAGE = 'http://cre.fm/feed/m4a'
 TEST_FEED_SUBTITLE_TOO_LONG = 'https://rss.art19.com/caliphate'
 
 TEST_PODCAST = {
@@ -34,43 +36,38 @@ class ResolveSegmentsTestCase(TestCase):
         self.assertEqual(utils.resolve_segments(self.string), should_become)
 
 
-class FilenameCreationTestCase(TestCase):
-    valid_naming_scheme = '$podcast_type/$podcast_slug/${episode_date}_$episode_title'
-    invalid_segment_scheme = '$podcast_type/${podcast_slug}_$episode_testattr'
-
-    def setUp(self):
-        self.podcast = Podcast.objects.create(**TEST_PODCAST)
-        self.episode = self.podcast.episodes.create(**TEST_EPISODE)
-
-    def test_valid_call(self):
-        """Check everything's fine with a valid naming scheme"""
-        should_be = 'serial/test-feed/2018-03-12 10:00:00+00:00_Le fancey episode'
-        filename = utils.construct_download_filename(self.valid_naming_scheme, self.episode)
-        self.assertEqual(filename, should_be)
-
-    def test_invalid_segment(self):
-        """Check that an invalid segments is untouched"""
-        should_be = 'serial/test-feed_$episode_testattr'
-        filename = utils.construct_download_filename(self.invalid_segment_scheme, self.episode)
-        self.assertEqual(filename, should_be)
-
-
 class FeedRefreshTestCase(TestCase):
 
     def test_valid_feed(self):
-        content = utils.refresh_feed(TEST_FEED)
-        self.assertEqual(content.info['title'], 'Killing Time')
+        feed_info = utils.refresh_feed(TEST_FEED)
+        self.assertIsNotNone(feed_info)
+        self.assertEqual(feed_info.data['title'], 'Killing Time')
 
-    def test_invalid_feed(self):
+    def test_various_feeds(self):
         """Querying an invalid feed should always fail softly, returning None"""
-        content = utils.refresh_feed(TEST_FEED_NONEXISTENT)
-        self.assertIsNone(content.info)
+        with self.assertLogs('podcasts.utils', level='INFO') as logs:
+            feed_info = utils.refresh_feed(TEST_FEED_NONEXISTENT)
+            self.assertIsNone(feed_info)
 
-        content = utils.refresh_feed(TEST_FEED_HTTPERROR)
-        self.assertIsNone(content.info)
+            feed_info = utils.refresh_feed(TEST_FEED_HTTPERROR)
+            self.assertIsNone(feed_info)
+
+            feed_info = utils.refresh_feed(TEST_FEED_MALFORMED)
+            self.assertIsNone(feed_info)
+
+            feed_info = utils.refresh_feed(TEST_FEED_NEXT_PAGE)
+            self.assertIsNotNone(feed_info.next_page)
+
+        self.assertEqual(logs.output, ['ERROR:podcasts.utils:Connection error',
+                                       'ERROR:podcasts.utils:HTTP error 404: Not Found',
+                                       'ERROR:podcasts.utils:Feed is malformatted',
+                                       'INFO:podcasts.utils:Feed has next page'])
 
     def test_long_subtitle_feed(self):
         """Test if an overly long subtitle is properly truncated"""
-        content = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
-        self.assertTrue(len(content.info['subtitle']) == 255)
-        self.assertTrue(content['subtitle'].endswith(' ...'))
+        with self.assertLogs('podcasts.utils', level='INFO') as logs:
+            feed_info = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
+            self.assertTrue(len(feed_info.data['subtitle']) == 255)
+            self.assertTrue(feed_info.data['subtitle'].endswith(' ...'))
+
+        self.assertEqual(logs.output, ['WARNING:podcasts.utils:Subtitle too long, will be truncated', ])
