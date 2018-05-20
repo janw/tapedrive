@@ -26,9 +26,9 @@ That's how Tape Drive looks like. Not a lot of pages but a few with reasonable i
 
 ![Tape Drive login screen opening up](assets/img/screenshots/login-animated.gif)
 
-Podcasts List View         |  Podcast Detail View
-:-------------------------:|:-------------------------:
-![podcasts list view](assets/img/screenshots/podcasts-list.png)  |  ![podcast detail view](assets/img/screenshots/podcast-detail.png)
+![Tape Drive podcasts list view](assets/img/screenshots/podcasts-list.png)
+
+![Tape Drive podcast detail view](assets/img/screenshots/podcast-detail.png)
 
 ## Todos
 
