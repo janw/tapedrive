@@ -1,7 +1,5 @@
 from django.test import TestCase
 from podcasts import utils
-from podcasts.models.podcast import Podcast
-from datetime import datetime, timezone
 
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'
 TEST_FEED_NONEXISTENT = 'http://localhost/killingnothing'
@@ -9,18 +7,6 @@ TEST_FEED_HTTPERROR = 'https://github.com/janwh/nonexistenturl'
 TEST_FEED_MALFORMED = 'https://raw.githubusercontent.com/kurtmckee/feedparser/develop/tests/illformed/aaa_illformed.xml'
 TEST_FEED_NEXT_PAGE = 'http://cre.fm/feed/m4a'
 TEST_FEED_SUBTITLE_TOO_LONG = 'https://rss.art19.com/caliphate'
-
-TEST_PODCAST = {
-    'feed_url': 'http://example.com/feed',
-    'title': 'Test Feed',
-    'itunes_type': 'serial',
-}
-TEST_EPISODE = {
-    'title': 'Le fancey episode',
-    'guid': 'http://example.com/feed/01-testep',
-    'media_url': 'http://example.com/feed/01-testep.mp3',
-    'published': datetime(2018, 3, 12, 10, tzinfo=timezone.utc),
-}
 
 
 class ResolveSegmentsTestCase(TestCase):
