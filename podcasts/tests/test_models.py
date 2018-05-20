@@ -1,15 +1,31 @@
 from django.test import TestCase
+
+from django.contrib.sites.models import Site
 from django.db import transaction
 from django.db.utils import IntegrityError
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
 from podcasts.models import PodcastsSettings
-from django.contrib.sites.models import Site
+
+from datetime import datetime, timezone
+
 # Create your tests here.
 
 TEST_FEED = 'http://feeds.5by5.tv/killingtime'
 TEST_FEED_PAGED = 'http://cre.fm/feed/m4a'
 TEST_FEED_PAGED_SECOND_PAGE = '?paged=2'
+
+TEST_PODCAST = {
+    'feed_url': 'http://example.com/feed',
+    'title': 'Test Feed',
+    'itunes_type': 'serial',
+}
+TEST_EPISODE = {
+    'title': 'Le fancey episode',
+    'guid': 'http://example.com/feed/01-testep',
+    'media_url': 'http://example.com/feed/01-testep.mp3',
+    'published': datetime(2018, 3, 12, 10, tzinfo=timezone.utc),
+}
 
 
 class UtilFunctionsTestCase(TestCase):
@@ -75,26 +91,27 @@ class PodcastModelTestCase(TestCase):
                                            'INFO:podcasts.models.podcast:All done', ])
 
 
-# class FilenameCreationTestCase(TestCase):
-#     valid_naming_scheme = '$podcast_type/$podcast_slug/${episode_date}_$episode_title'
-#     invalid_segment_scheme = '$podcast_type/${podcast_slug}_$episode_testattr'
+class FilenameCreationTestCase(TestCase):
+    valid_naming_scheme = '$podcast_type/$podcast_slug/${episode_date}_$episode_title'
+    invalid_naming_scheme = '$podcast_type/${podcast_slug}_$episode_testattr'
+    datefmt = 'Y-m-d_Hi'
 
-#     def setUp(self):
-#         self.podcast = Podcast.objects.create(**TEST_PODCAST)
-#         self.episode = self.podcast.episodes.create(**TEST_EPISODE)
+    def setUp(self):
+        self.podcast = Podcast.objects.create(**TEST_PODCAST)
+        self.episode = self.podcast.episodes.create(**TEST_EPISODE)
 
-#     def test_valid_call(self):
-#         """Check everything's fine with a valid naming scheme"""
-#         should_be = 'serial/test-feed/2018-03-12 10:00:00+00:00_Le fancey episode'
-#         filename = utils.construct_download_filename(self.valid_naming_scheme, self.episode)
-#         self.assertEqual(filename, should_be)
+    def test_valid_call(self):
+        """Check everything's fine with a valid naming scheme"""
+        should_be = 'serial/test-feed/2018-03-12_1000_Le fancey episode.mp3'
 
-#     def test_invalid_segment(self):
-#         """Check that an invalid segments is untouched"""
-#         should_be = 'serial/test-feed_$episode_testattr'
-#         filename = utils.construct_download_filename(self.invalid_segment_scheme, self.episode)
-#         self.assertEqual(filename, should_be)
+        file_path = self.episode.construct_file_path('', self.valid_naming_scheme, self.datefmt)
+        self.assertEqual(file_path, should_be)
 
+    def test_invalid_segment(self):
+        """Check that an invalid segments is untouched"""
+        should_be = 'serial/test-feed_$episode_testattr.mp3'
+        file_path = self.episode.construct_file_path('', self.invalid_naming_scheme, self.datefmt)
+        self.assertEqual(file_path, should_be)
 
 
 class PodcastsSettingsModelTestCase(TestCase):
@@ -113,8 +130,6 @@ class PodcastsSettingsModelTestCase(TestCase):
 
         # Return the proper __str__ based on the Site.name
         self.assertEqual(str(settings), 'Test Site Podcasts Settings')
-
-        # settings"%s Podcasts Settings" % self.site
 
 
 class EpisodeModelTestCase(TestCase):
