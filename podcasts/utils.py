@@ -94,29 +94,34 @@ def resolve_segments(string):
 
 
 def refresh_feed(feed_url):
-    response = requests.get(feed_url, headers=HEADERS, allow_redirects=True)
+    try:
+        response = requests.get(feed_url, headers=HEADERS, allow_redirects=True)
+    except requests.exceptions.ConnectionError:
+        logger.error('Connection error')
+        return None
 
     # Escape improper feed-URL
     if response.status_code >= 400:
-        print("\nQuery returned HTTP error", response.status_code, response.reason)
-        return feed_info(None, '')
+        logger.error('HTTP error %d: %s' % (response.status_code, response.reason))
+        return None
 
     feedobj = feedparser.parse(response.content)
 
     # Escape malformatted XML
-    if feedobj['bozo'] == 1:
-
-        # If character encoding is wrong, we continue when reparsing succeeded
-        if type(feedobj['bozo_exception']) is not CharacterEncodingOverride:
-            print('\nDownloaded feed is malformatted on', feed_url)
-            return feed_info(None, '')
+    if feedobj['bozo'] == 1 and type(feedobj['bozo_exception']) is not CharacterEncodingOverride:
+        logger.error('Feed is malformatted')
+        return None
 
     if 'feed' not in feedobj:
-        raise Exception('Feed is incomplete')
+        logger.error('Feed is incomplete')
+        return None
 
     links = feedobj['feed'].get('links', [])
     next_page = next((item for item in links if item["rel"] == "next"), {}).get('href')
     last_page = next((item for item in links if item["rel"] == "last"), {}).get('href')
+
+    if next_page:
+        logger.info('Feed has next page')
 
     return feed_info(parse_feed_info(feedobj), response.url, next_page, last_page)
 
@@ -127,6 +132,7 @@ def sanitize_subtitle(object):
         # As per spec, subtitle should be plain text and up to 255 characters.
         subtitle = bleach.clean(object['subtitle'], tags=[], strip=True)
         if len(subtitle) > 255:
+            logger.warning('Subtitle too long, will be truncated')
             subtitle = subtitle[:251] + ' ...'
         return subtitle
 
