@@ -2,6 +2,7 @@ from django import template
 from django.conf import settings
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language_from_request
 from urllib.parse import urlparse
@@ -73,3 +74,28 @@ def field_help_long(context, form, field, html_parent='accordion', show_initiall
         context['no_help'] = True
 
     return context
+
+
+@register.simple_tag(takes_context=False)
+def jsr_var(variable):
+    return '{{:%s}}' % variable
+
+
+@register.simple_tag(takes_context=False)
+def jsr_if(condition):
+    return mark_safe('{{if %s }}' % condition)
+
+
+@register.simple_tag(takes_context=False)
+def jsr_endif():
+    return '{{/if}}'
+
+
+@register.simple_tag(takes_context=False)
+def jsr_for(indexed):
+    return mark_safe('{{for %s }}' % indexed)
+
+
+@register.simple_tag(takes_context=False)
+def jsr_endfor():
+    return '{{/for}}'

@@ -372,12 +372,14 @@ input[type="file"] {
 
 
 $grid-columns: 10;
+$grid-gutter-width: 10px;
+
 
 .discovery-cover {
   padding-bottom: $grid-gutter-width/2;
   padding-top: $grid-gutter-width/2;
   @include make-col-ready();
-    @include make-col(5);
+  @include make-col(5);
 
   @include media-breakpoint-up(sm) {
     @include make-col(2);

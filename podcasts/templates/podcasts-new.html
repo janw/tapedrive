@@ -8,7 +8,7 @@
       {% csrf_token %}
       {% bootstrap_form form %}
       {% buttons %}
-          <button type="submit" class="btn btn-secondary btn-lg mt-3">{% trans "Add New Podcasts" %}</button>
+          <button type="submit" class="btn btn-secondary btn-lg mt-3">{% trans "Add Podcasts" %}</button>
       {% endbuttons %}
     </form>
   </div>
@@ -17,10 +17,10 @@
   <div class="row">
     <div class="col">
       <h3 class="mb-0 text-muted ">{% trans "Don't know what to add?" %}</h3>
-      <h1>{% trans "Discover Something New" %}</h1>
+      <h2>{% trans "Discover Something New" %}</h2>
     </div>
   </div>
-  <div class="row">
+  <div class="row mb-3">
     {% for row in discovery.feeds %}
       {% for item in row %}
         {% include "_podcast_card_discovery.html" %}
@@ -29,9 +29,47 @@
   </div>
 
   <div class="text-center my-3">
-    <p class="text-muted">{% blocktrans with aggregator=discovery.aggregator copyright=discovery.copyright trimmed %}
-        Aggregation and Content from {{aggregator}}, {{copyright}}
-    {% endblocktrans %}</p>
+    <small class="text-muted">{% blocktrans with aggregator=discovery.aggregator copyright=discovery.copyright trimmed %}
+        Aggregation and Content courtesy of iTunes, {{copyright}}
+    {% endblocktrans %}</small>
   </div>
 {% endif %}
+
+<div class="row">
+  <div class="col">
+    <h3 class="mb-0 text-muted ">{% trans "Looking for something specific?" %}</h3>
+    <h2>{% trans "Search the Apple Podcasts Directory" %}</h2>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col">
+    <form id="apsearch" action="#" method="post" style="min-height: 300px;">
+      {% csrf_token %}
+      <label class="sr-only" for="id_search_term">{% trans "Search Term" %}</label>
+      <div class="input-group">
+        <input type="text" class="form-control mb-2" name="search_term" id="id_search_term" placeholder="{% trans "Search Term" %}">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-secondary mb-2 px-4">{% trans "Search" %}</button>
+        </div>
+      </div>
+
+      <div id="apsearch-results" class="row mb-3">
+      </div>
+      <div id="apsearch-noresults" class="row mb-3" style="display:none;">
+        <div class="col-12">
+          <p id="apsearch-noresults"  class="text-center">{% trans "Sorry, there were no results for your search. 👎" %}</p>
+        </div>
+      </div>
+
+      <div id="apsearch-attrib" class="text-center my-3" style="display:none;">
+        <small class="text-muted">{% blocktrans trimmed %}
+            Search Results and Content courtesy of iTunes,<br />
+            Copyright © 2018 Apple Inc. All rights reserved.
+        {% endblocktrans %}</small>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% include "_podcast_card_search_jqt.html" %}
 {% endblock content %}

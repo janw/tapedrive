@@ -120,3 +120,63 @@ $('#id_opml_file').change(function() {
         $('#id_opml_file_inner').text('');
     };
 })
+
+var template = $.templates('#apsearch-template');
+function searchReturn (data, textStatus, jqXHR) {
+    $('#apsearch-attrib').show();
+    if (data.resultCount == 0){
+        $('#apsearch-results').hide()
+        $('#apsearch-noresults').show();
+    }
+    else {
+        var htmlOutput = template.render(data.results);
+        $("#apsearch-results").html(htmlOutput);
+        $('#apsearch-results').slideDown(200);
+        $('.apsearch-addfeed').each(function(index) {
+            $(this).on("click", function(e){
+                e.preventDefault;
+                $(this).attr('disabled', 'disabled');
+                var feed_url = $(this).data('feed-url');
+                var href = $(this).data('href');
+                var id = $(this).data('id');
+                var jqxhr = $.ajax({
+                    beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                        }
+                    },
+                    url: href,
+                    type: 'POST',
+                    data: {
+                        feed_url: feed_url,
+                    },
+                    dataType: 'json',
+                })
+                .done(function () {
+                    $('#apsearch-addfeed' + id).hide();
+                    $('#apsearch-feedadded' + id).show();
+                });
+            });
+        });
+    };
+    return false;
+}
+
+$('#apsearch button[type="submit"]').click(function(e){
+    e.preventDefault;
+    search_term = $('#apsearch input[name="search_term"]').val();
+    if (search_term.length > 2) {
+        var jqxhr = $.ajax({
+            url: "https://itunes.apple.com/search",
+            type: 'POST',
+            data: {
+                media: 'podcast',
+                term: search_term,
+                limit: 15,
+            },
+            dataType: 'json',
+        })
+        .done(searchReturn);
+    };
+    return false;
+});

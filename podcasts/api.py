@@ -19,6 +19,19 @@ class HttpResponseNoContent(HttpResponse):
     status_code = 204
 
 
+@require_POST
+def podcast_add(request):
+    feed_url = request.POST.get('feed_url')
+    if not feed_url:
+        return HttpResponseBadRequest()
+
+    podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
+    podcast.add_subscriber(request.user.listener)
+    podcast.add_follower(request.user.listener)
+
+    return JsonResponse({'created': created})
+
+
 def podcast_refresh_feed(request, slug=None):
     podcast = get_object_or_404(Podcast, slug=slug)
     response_data = {}
