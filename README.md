@@ -1,4 +1,3 @@
-
 <div align="center">
 <img src="assets/img/icon@2x.png" alt="Tape Drive Logo" />
 <h1>Tape Drive, the selfhosted Podcast Client and Archival server</h1>
@@ -8,6 +7,7 @@
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/janwh/tapedrive.svg)](https://codeclimate.com/github/janwh/tapedrive)
 [![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/tapedrive/issues)
 [![Join the chat at https://gitter.im/tapedriveio/Lobby](https://badges.gitter.im/tapedriveio/Lobby.svg)](https://gitter.im/tapedriveio/Lobby)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjanwh%2Ftapedrive.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjanwh%2Ftapedrive?ref=badge_shield)
 
 [![Receiving via Liberapay](https://img.shields.io/liberapay/receives/janw.svg)](https://liberapay.com/janw/)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/janwh)
@@ -51,3 +51,6 @@ Currently the main 'todo' is completing the sought out feature set around archiv
 * Cassette Icon by [Just UI](https://www.behance.net/Just_UI) via [IconFinder](https://www.iconfinder.com/icons/669942/audio_cassette_multimedia_music_icon)
 
 The project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjanwh%2Ftapedrive.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjanwh%2Ftapedrive?ref=badge_large)
