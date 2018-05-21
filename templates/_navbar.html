@@ -28,11 +28,21 @@
         {% trans "History" %}
       </a>
     </li>
-      <li class="nav-item {% add_active 'podcasts:settings' %}">
-        <a class="nav-link" href="{% url "podcasts:settings" %}">
-          {% trans "Settings" %}
-        </a>
-      </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle {% add_active 'podcasts:settings' %}" href="#" role="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "User" %}</a>
+
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+        <h6 class="dropdown-header pb-0">{% trans "Logged in as" %}</h6>
+        <p class="mx-4 mb-2">{{user.username|title}}</p>
+        <div class="dropdown-divider"></div>
+        {% if user.is_superuser %}
+          <a class="dropdown-item" href="{% url "admin:index" %}">{% trans "Administration" %}</a>
+        {% endif %}
+        <a class="dropdown-item" href="{% url "podcasts:settings" %}">{% trans "Settings" %}</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+      </div>
+    </li>
     {% endif %}
   </ul>
 </div>
