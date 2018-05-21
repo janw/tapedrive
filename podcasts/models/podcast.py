@@ -208,7 +208,7 @@ class Podcast(models.Model):
         return self.summary
 
     @atomic
-    def update(self, feed_info=None, create_episodes=True, insert_cover=True, update_all=False):
+    def update(self, feed_info=None, create_episodes=True, insert_cover=True, update_all=False, only_first_page=False):
         if not feed_info:
             feed_info = refresh_feed(self.feed_url)
 
@@ -232,8 +232,13 @@ class Podcast(models.Model):
             logger.info('Inserting episodes from first page')
             all_created = self.create_episodes(info_or_episodes=episodes)
 
-            # Parse pages of paginated feed
-            while feed_info.next_page and (False not in all_created or update_all):
+            # Continue while
+            # * There is a next page
+            # * Not only the first page should be processed
+            # * All episodes are new OR existing episodes should be updated
+            while (feed_info.next_page and not only_first_page and
+                   (False not in all_created or update_all)):
+
                 logger.info('Fetching next page %s ...' % feed_info.next_page)
 
                 feed_info = refresh_feed(feed_info.next_page)
@@ -247,7 +252,6 @@ class Podcast(models.Model):
 
         logger.info('All done')
         self.save()
-        return self
 
     @atomic
     def queue_missing_episodes_download_tasks(self,
