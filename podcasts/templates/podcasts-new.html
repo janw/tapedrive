@@ -6,23 +6,7 @@
   <div class="col mb-4 text-center text-md-left">
     <form enctype="multipart/form-data" action="{% url 'podcasts:podcasts-new' %}" method="post" class="form">
       {% csrf_token %}
-
-      {% for field in form %}
-
-        {% if field.name == 'opml_file' %}
-          <div class="form-group">
-            {% bootstrap_label field.label label_for=field.id_for_label %}
-            <div class="custom-file">
-              <label id="{{field.id_for_label}}_inner" class="custom-file-label" for="{{field.id_for_label}}">{% trans "Choose file" %}</label>
-              <input name="{{field.html_name}}" id="{{field.id_for_label}}" type="file" class="custom-file-input">
-            </div>
-            <small class="form-text text-muted">{{field.help_text}}</small>
-          </div>
-        {% else %}
-          {% bootstrap_field field %}
-        {% endif %}
-      {% endfor %}
-
+      {% bootstrap_form form %}
       {% buttons %}
           <button type="submit" class="btn btn-secondary btn-lg mt-3">{% trans "Add New Podcasts" %}</button>
       {% endbuttons %}
