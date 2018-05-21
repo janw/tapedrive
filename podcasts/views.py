@@ -15,6 +15,7 @@ from podcasts.utils import refresh_feed, chunks, handle_uploaded_file, parse_opm
 import json
 import requests
 
+from actstream.models import model_stream
 
 # Create your views here.
 def index(request):
@@ -174,3 +175,35 @@ def settings(request):
     return render(request, 'podcasts-settings.html', {'listener_form': listener_form,
                                                       'app_admin_form': app_admin_form,
                                                       'site_admin_form': site_admin_form})
+
+
+def activity_list(request):
+    queryset = model_stream(Podcast)
+    paginator = Paginator(queryset, 100)
+    page = request.GET.get('page')
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        items = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        items = paginator.page(paginator.num_pages)
+
+    is_paginated = paginator.num_pages > 1
+    total_number = queryset.count()
+    context = {
+        'object_list': items,
+        'paginator': paginator,
+        'is_paginated': is_paginated,
+        'total_number': total_number
+    }
+
+    return render(request, 'activity-list.html', context)
+
+
+    # model = Podcast
+    # paginate_by = PODCASTS_PER_PAGE
+    # template_name = 'podcasts-list.html'
+

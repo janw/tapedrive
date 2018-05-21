@@ -8,6 +8,7 @@ from podcasts.models.podcast import Podcast
 from podcasts.utils import download_file
 
 from background_task import background
+from actstream import action
 
 User = get_user_model()
 
@@ -26,7 +27,7 @@ def download_episode(media_url, file_path, id):
     episode.file_size = filesize
     episode.downloaded = timezone.now()
     episode.save()
-
+    action.send(episode, 'was downloaded')
 
 @background(queue='low-priority')
 def regular_feed_refresh():

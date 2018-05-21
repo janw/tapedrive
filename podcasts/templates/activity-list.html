@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% load i18n activity_tags %}
+
+{% block title %}
+  {% trans "Activities" %} | {{block.super}}
+{% endblock title %}
+
+
+{% block content %}
+{% if object_list %}
+  <h1 class="mb-3">{% trans "Recent Activity" %}</h1>
+  <div class="row">
+    <div class="col">
+
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th class="text-right" scope="col">#</th>
+            <th scope="col">What?</th>
+            <th scope="col">When?</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for action in object_list %}
+          {% include "_activity_action_row.html" %}
+        {% endfor %}
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+
+  {% include "_pagination.html" with page_obj=object_list %}
+{% endif %}
+{% endblock content %}

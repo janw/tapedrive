@@ -73,6 +73,7 @@ class PodcastModelTestCase(TestCase):
         with self.assertLogs('podcasts.models', level='INFO') as logs:
             podcast, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED_PAGED)
             self.assertTrue(created)
+            self.assertTrue(isinstance(podcast, Podcast))
 
         self.assertIn('INFO:podcasts.models.podcast:Fetched CRE', logs.output[0])
         self.assertEqual(logs.output[1:4], ['INFO:podcasts.models.podcast:Inserting cover image',

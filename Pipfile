@@ -37,6 +37,7 @@ langcodes = "*"
 bleach = "*"
 markdown = "*"
 requests = "*"
+django-activity-stream = "*"
 
 
 [requires]
