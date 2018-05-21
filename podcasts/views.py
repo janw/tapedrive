@@ -75,6 +75,7 @@ def podcasts_new(request):
 
     else:
         form = NewFromURLForm()
+    discovery = None
 
     url = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podcasts/all/25/explicit.json'
     response = requests.get(url)
