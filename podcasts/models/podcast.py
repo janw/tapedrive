@@ -1,11 +1,12 @@
 from django.core.files import File
 from django.db import models
+from django.db.models.signals import post_save
 from django.db.transaction import atomic
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
-
 from io import BytesIO
 import itertools
 import logging
@@ -14,6 +15,8 @@ from podcasts.conf import *
 from podcasts.utils import refresh_feed, feed_info, download_cover
 from podcasts.models import cover_image_filename
 from podcasts.models.episode import Episode
+
+from actstream import action
 
 
 logger = logging.getLogger(__name__)
@@ -30,7 +33,8 @@ class PodcastManager(models.Manager):
             return
 
         podcast = Podcast(feed_url=feed_info.url)
-        return podcast.update(feed_info=feed_info, **kwargs)
+        podcast.update(feed_info=feed_info, **kwargs)
+        return podcast
 
     def get_or_create_from_feed_url(self, feed_url, **kwargs):
         self._for_write = True
@@ -168,6 +172,7 @@ class Podcast(models.Model):
             ep['podcast'] = self
             episode, created = Episode.objects.update_or_create(guid=ep['guid'], defaults=ep)
             all_created.append(created)
+
         return all_created
 
     def insert_cover(self, img_url):
@@ -252,6 +257,9 @@ class Podcast(models.Model):
 
         logger.info('All done')
         self.save()
+        action.send(self, verb='was fetched', timestamp=defaults['fetched'])
+        action.send(self, verb='was updated', timestamp=defaults['updated'])
+
 
     @atomic
     def queue_missing_episodes_download_tasks(self,
@@ -260,3 +268,9 @@ class Podcast(models.Model):
                                               inpath_dateformat=DEFAULT_DATE_FORMAT):
         for episode in self.episodes.filter(downloaded=None):
             episode.queue_download_task(storage_directory, naming_scheme, inpath_dateformat)
+
+
+@receiver(post_save, sender=Podcast)
+def log_activity(sender, instance, created, **kwargs):
+    if created:
+        action.send(instance, verb='was added')

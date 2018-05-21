@@ -38,5 +38,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('podcasts/', include(podcasts_patterns)),
     path('episodes/', include(episodes_patterns)),
+    path('activity/', views.activity_list, name='activity-list'),
     path('settings/', views.settings, name='settings'),
 ]

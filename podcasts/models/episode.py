@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.db.transaction import atomic
+from django.dispatch import receiver
 from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify, date as _date
 
@@ -10,6 +12,8 @@ from string import Template
 from podcasts.conf import *
 from podcasts.models import BigPositiveIntegerField
 from podcasts.utils import strip_url, AVAILABLE_EPISODE_SEGMENTS, AVAILABLE_PODCAST_SEGMENTS
+
+from actstream import action
 
 
 class Episode(models.Model):
@@ -207,3 +211,10 @@ class Episode(models.Model):
         if not os.path.isfile(self.file_path) or overwrite:
             self.download_task = download_episode(self.media_url, self.file_path, str(self.id))
             self.save()
+
+
+@receiver(post_save, sender=Episode)
+def log_activity(sender, instance, created, **kwargs):
+    if created:
+        action.send(instance, verb='was fetched from', target=instance.podcast)
+        action.send(instance, verb='was published to', target=instance.podcast, timestamp=instance.published)

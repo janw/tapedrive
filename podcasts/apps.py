@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 
+
 # Shamelessly stolen and adapted from django.contrib.sites
 def create_default_settings(app_config, verbosity=2, interactive=True, using=DEFAULT_DB_ALIAS, apps=global_apps, **kwargs):
     try:
@@ -36,4 +37,5 @@ class PodcastsConfig(AppConfig):
     def ready(self):
         post_migrate.connect(create_default_settings, sender=self)
 
-        print('Fire!')
+        from actstream import registry  # noqa
+        registry.register(self.get_model('Podcast'), self.get_model('Episode'))

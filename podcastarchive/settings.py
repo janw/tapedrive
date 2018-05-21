@@ -63,6 +63,7 @@ class Common(Configuration):
         'podcastarchive.users',
         'podcasts',
         'background_task',
+        'actstream',
     ]
 
     MIDDLEWARE = [
@@ -192,6 +193,12 @@ class Common(Configuration):
         25: 'alert-success',
         30: 'alert-warning',
         40: 'alert-danger',
+    }
+
+    ACTSTREAM_SETTINGS = {
+        'FETCH_RELATIONS': True,
+        'USE_PREFETCH': True,
+        'GFK_FETCH_DEPTH': 2,
     }
 
 
