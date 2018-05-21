@@ -293,7 +293,10 @@ footer.footer {
   #reset_link {
     font-size: 0.8rem;
   }
+}
 
+input[type="file"] {
+  @extend .form-control;
 }
 
 .img-logo {
