@@ -9,16 +9,17 @@ from django.http import (
     Http404, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse,
     HttpResponseForbidden, HttpResponse
 )
-from django.core import serializers
 
-import json
 import copy
+import requests
 from datetime import datetime
+from urllib.parse import urlparse, urlunparse, urlencode
 
 from podcasts.models.listener import EpisodePlaybackState, Listener
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
-
+from podcasts.utils import unify_apple_podcasts_response, HEADERS
+from podcasts.conf import *  # noqa
 
 class HttpResponseNoContent(HttpResponse):
     status_code = 204
@@ -26,7 +27,7 @@ class HttpResponseNoContent(HttpResponse):
 
 def encode_datetime(obj):
     if isinstance(obj, datetime):
-        return obj.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ')
+        return obj.strftime('%Y-%m-%dT%H:%M:%S%z')
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
@@ -115,3 +116,35 @@ def episode_details(request, id):
     object_dict['url_api_episode_queue_download'] = reverse('podcasts:api-episode-queue-download',
                                                             kwargs={'id': object.id})
     return JsonResponse(object_dict)
+
+
+def apple_podcasts_topcharts(request):
+    response = requests.get(ITUNES_TOPCHARTS_URL, headers=HEADERS)
+    data = response.json()
+    return JsonResponse(unify_apple_podcasts_response(data))
+
+
+def apple_podcasts_feed_from_id(request, id):
+    params = {'id': id}
+    url_parts = list(urlparse(ITUNES_LOOKUP_URL))
+    url_parts[4] = urlencode(params)
+    url = urlunparse(url_parts)
+    response = requests.get(url, headers=HEADERS)
+    data = response.json()
+    print(data)
+    if 'resultCount' in data and data['resultCount'] > 0:
+        return JsonResponse({'url': data['results'][0]['feedUrl']})
+
+
+@require_POST
+def apple_podcasts_search(request):
+    term = request.POST.get('term', '')
+    params = {'media': 'podcast', 'term': search_term, 'limit': ITUNES_SEARCH_LIMIT}
+
+    if len(term) > 2:
+        url_parts = list(urlparse(ITUNES_SEARCH_URL))
+        url_parts[4] = urlencode(params)
+        url = urlunparse(url_parts)
+        response = requests.post(url, headers=HEADERS)
+        data = response.json()
+        return JsonResponse(unify_apple_podcasts_response(data))

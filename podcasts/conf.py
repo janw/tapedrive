@@ -22,3 +22,8 @@ SEEK_BACKWARD_BY = _getattr('SEEK_BACKWARD_BY', 30)
 STORAGE_DIRECTORY = '$HOME/'
 DEFAULT_NAMING_SCHEME = '$podcast_slug/$episode_title'
 DEFAULT_DATE_FORMAT = 'Y-m-d_Hi'
+
+ITUNES_TOPCHARTS_URL = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podcasts/all/25/explicit.json'
+ITUNES_SEARCH_URL = 'https://itunes.apple.com/search?'
+ITUNES_LOOKUP_URL = 'https://itunes.apple.com/lookup?'
+ITUNES_SEARCH_LIMIT = 15

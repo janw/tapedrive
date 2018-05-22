@@ -13,27 +13,6 @@
     </form>
   </div>
 </div>
-{% if discovery %}
-  <div class="row">
-    <div class="col">
-      <h3 class="mb-0 text-muted ">{% trans "Don't know what to add?" %}</h3>
-      <h2>{% trans "Discover Something New" %}</h2>
-    </div>
-  </div>
-  <div class="row mb-3">
-    {% for row in discovery.feeds %}
-      {% for item in row %}
-        {% include "_podcast_card_discovery.html" %}
-      {% endfor %}
-    {% endfor %}
-  </div>
-
-  <div class="text-center my-3">
-    <small class="text-muted">{% blocktrans with aggregator=discovery.aggregator copyright=discovery.copyright trimmed %}
-        Aggregation and Content courtesy of iTunes, {{copyright}}
-    {% endblocktrans %}</small>
-  </div>
-{% endif %}
 
 <div class="row">
   <div class="col">
@@ -43,21 +22,20 @@
 </div>
 <div class="row mb-3">
   <div class="col">
-    <form id="apsearch" action="#" method="post" style="min-height: 300px;">
+    <form id="apsearch" action="#" method="post">
       {% csrf_token %}
       <label class="sr-only" for="id_search_term">{% trans "Search Term" %}</label>
       <div class="input-group">
-        <input type="text" class="form-control mb-2" name="search_term" id="id_search_term" placeholder="{% trans "Search Term" %}">
+        <input type="text" class="form-control my-2" name="search_term" id="id_search_term" placeholder="{% trans "Search Term" %}">
         <div class="input-group-append">
-          <button type="submit" class="btn btn-secondary mb-2 px-4">{% trans "Search" %}</button>
+          <button data-href="{% url 'podcasts:api-search' %}" type="submit" class="btn btn-secondary my-2 px-4">{% trans "Search" %}</button>
         </div>
       </div>
 
-      <div id="apsearch-results" class="row mb-3">
-      </div>
+      <div id="apsearch-results" class="row mb-3" style="display:none;"></div>
       <div id="apsearch-noresults" class="row mb-3" style="display:none;">
         <div class="col-12">
-          <p id="apsearch-noresults"  class="text-center">{% trans "Sorry, there were no results for your search. 👎" %}</p>
+          <p class="text-center">{% trans "Sorry, there were no results for your search. 👎" %}</p>
         </div>
       </div>
 
@@ -71,5 +49,22 @@
     </form>
   </div>
 </div>
+
+{% if discovery %}
+  <div class="row">
+    <div class="col">
+      <h3 class="mb-0 text-muted ">{% trans "Don't know what to look for?" %}</h3>
+      <h2>{% trans "Discover Something New" %} <button data-href="{% url 'podcasts:api-topcharts' %}" id="apsearch-topcharts-refresh" class="btn btn-outline-secondary btn-sm py-0">Refresh</button></h2>
+    </div>
+  </div>
+
+  <div id="apsearch-topcharts" class="row mb-3" style="display:none;"></div>
+  <div class="text-center my-3">
+    <small class="text-muted">{% blocktrans with aggregator=discovery.aggregator copyright=discovery.copyright trimmed %}
+        Aggregation and Content courtesy of iTunes, {{copyright}}
+    {% endblocktrans %}</small>
+  </div>
+{% endif %}
+
 {% include "_podcast_card_search_jqt.html" %}
 {% endblock content %}

@@ -7,6 +7,15 @@
 {% block content %}
 <h1>{% trans "Settings" %}</h1>
 
+{% bootstrap_form_errors listener_form %}
+{% if app_admin_form %}
+  {% bootstrap_form_errors app_admin_form %}
+{% endif %}
+{% if site_admin_form %}
+  {% bootstrap_form_errors site_admin_form %}
+{% endif %}
+
+
 <div class="row">
   <div class="col-md-7 col-lg-8 mb-4">
     <form action="{% url 'podcasts:settings' %}" method="post" class="form">

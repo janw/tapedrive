@@ -121,17 +121,15 @@ $('#id_opml_file').change(function() {
     };
 })
 
-var template = $.templates('#apsearch-template');
+var podcast_card = $.templates('#apsearch-template');
 function searchReturn (data, textStatus, jqXHR) {
-    $('#apsearch-attrib').show();
     if (data.resultCount == 0){
         $('#apsearch-results').hide()
         $('#apsearch-noresults').show();
     }
     else {
-        var htmlOutput = template.render(data.results);
+        var htmlOutput = podcast_card.render(data.results);
         $("#apsearch-results").html(htmlOutput);
-        $('#apsearch-results').slideDown(200);
         $('.apsearch-addfeed').each(function(index) {
             $(this).on("click", function(e){
                 e.preventDefault;
@@ -158,26 +156,71 @@ function searchReturn (data, textStatus, jqXHR) {
                 });
             });
         });
+        $('#apsearch-results').slideDown(400);
+        $('#apsearch-attrib').slideDown(200);
     };
+    return false;
+}
+
+function addFeedClick (index) {
+    $(this).on("click", function(e){
+        e.preventDefault;
+        $(this).attr('disabled', 'disabled');
+        var feed_url = $(this).data('feed-url');
+        var href = $(this).data('href');
+        var id = $(this).data('id');
+        var jqxhr = $.ajax({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                }
+            },
+            url: href,
+            type: 'POST',
+            data: {
+                feed_url: feed_url,
+            },
+            dataType: 'json',
+        });
+    });
+};
+
+function topchartsReturn (data) {
+    var htmlOutput = podcast_card.render(data.results);
+    $("#apsearch-topcharts").html(htmlOutput);
+    $('.apsearch-addfeed').each(addFeedClick);
+    $('#apsearch-topcharts').show();
     return false;
 }
 
 $('#apsearch button[type="submit"]').click(function(e){
     e.preventDefault;
     search_term = $('#apsearch input[name="search_term"]').val();
+    var url = $(this).data('href');
+    console.log(url);
     if (search_term.length > 2) {
         var jqxhr = $.ajax({
-            url: "https://itunes.apple.com/search",
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                }
+            },
+            url: url,
             type: 'POST',
             data: {
-                media: 'podcast',
                 term: search_term,
-                limit: 15,
             },
             dataType: 'json',
         })
         .done(searchReturn);
     };
+    return false;
+});
+
+
+$('#apsearch-topcharts-refresh').click(function(e){
+    e.preventDefault;
+    fireApiCall($(this).data('href'), topchartsReturn);
     return false;
 });
 
@@ -202,5 +245,9 @@ $('.episode-details-link').each(function(index) {
 
     });
 });
+
+$('#apsearch-topcharts')
+
+
 
 // function searchReturn (data, textStatus, jqXHR) {}
