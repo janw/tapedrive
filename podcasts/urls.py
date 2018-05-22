@@ -26,7 +26,14 @@ podcasts_api_patterns = [
 podcasts_patterns = [
     path('', views.PodcastsList.as_view(), name='podcasts-list'),
     path('new/', views.podcasts_new, name='podcasts-new'),
+
     path('api/add/', api.podcast_add, name='api-podcast-add'),
+    path('api/topcharts', api.apple_podcasts_topcharts, name='api-topcharts'),
+    path('api/search', api.apple_podcasts_search, name='api-search'),
+    path('api/lookup/<int:id>', api.apple_podcasts_feed_from_id, name='api-lookup'),
+
+
+    # path('api/topcharts', api.topcharts, name='api-topcharts'),
     path('<slug:slug>/', include([
         path('', views.podcasts_details, name='podcasts-details'),
         path('api/', include(podcasts_api_patterns)),

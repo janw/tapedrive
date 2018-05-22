@@ -76,19 +76,8 @@ def podcasts_new(request):
 
     else:
         form = NewFromURLForm()
-    discovery = None
 
-    url = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podcasts/all/25/explicit.json'
-    response = requests.get(url)
-
-    if response.status_code >= 400:
-        discovery = None
-    else:
-        discovery = json.loads(response.content)
-        discovery['feeds'] = list(chunks(discovery['feed']['results'][:15], 5))
-        discovery['aggregator'] = discovery['feed']['author']['name']
-        discovery['copyright'] = discovery['feed']['copyright']
-
+    discovery = request.user.listener.enable_discovery
     context = {
         'form': form,
         'discovery': discovery,
@@ -154,7 +143,7 @@ def settings(request):
             instance=current_site_settings,
             prefix='site')
 
-        if listener_form.is_valid() and (not request.user.is_superuser or (app_admin_form.is_valid() and site_admin_form.is_valid())):
+        if listener_form.is_valid() and app_admin_form.is_valid() and site_admin_form.is_valid():
             listener_form.save()
             app_admin_form.save()
             site_admin_form.save()
@@ -201,9 +190,3 @@ def activity_list(request):
     }
 
     return render(request, 'activity-list.html', context)
-
-
-    # model = Podcast
-    # paginate_by = PODCASTS_PER_PAGE
-    # template_name = 'podcasts-list.html'
-

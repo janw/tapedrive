@@ -5,7 +5,7 @@ from feedparser import CharacterEncodingOverride
 from dateutil import parser as dateparser
 import urllib
 from urllib.request import urlopen, Request
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import urlparse, urlunparse, urlencode
 import requests
 from shutil import copyfileobj, move
 import os
@@ -337,3 +337,25 @@ def parse_opml_file(filename):
     return [node.get('xmlUrl') for node
             in tree.findall("*/outline/[@type='rss']")
             if node.get('xmlUrl') is not None]
+
+
+def unify_apple_podcasts_response(data):
+    if 'feed' in data:
+        data['results'] = data['feed']['results']
+        data['resultsCount'] = len(data['results'])
+    for i, result in enumerate(data['results']):
+        if 'collectionId' in result:
+            data['results'][i]['id'] = result['collectionId']
+        if 'collectionName' in result:
+            data['results'][i]['name'] = result['collectionName']
+
+        if 'artworkUrl600' in result:
+            data['results'][i]['artworkUrl'] = result['artworkUrl600']
+        elif 'artworkUrl100' in result:
+            data['results'][i]['artworkUrl'] = result['artworkUrl100']
+
+        if 'genres' in result and isinstance(result['genres'][0], dict):
+            data['results'][i]['genres'] = [item.get('name') for item in result['genres']]
+
+    return data
+

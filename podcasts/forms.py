@@ -26,54 +26,11 @@ class NewFromURLForm(Form):
         help_text=_('Many podcast clients allow you to export all you subscriptions at once as an OPML file'),
     )
 
-
     class Meta:
         pass
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
-
-    # def save(self):
-    #     instance = super().save(commit=False)
-
-    #     max_length = Podcast._meta.get_field('slug').max_length
-    #     instance.slug = orig = slugify(instance.title)
-    #     for x in itertools.count(1):
-    #         if not Podcast.objects.filter(slug=instance.slug).exists():
-    #             break
-    #         instance.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-
-    #     instance.save()
-    #     return instance
-
-    # def clean(self):
-    #     super().clean()
-
-    #     self.cleaned_data['info'] = refresh_feed(self.cleaned_data['feed_url'])
-    #     if self.cleaned_data['info'] is None:
-    #         raise forms.ValidationError(_('The URL did not return a valid podcast feed'))
-
-    #     return self.cleaned_data
-
-    # def validate_unique(self):
-    #     # Skip unique validation since the view will take care of
-    #     # redirecting to the already existing instance. If the particular
-    #     # listener already has added that feed, create an info message
-    #     not_unique_for_listener = Podcast.objects.filter(
-    #         feed_url=self.cleaned_data['feed_url'],
-    #         followers=self.request.user.listener).exists()
-
-    #     if not_unique_for_listener:
-    #         messages.add_message(
-    #             self.request,
-    #             messages.INFO, _('You already added this podcast feed. You have been subscribed.'))
-
-
-# class PodcastSearchForm(Form):
-#     search_term = forms.CharField(required=False,
-#         label=_('Feed URL'),
-#         help_text=_('Named by the format, this is often also called "RSS feed"'),
-#     )
 
 
 class ListenerSettingsForm(ModelForm):
@@ -104,7 +61,15 @@ class ListenerSettingsForm(ModelForm):
                 ), but also have new episodes downloaded automatically.</p>
                 <p>This setting is also available on each podcast's individual
                 details page as the <span class="btn btn-outline-secondary
-                btn-sm disabled text-dark py-0">Subscribe</span> toggle.</p>'''),
+                btn-sm disabled text-dark py-0">Subscribe</span> toggle.</p>
+                '''),
+            'enable_discovery': _('''
+                <p>You might have already seen the discovery section on the 'Add
+                Feeds' page. It shows you the current top podcasts from the
+                Apple Podcasts directory. If you don't like the suggestions,
+                want the page to load more quickly or don't want to have
+                external resources loaded from Apple's servers</p>
+                '''),
         }
 
     def __init__(self, *args, **kwargs):
