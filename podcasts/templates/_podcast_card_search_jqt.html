@@ -26,7 +26,9 @@
             {% jsr_endfor %}
           </div>
           <div class="modal-footer justify-content-center">
+          {% jsr_if 'feedUrl' %}
           <button id="apsearch-addfeed{% jsr_var 'Id' %}" data-id="{% jsr_var 'id' %}" data-href="{% url 'podcasts:api-podcast-add' %}" data-feed-url="#" class="btn btn-secondary apsearch-addfeed">{% trans "Add to Tape Drive" %}</button>
+          {% jsr_endif %}
           <button id="apsearch-feedadded{% jsr_var 'id' %}" class="btn btn-success disabled" style="display:none;" >{% trans "Successfully Added" %}</button>
           </div>
         </div>

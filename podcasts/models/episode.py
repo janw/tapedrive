@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify, date as _date
 
 import os
 from string import Template
+import itertools
 
 from podcasts.conf import *
 from podcasts.models import BigPositiveIntegerField
@@ -28,6 +29,7 @@ class Episode(models.Model):
         blank=False,
         null=False,
         editable=False,
+        max_length=255,
     )
     podcast = models.ForeignKey(
         'podcasts.Podcast',
@@ -158,8 +160,13 @@ class Episode(models.Model):
             return "%(podcast)s's Episode" % {'podcast': self.podcast}
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        if not self.id or not self.slug:
+            max_length = self._meta.get_field('slug').max_length
+            self.slug = orig = slugify(self.title)
+            for x in itertools.count(1):
+                if not Episode.objects.filter(slug=self.slug).exists():
+                    break
+                self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
         super().save(*args, **kwargs)
 

@@ -139,7 +139,7 @@ def apple_podcasts_feed_from_id(request, id):
 @require_POST
 def apple_podcasts_search(request):
     term = request.POST.get('term', '')
-    params = {'media': 'podcast', 'term': search_term, 'limit': ITUNES_SEARCH_LIMIT}
+    params = {'media': 'podcast', 'term': term, 'limit': ITUNES_SEARCH_LIMIT}
 
     if len(term) > 2:
         url_parts = list(urlparse(ITUNES_SEARCH_URL))
