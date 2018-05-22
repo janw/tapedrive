@@ -77,12 +77,7 @@ def podcasts_new(request):
     else:
         form = NewFromURLForm()
 
-    discovery = request.user.listener.enable_discovery
-    context = {
-        'form': form,
-        'discovery': discovery,
-    }
-    return render(request, 'podcasts-new.html', context)
+    return render(request, 'podcasts-new.html', {'form': form, })
 
 
 def podcasts_details(request, slug):
