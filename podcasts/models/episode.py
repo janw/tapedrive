@@ -5,7 +5,6 @@ from django.dispatch import receiver
 from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify, date as _date
 
-import uuid
 import os
 from string import Template
 
@@ -17,11 +16,6 @@ from actstream import action
 
 
 class Episode(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-    )
     guid = models.CharField(
         blank=False,
         null=False,

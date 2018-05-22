@@ -180,3 +180,27 @@ $('#apsearch button[type="submit"]').click(function(e){
     };
     return false;
 });
+
+
+var episode_details = $.templates('#episode-details-template');
+$('.episode-details-link').each(function(index) {
+    $(this).on("click", function(e){
+        e.preventDefault;
+        var href = $(this).data('href');
+        var jqxhr = $.ajax({
+            url: href,
+            type: 'GET',
+            dataType: 'json',
+        })
+        .done(function (data, textStatus, jqXHR) {
+            console.log(data);
+            var htmlOutput = episode_details.render(data);
+            $("#episodeDetailsModalContainer").html(htmlOutput);
+            $('#episodeDetails').modal('show');
+        });
+
+
+    });
+});
+
+// function searchReturn (data, textStatus, jqXHR) {}

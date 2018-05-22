@@ -23,11 +23,15 @@ def download_episode(media_url, file_path, id):
     # Download the file
     filesize = download_file(media_url, file_path)
 
-    # Update Episode after download
-    episode.file_size = filesize
-    episode.downloaded = timezone.now()
-    episode.save()
-    action.send(episode, 'was downloaded')
+    if filesize:
+        # Update Episode after download
+        episode.file_size = filesize
+        episode.downloaded = timezone.now()
+        episode.save()
+        action.send(episode, verb='was downloaded')
+    else:
+        action.send(episode, verb='failed downloading')
+
 
 @background(queue='low-priority')
 def regular_feed_refresh():

@@ -75,6 +75,10 @@ class Podcast(models.Model):
         verbose_name=_('Feed URL'),
     )
 
+    added = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('Podcast Added'),
+    )
     fetched = models.DateTimeField(
         blank=True,
         null=True,

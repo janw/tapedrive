@@ -1,8 +1,14 @@
 {% load i18n humanize %}
 <tr>
   <td class="text-right text-muted" width="60px"><small>{{action.id}}</small></td>
-  <td><a href="#">{{action.actor_content_type}} {{action.actor}}</a> {{action.verb}} {{action.action_object|default:''}} <a href="#">{{action.target|default:''}}</a></td>
   <td>
+    {% if action.actor_content_type.name == 'Episode' %}
+      <a class="episode-details-link" href="#" data-href="{% url 'podcasts:api-episode-details' action.actor.id %}">{{action.actor_content_type}} {{action.actor}}</a> {{action.verb}} {{action.action_object|default:''}} <a href="#">{{action.target|default:''}}</a>
+    {% else %}
+      <a href="#">{{action.actor_content_type}} {{action.actor}}</a> {{action.verb}} {{action.action_object|default:''}} <a href="#">{{action.target|default:''}}</a>
+    {% endif %}
+  </td>
+  <td class="text-right text-muted">
     {{action.timestamp|naturalday:"SHORT_DATE_FORMAT"|title}},
     {{action.timestamp|date:"TIME_FORMAT"}}
   </td>
