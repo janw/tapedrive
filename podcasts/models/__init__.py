@@ -60,7 +60,7 @@ class PodcastsSettings(models.Model):
         blank=False,
         max_length=255,
         default=DEFAULT_DATE_FORMAT,
-        validators=[validate_naming_scheme, ],
+        validators=[],
         verbose_name=_('In-Path Date Format'),
         help_text=_('Scheme used to compile date segments in episode download filenames')
     )

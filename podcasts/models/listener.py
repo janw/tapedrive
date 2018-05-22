@@ -58,15 +58,16 @@ class Listener(models.Model):
         choices=PODCASTS_ORDER_CHOICES,
         default=DEFAULT_PODCASTS_ORDER,
         max_length=16,
-        verbose_name=_('Sort Podcasts By')
+        verbose_name=_('Sort Podcasts By'),
+        help_text=_('Determines the sorting of podcasts in the podcasts list'),
     )
     sort_order_episodes = models.CharField(
         choices=EPISODES_ORDER_CHOICES,
         default=DEFAULT_EPISODES_ORDER,
         max_length=16,
-        verbose_name=_('Sort Episodes By')
+        verbose_name=_('Sort Episodes By'),
+        help_text=_('Determines the sorting of episodes on podcast detail pages'),
     )
-
 
     # Settings for future playback functionality
     playback_seek_forward_by = IntegerRangeField(
