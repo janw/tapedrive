@@ -1,18 +1,18 @@
 FROM python:3.6
-
 MAINTAINER Jan Willhaus <mail@janwillhaus.de
-
-ENV DJANGO_CONFIGURATION=Production
 
 COPY . /app
 WORKDIR /app
 
-RUN pip install -U pipenv gunicorn
+RUN pip install -U pipenv gunicorn honcho
 RUN pipenv install --system
-RUN python
 
+RUN python manage.py migrate
+
+# ENV DJANGO_ALLOWED_HOSTS=
+# ENV DATABASE_URL=
 # TODO Generate Secret_key
 
-EXPOSE 8000
+EXPOSE 8273
 
-CMD ["/app/start.sh"]
+CMD huncho start
