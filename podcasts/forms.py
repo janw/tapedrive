@@ -14,13 +14,6 @@ from podcasts.utils import refresh_feed, resolve_segments
 import itertools
 
 
-class NewFromOPMLForm(Form):
-    pass
-    # def __init__(self, *args, **kwargs):
-    #     self.request = kwargs.pop('request', None)
-    #     super().__init__(*args, **kwargs)
-
-
 class NewFromURLForm(Form):
     feed_url = forms.CharField(required=False,
         label=_('Feed URL'),
@@ -74,6 +67,13 @@ class NewFromURLForm(Form):
     #         messages.add_message(
     #             self.request,
     #             messages.INFO, _('You already added this podcast feed. You have been subscribed.'))
+
+
+# class PodcastSearchForm(Form):
+#     search_term = forms.CharField(required=False,
+#         label=_('Feed URL'),
+#         help_text=_('Named by the format, this is often also called "RSS feed"'),
+#     )
 
 
 class ListenerSettingsForm(ModelForm):

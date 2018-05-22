@@ -220,7 +220,7 @@ def download_file(link, filename):
 
     if os.path.isfile(filename):
         logger.error('File at %s already exists' % filename)
-        raise FileExistsError('File aready exists')
+        return
 
     # Begin downloading, resolve redirects
     prepared_request = Request(link, headers=HEADERS)
@@ -232,7 +232,7 @@ def download_file(link, filename):
                 total_size = int(response.getheader('content-length', '0'))
                 if total_size == 0:
                     logger.error('Received content-length is 0')
-                    raise urllib.error.ContentTooShortError()
+                    return
 
                 logger.debug('Resolved link:', link)
 
@@ -248,10 +248,11 @@ def download_file(link, filename):
     except (urllib.error.HTTPError,
             urllib.error.URLError) as error:
         logger.error("Download failed. Query returned '%s'" % error)
+        return
     except KeyboardInterrupt:
-        logger.warning("Unexpected interruption. Deleting unfinished file")
+        logger.error("Unexpected interruption. Deleting unfinished file")
         os.remove(filename)
-        raise
+        return
 
 
 def download_cover(img_url, file):

@@ -16,7 +16,7 @@
           <tr>
             <th class="text-right" scope="col">#</th>
             <th scope="col">What?</th>
-            <th scope="col">When?</th>
+            <th class="text-right" scope="col">When?</th>
           </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
       </table>
     </div>
   </div>
-
   {% include "_pagination.html" with page_obj=object_list %}
+  {% include "_episode_details_modal_jsrender.html" %}
 {% endif %}
 {% endblock content %}

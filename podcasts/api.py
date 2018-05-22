@@ -9,6 +9,11 @@ from django.http import (
     Http404, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse,
     HttpResponseForbidden, HttpResponse
 )
+from django.core import serializers
+
+import json
+import copy
+from datetime import datetime
 
 from podcasts.models.listener import EpisodePlaybackState, Listener
 from podcasts.models.podcast import Podcast
@@ -17,6 +22,12 @@ from podcasts.models.episode import Episode
 
 class HttpResponseNoContent(HttpResponse):
     status_code = 204
+
+
+def encode_datetime(obj):
+    if isinstance(obj, datetime):
+        return obj.astimezone(tz.tzutc()).strftime('%Y-%m-%dT%H:%M:%SZ')
+    raise TypeError(repr(obj) + " is not JSON serializable")
 
 
 @require_POST
@@ -76,7 +87,6 @@ def episodes_mark_played(request, id):
 @require_POST
 def episode_queue_download(request, id):
     site = get_current_site(request)
-    site.podcastssettings.storage_directory
     object = get_object_or_404(Episode, id=id)
     object.queue_download_task(
         site.podcastssettings.storage_directory,
@@ -95,3 +105,13 @@ def podcast_queue_download(request, slug):
         site.podcastssettings.naming_scheme
     )
     return HttpResponseNoContent()
+
+
+def episode_details(request, id):
+    object = get_object_or_404(Episode.objects.prefetch_related('podcast'), id=id)
+    object_dict = copy.copy(object.__dict__)
+    object_dict.pop('_state', None)
+    object_dict['podcast'] = object.podcast.title
+    object_dict['url_api_episode_queue_download'] = reverse('podcasts:api-episode-queue-download',
+                                                            kwargs={'id': object.id})
+    return JsonResponse(object_dict)

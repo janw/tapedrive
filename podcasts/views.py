@@ -15,7 +15,7 @@ from podcasts.utils import refresh_feed, chunks, handle_uploaded_file, parse_opm
 import json
 import requests
 
-from actstream.models import model_stream
+from actstream.models import Action
 
 # Create your views here.
 def index(request):
@@ -178,8 +178,8 @@ def settings(request):
 
 
 def activity_list(request):
-    queryset = model_stream(Podcast)
-    paginator = Paginator(queryset, 100)
+    queryset = Action.objects.all()
+    paginator = Paginator(queryset, 50)
     page = request.GET.get('page')
 
     try:
