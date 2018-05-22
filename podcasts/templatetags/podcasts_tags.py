@@ -64,6 +64,7 @@ def resolve_language(context, language_tag):
 def field_help_long(context, form, field, html_parent='accordion', show_initially=False):
     context['html_parent'] = html_parent
     context['show_initially'] = show_initially
+    context['no_help'] = False
 
     help_texts = getattr(form.Meta, 'help_texts_long', {})
     if field.name in help_texts:
