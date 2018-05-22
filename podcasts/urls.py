@@ -22,18 +22,16 @@ podcasts_api_patterns = [
     path('unsubscribe/', api.podcast_unsubscribe, name='api-unsubscribe'),
 ]
 
+global_api_patterns = [
+    path('add/', api.podcast_add, name='api-podcast-add'),
+    path('topcharts/', api.apple_podcasts_topcharts, name='api-topcharts'),
+    path('search/', api.apple_podcasts_search, name='api-search'),
+    path('lookup/<int:id>', api.apple_podcasts_feed_from_id, name='api-lookup'),
+]
 
 podcasts_patterns = [
     path('', views.PodcastsList.as_view(), name='podcasts-list'),
     path('new/', views.podcasts_new, name='podcasts-new'),
-
-    path('api/add/', api.podcast_add, name='api-podcast-add'),
-    path('api/topcharts', api.apple_podcasts_topcharts, name='api-topcharts'),
-    path('api/search', api.apple_podcasts_search, name='api-search'),
-    path('api/lookup/<int:id>', api.apple_podcasts_feed_from_id, name='api-lookup'),
-
-
-    # path('api/topcharts', api.topcharts, name='api-topcharts'),
     path('<slug:slug>/', include([
         path('', views.podcasts_details, name='podcasts-details'),
         path('api/', include(podcasts_api_patterns)),
@@ -44,6 +42,7 @@ podcasts_patterns = [
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('api/', include(global_api_patterns)),
     path('podcasts/', include(podcasts_patterns)),
     path('episodes/', include(episodes_patterns)),
     path('activity/', views.activity_list, name='activity-list'),
