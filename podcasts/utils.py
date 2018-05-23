@@ -285,7 +285,7 @@ def download_cover(img_url, file):
 
     # Return early and untouched if the image is smaller than desired
     if img.size[0] < target_img_size[0] or img.size[1] < target_img_size[1]:
-        logger.info('Image size is smaller than desired. Ain\'t (re)touching that.' % img.size)
+        logger.info('Image size is smaller than desired. Ain\'t (re)touching that.')
         finput.seek(0)
         file.write(finput.read())
         file.seek(0)

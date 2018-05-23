@@ -169,6 +169,12 @@ class Episode(models.Model):
                     break
                 self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
 
+            # Some episodes have ridiculously long titles
+            if len(self.slug) > max_length:
+                self.slug = self.slug[:max_length]
+            if self.slug.endswith('-'):
+                self.slug = self.slug[:-1]
+
         super().save(*args, **kwargs)
 
     def construct_file_path(self,

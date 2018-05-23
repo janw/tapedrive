@@ -64,7 +64,9 @@ def podcasts_new(request):
                 feeds = parse_opml_file(tempfile)
 
                 for feed in feeds:
-                    podcast, created = Podcast.objects.get_or_create_from_feed_url(feed)
+                    # When creating from OPML, episodes have to be created afterwards, to speed up import
+                    podcast, created = Podcast.objects.get_or_create_from_feed_url(feed,
+                        create_episodes=False)
                     if podcast is not None:
                         podcast.add_subscriber(request.user.listener)
                         podcast.add_follower(request.user.listener)
