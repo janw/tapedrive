@@ -44,6 +44,14 @@ def podcast_add(request):
     return JsonResponse({'created': created})
 
 
+def podcast_add_from_id(request, id):
+    podcast, created = Podcast.objects.get_or_create_from_itunes_id(id, only_first_page=True)
+    podcast.add_subscriber(request.user.listener)
+    podcast.add_follower(request.user.listener)
+
+    return JsonResponse({'created': created})
+
+
 def podcast_refresh_feed(request, slug=None):
     podcast = get_object_or_404(Podcast, slug=slug)
     response_data = {}

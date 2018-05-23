@@ -7,12 +7,15 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
+
 from io import BytesIO
 import itertools
 import logging
+import requests
+from urllib.parse import urlparse, urlunparse, urlencode
 
 from podcasts.conf import *
-from podcasts.utils import refresh_feed, feed_info, download_cover
+from podcasts.utils import refresh_feed, feed_info, download_cover, HEADERS
 from podcasts.models import cover_image_filename
 from podcasts.models.episode import Episode
 
@@ -47,6 +50,26 @@ class PodcastManager(models.Manager):
         except self.model.DoesNotExist:
             # Args now include feed_info to prevent a second refresh happening down the line
             return self.create_from_feed_url(feed_info.url, feed_info=feed_info, **kwargs), True
+
+    def create_from_itunes_id(self, itunes_id, **kwargs):
+        url_parts = list(urlparse(ITUNES_LOOKUP_URL))
+        url_parts[4] = urlencode({'id': itunes_id})
+        url = urlunparse(url_parts)
+        response = requests.get(url, headers=HEADERS)
+        data = response.json()
+        if 'resultCount' in data and data['resultCount'] > 0:
+            kwargs['itunes_id'] = itunes_id
+            return self.create_from_feed_url(data['results'][0]['feedUrl'], **kwargs)
+
+    def get_or_create_from_itunes_id(self, itunes_id, **kwargs):
+        url_parts = list(urlparse(ITUNES_LOOKUP_URL))
+        url_parts[4] = urlencode({'id': itunes_id})
+        url = urlunparse(url_parts)
+        response = requests.get(url, headers=HEADERS)
+        data = response.json()
+
+        if 'resultCount' in data and data['resultCount'] > 0:
+            return self.get_or_create_from_feed_url(data['results'][0]['feedUrl'], **kwargs)
 
 
 class Podcast(models.Model):
@@ -262,7 +285,8 @@ class Podcast(models.Model):
         logger.info('All done')
         self.save()
         action.send(self, verb='was fetched', timestamp=defaults['fetched'])
-        action.send(self, verb='was updated', timestamp=defaults['updated'])
+        if self.updated:
+            action.send(self, verb='was updated', timestamp=self.updated)
 
 
     @atomic
