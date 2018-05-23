@@ -152,6 +152,7 @@ class Episode(models.Model):
     class Meta:
         verbose_name = _('Episode')
         verbose_name_plural = _('Episodes')
+        db_table = 'podcasts_episode'
 
     def __str__(self):
         if self.title is not None:

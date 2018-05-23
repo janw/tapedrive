@@ -164,6 +164,7 @@ class Podcast(models.Model):
     class Meta:
         verbose_name = _('Podcast')
         verbose_name_plural = _('Podcasts')
+        db_table = 'podcasts_podcast'
 
     def __str__(self):
         return self.title
