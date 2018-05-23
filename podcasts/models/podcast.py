@@ -33,8 +33,10 @@ class PodcastManager(models.Manager):
         if not feed_info:
             feed_info = refresh_feed(feed_url)
         if feed_info is None:
+            logger.error('Feed %(feed)s seems dead' % {'feed': feed_url})
             return
 
+        logger.info('Creating %(podcast)s' % {'podcast': feed_info.data['title']})
         podcast = Podcast(feed_url=feed_info.url)
         podcast.update(feed_info=feed_info, **kwargs)
         return podcast
@@ -44,9 +46,14 @@ class PodcastManager(models.Manager):
         feed_info = kwargs.pop('feed_info', None)
         if not feed_info:
             feed_info = refresh_feed(feed_url)
+        if not feed_info:
+            logger.error('Feed %(feed)s seems dead' % {'feed': feed_url})
+            return None, False
 
         try:
-            return self.get(feed_url=feed_info.url), False
+            podcast = self.get(feed_url=feed_info.url)
+            logger.info('Found existing %(podcast)s' % {'podcast': podcast.title})
+            return podcast, False
         except self.model.DoesNotExist:
             # Args now include feed_info to prevent a second refresh happening down the line
             return self.create_from_feed_url(feed_info.url, feed_info=feed_info, **kwargs), True
@@ -177,6 +184,12 @@ class Podcast(models.Model):
                 if not Podcast.objects.filter(slug=self.slug).exists():
                     break
                 self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
+
+            # Some feeds have ridiculously long titles
+            if len(self.slug) > max_length:
+                self.slug = self.slug[:max_length]
+            if self.slug.endswith('-'):
+                self.slug = self.slug[:-1]
 
         super().save(*args, **kwargs)
 
