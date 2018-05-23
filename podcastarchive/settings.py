@@ -32,6 +32,20 @@ def get_secret_key(PROJECT_DIR):
     return SECRET_KEY
 
 
+class DatabaseURLValueWithOptions(values.DatabaseURLValue):
+    options = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.options = kwargs.get('options', None)
+
+    def to_python(self, value):
+        value = super().to_python(value)
+        if self.options is not None:
+            value[self.alias].update({'OPTIONS': self.options})
+        return value
+
+
 class Common(Configuration):
     # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -104,8 +118,9 @@ class Common(Configuration):
 
     # Database
     # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue(
-        'sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3'))
+    DATABASES = DatabaseURLValueWithOptions(
+        'sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3')),
+        options={'charset': 'utf8mb4'}
     )
 
     # Password validation
