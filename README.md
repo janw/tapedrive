@@ -6,6 +6,7 @@
 [![Build Status](https://travis-ci.org/janwh/tapedrive.svg?branch=master)](https://travis-ci.org/janwh/tapedrive?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/janwh/tapedrive/badge.svg?branch=master)](https://coveralls.io/github/janwh/tapedrive?branch=master)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/janwh/tapedrive.svg)](https://codeclimate.com/github/janwh/tapedrive)
+[![Updates](https://pyup.io/repos/github/janwh/tapedrive/shield.svg)](https://pyup.io/repos/github/janwh/tapedrive/)
 [![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/tapedrive/issues)
 [![Join the chat at https://gitter.im/tapedriveio/Lobby](https://badges.gitter.im/tapedriveio/Lobby.svg)](https://gitter.im/tapedriveio/Lobby)
 
