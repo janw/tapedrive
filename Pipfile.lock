@@ -455,9 +455,9 @@
         },
         "gprof2dot": {
             "hashes": [
-                "sha256:48c1e168c28b8a8eb23bf30fda78fe2ef218269a41505341ec27c27083e47cf4"
+                "sha256:cebc7aa2782fd813ead415ea1fae3409524343485eadc7fb60ef5bd1e810309e"
             ],
-            "version": "==2016.10.13"
+            "version": "==2017.9.19"
         },
         "html5lib": {
             "hashes": [
