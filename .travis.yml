@@ -16,3 +16,11 @@ sudo: false
 
 after_success:
     coveralls
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/f5ad277b8006a8c307f3
+    on_success: change
+    on_failure: always
+    on_start: never
