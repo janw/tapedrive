@@ -21,27 +21,26 @@ Tape Drive is a self-hostable podcast client with built-in archiving features. B
 
 Tape Drive is built using [Django](https://djangoproject.com) **and currently in active development on `master` branch**. As soon as the initial feature set has been stabilized, day-to-day development work will move to the `develop` branch, and master will contain stable versions.
 
-## Screenshots
 
-That's how Tape Drive looks like. Not a lot of pages but a few with reasonable information density.
+## Features
 
-![Tape Drive login screen opening up](assets/img/screenshots/login-animated.gif)
+* Aesthetically pleasing presentation of podcasts, episodes, and their metadata
+* Fully responsive web UI with distinctively unexcited behavior (no fancy animations, no overly excessive use of JavaScript etc.)
+* Manually initiated episode downloads possible
+* Elaborate User-selectable directory/file naming scheme based on Python's `str.format()` syntax (with segment drag'n'drop support later on)
+* Ability to efficiently fetch multi-page feeds
 
-![Tape Drive podcasts list view](assets/img/screenshots/podcasts-list.png)
 
-![Tape Drive podcast detail view](assets/img/screenshots/podcast-detail.png)
+![Tape Drive welcoming you](assets/img/screenshots/welcome.png)
+
+![Tape Drive podcast list view](assets/img/screenshots/podcasts-list.png)
 
 ## Todos
 
 Currently the main 'todo' is completing the sought out feature set around archiving. This mostly entails
 
-* Aesthetically pleasing presentation of podcasts, episodes, and their metadata
-* Fully responsive web UI with distinctively unexcited behavior (no fancy animations, no overly excessive use of JavaScript etc.)
 * Periodic automated feed updates
-* Manually launched episode downloads
 * Automated downloads of newly published episodes, including a Subscribed/Unsubscribed paradim to include/exclude feeds from the automated downloads
-* Elaborate User-selectable directory/file naming scheme based on Python's `str.format()` syntax (with segment drag'n'drop support later on)
-* Ability to efficiently fetch multi-page feeds
 * Smart handling of duplicate downloads if applicable (hashing, filename comparison, etc.)
 * Proper unittests
 
