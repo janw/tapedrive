@@ -50,5 +50,6 @@ Currently the main 'todo' is completing the sought out feature set around archiv
 
 * **Jan Willhaus** - *Initial work*
 * Cassette Icon by [Just UI](https://www.behance.net/Just_UI) via [IconFinder](https://www.iconfinder.com/icons/669942/audio_cassette_multimedia_music_icon)
+* Login backdrop photo "Grado Headphones SR80e" by [Michael Mroczek](https://michaelmroczek.com/?utm_medium=referral&utm_source=unsplash) via [Unsplash](https://unsplash.com/@michaelmroczek?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)
 
 The project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details
