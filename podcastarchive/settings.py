@@ -51,7 +51,7 @@ class Common(Configuration):
     BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
     # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = values.SecretValue()
+    SECRET_KEY = get_secret_key(BASE_DIR)
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
@@ -71,8 +71,6 @@ class Common(Configuration):
         'django.contrib.staticfiles',
         'compressor',
         'bootstrap4',
-
-        'django_extensions',
 
         'podcastarchive.users',
         'podcasts',
@@ -118,10 +116,7 @@ class Common(Configuration):
 
     # Database
     # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-    DATABASES = DatabaseURLValueWithOptions(
-        'sqlite:///{}'.format(os.path.join(BASE_DIR, 'db.sqlite3')),
-        options={'charset': 'utf8mb4'}
-    )
+    DATABASES = values.DatabaseURLValue('mysql://tapedrive:tapedrive@localhost/tapedrive')
 
     # Password validation
     # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -230,14 +225,16 @@ class Development(Common):
     INSTALLED_APPS = [
         'livereload',
     ] + Common.INSTALLED_APPS + [
+        'django_extensions',
         'debug_toolbar',
-        # 'silk',
     ]
+
+    DATABASES = values.DatabaseURLValue(
+        'sqlite:///{}'.format(os.path.join(Common.BASE_DIR, 'db.sqlite3')))
 
     MIDDLEWARE = Common.MIDDLEWARE + [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
         'livereload.middleware.LiveReloadScript',
-        # 'silk.middleware.SilkyMiddleware',
     ]
 
     SHELL_PLUS_PRE_IMPORTS = [
