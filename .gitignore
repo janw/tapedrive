@@ -88,7 +88,7 @@ local_settings.py
 *secret.txt
 
 .env
-db.sqlite3
+*.sqlite3
 
 # django-compressor
 assets/CACHE/
@@ -99,6 +99,7 @@ assets/CACHE/
 
 # Files uploaded / saved from podcasts
 mediafiles/
+staticfiles/
 $HOME/
 
 ### Sublime Text ###
