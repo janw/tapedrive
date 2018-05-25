@@ -35,6 +35,37 @@ Tape Drive is built using [Django](https://djangoproject.com) **and currently in
 
 ![Tape Drive podcast list view](assets/img/screenshots/podcasts-list.png)
 
+## Prerequisites and Setup
+
+The easiest way to deploy Tape Drive on your server is to install it via Docker. The service is [available on Docker Hub](https://hub.docker.com/r/janwh/tapedrive/), and the repository contains a [`docker-compose.yml`](docker-compose.yml) file for the real out-of-the-box experience. Alternatively you may run Tape Drive "bare metal" — all you need is Python 3.6.
+
+Please note, that the Docker image and bare metal deployment require you to take care of a database solution. It is technically possible to just use a SQLite database file but as background tasks for feed refreshes and downloads are running concurrently, running into database lockups is to be expected. For real-life / production use, please setup an instance of MySQL/MariaDB or PostgreSQL. In any case you'll have to provide the database connection details to Tape Drive (see below).
+
+### Tape Drive in a standalone Docker container
+
+Creating a Docker container from the Tape Drive Docker image is pretty a straight-forward process. As discussed above, Tape Drive expects you to provide a database connection on input, formatted as the well-known [12factor inspired `DATABASE_URL`](https://github.com/kennethreitz/dj-database-url#url-schema) environment variable. Most testing of Tape Drive is done in MySQL, so I recommend using that:
+
+```bash
+docker create \
+  --name=tapedrive \
+  -v <path to data>:/data \
+  -e DATABASE_URL="mysql://USERNAME:PASSWORD@HOSTNAME:PORT/DATABASE_NAME" \
+  -e DJANGO_ALLOWED_HOSTS=127.0.0.1,myfancy.domainname.example \
+  -p 8273:8273 \
+  janwh/tapedrive
+```
+
+Use the `DJANGO_ALLOWED_HOSTS` variable to tell Tape Drive which hostnames to accept connections from (as a comma-separated list). Most likely you want to link the storage path inside the container to a real location on your filesystem. By default, Tape Drive downloads data to `/data`, hence the above `-v` mapping.
+
+### Deploying Tape Drive via Docker-compose.
+
+TBD.
+
+### Bare-metal setup (also for development)
+
+TBD.
+
+
 ## Todos
 
 Currently the main 'todo' is completing the sought out feature set around archiving. This mostly entails
