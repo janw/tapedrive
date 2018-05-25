@@ -1,18 +1,21 @@
-FROM python:3.6
+FROM python:3.6-alpine
 MAINTAINER Jan Willhaus <mail@janwillhaus.de
 
-COPY . /app
+ENV ENVIRONMENT=PRODUCTION
+ENV PIP_NO_CACHE_DIR=off
+
+RUN mkdir /app
+COPY Pipfile* /app/
 WORKDIR /app
 
-RUN pip install -U pipenv gunicorn honcho
-RUN pipenv install --system
+RUN apk --no-cache add mariadb-client-libs jpeg-dev
+RUN apk --no-cache add --virtual build-dependencies postgresql-dev mysql-dev \
+  zlib-dev build-base \
+  && pip install --upgrade pip pipenv gunicorn honcho \
+  && pipenv install --system \
+  && apk del build-dependencies
 
-RUN python manage.py migrate
-
-# ENV DJANGO_ALLOWED_HOSTS=
-# ENV DATABASE_URL=
-# TODO Generate Secret_key
+COPY . /app/
 
 EXPOSE 8273
-
-CMD huncho start
+CMD honcho start

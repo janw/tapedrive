@@ -1,9 +1,12 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
+
 [dev-packages]
+
 coverage = "*"
 django-debug-toolbar = "==1.9.1"
 django-extensions = ">=2.0"
@@ -13,11 +16,13 @@ ipython = {extras = ["notebook"]}
 watchdog = "*"
 werkzeug = "==0.14.1"
 
+
 [packages]
+
 django = "==2.0.5"
 django-activity-stream = "*"
 django-background-tasks = "*"
-django-bootstrap4 = "*"
+"django-bootstrap4" = "*"
 django-compressor = "*"
 django-configurations = "==2.0.0"
 django-libsass = "*"
@@ -27,9 +32,13 @@ feedparser = "*"
 langcodes = "*"
 markdown = "*"
 pillow = "*"
-psycopg2 = "==2.7.4"
 requests = "*"
 whitenoise = "==4.0b4"
+python-dateutil = "*"
+"psycopg2-binary" = "*"
+mysqlclient = "*"
+
 
 [requires]
+
 python_version = "3.6"
