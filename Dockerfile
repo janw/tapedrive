@@ -1,21 +1,33 @@
 FROM python:3.6-alpine
-MAINTAINER Jan Willhaus <mail@janwillhaus.de
+LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 
-ENV ENVIRONMENT=PRODUCTION
 ENV PIP_NO_CACHE_DIR=off
+ENV PYTHONUNBUFFERED=1
 
-RUN mkdir /app
-COPY Pipfile* /app/
-WORKDIR /app
+COPY Pipfile* /
 
-RUN apk --no-cache add mariadb-client-libs jpeg-dev
-RUN apk --no-cache add --virtual build-dependencies postgresql-dev mysql-dev \
+RUN apk --no-cache add mariadb-client-libs libstdc++ jpeg-dev bash gettext \
+  && apk --no-cache add --virtual build-dependencies postgresql-dev mysql-dev \
   zlib-dev build-base \
   && pip install --upgrade pip pipenv gunicorn honcho \
-  && pipenv install --system \
+  && pipenv install --system --dev \
   && apk del build-dependencies
 
-COPY . /app/
+# Arbitrary database_url to allow manage.py commands at build time
+
+# User-accessible environment
+ENV ENVIRONMENT=PRODUCTION
+ENV DJANGO_ALLOWED_HOSTS=127.0.0.1
+ENV DJANGO_STRONG_SECURITY=0
+
+COPY . /app
+WORKDIR /app
+
+ARG DATABASE_URL="sqlite:////tmp.db"
+RUN python manage.py compilemessages \
+  && python manage.py collectstatic --no-input
 
 EXPOSE 8273
-CMD honcho start
+VOLUME /app /data
+
+CMD ["./start.sh"]

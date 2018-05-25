@@ -140,7 +140,8 @@ class Common(Configuration):
     LOGIN_REDIRECT_URL = 'podcasts:podcasts-list'
     LOGIN_EXEMPT_URLS = [
         'admin/',
-        'password/reset/'
+        'password/reset/',
+        'static/'
     ]
 
     SITE_ID = 1
@@ -176,8 +177,12 @@ class Common(Configuration):
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
         'compressor.finders.CompressorFinder',
     ]
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "assets"),
+    ]
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_AUTOREFRESH = True
 
-    COMPRESS_ROOT = os.path.join(BASE_DIR, 'assets')
     COMPRESS_PRECOMPILERS = (
         ('text/x-scss', 'django_libsass.SassCompiler'),
     )
@@ -209,6 +214,26 @@ class Common(Configuration):
         'FETCH_RELATIONS': True,
         'USE_PREFETCH': True,
         'GFK_FETCH_DEPTH': 2,
+    }
+
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'INFO',
+            },
+            'podcasts': {
+                'handlers': ['console'],
+                'level': 'INFO',
+            },
+        },
     }
 
 
@@ -274,11 +299,14 @@ class Staging(Common):
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     # Security
-    SESSION_COOKIE_SECURE = values.BooleanValue(True)
+    STRONG_SECURITY = values.BooleanValue(False)
+
+    if STRONG_SECURITY:
+        SESSION_COOKIE_SECURE = values.BooleanValue(True)
+        SECURE_HSTS_INCLUDE_SUBDOMAINS = values.BooleanValue(True)
+        SECURE_HSTS_SECONDS = values.IntegerValue(31536000)
     SECURE_BROWSER_XSS_FILTER = values.BooleanValue(True)
     SECURE_CONTENT_TYPE_NOSNIFF = values.BooleanValue(True)
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = values.BooleanValue(True)
-    SECURE_HSTS_SECONDS = values.IntegerValue(31536000)
     SECURE_REDIRECT_EXEMPT = values.ListValue([])
     SECURE_SSL_HOST = values.Value(None)
     SECURE_PROXY_SSL_HEADER = values.TupleValue(

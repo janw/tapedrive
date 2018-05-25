@@ -1,9 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -e
 
-export DJANGO_CONFIGURATION=Production
+# Django setup tasks
+echo "Setting up."
+python manage.py migrate
 
-# Start Gunicorn processes
-echo Starting Gunicorn.
-exec gunicorn podcastarchive.wsgi:application \
-    --bind 0.0.0.0:8000 \
-    --workers 3
+# Start Honcho processes
+echo "Starting Honcho."
+exec honcho start
