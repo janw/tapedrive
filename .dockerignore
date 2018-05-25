@@ -1,4 +1,7 @@
 .git
-mediafiles/*
+.tx
+htmlcov
 __research_material
+assets/img/screenshots/
+mediafiles/*
 staticfiles/*
