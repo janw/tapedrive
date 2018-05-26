@@ -1,3 +1,4 @@
+.env
 .git
 .tx
 htmlcov
@@ -5,3 +6,6 @@ __research_material
 assets/img/screenshots/
 mediafiles/*
 staticfiles/*
+*ipynb
+*.mo
+__pycache__

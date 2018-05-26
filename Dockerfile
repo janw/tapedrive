@@ -10,7 +10,7 @@ RUN apk --no-cache add mariadb-client-libs libstdc++ jpeg-dev bash gettext \
   && apk --no-cache add --virtual build-dependencies postgresql-dev mysql-dev \
   zlib-dev build-base \
   && pip install --upgrade pip pipenv gunicorn honcho \
-  && pipenv install --system --dev \
+  && pipenv install --system \
   && apk del build-dependencies
 
 # Arbitrary database_url to allow manage.py commands at build time
