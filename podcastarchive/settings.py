@@ -33,16 +33,19 @@ def get_secret_key(PROJECT_DIR):
 
 
 class DatabaseURLValueWithOptions(values.DatabaseURLValue):
-    options = None
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.options = kwargs.get('options', None)
+    options_mysql = {
+        'charset': 'utf8mb4',
+    }
+    options_sqlite = {
+        'timeout': 20,
+    }
 
     def to_python(self, value):
         value = super().to_python(value)
-        if self.options is not None:
-            value[self.alias].update({'OPTIONS': self.options})
+        if value[self.alias]['ENGINE'] == 'django.db.backends.mysql' and self.options_mysql is not None:
+            value[self.alias].update({'OPTIONS': self.options_mysql})
+        if value[self.alias]['ENGINE'] == 'django.db.backends.sqlite' and self.options_sqlite is not None:
+            value[self.alias].update({'OPTIONS': self.options_sqlite})
         return value
 
 
@@ -116,7 +119,7 @@ class Common(Configuration):
 
     # Database
     # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue('mysql://tapedrive:tapedrive@localhost/tapedrive')
+    DATABASES = DatabaseURLValueWithOptions('mysql://tapedrive:tapedrive@localhost/tapedrive')
 
     # Password validation
     # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -251,7 +254,7 @@ class Development(Common):
         'debug_toolbar',
     ]
 
-    DATABASES = values.DatabaseURLValue(
+    DATABASES = DatabaseURLValueWithOptions(
         'sqlite:///{}'.format(os.path.join(Common.BASE_DIR, 'db.sqlite3')))
 
     MIDDLEWARE = Common.MIDDLEWARE + [
