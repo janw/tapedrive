@@ -166,6 +166,7 @@ $('.naming-scheme-segments > code').click(function() {
 var podcast_card = $.templates('#apsearch-template');
 
 function searchReturn (data, textStatus, jqXHR) {
+    $('#apsearch-results-spinner').hide();
     if (data.resultCount == 0){
         $('#apsearch-results').hide()
         $('#apsearch-noresults').show();
@@ -249,6 +250,7 @@ $('#apsearch button[type="submit"]').click(function(e){
     if (search_term.length > 2) {
         var jqxhr = $.ajax({
             beforeSend: function(xhr, settings) {
+                $('#apsearch-results-spinner').show();
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
                 }
@@ -260,13 +262,30 @@ $('#apsearch button[type="submit"]').click(function(e){
             },
             dataType: 'json',
         })
-        .done(searchReturn);
+        .done(searchReturn)
+        .always(function() {
+            $('#apsearch-results-spinner').hide();
+        });
     };
     return false;
 });
 
 $('#apsearch-topcharts-refresh').click(function(e){
     e.preventDefault;
-    fireApiCall($(this).data('href'), topchartsReturn);
+    var jqxhr = $.ajax({
+        beforeSend: function(xhr, settings) {
+            $('#apsearch-topcharts-spinner').show();
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        },
+        url: $(this).data('href'),
+        type: 'GET',
+        dataType: 'json',
+    })
+    .done(topchartsReturn)
+    .always(function() {
+        $('#apsearch-topcharts-spinner').hide();
+    });
     return false;
 });

@@ -100,3 +100,20 @@ def jsr_for(indexed):
 @register.simple_tag(takes_context=False)
 def jsr_endfor():
     return '{{/for}}'
+
+
+@register.simple_tag(takes_context=False)
+def css_spinner(id, hidden=True):
+    display = ''
+    if hidden is True:
+        display = 'display:none;'
+    return format_html("""
+<div id="{}" class="sk-fading-circle" style="{}">
+  <div class="sk-circle1 sk-circle"></div> <div class="sk-circle2 sk-circle"></div>
+  <div class="sk-circle3 sk-circle"></div> <div class="sk-circle4 sk-circle"></div>
+  <div class="sk-circle5 sk-circle"></div> <div class="sk-circle6 sk-circle"></div>
+  <div class="sk-circle7 sk-circle"></div> <div class="sk-circle8 sk-circle"></div>
+  <div class="sk-circle9 sk-circle"></div> <div class="sk-circle10 sk-circle"></div>
+  <div class="sk-circle11 sk-circle"></div> <div class="sk-circle12 sk-circle"></div>
+</div>
+    """, id, display)
