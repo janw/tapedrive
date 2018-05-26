@@ -69,10 +69,28 @@ Use the `DJANGO_ALLOWED_HOSTS` variable to tell Tape Drive which hostnames to ac
 
 TBD.
 
-### Bare-metal setup (also for development)
+### Bare-metal setup
 
-TBD.
+For the development of Tape Drive I employ a bare-metal [setup via Pipenv/Pipfile](https://docs.pipenv.org). Pipenv is the up-and-coming alternative to the classic `requirements.txt` shipping with so many Python projects. It "aims to bring the best of all packaging worlds to the Python world" — Python devs should really check it out.
 
+I digress. Setting up the environment becomes fairly simple with Pipenv. After [installing Pipenv](https://docs.pipenv.org/install/#installing-pipenv), just clone the repo and setup the virtualenv:
+
+```bash
+git clone https://github.com/janwh/tapedrive.git
+cd tapedrive
+pipenv install --dev
+```
+
+Note the `--dev` flag. It causes all development dependencies (debug tooling, django-extensions, etc.) to be installed as well. To further simplify running the dev environment, it is advised to add the necessary flags to Python / the virtualenv via a `.env` file. It will be automatically loaded with `pipenv shell` ans `pipenv run`, and might contain a custom `DATABASE_URL` to your local database instance, and set `DEBUG` flags for Django. My `.env` contains theses variables:
+
+```bash
+ENVIRONMENT=DEVELOPMENT
+DJANGO_DEBUG='yes'
+DJANGO_TEMPLATE_DEBUG='yes'
+DATABASE_URL=mysql://tapedrive:supersecretpassword@localhost/tapedrive
+```
+
+Until further notice, setting `ENVIRONMENT` is not *strictly* necessary, as Tape Drive launches in development implicitly when cloned from the Git repository. By extension of that, the same is true for the `DEBUG` flags that are enabled in the development environment by default as well.
 
 ## Todos
 
