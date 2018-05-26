@@ -21,7 +21,7 @@ script:
   - coverage run --source='.' manage.py test podcasts.tests
 
 after_success:
-- coveralls
+- coveralls --data_file=.coverage --config_file=.coveragerc
 # - echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
 # - tx push -s
 
@@ -37,7 +37,7 @@ before_deploy:
   - docker build -t "$IMAGE_NAME" .
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${TRAVIS_TAG}"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${TRAVIS_TAG}" || true
 
 deploy:
   provider: script
