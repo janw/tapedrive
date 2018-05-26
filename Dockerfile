@@ -18,14 +18,14 @@ RUN apk --no-cache add mariadb-client-libs libstdc++ jpeg-dev bash gettext \
 # User-accessible environment
 ENV ENVIRONMENT=PRODUCTION
 ENV DJANGO_ALLOWED_HOSTS=127.0.0.1
-ENV DJANGO_STRONG_SECURITY=0
 
 COPY . /app
 WORKDIR /app
 
 ARG DATABASE_URL="sqlite:////tmp.db"
 RUN python manage.py compilemessages \
-  && python manage.py collectstatic --no-input
+  && python manage.py compress --force \
+  && python manage.py collectstatic --no-input -v0
 
 EXPOSE 8273
 VOLUME /app /data

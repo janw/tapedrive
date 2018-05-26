@@ -180,9 +180,6 @@ class Common(Configuration):
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "assets"),
     ]
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_AUTOREFRESH = True
-
     COMPRESS_PRECOMPILERS = (
         ('text/x-scss', 'django_libsass.SassCompiler'),
     )
@@ -296,15 +293,13 @@ class Staging(Common):
     The in-staging settings.
     """
 
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
     # Security
     STRONG_SECURITY = values.BooleanValue(False)
-
-    if STRONG_SECURITY:
+    if STRONG_SECURITY is True:
         SESSION_COOKIE_SECURE = values.BooleanValue(True)
         SECURE_HSTS_INCLUDE_SUBDOMAINS = values.BooleanValue(True)
         SECURE_HSTS_SECONDS = values.IntegerValue(31536000)
+
     SECURE_BROWSER_XSS_FILTER = values.BooleanValue(True)
     SECURE_CONTENT_TYPE_NOSNIFF = values.BooleanValue(True)
     SECURE_REDIRECT_EXEMPT = values.ListValue([])
