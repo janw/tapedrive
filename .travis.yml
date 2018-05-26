@@ -1,21 +1,25 @@
 language: python
-
 python:
   - "3.6"
 
+sudo: required
+
 install:
-  - pip install pipenv
-  - pip install coveralls
+  - pip install pipenv coveralls transifex-client
   - pipenv install --dev --system
 
 script:
+  - python manage.py makemessages -l de
   - python manage.py migrate
   - coverage run --source='.' manage.py test podcasts.tests
 
 sudo: false
 
 after_success:
-    coveralls
+  - coveralls
+  - sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n'
+  - tx push -s
+
 
 notifications:
   webhooks:
