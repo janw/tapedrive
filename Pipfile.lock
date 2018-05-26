@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3e86650f1ef5f20871367f9ade7250b0a4eec3d455fc2577896460c4dad32845"
+            "sha256": "4631edd10318465ac53ba7f743aaa3d00b7f7ae81ad44e5e21fd911a0ff9d5ab"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -622,6 +622,7 @@
                 "sha256:e64193f0047ad603b71f202332ab5527c5e52aa7c8b609704fc28c0dc20c4365",
                 "sha256:e8c43b5eee76b2083a9badde89fd1bbce6c8942d1045146e100b7b5e014f4f1a"
             ],
+            "markers": "os_name != 'nt'",
             "version": "==0.5.2"
         },
         "pycodestyle": {
@@ -655,16 +656,16 @@
         },
         "pywinpty": {
             "hashes": [
-                "sha256:163c4f390e5d67b11ef4b1419d0f8fced03097f431f9acc76fedbb280aca2e8e",
-                "sha256:3ed8a2054c7559d45b1e492df2a05f239e93319db35d444254f12adcbab42ee5",
-                "sha256:5b611fc9a6aedcae2d61dcc13d13a9865bccd8d9633b05fa96061b50bd76b465",
-                "sha256:6f174ac7663f4f04f6169d88541636a380db57a5d2c7aba5d90ec97a0e385986",
-                "sha256:7049f68189e19ffbef069a2a3ae6ed011ecc3c55b3750685839283429346f19e",
-                "sha256:bf4972f661a9fdd6b5a87ef6144fe799b9c0a611d582942b1bb775dc4f3c6992",
-                "sha256:d56aeb7491c7d30fde45ea7a89dd54fd3e773d85c4d3e2a51f969a6f6330d164"
+                "sha256:143bc4da4efb69ecd7d7dc0bc476b3c09e1ff2474b88cd6f9399e558dedcf414",
+                "sha256:2a31770255582f6deaef178653cb4151f29df1a056b8c7ad0aebf1e0fe3e85a5",
+                "sha256:2bb3cc1506f86c445175a63040638230e0bb0f252b65ce27a21045d3e26b818f",
+                "sha256:53e97216d14b55a0a241dee6903837cec245d0074c1e8352fdd9a180bc3e8ee3",
+                "sha256:68506b04a75720131f5755bccde08996e6c28e3417e27e2475297d3db1025a13",
+                "sha256:d5444dd473efb9bc16173d5c0091c55a231651f8d805b79b237881e1251f7e4d",
+                "sha256:ed764cef3707b56e5b1ebe152a0f0f54abd2d71f57519866b0f763dc28ee1f25"
             ],
             "markers": "os_name == 'nt'",
-            "version": "==0.5.2"
+            "version": "==0.5.3"
         },
         "pyyaml": {
             "hashes": [
