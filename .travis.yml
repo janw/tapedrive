@@ -22,8 +22,7 @@ script:
 
 after_success:
 - coveralls
-- echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername
-  = '"$TRANSIFEX_USER"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n'
+- echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
 - tx push -s
 
 notifications:
