@@ -75,11 +75,7 @@ class PodcastModelTestCase(TestCase):
             self.assertTrue(created)
             self.assertTrue(isinstance(podcast, Podcast))
 
-        self.assertIn('INFO:podcasts.models.podcast:Fetched CRE', logs.output[0])
-        self.assertEqual(logs.output[1:4], ['INFO:podcasts.models.podcast:Inserting cover image',
-                                            'INFO:podcasts.models.podcast:Inserting episodes from first page',
-                                            'INFO:podcasts.models.podcast:Fetching next page %s%s ...' %
-                                            (TEST_FEED_PAGED, TEST_FEED_PAGED_SECOND_PAGE), ])
+        self.assertIn('INFO:podcasts.models.podcast:Creating CRE', logs.output[0])
         self.assertEqual(logs.output[-2:], ['INFO:podcasts.models.podcast:No next page found',
                                             'INFO:podcasts.models.podcast:All done', ])
 
