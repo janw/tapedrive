@@ -183,6 +183,9 @@ class Common(Configuration):
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "assets"),
     ]
+    WHITENOISE_AUTOREFRESH = True
+    WHITENOISE_USE_FINDERS = True
+
     COMPRESS_PRECOMPILERS = (
         ('text/x-scss', 'django_libsass.SassCompiler'),
     )
