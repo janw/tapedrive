@@ -2,6 +2,8 @@
 .git
 .tx
 htmlcov
+.coverage
+secret.txt
 __research_material
 assets/img/screenshots/
 mediafiles/*
