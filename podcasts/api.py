@@ -9,7 +9,6 @@ from django.http import (
     Http404, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse,
     HttpResponseForbidden, HttpResponse
 )
-
 import copy
 import requests
 from datetime import datetime
@@ -20,6 +19,7 @@ from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.utils import unify_apple_podcasts_response, HEADERS
 from podcasts.conf import *  # noqa
+
 
 class HttpResponseNoContent(HttpResponse):
     status_code = 204
@@ -34,10 +34,14 @@ def encode_datetime(obj):
 @require_POST
 def podcast_add(request):
     feed_url = request.POST.get('feed_url')
-    if not feed_url:
+    feed_id = request.POST.get('feed_id')
+    if not feed_url and not feed_id:
         return HttpResponseBadRequest()
 
-    podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
+    if feed_url:
+        podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
+    elif feed_id:
+        podcast, created = Podcast.objects.get_or_create_from_itunes_id(feed_id, only_first_page=True)
     podcast.add_subscriber(request.user.listener)
     podcast.add_follower(request.user.listener)
 
@@ -139,7 +143,6 @@ def apple_podcasts_feed_from_id(request, id):
     url = urlunparse(url_parts)
     response = requests.get(url, headers=HEADERS)
     data = response.json()
-    print(data)
     if 'resultCount' in data and data['resultCount'] > 0:
         return JsonResponse({'url': data['results'][0]['feedUrl']})
 
