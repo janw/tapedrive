@@ -2,7 +2,7 @@
 set -e
 
 # Django setup tasks
-echo "Setting up."
+echo "Migrating Database."
 python manage.py migrate
 
 # Start Honcho processes

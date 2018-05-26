@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: tapedrive_db
+    restart: always
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: tapedrive
+      MYSQL_USER: tapedrive
+      MYSQL_PASSWORD: t4pedr1ve
+  web:
+    image: janwh/tapedrive
+    container_name: tapedrive_web
+    command: ["./start-waiting.sh"]
+    volumes:
+      - .:/app
+    ports:
+      - "8273:8273"
+    links:
+      - db
+    environment:
+      DJANGO_ALLOWED_HOSTS: "*"
+      DATABASE_URL: "mysql://tapedrive:t4pedr1ve@db/tapedrive"
