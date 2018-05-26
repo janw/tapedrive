@@ -41,6 +41,14 @@ The easiest way to deploy Tape Drive on your server is to install it via Docker.
 
 Please note, that the Docker image and bare metal deployment require you to take care of a database solution. It is technically possible to just use a SQLite database file but as background tasks for feed refreshes and downloads are running concurrently, running into database lockups is to be expected. For real-life / production use, please setup an instance of MySQL/MariaDB or PostgreSQL. In any case you'll have to provide the database connection details to Tape Drive (see below).
 
+When applying the initial batch of database migrations (`users.0003_create_initial_superuser` to be precise), an admin account is created with a random password. That password will printed to the console log of the migrations run:
+
+```
+Applying users.0003_create_initial_superuser...Creating initial user: admin // pass: <randompass>
+```
+
+You may use those credentials to log in at first, and change the password or create additional users from within Tape Drive.
+
 ### Tape Drive in a standalone Docker container
 
 Creating a Docker container from the Tape Drive Docker image is pretty a straight-forward process. As discussed above, Tape Drive expects you to provide a database connection on input, formatted as the well-known [12factor inspired `DATABASE_URL`](https://github.com/kennethreitz/dj-database-url#url-schema) environment variable. Most testing of Tape Drive is done in MySQL, so I recommend using that:
