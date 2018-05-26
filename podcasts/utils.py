@@ -345,7 +345,9 @@ def unify_apple_podcasts_response(data):
         data['resultsCount'] = len(data['results'])
     for i, result in enumerate(data['results']):
         if 'collectionId' in result:
-            data['results'][i]['id'] = result['collectionId']
+            data['results'][i]['id'] = int(result['collectionId'])
+        else:
+            data['results'][i]['id'] = int(result['id'])
         if 'collectionName' in result:
             data['results'][i]['name'] = result['collectionName']
 
@@ -355,7 +357,7 @@ def unify_apple_podcasts_response(data):
             data['results'][i]['artworkUrl'] = result['artworkUrl100']
 
         if 'genres' in result and isinstance(result['genres'][0], dict):
-            data['results'][i]['genres'] = [item.get('name') for item in result['genres']]
+            data['results'][i]['genres'] = [dict(name=item.get('name')) for item in result['genres']]
 
     return data
 

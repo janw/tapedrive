@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div id="apsearch-results" class="row mb-3" style="display:none;"></div>
+      <div id="apsearch-results" class="row px-2 mb-3" style="display:none;"></div>
       <div id="apsearch-noresults" class="row mb-3" style="display:none;">
         <div class="col-12">
           <p class="text-center">{% trans "Sorry, there were no results for your search. 👎" %}</p>
@@ -45,13 +45,12 @@
 <div class="row">
   <div class="col">
     <h3 class="mb-0 text-muted ">{% trans "Don't know what to look for?" %}</h3>
-    <h2>{% trans "Discover Something New" %} <button data-href="{% url 'podcasts:api-topcharts' %}" id="apsearch-topcharts-refresh" class="btn btn-outline-secondary btn-sm py-0">Refresh</button></h2>
+    <h2>{% trans "Discover Something New" %}</h2>
+    <button data-href="{% url 'podcasts:api-topcharts' %}" id="apsearch-topcharts-refresh" class="btn btn-outline-secondary btn-sm mb-2">{% trans "Load Apple Podcasts Top List 🥇" %}</button>
   </div>
 </div>
 
-<div id="apsearch-topcharts" class="row mb-3" style="display:none;"></div>
-
-
+<div id="apsearch-topcharts" class="row px-2 mb-3" style="display:none;"></div>
 <div id="apsearch-attrib" class="text-center my-3" style="display:none;">
   <small class="text-muted">{% blocktrans trimmed %}
       Search Results and Content courtesy of iTunes,<br />
@@ -59,5 +58,7 @@
   {% endblocktrans %}</small>
 </div>
 
+{% include "_podcast_card_search_modal.html" %}
 {% include "_podcast_card_search_jqt.html" %}
+
 {% endblock content %}

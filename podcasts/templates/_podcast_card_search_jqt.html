@@ -1,37 +1,7 @@
 {% load i18n podcasts_tags %}
 <script id="apsearch-template" type="text/x-jsrender">
-    <a href="#" class="discovery-cover"
-      data-toggle="modal" data-target="#discoverDetails{% jsr_var 'id' %}">
-      <img class="img-fluid" src="{% jsr_var 'artworkUrl' %}" alt="{% trans "Podcast Cover Art" %}">
-    </a>
-
-    <div class="modal fade" id="discoverDetails{% jsr_var 'id' %}"
-         tabindex="-1" role="dialog"
-         aria-labelledby="discoverDetailsTitle{% jsr_var 'id' %}" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Details</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="{% trans "Close" %}">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body text-center">
-            <img class="img-fluid rounded" src="{% jsr_var 'artworkUrl' %}" alt="{% trans "Podcast Cover Art" %}">
-            <h3 class="mt-3" id="discoverDetailsTitle{% jsr_var 'id' %}">{% jsr_var 'name' %}</h3>
-            <h4 class="my-2 text-muted">{% jsr_var 'artistName' %}</h4>
-
-            {% jsr_for 'genres' %}
-              <span class="badge badge-primary p-1">{% jsr_var '' %}</span>
-            {% jsr_endfor %}
-          </div>
-          <div class="modal-footer justify-content-center">
-          {% jsr_if 'feedUrl' %}
-          <button id="apsearch-addfeed{% jsr_var 'Id' %}" data-id="{% jsr_var 'id' %}" data-href="{% url 'podcasts:api-podcast-add' %}" data-feed-url="#" class="btn btn-secondary apsearch-addfeed">{% trans "Add to Tape Drive" %}</button>
-          {% jsr_endif %}
-          <button id="apsearch-feedadded{% jsr_var 'id' %}" class="btn btn-success disabled" style="display:none;" >{% trans "Successfully Added" %}</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <a href="#" class="discovery-cover"
+    data-toggle="modal" data-target="#apsearch-details" data-id="{% jsr_var 'id' %}" >
+    <img class="img-fluid" src="{% jsr_var 'artworkUrl' %}" alt="{% trans "Podcast Cover Art" %}">
+  </a>
 </script>

@@ -1,3 +1,6 @@
+var search_results = [];
+var topcharts_results = [];
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -75,6 +78,14 @@ function insertAtCaret(txtarea, text) {
     }
 }
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// PODCAST-RELATED FUNCTIONALITY
+//
+
+
 $('.ajax-call-reload').click(function() {
     var $a = $(this);
     $a.prop("disabled",true).addClass("disabled")
@@ -105,93 +116,130 @@ $('button.download-toggle').click(function() {
 });
 
 
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// EPISODE-CENTRIC FUNCTIONALITY
+//
+
+var episode_details = $.templates('#episode-details-template');
+$('.episode-details-link').each(function(index) {
+    $(this).on("click", function(e){
+        e.preventDefault;
+        var href = $(this).data('href');
+        var jqxhr = $.ajax({
+            url: href,
+            type: 'GET',
+            dataType: 'json',
+        })
+        .done(function (data, textStatus, jqXHR) {
+            console.log(data);
+            var htmlOutput = episode_details.render(data);
+            $("#episodeDetailsModalContainer").html(htmlOutput);
+            $('#episodeDetails').modal('show');
+        });
+
+
+    });
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// SETTINGS VIEW FUNCTIONALITY
+//
+
+
 $('.naming-scheme-segments > code').click(function() {
     var $input = $('#id_app-naming_scheme')
     insertAtCaret($input, $(this).text())
 })
 
 
-$('#id_opml_file').change(function() {
-    var input = this.files[0];
-    if (input) {
-        $('#id_opml_file_inner').text(input.name);
-    }
-    else {
-        $('#id_opml_file_inner').text('');
-    };
-})
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// APPLE PODCASTS SEARCH RELATED FUNCTIONALITY
+//
 
 var podcast_card = $.templates('#apsearch-template');
+
 function searchReturn (data, textStatus, jqXHR) {
     if (data.resultCount == 0){
         $('#apsearch-results').hide()
         $('#apsearch-noresults').show();
     }
     else {
+        search_results = data.results;
         var htmlOutput = podcast_card.render(data.results);
-        $("#apsearch-results").html(htmlOutput);
-        $('.apsearch-addfeed').each(function(index) {
-            $(this).on("click", function(e){
-                e.preventDefault;
-                $(this).attr('disabled', 'disabled');
-                var feed_url = $(this).data('feed-url');
-                var href = $(this).data('href');
-                var id = $(this).data('id');
-                var jqxhr = $.ajax({
-                    beforeSend: function(xhr, settings) {
-                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                        }
-                    },
-                    url: href,
-                    type: 'POST',
-                    data: {
-                        feed_url: feed_url,
-                    },
-                    dataType: 'json',
-                })
-                .done(function () {
-                    $('#apsearch-addfeed' + id).hide();
-                    $('#apsearch-feedadded' + id).show();
-                });
-            });
-        });
-        $('#apsearch-results').slideDown(400);
+        $('#apsearch-noresults').hide();
+        $("#apsearch-results").html(htmlOutput).slideDown(400);
         $('#apsearch-attrib').slideDown(200);
     };
     return false;
 }
 
-function addFeedClick (index) {
-    $(this).on("click", function(e){
-        e.preventDefault;
-        $(this).attr('disabled', 'disabled');
-        var feed_url = $(this).data('feed-url');
-        var href = $(this).data('href');
-        var id = $(this).data('id');
-        var jqxhr = $.ajax({
-            beforeSend: function(xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                }
-            },
-            url: href,
-            type: 'POST',
-            data: {
-                feed_url: feed_url,
-            },
-            dataType: 'json',
-        });
-    });
-};
-
 function topchartsReturn (data) {
+    topcharts_results = data.results;
     var htmlOutput = podcast_card.render(data.results);
-    $("#apsearch-topcharts").html(htmlOutput);
-    $('.apsearch-addfeed').each(addFeedClick);
-    $('#apsearch-topcharts').show();
+    $("#apsearch-topcharts").html(htmlOutput).show();
+    $('#apsearch-attrib').slideDown(200);
     return false;
 }
+
+$('#apsearch-addfeed').on("click", function(e){
+    e.preventDefault;
+    $(this).attr('disabled', 'disabled');
+    var jqxhr = $.ajax({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        },
+        url: $(this).data('href'),
+        type: 'POST',
+        data: {
+            feed_url: $(this).data('feed-url'),
+            feed_id: $(this).data('id'),
+        },
+        dataType: 'json',
+    })
+    .done(function (data) {
+        if (data.created == false) {
+            console.log('Already there');
+        }
+        $('#apsearch-addfeed').hide();
+        $('#apsearch-feedadded').show();
+    });
+});
+
+$('#apsearch-details').on('show.bs.modal', function (e) {
+    result_id = $(e.relatedTarget).data('id')
+    result = search_results.find(x => x.id === result_id);
+    if (typeof result === 'undefined') {
+        result = topcharts_results.find(x => x.id === result_id);
+    }
+    if (typeof result === 'undefined') {
+        return false;
+    }
+    console.log('Showing result details', result);
+
+    $('#apsearch-artwork').prop('src', result.artworkUrl);
+    $('#apsearch-title').text(result.name);
+    $('#apsearch-artist').text(result.artistName);
+    $('#apsearch-addfeed').show()
+        .data('feed-url', result.feedUrl)
+        .data('id', result.id)
+        .removeAttr('disabled');
+    $('#apsearch-feedadded').hide();
+
+    var tmpl = $.templates('#apsearch-badge-template');
+    var badges = tmpl.render(result.genres);
+    $("#apsearch-badges").html(badges);
+
+    return true;
+})
 
 $('#apsearch button[type="submit"]').click(function(e){
     e.preventDefault;
@@ -217,37 +265,8 @@ $('#apsearch button[type="submit"]').click(function(e){
     return false;
 });
 
-
 $('#apsearch-topcharts-refresh').click(function(e){
     e.preventDefault;
     fireApiCall($(this).data('href'), topchartsReturn);
     return false;
 });
-
-
-var episode_details = $.templates('#episode-details-template');
-$('.episode-details-link').each(function(index) {
-    $(this).on("click", function(e){
-        e.preventDefault;
-        var href = $(this).data('href');
-        var jqxhr = $.ajax({
-            url: href,
-            type: 'GET',
-            dataType: 'json',
-        })
-        .done(function (data, textStatus, jqXHR) {
-            console.log(data);
-            var htmlOutput = episode_details.render(data);
-            $("#episodeDetailsModalContainer").html(htmlOutput);
-            $('#episodeDetails').modal('show');
-        });
-
-
-    });
-});
-
-$('#apsearch-topcharts')
-
-
-
-// function searchReturn (data, textStatus, jqXHR) {}
