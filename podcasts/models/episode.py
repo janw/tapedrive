@@ -226,4 +226,5 @@ class Episode(models.Model):
 def log_activity(sender, instance, created, **kwargs):
     if created:
         action.send(instance, verb='was fetched from', target=instance.podcast)
-        action.send(instance, verb='was published to', target=instance.podcast, timestamp=instance.published)
+        if instance.published:
+            action.send(instance, verb='was published to', target=instance.podcast, timestamp=instance.published)
