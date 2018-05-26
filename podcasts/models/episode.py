@@ -66,6 +66,7 @@ class Episode(models.Model):
         null=True,
         editable=False,
         verbose_name=_('Media URL'),
+        max_length=2047,
     )
     published = models.DateTimeField(
         blank=True,

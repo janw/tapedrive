@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('subtitle', models.CharField(blank=True, max_length=255, null=True, verbose_name='Episode Subtitle')),
                 ('description', models.TextField(blank=True, null=True, verbose_name='Episode Summary')),
                 ('link', models.URLField(blank=True, null=True, verbose_name='Episode Link')),
-                ('media_url', models.URLField(blank=True, editable=False, null=True, verbose_name='Media URL')),
+                ('media_url', models.URLField(blank=True, editable=False, max_length=2047, null=True, verbose_name='Media URL')),
                 ('published', models.DateTimeField(blank=True, null=True, verbose_name='Published')),
                 ('downloaded', models.DateTimeField(blank=True, default=None, null=True, verbose_name='Downloaded')),
                 ('itunes_duration', models.CharField(blank=True, max_length=32, null=True, verbose_name='Duration')),
