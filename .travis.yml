@@ -17,7 +17,7 @@ install:
   - pipenv install --system
 
 script:
-  - coverage run --source='.' python manage.py test podcasts.tests
+  - coverage run --source='.' manage.py test podcasts.tests
 
 after_success:
   - coveralls --data_file=.coverage --config_file=.coveragerc
