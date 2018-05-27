@@ -1,8 +1,9 @@
 FROM python:3.6-alpine
 LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 
-ENV PIP_NO_CACHE_DIR=off
-ENV PYTHONUNBUFFERED=1
+ENV PIP_NO_CACHE_DIR off
+ENV PYTHONUNBUFFERED 1
+ENV TAPEDRIVE_VERSION 0.2a
 
 COPY Pipfile* /
 
