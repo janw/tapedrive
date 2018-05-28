@@ -33,7 +33,7 @@ podcasts_patterns = [
     path('', views.PodcastsList.as_view(), name='podcasts-list'),
     path('new/', views.podcasts_new, name='podcasts-new'),
     path('<slug:slug>/', include([
-        path('', views.podcasts_details, name='podcasts-details'),
+        path('', views.PodcastDetails.as_view(), name='podcasts-details'),
         path('api/', include(podcasts_api_patterns)),
         path('refresh/', views.podcasts_refresh_feed, name='podcasts-refresh-feed'),
         path('delete/', views.PodcastDeleteView.as_view(), name='delete'),

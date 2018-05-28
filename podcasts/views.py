@@ -6,10 +6,11 @@ from django.db.models import Count, Max, Case, When
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
-
+from django.http import HttpResponseBadRequest
 from podcasts.conf import * # noqa
 from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
 from podcasts.models.podcast import Podcast
+from podcasts.models.episode import Episode
 from podcasts.utils import refresh_feed, chunks, handle_uploaded_file, parse_opml_file
 
 import json
@@ -48,6 +49,40 @@ class PodcastsList(ListView):
         return context
 
 
+class PodcastDetails(ListView):
+    model = Episode
+    paginate_by = EPISODES_PER_PAGE
+    template_name = 'podcasts-details.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.slug = kwargs.pop('slug', None)
+        if not self.slug:
+            return HttpResponseBadRequest()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self, **kwargs):
+        # slug = kwargs.get('slug')
+        user_ordering = self.request.user.listener.sort_order_episodes
+        self.podcast = get_object_or_404((
+            Podcast.objects
+            .prefetch_related('episodes', 'episodes')
+            .prefetch_related('subscribers', 'subscribers'))
+            .annotate(num_episodes=Count('episodes'))
+            .annotate(downloaded_episodes=Count(Case(
+                When(episodes__downloaded__isnull=False, then=1))))
+            .annotate(last_episode_date=Max('episodes__published')),
+            slug=self.slug)
+
+        queryset = self.podcast.episodes.order_by(user_ordering)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['podcast'] = self.podcast
+        context['user_is_subscriber'] = self.podcast.subscribers.filter(user=request.user).exists()
+        return context
+
+
 def podcasts_new(request):
     if request.method == 'POST':
         form = NewFromURLForm(request.POST, request.FILES, request=request)
@@ -80,30 +115,6 @@ def podcasts_new(request):
         form = NewFromURLForm()
 
     return render(request, 'podcasts-new.html', {'form': form, })
-
-
-def podcasts_details(request, slug):
-    podcast = get_object_or_404((
-        Podcast.objects
-        .prefetch_related('episodes', 'episodes')
-        .prefetch_related('subscribers', 'subscribers'))
-        .annotate(num_episodes=Count('episodes'))
-        .annotate(downloaded_episodes=Count(Case(
-            When(episodes__downloaded__isnull=False, then=1))))
-        .annotate(last_episode_date=Max('episodes__published')),
-        slug=slug)
-
-    user_ordering = request.user.listener.sort_order_episodes
-
-    user_is_subscriber = podcast.subscribers.filter(user=request.user).exists()
-    episodes = podcast.episodes.order_by(user_ordering)[:10]
-
-    context = {
-        'user_is_subscriber': user_is_subscriber,
-        'podcast': podcast,
-        'episodes': episodes,
-    }
-    return render(request, 'podcasts-details.html', context)
 
 
 class PodcastDeleteView(DeleteView):

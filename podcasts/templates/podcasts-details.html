@@ -40,13 +40,15 @@
 
 <div class="row">
   <div class="col-12">
-    <div class="list-group">
-      {% for episode in episodes %}
+    <div class="list-group mb-4">
+      {% for episode in object_list %}
         {% include "_episode_listgroupitem.html" %}
       {% endfor %}
     </div>
   </div>
 </div>
+
+{% include "_pagination.html" %}
 
 
 {% endblock content %}
