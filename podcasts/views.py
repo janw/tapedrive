@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count, Max, Case, When
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import DeleteView, FormView
 from django.http import HttpResponseBadRequest
 from podcasts.conf import (PODCASTS_PER_PAGE, EPISODES_PER_PAGE)
 from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
@@ -82,38 +82,36 @@ class PodcastDetails(ListView):
         return context
 
 
-def podcasts_new(request):
-    if request.method == 'POST':
-        form = NewFromURLForm(request.POST, request.FILES, request=request)
-        if form.is_valid():
-            if form.cleaned_data['feed_url']:
-                podcast, created = Podcast.objects.get_or_create_from_feed_url(
-                    form.cleaned_data['feed_url'],
-                )
-                podcast.add_subscriber(request.user.listener)
-                podcast.add_follower(request.user.listener)
+class PodcastNew(FormView):
+    template_name = 'podcasts-new.html'
+    form_class = NewFromURLForm
 
-            if 'opml_file' in request.FILES:
-                tempfile = handle_uploaded_file(request.FILES['opml_file'])
-                feeds = parse_opml_file(tempfile)
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        if form.cleaned_data['feed_url']:
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(
+                form.cleaned_data['feed_url'],
+            )
+            podcast.add_subscriber(self.request.user.listener)
+            podcast.add_follower(self.request.user.listener)
 
-                for feed in feeds:
-                    # When creating from OPML, episodes have to be created afterwards, to speed up import
-                    podcast, created = Podcast.objects.get_or_create_from_feed_url(feed,
-                                                                                   create_episodes=False)
-                    if podcast is not None:
-                        podcast.add_subscriber(request.user.listener)
-                        podcast.add_follower(request.user.listener)
+        if 'opml_file' in self.request.FILES:
+            tempfile = handle_uploaded_file(self.request.FILES['opml_file'])
+            feeds = parse_opml_file(tempfile)
 
-            if form.cleaned_data['feed_url'] and not form.cleaned_data['opml_file']:
-                return redirect('podcasts:podcasts-details', slug=podcast.slug)
-            else:
-                return redirect('podcasts:podcasts-list')
+            for feed in feeds:
+                # When creating from OPML, episodes have to be created afterwards, to speed up import
+                podcast, created = Podcast.objects.get_or_create_from_feed_url(feed,
+                                                                               create_episodes=False)
+                if podcast is not None:
+                    podcast.add_subscriber(self.request.user.listener)
+                    podcast.add_follower(self.request.user.listener)
 
-    else:
-        form = NewFromURLForm()
-
-    return render(request, 'podcasts-new.html', {'form': form, })
+        if form.cleaned_data['feed_url']:
+            return redirect('podcasts:podcasts-details', slug=podcast.slug)
+        else:
+            return redirect('podcasts:podcasts-list')
 
 
 class PodcastDeleteView(DeleteView):
