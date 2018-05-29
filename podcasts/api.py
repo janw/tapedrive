@@ -1,12 +1,10 @@
 from django.db.transaction import atomic
 from django.shortcuts import redirect, reverse
 from django.shortcuts import get_object_or_404
-from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.http import (
-    Http404, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse,
+    HttpResponseBadRequest, JsonResponse,
     HttpResponseForbidden, HttpResponse
 )
 import copy
@@ -18,7 +16,7 @@ from podcasts.models.listener import EpisodePlaybackState, Listener
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.utils import unify_apple_podcasts_response, HEADERS
-from podcasts.conf import *  # noqa
+from podcasts.conf import (ITUNES_TOPCHARTS_URL, ITUNES_LOOKUP_URL, ITUNES_SEARCH_URL, ITUNES_SEARCH_LIMIT)
 
 
 class HttpResponseNoContent(HttpResponse):

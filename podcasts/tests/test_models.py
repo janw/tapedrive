@@ -151,7 +151,6 @@ class EpisodeModelTestCase(TestCase):
             )
         self.assertEqual(str(episode), 'Killing Time\'s Episode')
 
-
         with transaction.atomic():
             episode = Episode.objects.create(
                 guid='/testguid2/',

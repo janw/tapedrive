@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 from django.utils.translation import gettext_lazy as _
 
 import os
+import random
 
 from configurations import Configuration, values
 
@@ -21,7 +22,6 @@ def get_secret_key(PROJECT_DIR):
             SECRET_KEY = sf.read().strip()
     except IOError:
         try:
-            import random
             SECRET_KEY = ''.join([random.SystemRandom().choice(
                 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
             with open(SECRET_FILE, 'w') as sf:

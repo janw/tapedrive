@@ -1,21 +1,16 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
-from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.forms import ModelForm, Form
-from django.template.defaultfilters import slugify
 
 from podcasts.models import PodcastsSettings
-from podcasts.models.podcast import Podcast
 from podcasts.models.listener import Listener
-
-from podcasts.utils import refresh_feed, resolve_segments
-import itertools
+from podcasts.utils import resolve_segments
 
 
 class NewFromURLForm(Form):
-    feed_url = forms.CharField(required=False,
+    feed_url = forms.CharField(
+        required=False,
         label=_('Feed URL'),
         help_text=_('Named by the format, this is often also called "RSS feed"'),
     )
@@ -28,6 +23,7 @@ class NewFromURLForm(Form):
 
     class Meta:
         pass
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)

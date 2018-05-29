@@ -1,23 +1,24 @@
 from django.utils.text import format_lazy
-from django.template.defaultfilters import slugify, date as _date
-import feedparser
-from feedparser import CharacterEncodingOverride
-from dateutil import parser as dateparser
-import urllib
-from urllib.request import urlopen, Request
-from urllib.parse import urlparse, urlunparse, urlencode
-import requests
-from shutil import copyfileobj, move
-import os
-import tempfile
-import logging
-import bleach
-from markdown import markdown
-import xml.etree.ElementTree as etree
+from django.template.defaultfilters import slugify
+from django.conf import settings
+
 from collections import namedtuple
-from PIL import Image
-from podcasts.conf import *
+from dateutil import parser as dateparser
+from feedparser import CharacterEncodingOverride
 from io import BytesIO
+from markdown import markdown
+from PIL import Image
+from shutil import copyfileobj, move
+from urllib.parse import urlparse, urlunparse
+from urllib.request import urlopen, Request
+import bleach
+import feedparser
+import logging
+import os
+import requests
+import tempfile
+import urllib
+import xml.etree.ElementTree as etree
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -360,4 +361,3 @@ def unify_apple_podcasts_response(data):
             data['results'][i]['genres'] = [dict(name=item.get('name')) for item in result['genres']]
 
     return data
-

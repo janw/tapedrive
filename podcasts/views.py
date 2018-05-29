@@ -7,16 +7,14 @@ from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.http import HttpResponseBadRequest
-from podcasts.conf import * # noqa
+from podcasts.conf import (PODCASTS_PER_PAGE, EPISODES_PER_PAGE)
 from podcasts.forms import NewFromURLForm, ListenerSettingsForm, AdminSettingsForm, SiteSettingsForm
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
-from podcasts.utils import refresh_feed, chunks, handle_uploaded_file, parse_opml_file
-
-import json
-import requests
+from podcasts.utils import handle_uploaded_file, parse_opml_file
 
 from actstream.models import Action
+
 
 # Create your views here.
 def index(request):
@@ -102,7 +100,7 @@ def podcasts_new(request):
                 for feed in feeds:
                     # When creating from OPML, episodes have to be created afterwards, to speed up import
                     podcast, created = Podcast.objects.get_or_create_from_feed_url(feed,
-                        create_episodes=False)
+                                                                                   create_episodes=False)
                     if podcast is not None:
                         podcast.add_subscriber(request.user.listener)
                         podcast.add_follower(request.user.listener)

@@ -4,9 +4,9 @@ from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
-from podcasts.conf import *
+from podcasts.conf import (DEFAULT_PODCASTS_ORDER, DEFAULT_EPISODES_ORDER,
+                           SEEK_FORWARD_BY, SEEK_BACKWARD_BY,)
 from podcasts.models import IntegerRangeField
-from podcasts.models.podcast import Podcast
 
 User = get_user_model()
 
@@ -15,30 +15,22 @@ class Listener(models.Model):
 
     PODCASTS_ORDER_CHOICES = (
         (_('Content'), (
-                ('title', _('Title')),
-            )
-        ),
+            ('title', _('Title')))),
         (_('Metadata'), (
-                ('last_episode_date', _('Last Published Episode')),
-                ('num_episodes', _('Number of Episodes')),
-            )
-        ),
+            ('last_episode_date', _('Last Published Episode')),
+            ('num_episodes', _('Number of Episodes')))),
     )
 
     EPISODES_ORDER_CHOICES = (
         (_('Content'), (
-                ('title', _('Title')),
-            )
-        ),
+            ('title', _('Title')))),
         (_('Metadata'), (
-                ('downloaded', _('Download Date (Earliest First)')),
-                ('-downloaded', _('Download Date (Latest First)')),
-                ('published', _('Publishing Date (Earliest First)')),
-                ('-published', _('Publishing Date (Latest First)')),
-                ('itunes_duration', _('Duration (Shortest First)')),
-                ('-itunes_duration', _('Duration (Longest First)')),
-            )
-        ),
+            ('downloaded', _('Download Date (Earliest First)')),
+            ('-downloaded', _('Download Date (Latest First)')),
+            ('published', _('Publishing Date (Earliest First)')),
+            ('-published', _('Publishing Date (Latest First)')),
+            ('itunes_duration', _('Duration (Shortest First)')),
+            ('-itunes_duration', _('Duration (Longest First)'))))
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -99,7 +91,7 @@ class Listener(models.Model):
         self.save()
 
     def follow_podcast(self, podcast):
-        self.followers.add(listener)
+        self.interested_podcasts.add(podcast)
         self.save()
 
 
@@ -132,4 +124,3 @@ class EpisodePlaybackState(models.Model):
     def __str__(self):
         return "%(user)s's state on %(episode)s" % {'user': self.listener,
                                                     'episode': self.episode}
-
