@@ -30,7 +30,7 @@ global_api_patterns = [
 
 podcasts_patterns = [
     path('', views.PodcastsList.as_view(), name='podcasts-list'),
-    path('new/', views.podcasts_new, name='podcasts-new'),
+    path('new/', views.PodcastNew.as_view(), name='podcasts-new'),
     path('<slug:slug>/', include([
         path('', views.PodcastDetails.as_view(), name='podcasts-details'),
         path('api/', include(podcasts_api_patterns)),
