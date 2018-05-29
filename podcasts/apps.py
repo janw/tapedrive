@@ -6,9 +6,9 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 
-
 # Shamelessly stolen and adapted from django.contrib.sites
-def create_default_settings(app_config, verbosity=2, interactive=True, using=DEFAULT_DB_ALIAS, apps=global_apps, **kwargs):
+def create_default_settings(app_config, verbosity=2, interactive=True, using=DEFAULT_DB_ALIAS,
+                            apps=global_apps, **kwargs):
     try:
         Site = apps.get_model('sites', 'Site')
         PodcastsSettings = apps.get_model('podcasts', 'PodcastsSettings')

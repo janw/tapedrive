@@ -9,7 +9,7 @@ import os
 from string import Template
 import itertools
 
-from podcasts.conf import *
+from podcasts.conf import (STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT)
 from podcasts.models import BigPositiveIntegerField
 from podcasts.utils import strip_url, AVAILABLE_EPISODE_SEGMENTS, AVAILABLE_PODCAST_SEGMENTS
 

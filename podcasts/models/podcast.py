@@ -14,7 +14,7 @@ import logging
 import requests
 from urllib.parse import urlparse, urlunparse, urlencode
 
-from podcasts.conf import *
+from podcasts.conf import (STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT, ITUNES_LOOKUP_URL)
 from podcasts.utils import refresh_feed, feed_info, download_cover, HEADERS
 from podcasts.models import cover_image_filename
 from podcasts.models.episode import Episode
@@ -301,7 +301,6 @@ class Podcast(models.Model):
         action.send(self, verb='was fetched', timestamp=defaults['fetched'])
         if self.updated:
             action.send(self, verb='was updated', timestamp=self.updated)
-
 
     @atomic
     def queue_missing_episodes_download_tasks(self,

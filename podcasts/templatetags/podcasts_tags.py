@@ -1,13 +1,10 @@
 from django import template
-from django.conf import settings
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language_from_request
 from urllib.parse import urlparse
 from langcodes import Language
-import os
 
 register = template.Library()
 
