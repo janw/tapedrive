@@ -56,6 +56,7 @@ class PodcastDetails(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         self.slug = kwargs.pop('slug', None)
+        self.user = request.user
         if not self.slug:
             return HttpResponseBadRequest()
         return super().dispatch(request, *args, **kwargs)
@@ -79,7 +80,7 @@ class PodcastDetails(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['podcast'] = self.podcast
-        context['user_is_subscriber'] = self.podcast.subscribers.filter(user=request.user).exists()
+        context['user_is_subscriber'] = self.podcast.subscribers.filter(user=self.user).exists()
         return context
 
 
