@@ -33,7 +33,7 @@ def download_episode(media_url, file_path, id):
         action.send(episode, verb='failed downloading')
 
 
-@background(queue='low-priority')
+@background()
 def regular_feed_refresh():
     psettings = PodcastsSettings.objects.get(site__id=getattr(settings, 'SITE_ID', 1))
 
