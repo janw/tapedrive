@@ -60,6 +60,11 @@ class Listener(models.Model):
         verbose_name=_('Sort Episodes By'),
         help_text=_('Determines the sorting of episodes on podcast detail pages'),
     )
+    dark_mode = models.BooleanField(
+        default=False,
+        verbose_name=_('Dark Mode'),
+        help_text=_('Reduce eye strain at night, increase awesomeness by day.'),
+    )
 
     # Settings for future playback functionality
     playback_seek_forward_by = IntegerRangeField(

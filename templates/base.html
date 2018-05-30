@@ -27,7 +27,9 @@
 
   </head>
   {% block body %}
-    <body>
+    <body {% if request.user.listener.dark_mode %}class="darkened"{% endif %}>
+      <div class="wrapper">
+
       <header id="navbar" class="border-bottom pt-3 p-md-2 mb-3">
         {% block header %}
           {% include "_navbar.html" %}
@@ -40,14 +42,14 @@
       </main>
 
       {% block post_content %}{% endblock post_content %}
+      </div>
 
       <div class="backdrop backdrop-static backdrop-lighter"></div>
-
       <footer class="footer">
         <div class="container">
           <small class="my-0 text-muted">
             {% blocktrans %}
-              <a href="http://tapedrive.io">Tape Drive</a> is licensed under the Apache License 2.0. Thank you for using it.
+              <a class="text-muted" href="https://tapedrive.io">Tape Drive</a> is licensed under the Apache License 2.0. Thank you for using it.
              {% endblocktrans %}
              {# {{request.site.name}} #}
           </small>

@@ -31,10 +31,13 @@ $container-max-widths: (
   xl: 960px
 );
 
+$wrapper-max-width: 1050px;
 
 @import "../vendor/scss/bootstrap/bootstrap";
 @import "borders-responsive";
 @import "spinkit";
+@import "dark-mode";
+
 
 //
 //  Elements in the top navbar
@@ -220,10 +223,9 @@ html {
   min-height: 100%;
 }
 body {
-  margin-bottom: 80px; /* Margin bottom by footer height */
+  margin-bottom: 60px; /* Margin bottom by footer height */
 }
 footer.footer {
-  @extend .border-top;
   text-align: center;
   position: absolute;
   bottom: 0;
@@ -312,7 +314,7 @@ input[type="file"] {
 
 .backdrop {
   background-color: $white;
-  display: block;
+  display: none;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -327,7 +329,6 @@ input[type="file"] {
   -o-background-size: cover;
   background-size: cover;
   opacity: 0.5;
-  animation: filter-animation 4s;
 }
 
 @keyframes filter-animation {

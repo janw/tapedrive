@@ -6,7 +6,7 @@
 {% endblock extra_head %}
 
 {% block body %}
-<body class="h-100 d-flex align-items-center py-5 text-center">
+<body class="h-100 d-flex align-items-center py-5 text-center {% if request.user.listener.dark_mode %}darkened{% endif %}">
 
 	<div class="form-signin">
 		{% block content %}
