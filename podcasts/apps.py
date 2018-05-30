@@ -6,6 +6,9 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.utils import timezone
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def create_background_refresh_task():
     from podcasts.conf import (DEFAULT_REFRESH_RATE, DEFAULT_REFRESH_PRIORITY, DEFAULT_REFRESH_DELAY)
@@ -16,7 +19,7 @@ def create_background_refresh_task():
     tasks = Task.objects.filter(task_name=task_name)
     if tasks.count() == 1:
         task = tasks[0]
-        print('Found existing feed refresh task')
+        logger.info('Found existing feed refresh task')
     else:
         for task in tasks.iterator():
             task.delete()
@@ -24,8 +27,8 @@ def create_background_refresh_task():
         task = regular_feed_refresh(repeat=DEFAULT_REFRESH_RATE,
                                     priority=DEFAULT_REFRESH_PRIORITY,
                                     schedule=DEFAULT_REFRESH_DELAY)
-        print('Created feed refresh task')
-    print('Will run at', timezone.get_current_timezone().normalize(task.run_at))
+        logger.info('Created feed refresh task')
+    logger.info('Is scheduled for %s' % timezone.get_current_timezone().normalize(task.run_at))
 
 
 # Shamelessly stolen and adapted from django.contrib.sites

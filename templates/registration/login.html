@@ -3,7 +3,11 @@
 {% block extra_head %}
 		{{block.super}}
 		<style>
-			.backdrop { background-image: url({% static 'img/michael-mroczek-195362-unsplash.jpg' %}); }
+			.backdrop {
+				display: block;
+				background-image: url({% static 'img/michael-mroczek-195362-unsplash.jpg' %});
+				animation: filter-animation 4s;
+			}
 			.form-signin {  max-width: 400px; }
 		</style>
 {% endblock extra_head %}
