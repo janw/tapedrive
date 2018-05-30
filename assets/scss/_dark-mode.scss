@@ -48,4 +48,9 @@ body.darkened {
   & .site-title > .img-logo {
     filter: grayscale(1) brightness(70%);
   }
+
+  & .form-control, & .checkbox, & input[type="file"] {
+    @extend .bg-dark;
+    border-color: $gray-900;
+  }
 }
