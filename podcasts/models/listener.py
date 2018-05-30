@@ -15,22 +15,22 @@ class Listener(models.Model):
 
     PODCASTS_ORDER_CHOICES = (
         (_('Content'), (
-            ('title', _('Title')))),
+            ('title', _('Title')),)),
         (_('Metadata'), (
             ('last_episode_date', _('Last Published Episode')),
-            ('num_episodes', _('Number of Episodes')))),
+            ('num_episodes', _('Number of Episodes')),)),
     )
 
     EPISODES_ORDER_CHOICES = (
         (_('Content'), (
-            ('title', _('Title')))),
+            ('title', _('Title')),)),
         (_('Metadata'), (
             ('downloaded', _('Download Date (Earliest First)')),
             ('-downloaded', _('Download Date (Latest First)')),
             ('published', _('Publishing Date (Earliest First)')),
             ('-published', _('Publishing Date (Latest First)')),
             ('itunes_duration', _('Duration (Shortest First)')),
-            ('-itunes_duration', _('Duration (Longest First)'))))
+            ('-itunes_duration', _('Duration (Longest First)')),))
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

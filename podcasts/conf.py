@@ -1,5 +1,7 @@
 from django.conf import settings
 from .apps import PodcastsConfig
+from background_task.models import Task
+from datetime import timedelta
 
 
 def _getattr(variable, default):
@@ -27,3 +29,7 @@ ITUNES_TOPCHARTS_URL = 'https://rss.itunes.apple.com/api/v1/us/podcasts/top-podc
 ITUNES_SEARCH_URL = 'https://itunes.apple.com/search?'
 ITUNES_LOOKUP_URL = 'https://itunes.apple.com/lookup?'
 ITUNES_SEARCH_LIMIT = 15
+
+DEFAULT_REFRESH_RATE = Task.HOURLY
+DEFAULT_REFRESH_PRIORITY = -10
+DEFAULT_REFRESH_DELAY = timedelta(minutes=1)

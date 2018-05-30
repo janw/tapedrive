@@ -4,6 +4,28 @@ from django.db import DEFAULT_DB_ALIAS, router
 from django.db.models.signals import post_migrate
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.utils import timezone
+
+
+def create_background_refresh_task():
+    from podcasts.conf import (DEFAULT_REFRESH_RATE, DEFAULT_REFRESH_PRIORITY, DEFAULT_REFRESH_DELAY)
+    from podcasts.tasks import regular_feed_refresh
+    from background_task.models import Task
+    task_name = 'podcasts.tasks.regular_feed_refresh'
+
+    tasks = Task.objects.filter(task_name=task_name)
+    if tasks.count() == 1:
+        task = tasks[0]
+        print('Found existing feed refresh task')
+    else:
+        for task in tasks.iterator():
+            task.delete()
+
+        task = regular_feed_refresh(repeat=DEFAULT_REFRESH_RATE,
+                                    priority=DEFAULT_REFRESH_PRIORITY,
+                                    schedule=DEFAULT_REFRESH_DELAY)
+        print('Created feed refresh task')
+    print('Will run at', timezone.get_current_timezone().normalize(task.run_at))
 
 
 # Shamelessly stolen and adapted from django.contrib.sites
@@ -39,3 +61,5 @@ class PodcastsConfig(AppConfig):
 
         from actstream import registry  # noqa
         registry.register(self.get_model('Podcast'), self.get_model('Episode'))
+
+        create_background_refresh_task()
