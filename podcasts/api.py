@@ -16,6 +16,7 @@ from podcasts.models.listener import EpisodePlaybackState, Listener
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.utils import unify_apple_podcasts_response, HEADERS
+from podcasts import utils
 from podcasts.conf import (ITUNES_TOPCHARTS_URL, ITUNES_LOOKUP_URL, ITUNES_SEARCH_URL, ITUNES_SEARCH_LIMIT)
 
 
@@ -120,12 +121,43 @@ def podcast_queue_download(request, slug):
 
 def episode_details(request, id):
     object = get_object_or_404(Episode.objects.prefetch_related('podcast'), id=id)
+
+    isp = request.user.listener.image_security_policy
+    if isp == 'a':
+        allowed_domains = ['*', ]
+    elif isp == 'f':
+        domain = utils.clean_link(object.podcast.link)
+        allowed_domains = [domain, ]
+    else:
+        allowed_domains = []
+
     object_dict = copy.copy(object.__dict__)
     object_dict.pop('_state', None)
+    if object_dict['shownotes']:
+        object_dict['shownotes'] = utils.replace_shownotes_images(object.shownotes, allowed_domains)
     object_dict['podcast'] = object.podcast.title
     object_dict['url_api_episode_queue_download'] = reverse('podcasts:api-episode-queue-download',
                                                             kwargs={'id': object.id})
+    object_dict['url_api_episode_shownotes'] = reverse('podcasts:api-episode-shownotes',
+                                                       kwargs={'id': object.id})
     return JsonResponse(object_dict)
+
+
+def episode_shownotes_html(request, id):
+    object = get_object_or_404(Episode, id=id)
+    if not object.shownotes:
+        return ''
+
+    isp = request.user.listener.image_security_policy
+    if isp == 'a':
+        allowed_domains = ['*', ]
+    elif isp == 'f':
+        domain = utils.clean_link(object.podcast.link)
+        allowed_domains = [domain, ]
+    else:
+        allowed_domains = []
+
+    return HttpResponse(utils.replace_shownotes_images(object.shownotes, allowed_domains))
 
 
 def apple_podcasts_topcharts(request):

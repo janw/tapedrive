@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 
 from podcasts.conf import (DEFAULT_PODCASTS_ORDER, DEFAULT_EPISODES_ORDER,
-                           SEEK_FORWARD_BY, SEEK_BACKWARD_BY,)
+                           DEFAULT_IMAGE_SECURITY_POLICY, SEEK_FORWARD_BY, SEEK_BACKWARD_BY,)
 from podcasts.models import IntegerRangeField
 
 User = get_user_model()
@@ -31,6 +31,12 @@ class Listener(models.Model):
             ('-published', _('Publishing Date (Latest First)')),
             ('itunes_duration', _('Duration (Shortest First)')),
             ('-itunes_duration', _('Duration (Longest First)')),))
+    )
+
+    IMAGE_SECURITY_POLICY_CHOICES = (
+        ('a', _('Allow All')),
+        ('f', _('Allow First-Party')),
+        ('n', _('Allow None')),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -64,6 +70,13 @@ class Listener(models.Model):
         default=False,
         verbose_name=_('Dark Mode'),
         help_text=_('Reduce eye strain at night, increase awesomeness by day.'),
+    )
+    image_security_policy = models.CharField(
+        choices=IMAGE_SECURITY_POLICY_CHOICES,
+        default=DEFAULT_IMAGE_SECURITY_POLICY,
+        max_length=1,
+        verbose_name=_('Image Security Policy'),
+        help_text=_('How to load external images in show notes, etc.'),
     )
 
     # Settings for future playback functionality

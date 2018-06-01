@@ -137,51 +137,60 @@ $('.episode-details-link').each(function(index) {
             var htmlOutput = episode_details.render(data);
             $("#episodeDetailsModalContainer").html(htmlOutput);
             $('#episodeDetails').modal('show');
+            $('button.download-toggle').click(function() {
+                var $a = $(this);
+                $a.prop("disabled",true).addClass("disabled")
+                fireApiCall($a.data('href'));
+                return false;
+            });
+            replace_images();
         });
-
-
     });
 });
 
-$('.has-src').hide().wrap(function() {
-    return '<span class="img-has-src">' + $(this).text() + '</span>';
-});
+function replace_images () {
 
-$('a').has('img.has-src').each(function(index) {
-    $(this).data('href', $(this).attr('href'));
-    $(this).attr('href', '#');
-    $(this).on("click", function(e){
-        e.preventDefault;
-        console.log('Clicked img');
+    $('.has-src').hide().wrap(function() {
+        return '<span class="img-has-src">' + $(this).text() + '</span>';
     });
- });
 
-$('.img-has-src').each(function(index) {
-    var img = $($(this).find('img.has-src')[0]);
-    $('<span class="img-alt">' + img.attr('alt') + '</span>').prependTo(this);
+    $('a').has('img.has-src').each(function(index) {
+        $(this).data('href', $(this).attr('href'));
+        $(this).attr('href', '#');
+        $(this).on("click", function(e){
+            e.preventDefault;
+            console.log('Clicked img');
+        });
+     });
 
-    $(this).on("click", function(event){
-        event.preventDefault;
-        var target = $(event.target);
-        console.log('Target:', target);
+    $('.img-has-src').each(function(index) {
+        var img = $($(this).find('img.has-src')[0]);
+        $('<span class="img-alt">' + img.attr('alt') + '</span>').prependTo(this);
 
-        if (target.attr('class') == 'img-alt'){
-            var wrapper = target.parent();
-            console.log('clicked the alt')
-        }
-        else if (target.attr('class') == '.has-src') {
-            var wrapper = target.parent();
-            console.log('clicked img');
-        }
-        else {
-            var wrapper = target;
-        }
+        $(this).on("click", function(event){
+            event.preventDefault;
+            var target = $(event.target);
+            console.log('Target:', target);
 
-        $(wrapper.find('span.img-alt')[0]).empty().remove();
-        var img = $(wrapper.find('img.has-src')[0]);
-        img.attr('src', img.data('src')).unwrap().show();
-    });
-})
+            if (target.attr('class') == 'img-alt'){
+                var wrapper = target.parent();
+                console.log('clicked the alt')
+            }
+            else if (target.attr('class') == '.has-src') {
+                var wrapper = target.parent();
+                console.log('clicked img');
+            }
+            else {
+                var wrapper = target;
+            }
+
+            $(wrapper.find('span.img-alt')[0]).empty().remove();
+            var img = $(wrapper.find('img.has-src')[0]);
+            img.attr('src', img.data('src')).unwrap().show();
+        });
+    })
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
