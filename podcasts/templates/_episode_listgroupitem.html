@@ -14,7 +14,8 @@
     </small>
 
     <div class="mt-2 text-center text-md-left">
-      <button class="btn btn-outline-secondary btn-sm mb-2 px-3" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}">{% trans "Show Details" %}</button>
+      <button class="btn btn-outline-secondary btn-sm mb-2 px-3 episode-details-link" data-toggle="modal" data-target="#episodeDetailsModal{{episode.id}}"
+      data-href="{% url 'podcasts:api-episode-details' episode.id %}">{% trans "Show Details" %}</button>
 
       {% if episode.downloaded %}
         <button class="btn btn-success disabled btn-sm mb-2 px-3">
@@ -43,5 +44,5 @@
   </div>
 </div>
 <div>
-{% include "_episode_details_modal.html" %}
+{# {% include "_episode_details_modal.html" %} #}
 </div>

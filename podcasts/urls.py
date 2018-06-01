@@ -7,7 +7,7 @@ episodes_patterns = [
     path('<int:id>/', include([
         path('download/', api.episode_queue_download, name='api-episode-queue-download'),
         path('details/', api.episode_details, name='api-episode-details'),
-
+        path('shownotes/', api.episode_shownotes_html, name='api-episode-shownotes'),
         # path('position/<int:position>', views.podcasts_refresh_feed, name='podcasts-refresh-feed'),
         path('played/', api.episodes_mark_played, name='episodes-mark-played'),
         # path('unplayed/', views.episodes_mark_unplayed, name='episodes-mark-unplayed'),
