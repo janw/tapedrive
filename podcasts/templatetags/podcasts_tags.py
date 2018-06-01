@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import get_language_from_request
 from urllib.parse import urlparse
 from langcodes import Language
+from podcasts import utils
 
 register = template.Library()
 
@@ -36,18 +37,7 @@ def add_next_self(context):
 
 @register.simple_tag(takes_context=False)
 def clean_link(link, include_path=True):
-    parsed = urlparse(link)
-    netloc = parsed.netloc.lstrip('www.')
-
-    if include_path:
-        path = parsed.path.rstrip('/')
-        splits = str.split(path, '/')
-        if len(splits) > 2:
-            path = '/…/' + splits[-1]
-
-        return netloc + path
-    else:
-        return netloc
+    return utils.clean_link(link, include_path)
 
 
 @register.simple_tag(takes_context=True)

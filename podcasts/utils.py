@@ -1,6 +1,8 @@
 from django.utils.text import format_lazy
+from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify
 from django.conf import settings
+
 
 from collections import namedtuple
 from dateutil import parser as dateparser
@@ -12,6 +14,8 @@ from shutil import copyfileobj, move
 from urllib.parse import urlparse, urlunparse
 from urllib.request import urlopen, Request
 import bleach
+from bleach.sanitizer import Cleaner
+from html5lib.filters.base import Filter
 import feedparser
 import logging
 import os
@@ -45,6 +49,16 @@ ALLOWED_HTML_ATTRIBUTES = {
     'abbr': [u'title']
 }
 
+EXTENDED_HTML_TAGS = [
+    'img', 'table', 'thead', 'tbody', 'tr', 'th', 'td']
+
+EXTENDED_HTML_ATTRIBUTES = {
+    'img': ['rel', 'src', 'alt'],
+    'td': ['colspan', 'rowspan'],
+
+}
+
+
 # Mappings of usable segment => field name
 AVAILABLE_PODCAST_SEGMENTS = {
     'podcast_slug': 'slug',
@@ -77,6 +91,40 @@ UNIFYING_EPISODE_SEGMENTS = [
 ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
 
 feed_info = namedtuple("feed_info", ['data', 'url', 'next_page', 'last_page'])
+
+
+class ImgSrcFilter(Filter):
+    def __iter__(self):
+        for token in Filter.__iter__(self):
+            if token['type'] in ['StartTag', 'EmptyTag'] and token['data']:
+                data_alt = None
+                data_src = None
+                for attr, value in token['data'].items():
+                    if attr[1] == 'alt':
+                        data_alt = token['data'][attr]
+                    elif attr[1] == 'src':
+                        data_src = token['data'][attr]
+                        token['data'][attr] = ''
+
+                if data_src:
+                    token['data'][(None, 'data-src')] = data_src
+                    token['data'][(None, 'class')] = 'has-src'
+                    token['data'][(None, 'alt')] = format_lazy('Image from<br />{domain}',
+                                                               domain=clean_link(data_src))
+                    token['data'][(None, 'src')] = ''
+                    if data_alt:
+                        token['data'][(None, 'data-alt')] = data_alt
+            yield token
+
+
+subtitle_cleaner = Cleaner(tags=[], strip=True)
+
+summary_cleaner = Cleaner(tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES,
+                          filters=[ImgSrcFilter], strip=True)
+
+shownotes_cleaner = Cleaner(tags=ALLOWED_HTML_TAGS + EXTENDED_HTML_TAGS,
+                            attributes={**ALLOWED_HTML_ATTRIBUTES, **EXTENDED_HTML_ATTRIBUTES},
+                            filters=[ImgSrcFilter], strip=True)
 
 
 def get_segments_html(segments):
@@ -131,7 +179,7 @@ def sanitize_subtitle(object):
     # Properly process subtitle
     if 'subtitle' in object:
         # As per spec, subtitle should be plain text and up to 255 characters.
-        subtitle = bleach.clean(object['subtitle'], tags=[], strip=True)
+        subtitle = subtitle_cleaner.clean(object.get('subtitle', ''))
         if len(subtitle) > 255:
             logger.warning('Subtitle too long, will be truncated')
             subtitle = subtitle[:251] + ' ...'
@@ -152,11 +200,16 @@ def sanitize_summary(object):
         html = object.get('description', '')
 
     # In any case, clean the thing from weird HTML shenanigans
-    return bleach.clean(
-        html,
-        tags=ALLOWED_HTML_TAGS,
-        attributes=ALLOWED_HTML_ATTRIBUTES,
-        strip=True)
+    return summary_cleaner.clean(html)
+
+
+def sanitize_shownotes(object):
+    content = object.get('content')
+    if not content:
+        return None
+
+    html = max(content, key=lambda c: len(c.get('value', ''))).get('value', '')
+    return shownotes_cleaner.clean(html)
 
 
 def parse_feed_info(parsed_feed):
@@ -200,6 +253,7 @@ def parse_episode_info(episode):
 
     episode_info['subtitle'] = sanitize_subtitle(episode)
     episode_info['description'] = sanitize_summary(episode)
+    episode_info['shownotes'] = sanitize_shownotes(episode)
 
     episode_info['media_url'] = None
     for link in episode['links']:
@@ -323,6 +377,20 @@ def strip_url(link):
     linkpath = urlparse(link).path
     extension = os.path.splitext(linkpath)[1]
     return linkpath, extension
+
+
+def clean_link(link, include_path=False):
+    parsed = urlparse(link)
+    netloc = parsed.netloc.lstrip('www.')
+
+    if include_path:
+        path = parsed.path.rstrip('/')
+        splits = str.split(path, '/')
+        if len(splits) > 2:
+            path = '/…/' + splits[-1]
+
+        return netloc + path
+    return netloc
 
 
 def handle_uploaded_file(f):
