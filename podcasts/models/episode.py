@@ -150,6 +150,12 @@ class Episode(models.Model):
         verbose_name=_('Associated Download Task'),
     )
 
+    shownotes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_('Show Notes'),
+    )
+
     class Meta:
         verbose_name = _('Episode')
         verbose_name_plural = _('Episodes')

@@ -143,7 +143,45 @@ $('.episode-details-link').each(function(index) {
     });
 });
 
+$('.has-src').hide().wrap(function() {
+    return '<span class="img-has-src">' + $(this).text() + '</span>';
+});
 
+$('a').has('img.has-src').each(function(index) {
+    $(this).data('href', $(this).attr('href'));
+    $(this).attr('href', '#');
+    $(this).on("click", function(e){
+        e.preventDefault;
+        console.log('Clicked img');
+    });
+ });
+
+$('.img-has-src').each(function(index) {
+    var img = $($(this).find('img.has-src')[0]);
+    $('<span class="img-alt">' + img.attr('alt') + '</span>').prependTo(this);
+
+    $(this).on("click", function(event){
+        event.preventDefault;
+        var target = $(event.target);
+        console.log('Target:', target);
+
+        if (target.attr('class') == 'img-alt'){
+            var wrapper = target.parent();
+            console.log('clicked the alt')
+        }
+        else if (target.attr('class') == '.has-src') {
+            var wrapper = target.parent();
+            console.log('clicked img');
+        }
+        else {
+            var wrapper = target;
+        }
+
+        $(wrapper.find('span.img-alt')[0]).empty().remove();
+        var img = $(wrapper.find('img.has-src')[0]);
+        img.attr('src', img.data('src')).unwrap().show();
+    });
+})
 
 ////////////////////////////////////////////////////////////////////////////////
 //
