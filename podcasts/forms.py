@@ -59,13 +59,23 @@ class ListenerSettingsForm(ModelForm):
                 details page as the <span class="btn btn-outline-secondary
                 btn-sm disabled text-dark py-0">Subscribe</span> toggle.</p>
                 '''),
-            'enable_discovery': _('''
-                <p>You might have already seen the discovery section on the 'Add
-                Feeds' page. It shows you the current top podcasts from the
-                Apple Podcasts directory. If you don't like the suggestions,
-                want the page to load more quickly or don't want to have
-                external resources loaded from Apple's servers</p>
+            'image_security_policy': _('''
+                <p>More and more podcasts have images in their content / show
+                notes section, and not all of them are actual content. In an
+                effort to better track listening behavior of users, many
+                podcast producers, networks, and feed providers add so-called
+                tracking pixels and similiar structures to the show notes.
+                Loading those when displaying the notes will reveal personally
+                identifying information about you — which we don't like.</p>
+                <p>By selecting the 'Allow None' option, all images in show
+                notes are replaced with placeholders, that only load images when
+                actively clicked on by you. Selecting 'Allow First-Party' will
+                enable only the images that come from the podcast's website
+                itself, effectively disabling tracking-pixels from the big ad
+                networks. If you select 'Allow All' you're becoming fair game —
+                all images are loaded, without regard to their source.</p>
                 '''),
+
         }
 
     def __init__(self, *args, **kwargs):
