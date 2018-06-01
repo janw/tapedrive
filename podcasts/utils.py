@@ -13,7 +13,6 @@ from PIL import Image
 from shutil import copyfileobj, move
 from urllib.parse import urlparse, urlunparse
 from urllib.request import urlopen, Request
-import bleach
 from bleach.sanitizer import Cleaner
 from html5lib.filters.base import Filter
 import feedparser
@@ -23,6 +22,8 @@ import requests
 import tempfile
 import urllib
 import xml.etree.ElementTree as etree
+from bs4 import BeautifulSoup
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -93,8 +94,48 @@ ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS
 feed_info = namedtuple("feed_info", ['data', 'url', 'next_page', 'last_page'])
 
 
+class CleanerWithOptions(Cleaner):
+    def clean(self, text, allowed_domains=[]):
+        import six
+        from bleach.utils import force_unicode
+        from bleach.sanitizer import BleachSanitizerFilter
+
+        if not isinstance(text, six.string_types):
+            message = "argument cannot be of '{name}' type, must be of text type".format(
+                name=text.__class__.__name__)
+            raise TypeError(message)
+
+        if not text:
+            return u''
+
+        text = force_unicode(text)
+        dom = self.parser.parseFragment(text)
+        filtered = BleachSanitizerFilter(
+            source=self.walker(dom),
+
+            # Bleach-sanitizer-specific things
+            attributes=self.attributes,
+            strip_disallowed_elements=self.strip,
+            strip_html_comments=self.strip_comments,
+
+            # html5lib-sanitizer things
+            allowed_elements=self.tags,
+            allowed_css_properties=self.styles,
+            allowed_protocols=self.protocols,
+            allowed_svg_properties=[],
+        )
+
+        # Apply any filters after the BleachSanitizerFilter
+        for filter_class in self.filters:
+            fc = filter_class(source=filtered)
+            filtered = fc.__iter__(allowed_domains=allowed_domains)
+
+        return self.serializer.render(filtered)
+
+
 class ImgSrcFilter(Filter):
-    def __iter__(self):
+    def __iter__(self, **kwargs):
+        allowed_domains = kwargs.pop('allowed_domains', [])
         for token in Filter.__iter__(self):
             if token['type'] in ['StartTag', 'EmptyTag'] and token['data']:
                 data_alt = None
@@ -104,27 +145,27 @@ class ImgSrcFilter(Filter):
                         data_alt = token['data'][attr]
                     elif attr[1] == 'src':
                         data_src = token['data'][attr]
-                        token['data'][attr] = ''
 
                 if data_src:
-                    token['data'][(None, 'data-src')] = data_src
-                    token['data'][(None, 'class')] = 'has-src'
-                    token['data'][(None, 'alt')] = format_lazy('Image from<br />{domain}',
-                                                               domain=clean_link(data_src))
-                    token['data'][(None, 'src')] = ''
-                    if data_alt:
-                        token['data'][(None, 'data-alt')] = data_alt
+                    domain = clean_link(data_src)
+                    if domain not in allowed_domains:
+                        token['data'][(None, 'data-src')] = data_src
+                        token['data'][(None, 'class')] = 'has-src'
+                        token['data'][(None, 'alt')] = format_lazy('Image from {domain}',
+                                                                   domain=domain)
+                        token['data'][(None, 'src')] = ''
+                        if data_alt:
+                            token['data'][(None, 'data-alt')] = data_alt
             yield token
 
 
 subtitle_cleaner = Cleaner(tags=[], strip=True)
 
-summary_cleaner = Cleaner(tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES,
-                          filters=[ImgSrcFilter], strip=True)
+summary_cleaner = Cleaner(tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES, strip=True)
 
 shownotes_cleaner = Cleaner(tags=ALLOWED_HTML_TAGS + EXTENDED_HTML_TAGS,
                             attributes={**ALLOWED_HTML_ATTRIBUTES, **EXTENDED_HTML_ATTRIBUTES},
-                            filters=[ImgSrcFilter], strip=True)
+                            strip=True)
 
 
 def get_segments_html(segments):
@@ -209,7 +250,20 @@ def sanitize_shownotes(object):
         return None
 
     html = max(content, key=lambda c: len(c.get('value', ''))).get('value', '')
-    return shownotes_cleaner.clean(html)
+    soup = BeautifulSoup(html, 'html5lib')
+    for script in soup.find_all('script'):
+        script.decompose()
+    return shownotes_cleaner.clean(str(soup))
+
+
+def replace_shownotes_images(content, allowed_domains=[]):
+    if len(allowed_domains) == 1 and allowed_domains[0] == '*':
+        return content
+    else:
+        cleaner = CleanerWithOptions(tags=ALLOWED_HTML_TAGS + EXTENDED_HTML_TAGS,
+                                     attributes={**ALLOWED_HTML_ATTRIBUTES, **EXTENDED_HTML_ATTRIBUTES},
+                                     strip=True, filters=[ImgSrcFilter])
+        return cleaner.clean(content, allowed_domains=allowed_domains)
 
 
 def parse_feed_info(parsed_feed):
