@@ -122,6 +122,7 @@ $('button.download-toggle').click(function() {
 // EPISODE-CENTRIC FUNCTIONALITY
 //
 
+var template_helpers = {gettext: gettext};
 var episode_details = $.templates('#episode-details-template');
 $('.episode-details-link').each(function(index) {
     $(this).on("click", function(e){
@@ -133,8 +134,7 @@ $('.episode-details-link').each(function(index) {
             dataType: 'json',
         })
         .done(function (data, textStatus, jqXHR) {
-            console.log(data);
-            var htmlOutput = episode_details.render(data);
+            var htmlOutput = episode_details.render(data, template_helpers);
             $("#episodeDetailsModalContainer").html(htmlOutput);
             $('#episodeDetails').modal('show');
             $('button.download-toggle').click(function() {
@@ -258,7 +258,7 @@ $('#apsearch-addfeed').on("click", function(e){
             console.log('Already there');
         }
         $('#apsearch-addfeed').hide();
-        $('#apsearch-feedadded').show();
+        $('#apsearch-feedadded').attr('href', data.url).show();
     });
 });
 

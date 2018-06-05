@@ -20,7 +20,8 @@
       </div>
       <div class="modal-footer justify-content-center">
         <button id="apsearch-addfeed" data-href="{% url 'podcasts:api-podcast-add' %}" data-feed-url="" class="btn btn-secondary apsearch-addfeed">{% trans "Add to Tape Drive" %}</button>
-        <button id="apsearch-feedadded" class="btn btn-success disabled" style="display:none;" >{% trans "Successfully Added" %}</button>
+        <a role="button" href="#" id="apsearch-feedadded" class="btn btn-success" style="display:none;" >{% trans "Show in Tape Drive" %}</a>
+        <button href="#" id="apsearch-adderror" class="btn btn-error disabled" style="display:none;" >{% trans "Something went wrong" %}</button>
       </div>
     </div>
   </div>

@@ -1,64 +1,56 @@
 {% load i18n podcasts_tags humanize %}
-<div id="episodeDetailsModalContainer"></div>
-
-<script id="episode-details-template" type="text/x-jsrender">
 <div class="modal fade" id="episodeDetails"
-     tabindex="-1" role="dialog"
-     aria-labelledby="episodeDetailsTitle{% jsr_var 'id' %}" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{% trans "Episode Details" %}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h5 class="text-muted mb-1">{% jsr_var 'podcast' %}</h5>
-        <h3 class="mb-3" id="episodeDetailsTitle{% jsr_var 'id' %}">{% jsr_var 'title' %}</h3>
+   tabindex="-1" role="dialog"
+   aria-labelledby="episodeDetailsTitle{% jsr_var 'id' %}" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">{% trans "Episode Details" %}</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h5 class="text-muted mb-1">{% jsr_var 'podcast' %}</h5>
+      <h1 class="mb-3" id="episodeDetailsTitle{% jsr_var 'id' %}">{% jsr_var 'title' %}</h1>
 
-        <div class="container-fluid">
-          <div class="row mb-4">
-            <div class="col">
-              <div class="d-flex justify-content-around flex-wrap px-0 py-2 border-top border-bottom text-center">
-                <div class="">
-                  <p class="text-muted mb-0">{% trans "Published" %}</p>
-                  <p class="mb-0">{% jsr_var 'published' %}</p>
-                </div>
-                {% jsr_if 'downloaded != null' %}
-                  <div class="">
-                    <p class="text-muted mb-0">{% trans "Downloaded" %}</p>
-                    <p class="mb-0">{% jsr_var 'downloaded' %}</p>
-                  </div>
-                {% jsr_endif %}
+      <div class="container-fluid">
+        <div class="row mb-4">
+          <div class="col">
+            <div class="d-flex justify-content-around flex-wrap px-0 py-2 border-top border-bottom text-center">
+              <div class="">
+                <p class="text-muted mb-0">{% trans "Published" %}</p>
+                <p class="mb-0">{% verbatim %}{{:published_fmt}}{% endverbatim %}</p>
               </div>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col px-0">
-              <h4>{% trans "Episode Summary" %}</h4>
-              {% jsr_var 'description'%}
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col px-0">
-              <h4>{% trans "Episode Content" %}</h4>
-              {% jsr_var 'shownotes'%}
+              {% verbatim %}
+              {{if downloaded != null }}
+                <div class="">
+                  <p class="text-muted mb-0">{{:~gettext('Downloaded')}}</p>
+                  <p class="mb-0">{{:downloaded_fmt}}</p>
+                </div>
+              {{/if}}
+              {% endverbatim %}
             </div>
           </div>
         </div>
+        <div class="row mb-3">
+          <div class="col px-0">
+            {% verbatim %}
+              {{:content}}
+            {% endverbatim %}
+          </div>
+        </div>
       </div>
-      <div class="modal-footer">
-        {% jsr_if 'downloaded == null' %}
-          <button type="button" class="btn btn-outline-secondary download-toggle"
-          data-href="{% jsr_var 'url_api_episode_queue_download' %}">
-            {% trans "Queue Download" %}
-          </button>
-        {% jsr_endif %}
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
-      </div>
+    </div>
+    <div class="modal-footer">
+      {% jsr_if 'downloaded == null' %}
+        <button type="button" class="btn btn-outline-secondary download-toggle"
+        data-href="{% jsr_var 'url_api_episode_queue_download' %}">
+          {% trans "Queue Download" %}
+        </button>
+      {% jsr_endif %}
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
     </div>
   </div>
 </div>
-</script>
+</div>
