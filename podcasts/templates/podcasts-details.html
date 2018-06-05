@@ -49,5 +49,9 @@
 </div>
 
 {% include "_pagination.html" %}
-{% include "_episode_details_modal_jsrender.html" %}
+
+<div id="episodeDetailsModalContainer"></div>
+<script id="episode-details-template" type="text/x-jsrender">
+  {% include "_episode_details_modal_jsrender.html" %}
+</script>
 {% endblock content %}
