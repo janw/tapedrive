@@ -7,6 +7,9 @@ from django.http import (
     HttpResponseBadRequest, JsonResponse,
     HttpResponseForbidden, HttpResponse
 )
+from django.template.defaultfilters import date as _date
+from django.utils.formats import get_format
+
 import copy
 import requests
 from datetime import datetime
@@ -44,7 +47,7 @@ def podcast_add(request):
     podcast.add_subscriber(request.user.listener)
     podcast.add_follower(request.user.listener)
 
-    return JsonResponse({'created': created})
+    return JsonResponse({'created': created, 'url': podcast.get_absolute_url()})
 
 
 def podcast_add_from_id(request, id):
@@ -52,7 +55,7 @@ def podcast_add_from_id(request, id):
     podcast.add_subscriber(request.user.listener)
     podcast.add_follower(request.user.listener)
 
-    return JsonResponse({'created': created})
+    return JsonResponse({'created': created, 'url': podcast.get_absolute_url()})
 
 
 def podcast_refresh_feed(request, slug=None):
@@ -133,9 +136,11 @@ def episode_details(request, id):
 
     object_dict = copy.copy(object.__dict__)
     object_dict.pop('_state', None)
-    if object_dict['shownotes']:
-        object_dict['shownotes'] = utils.replace_shownotes_images(object.shownotes, allowed_domains)
+
+    object_dict['content'] = object.get_content(allowed_domains)
     object_dict['podcast'] = object.podcast.title
+    object_dict['downloaded_fmt'] = _date(object.downloaded, get_format('DATETIME_FORMAT'))
+    object_dict['published_fmt'] = _date(object.published, get_format('DATETIME_FORMAT'))
     object_dict['url_api_episode_queue_download'] = reverse('podcasts:api-episode-queue-download',
                                                             kwargs={'id': object.id})
     object_dict['url_api_episode_shownotes'] = reverse('podcasts:api-episode-shownotes',

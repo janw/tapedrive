@@ -12,7 +12,7 @@ import itertools
 from podcasts.conf import (STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT)
 from podcasts.models import BigPositiveIntegerField
 from podcasts.utils import strip_url, AVAILABLE_EPISODE_SEGMENTS, AVAILABLE_PODCAST_SEGMENTS
-
+from podcasts import utils
 from actstream import action
 
 
@@ -183,6 +183,12 @@ class Episode(models.Model):
                 self.slug = self.slug[:-1]
 
         super().save(*args, **kwargs)
+
+    def get_content(self, allowed_domains=[]):
+        if self.shownotes:
+            return utils.replace_shownotes_images(self.shownotes, allowed_domains)
+        else:
+            return self.description
 
     def construct_file_path(self,
                             storage_directory=STORAGE_DIRECTORY,
