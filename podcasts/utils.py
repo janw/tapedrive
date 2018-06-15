@@ -276,8 +276,6 @@ def adjust_headline_levels(soup, max_level=3):
 
     if top_level_content < max_level:
         transposal = max_level - top_level_content
-        logger.info('Transposing headline levels by %d' % transposal)
-
         for level in reversed(range(1, 5)):
             newlevel = min((level + transposal, 6))
             for h in soup.find_all('h%d' % level):
