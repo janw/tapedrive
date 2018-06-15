@@ -4,14 +4,8 @@ python:
 sudo: required
 env:
   global:
-  - IMAGE_NAME=janwh/tapedrive
   - DATABASE_URL="sqlite:////tmp.db"
   - ENVIRONMENT=Production
-  - secure: CsQcjskni6TlCw7LKP015eCaV4x/dueZU0lPuMJeG6iFQAaIeMQriKP/A6ROFwjq4UPAMWjz4mphLpFYl5uyuvfI3MWhtqm/7UcpFFGekOgf4xzsPuhp7bsqGPejHWw6vnZqVRoscuOY6SWtirD+1bpAwNNnubhd4WikunvSXZwn/N6AHqE5lhD7+PxeJuWdoXhZHAzlrTqJvyef3OV2FVNp3rI9T4tc061vVhpN2N9h198PopUH7svR8tO/Psggl54M0MQl6RwdJwVwi2Hs3e2h0+RDeR1wKd1DQ9zzgx/lAuCSQtRLREtvaD+FUdvQqUhrVXvNl/PkMOF5ycCrgvzNUPbR90RAAcIATp+yEq2LtiqGL88Vf4nyRk4soO72sLsT9h1YdNoArml5FsIotq9vpT/XFuNqvo/rwSYdMcERC2APcFifqMAKsx0XpdTvtFgbjFseO439OiY9UGM7OHnWLRqv2OcJBRMT+qss5hHK3Nnna5v7w509GEEeFqIjNErMKUwAUL25aGy1jiD1lW/GMhUNXBLhPvN798bMD61R5+zQtrSU1RrNTjqW2dZYAcxMejhaOzH+1e+HZMHhJOYxOFP/xHanW1giH7Hx2gFlHM9oIiinVnXGvvWdYSnaEQK2GdaAhAyrRu+30/Fk8OO9rHf/v5gqtoaE/k/MD0I=
-  - secure: h2zK2wG30B1O8EXD22evRxiCABtOB67R+C4Lvd+DVb1wK13oDz+ju/yKp09nkamZlEtGPZXAxif+LV2kSu9pX4Z8w20pIBF7DDq74Rzj+oRrlimS5QHcZsDc0Si5RN7MXud9RS6Ci2ppCTFylSk/aHwlIxbSLBdHSJDofU7NbBKs4WbAcc18oQWUOkK1fvwCd/WgAyJzFGCRTtmJJ6t1kMvQ2gltpsBP518jfBLfL7go2AAqR6Xj2TPk6d1ep24V/Z9c/NvOHlItekBPQ6r2j0uWQoP2X3NDsm5lrgBokoZpbBdEGjGwwzWy3jeADN8QjfDlIlNp4JKwEig5BqdkfX79YwuEiT1urr8REeAw9QaHpHIuFaMXTEA35rLeMT2Y1SUUk53d7xRfZw/6lqLrePiRRRxC2poHeJYivhFhm9Kjy8PH3XiGsyCR/K99FhRq539YFhWFo4mQQUgZhc13QFVoY9ideBA196AV+6F1eLj7ST0K9MyaAzet5aWIGF5rhjRewQCjtf6XppjumOBzh2RFaI9VMnH23pDDxlfyQXluGPbvRGKTrq4fonoxlR9bOSO2/5MixZlbv0Aw65aZkYFN6ngG9aQVFtCt+b5zQFRzg+viyecJ7xKKippAckJ/e9KfgH5ZMs5tovFvirZf2Uy/avvA7tqgdNuGYnG1dMk=
-
-services:
-  - docker
 
 install:
   - pip install pipenv coveralls transifex-client
@@ -22,6 +16,8 @@ script:
 
 after_success:
   - coveralls --data_file=.coverage --config_file=.coveragerc
+  - sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
+  - tx push -s
 
 notifications:
   webhooks:
@@ -31,12 +27,6 @@ notifications:
     on_failure: always
     on_start: never
 
-before_deploy:
-  - docker pull "$IMAGE_NAME" || true
-  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
-  - docker images
-  - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
 
 deploy:
   provider: script
