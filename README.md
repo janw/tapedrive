@@ -3,7 +3,7 @@
 <img src="assets/img/icon@2x.png" alt="Tape Drive Logo" />
 <h1>Tape Drive, the selfhosted Podcast Client and Archival server</h1>
 
-[![CircleCI](https://circleci.com/gh/janw/tapedrive/tree/master.svg?style=svg)](https://circleci.com/gh/janw/tapedrive/tree/master)
+[![CircleCI](https://img.shields.io/circleci/project/github/janw/tapedrive.svg)](https://circleci.com/gh/janw/tapedrive/tree/master)
 [![Coverage Status](https://coveralls.io/repos/github/janwh/tapedrive/badge.svg?branch=master)](https://coveralls.io/github/janwh/tapedrive?branch=master)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/janwh/tapedrive.svg)](https://codeclimate.com/github/janwh/tapedrive)
 [![Updates](https://pyup.io/repos/github/janwh/tapedrive/shield.svg)](https://pyup.io/repos/github/janwh/tapedrive/)
