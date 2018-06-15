@@ -49,6 +49,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            python manage.py migrate
             coverage run --source='.' manage.py test podcasts.tests
           environment:
             DATABASE_URL: mysql://root@127.0.0.1:3306/circleci
