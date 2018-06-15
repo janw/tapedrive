@@ -4,10 +4,9 @@
 <h1>Tape Drive, the selfhosted Podcast Client and Archival server</h1>
 
 [![CircleCI](https://img.shields.io/circleci/project/github/janw/tapedrive.svg)](https://circleci.com/gh/janw/tapedrive/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/janwh/tapedrive/badge.svg?branch=master)](https://coveralls.io/github/janwh/tapedrive?branch=master)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/janwh/tapedrive.svg)](https://codeclimate.com/github/janwh/tapedrive)
-[![Updates](https://pyup.io/repos/github/janwh/tapedrive/shield.svg)](https://pyup.io/repos/github/janwh/tapedrive/)
-[![Development Status](https://img.shields.io/badge/status-alpha-red.svg)](https:///github.com/janwh/tapedrive/issues)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/janw/tapedrive.svg)](https://codeclimate.com/github/janw/tapedrive)
+[![Updates](https://pyup.io/repos/github/janw/tapedrive/shield.svg)](https://pyup.io/repos/github/janw/tapedrive/)
+[![Development Status](https://img.shields.io/badge/status-beta-yellow.svg)](https:///github.com/janw/tapedrive/issues)
 [![Join the chat at https://gitter.im/tapedriveio/Lobby](https://badges.gitter.im/tapedriveio/Lobby.svg)](https://gitter.im/tapedriveio/Lobby)
 
 [![Receiving via Liberapay](https://img.shields.io/liberapay/receives/janw.svg)](https://liberapay.com/janw/)
@@ -19,7 +18,7 @@ Tape Drive is a self-hostable podcast client with built-in archiving features. B
 
 ## Current Affairs
 
-Tape Drive is built using [Django](https://djangoproject.com) **and currently in active development on `master` branch**. As soon as the initial feature set has been stabilized, day-to-day development work will move to the `develop` branch, and master will contain stable versions.
+Tape Drive is built using [Django](https://djangoproject.com) **and contains beta releases on `master` branch**. While the initial feature set is being completed and stabilized, day-to-day development might also happen on master, in addition to feature branches and `develop` branch.
 
 
 ## Features
@@ -27,9 +26,8 @@ Tape Drive is built using [Django](https://djangoproject.com) **and currently in
 * Aesthetically pleasing presentation of podcasts, episodes, and their metadata
 * Fully responsive web UI with distinctively unexcited behavior (no fancy animations, no overly excessive use of JavaScript etc.)
 * Manually initiated episode downloads possible
-* Elaborate User-selectable directory/file naming scheme based on Python's `str.format()` syntax (with segment drag'n'drop support later on)
+* Elaborate User-selectable directory/file naming scheme based on Python's `str.format()` syntax
 * Ability to efficiently fetch multi-page feeds
-
 
 ![Tape Drive welcoming you](assets/img/screenshots/welcome.png)
 
