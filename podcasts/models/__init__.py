@@ -9,6 +9,8 @@ import os
 from podcasts.conf import (STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT)
 from podcasts.validators import validate_path, validate_naming_scheme
 
+from podcasts.models.episode_chapter import *  # noqa
+
 
 def cover_image_filename(instance, filename):
     ext = os.path.splitext(filename)[-1]
