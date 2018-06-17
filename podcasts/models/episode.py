@@ -10,7 +10,7 @@ from string import Template
 import itertools
 
 from podcasts.conf import (STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT)
-from podcasts.models import BigPositiveIntegerField
+from podcasts.models import BigPositiveIntegerField, EpisodeChapter
 from podcasts.utils import strip_url, AVAILABLE_EPISODE_SEGMENTS, AVAILABLE_PODCAST_SEGMENTS
 from podcasts import utils
 from actstream import action
@@ -232,6 +232,10 @@ class Episode(models.Model):
         if not os.path.isfile(self.file_path) or overwrite:
             self.download_task = download_episode(self.media_url, self.file_path, str(self.id))
             self.save()
+
+    def add_chapters(self, chapters):
+        bulk = [EpisodeChapter(episode=self, **chap) for chap in chapters]
+        self.chapters.bulk_create(bulk)
 
 
 @receiver(post_save, sender=Episode)

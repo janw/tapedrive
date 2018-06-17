@@ -332,6 +332,9 @@ def parse_episode_info(episode):
         if 'rel' in link.keys() and link['rel'] == 'enclosure':
             episode_info['media_url'] = link['href']
 
+    if 'psc_chapters' in episode:
+        episode_info['chapters'] = episode['psc_chapters'].get('chapters', [])
+
     return episode_info
 
 
