@@ -28,8 +28,4 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Episodes',
             },
         ),
-        migrations.AlterUniqueTogether(
-            name='episodechapter',
-            unique_together={('episode', 'starttime')},
-        ),
     ]
