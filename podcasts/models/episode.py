@@ -234,8 +234,12 @@ class Episode(models.Model):
             self.save()
 
     def add_chapters(self, chapters):
-        bulk = [EpisodeChapter(episode=self, **chap) for chap in chapters]
-        self.chapters.bulk_create(bulk)
+        for chap in chapters:
+            object, created = self.chapters.update_or_create(**chap)
+
+    def get_chapters(self):
+        if self.chapters.exists():
+            return self.chapters.all()
 
 
 @receiver(post_save, sender=Episode)

@@ -7,8 +7,10 @@ from django.http import (
     HttpResponseBadRequest, JsonResponse,
     HttpResponseForbidden, HttpResponse
 )
+
 from django.template.defaultfilters import date as _date
 from django.utils.formats import get_format
+from django.core.serializers import serialize
 
 import copy
 import requests
@@ -19,8 +21,11 @@ from podcasts.models.listener import EpisodePlaybackState, Listener
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.utils import unify_apple_podcasts_response, HEADERS
+from podcasts.serializers import EpisodeSerializer
 from podcasts import utils
 from podcasts.conf import (ITUNES_TOPCHARTS_URL, ITUNES_LOOKUP_URL, ITUNES_SEARCH_URL, ITUNES_SEARCH_LIMIT)
+
+from rest_framework.generics import RetrieveAPIView
 
 
 class HttpResponseNoContent(HttpResponse):
@@ -122,18 +127,18 @@ def podcast_queue_download(request, slug):
     return HttpResponseNoContent()
 
 
-def episode_details(request, id):
-    object = get_object_or_404(Episode.objects.prefetch_related('podcast'), id=id)
-    object_dict = copy.copy(object.__dict__)
-    object_dict.pop('_state', None)
+class EpisodeDetailsView(RetrieveAPIView):
+    queryset = Episode.objects.all()
+    lookup_field = 'id'
+    serializer_class = EpisodeSerializer
 
-    object_dict['content'] = _episode_content_html(request, object=object)
-    object_dict['podcast'] = object.podcast.title
-    object_dict['downloaded_fmt'] = _date(object.downloaded, get_format('DATETIME_FORMAT'))
-    object_dict['published_fmt'] = _date(object.published, get_format('DATETIME_FORMAT'))
-    object_dict['url_api_episode_queue_download'] = reverse('podcasts:api-episode-queue-download',
-                                                            kwargs={'id': object.id})
-    return JsonResponse(object_dict)
+
+def episode_details(request, id):
+    object = get_object_or_404(
+        Episode.objects.prefetch_related('podcast', 'chapters'),
+        id=id)
+
+    return JsonResponse(EpisodeSerializer(object))
 
 
 def _episode_content_html(request, id=None, object=None):

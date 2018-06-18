@@ -1,56 +1,76 @@
 {% load i18n podcasts_tags humanize %}
+{% verbatim %}
 <div class="modal fade" id="episodeDetails"
    tabindex="-1" role="dialog"
-   aria-labelledby="episodeDetailsTitle{% jsr_var 'id' %}" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title">{% trans "Episode Details" %}</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <h5 class="text-muted mb-1">{% jsr_var 'podcast' %}</h5>
-      <h1 class="mb-3" id="episodeDetailsTitle{% jsr_var 'id' %}">{% jsr_var 'title' %}</h1>
+   aria-labelledby="episodeDetailsTitle{{:id}}" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{:~gettext('Episode Details')}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 class="text-muted mb-1">{{:podcast.title}}</h5>
+        <h1 class="mb-3" id="episodeDetailsTitle{{:id}}">{{:title}}</h1>
 
-      <div class="container-fluid">
-        <div class="row mb-4">
-          <div class="col">
-            <div class="d-flex justify-content-around flex-wrap px-0 py-2 border-top border-bottom text-center">
-              <div class="">
-                <p class="text-muted mb-0">{% trans "Published" %}</p>
-                <p class="mb-0">{% verbatim %}{{:published_fmt}}{% endverbatim %}</p>
-              </div>
-              {% verbatim %}
-              {{if downloaded != null }}
+        <div class="container-fluid">
+          <div class="row mb-4">
+            <div class="col">
+              <div class="d-flex justify-content-around flex-wrap px-0 py-2 border-top border-bottom text-center">
                 <div class="">
-                  <p class="text-muted mb-0">{{:~gettext('Downloaded')}}</p>
-                  <p class="mb-0">{{:downloaded_fmt}}</p>
+                  <p class="text-muted mb-0">{{:~gettext('Published')}}</p>
+                  <p class="mb-0">{{:published}}</p>
                 </div>
-              {{/if}}
-              {% endverbatim %}
+                {{if downloaded != null }}
+                  <div class="">
+                    <p class="text-muted mb-0">{{:~gettext('Downloaded')}}</p>
+                    <p class="mb-0">{{:downloaded}}</p>
+                  </div>
+                {{/if}}
+              </div>
+            </div>
+          </div>
+          {{if chapters != null}}
+          <div class="row mb-3">
+            <div class="col">
+              <p class="text-center">
+                <button class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseChapterlist" aria-expanded="false" aria-controls="collapseChapterlist">
+                    {{:~gettext('Show Chapter List')}}
+                </button>
+              </p>
+              <div class="collapse" id="collapseChapterlist">
+                <table class="table table-hover">
+                  <tr><th>Timestamp</th><th>Title</th></tr>
+                  {{for chapters}}
+                    <tr>
+                      <td class="text-muted"><small>{{:starttime}}</small></td>
+                      <td>{{:title}}</td>
+                    </tr>
+                  {{/for}}
+                </table>
+              </div>
+            </div>
+          </div>
+          {{/if}}
+          <div class="row mb-3">
+            <div class="col px-0">
+              {{:shownotes}}
             </div>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="col px-0">
-            {% verbatim %}
-              {{:content}}
-            {% endverbatim %}
-          </div>
-        </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      {% jsr_if 'downloaded == null' %}
-        <button type="button" class="btn btn-outline-secondary download-toggle"
-        data-href="{% jsr_var 'url_api_episode_queue_download' %}">
-          {% trans "Queue Download" %}
-        </button>
-      {% jsr_endif %}
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Close" %}</button>
+      <div class="modal-footer">
+        {{if downloaded == null}}
+          <button type="button" class="btn btn-outline-secondary download-toggle"
+          data-href="{{:url_api_episode_queue_download}}">
+            {{:~gettext('Queue Download')}}
+          </button>
+        {{/if}}
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
-</div>
+{% endverbatim %}

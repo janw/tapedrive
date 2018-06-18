@@ -212,10 +212,8 @@ class Podcast(models.Model):
         for ep in episode_info:
             ep['podcast'] = self
             chapters = ep.pop('chapters', [])
-            print(chapters)
             episode, created = Episode.objects.update_or_create(guid=ep['guid'], defaults=ep)
 
-            # Add chapters if present
             episode.add_chapters(chapters)
 
             all_created.append(created)

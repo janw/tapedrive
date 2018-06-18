@@ -32,6 +32,7 @@ python-dateutil = "*"
 "psycopg2-binary" = "*"
 mysqlclient = "*"
 "bs4" = "*"
+django-rest-framework = "*"
 
 [requires]
 python_version = "3.6"
