@@ -28,14 +28,14 @@ from bs4 import BeautifulSoup
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-USER_AGENT = 'Podcast-Archive/0.1 (https://github.com/janwh/selfhosted-podcast-archive)'
+USER_AGENT = 'Podcast-Archive/0.1 (https://github.com/janw/tapedrive)'
 HEADERS = {'User-Agent': USER_AGENT}
 
 # Summary, Subtitle not included, parsed separately
 PODCAST_INFO_KEYS = ['author', 'language', 'link', 'title', 'image',
                      'itunes_explicit', 'itunes_type', 'generator', 'updated', ]
 
-EPISODE_INFO_KEYS = ['link', 'subtitle', 'title', 'published', 'description', 'guid']
+EPISODE_INFO_KEYS = ['link', 'subtitle', 'title', 'published', 'description', 'guid', ]
 
 CLEAN_HTML_GLOBAL = ['summary', 'subtitle', ]
 CLEAN_HTML_EPISODE = ['description', 'subtitle', ]
@@ -210,6 +210,7 @@ def refresh_feed(feed_url):
     next_page = next((item for item in links if item["rel"] == "next"), {}).get('href')
     last_page = next((item for item in links if item["rel"] == "last"), {}).get('href')
 
+
     if next_page:
         logger.info('Feed has next page')
 
@@ -255,6 +256,22 @@ def sanitize_shownotes(object, max_headline=2):
         script.decompose()
     adjust_headline_levels(soup, max_headline)
     return shownotes_cleaner.clean(str(soup))
+
+
+def parse_chapters(object):
+    chapters = []
+    if 'psc_chapters' in object:
+        chapters = object['psc_chapters'].get('chapters', [])
+        for i, chap in enumerate(chapters):
+            chapters[i]['starttime'] = chap['start_parsed']
+            del chapters[i]['start_parsed']
+            del chapters[i]['start']
+
+            if 'href' in chap:
+                chapters[i]['link'] = chap['href']
+                del chapters[i]['href']
+
+    return chapters
 
 
 def replace_shownotes_images(content, allowed_domains=[]):
@@ -326,14 +343,13 @@ def parse_episode_info(episode):
     episode_info['subtitle'] = sanitize_subtitle(episode)
     episode_info['description'] = sanitize_summary(episode)
     episode_info['shownotes'] = sanitize_shownotes(episode)
+    episode_info['chapters'] = parse_chapters(episode)
+
 
     episode_info['media_url'] = None
     for link in episode['links']:
         if 'rel' in link.keys() and link['rel'] == 'enclosure':
             episode_info['media_url'] = link['href']
-
-    if 'psc_chapters' in episode:
-        episode_info['chapters'] = episode['psc_chapters'].get('chapters', [])
 
     return episode_info
 

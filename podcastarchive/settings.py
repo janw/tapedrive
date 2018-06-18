@@ -79,6 +79,7 @@ class Common(Configuration):
         'podcasts',
         'background_task',
         'actstream',
+        'rest_framework',
     ]
 
     MIDDLEWARE = [
