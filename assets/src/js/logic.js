@@ -264,9 +264,13 @@ $('#apsearch-addfeed').on("click", function(e){
 
 $('#apsearch-details').on('show.bs.modal', function (e) {
     result_id = $(e.relatedTarget).data('id')
-    result = search_results.find(x => x.id === result_id);
+    result = search_results.find(function(el) {
+        return el.id === result_id
+    });
     if (typeof result === 'undefined') {
-        result = topcharts_results.find(x => x.id === result_id);
+        result = topcharts_results.find(function(el) {
+            return el.id === result_id
+        });
     }
     if (typeof result === 'undefined') {
         return false;
