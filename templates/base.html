@@ -4,27 +4,12 @@
     <title>{% block title %}{% trans "Tape Drive" %}{% endblock title %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load compress %}
-    {% compress css %}
-      <link rel="stylesheet" href="{% static 'scss/main.scss' %}" type="text/x-scss" media="all" charset="utf-8">
-    {% endcompress %}
+    <link rel="stylesheet" href="{% static 'dist/css/main.css' %}" type="text/css" media="all" charset="utf-8">
 
 
     {% block load_javascript %}
       <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-      <script {% if not debug %}defer{% endif %} src="{% static 'vendor/js/jquery-3.3.1.min.js' %}"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="></script>
-      <script defer src="{% static 'vendor/js/popper.1.14.3.min.js' %}"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"></script>
-      <script defer src="{% static 'vendor/js/bootstrap/bootstrap.min.js' %}"
-        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"></script>
-        <script defer src="{% static 'vendor/js/holder.min.js' %}"></script>
-        <script defer src="{% static 'vendor/js/jsrender.min.js' %}"></script>
-        <script src="{% static 'vendor/js/moment-with-locales.min.js' %}"></script>
-        <script>moment.locale('{{ LANGUAGE_CODE|default:"en-us" }}');</script>
-        {# <script defer src="{% static 'vendor/js/jquery-ui/jquery-ui.min.js' %}"></script> #}
 
-        <script defer src="{% static 'js/logic.js' %}"></script>
     {% endblock load_javascript %}
 
     {% block extra_head %}{% endblock extra_head %}
@@ -59,6 +44,13 @@
           </small>
         </div>
       </footer>
+
+      {% if DEBUG_FRONTEND %}
+        <script src="{% static 'dist/js/base.js' %}"></script>
+      {% else %}
+        <script src="{% static 'dist/js/base.min.js' %}"></script>
+      {% endif %}
+
     </body>
   {% endblock body %}
 </html>

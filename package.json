@@ -1,0 +1,24 @@
+{
+  "name": "tapedrive",
+  "version": "0.2.0",
+  "description": "A self-hostable podcast client with built-in archiving features.",
+  "main": "gulpfile.js",
+  "repository": "git@github.com:janw/tapedrive.git",
+  "author": "Jan Willhaus <mail@janwillhaus.de>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "bootstrap": "^4.1.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.3.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "jquery": "^3.3.1",
+    "jsrender": "^0.9.90",
+    "popper.js": "^1.14.3"
+  }
+}

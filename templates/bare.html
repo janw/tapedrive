@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load i18n bootstrap4 staticfiles compress %}
+{% extends 'base.html' %}{% load i18n %}
 
 {% block extra_head %}
 	{{block.super}}
@@ -14,5 +14,10 @@
   	</div>
 
     <div class="backdrop"></div>
+    {% if DEBUG_FRONTEND %}
+        <script src="{% static 'dist/js/base.js' %}"></script>
+    {% else %}
+        <script src="{% static 'dist/js/base.min.js' %}"></script>
+    {% endif %}
 </body>
 {% endblock body %}
