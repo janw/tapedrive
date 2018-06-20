@@ -21,7 +21,7 @@ podcasts_api_patterns = [
 ]
 
 global_api_patterns = [
-    path('add/', api.podcast_add, name='api-podcast-add'),
+    path('add/', api.AddPodcast.as_view(), name='api-podcast-add'),
     path('topcharts/', api.apple_podcasts_topcharts, name='api-topcharts'),
     path('search/', api.ApplePodcastsSearch.as_view(), name='api-search'),
     path('lookup/<int:id>', api.apple_podcasts_feed_from_id, name='api-lookup'),
