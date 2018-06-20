@@ -167,3 +167,5 @@ typings/
 .yarn-integrity
 
 # End of https://www.gitignore.io/api/node
+
+webpack-stats.json
