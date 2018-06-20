@@ -39,21 +39,26 @@ def encode_datetime(obj):
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
-@require_POST
-def podcast_add(request):
-    feed_url = request.POST.get('feed_url')
-    feed_id = request.POST.get('feed_id')
-    if not feed_url and not feed_id:
-        return HttpResponseBadRequest()
+# @require_POST
+# def podcast_add(request):
 
-    if feed_url:
-        podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
-    elif feed_id:
-        podcast, created = Podcast.objects.get_or_create_from_itunes_id(feed_id, only_first_page=True)
-    podcast.add_subscriber(request.user.listener)
-    podcast.add_follower(request.user.listener)
+class AddPodcast(APIView):
 
-    return JsonResponse({'created': created, 'url': podcast.get_absolute_url()})
+    def post(self, request, *args, **kwargs):
+        feed_url = request.data.get('feed_url')
+        feed_id = request.data.get('feed_id')
+        if not feed_url and not feed_id:
+            return HttpResponseBadRequest()
+
+        if feed_url:
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
+        elif feed_id:
+            podcast, created = Podcast.objects.get_or_create_from_itunes_id(feed_id, only_first_page=True)
+        podcast.add_subscriber(request.user.listener)
+        podcast.add_follower(request.user.listener)
+
+        return Response({'created': created, 'url': podcast.get_absolute_url()},
+                        status=status.HTTP_200_OK)
 
 
 def podcast_add_from_id(request, id):
@@ -208,7 +213,6 @@ class ApplePodcastsSearch(APIView):
             url = urlunparse(url_parts)
             response = requests.post(url, headers=HEADERS)
             data = self._parse_search_results(response.json())
-            print(json.dumps(data, indent=2))
             return Response(data=data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=400)
 
@@ -223,4 +227,4 @@ class ApplePodcastsSearch(APIView):
                      image=el['artworkUrl600'],
                      updated=el['releaseDate'],
                      )
-                for el in data['results']]
+                for el in data['results'] if 'feedUrl' in el]

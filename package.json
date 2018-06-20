@@ -10,6 +10,7 @@
   "devDependencies": {
     "ajv": "^6.5.1",
     "bootstrap": "^4.1.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
     "css-loader": "^0.28.11",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
