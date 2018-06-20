@@ -1,10 +1,10 @@
 var gulp         = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"),
-    babel        = require('gulp-babel'),
     concat       = require('gulp-concat'),
     rename       = require('gulp-rename'),
     sass         = require("gulp-sass"),
     uglify       = require('gulp-uglify'),
+    webpack      = require('webpack-stream'),
     gutil        = require('gulp-util');
 
 
@@ -16,6 +16,9 @@ var scss_dest = dist_dir+"/css"
 
 var js_src = src_dir+"/js/*.js"
 var js_dest = dist_dir+"/js"
+
+var app_src = src_dir+"/app/webpack.js"
+var app_dest = dist_dir+"/js"
 
 function logError (err) {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
@@ -48,6 +51,14 @@ gulp.task("basejs", function () {
         .pipe(uglify())
         .on('error', logError)
         .pipe(gulp.dest(js_dest));
+});
+
+gulp.task("appjs", function () {
+    return gulp.src(app_src)
+        .pipe(webpack({
+          // Any configuration options...
+        }))
+        .pipe(gulp.dest(app_dest));
 });
 
 

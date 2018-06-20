@@ -33,6 +33,7 @@ python-dateutil = "*"
 mysqlclient = "*"
 "bs4" = "*"
 djangorestframework = ">=3.8.2"
+django-webpack-loader = "*"
 
 [requires]
 python_version = "3.6"
