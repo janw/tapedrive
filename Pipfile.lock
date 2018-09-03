@@ -90,10 +90,9 @@
         },
         "django-bootstrap4": {
             "hashes": [
-                "sha256:6db4a27b33851833e68b96344f9df063150dcace8d4787ebfc21eceb55196945"
+                "sha256:32ffee49c4c8ca7df543aac8733a5d45ad304078f920a0167819525bd33a955a"
             ],
-            "index": "pypi",
-            "version": "==0.0.6"
+            "version": "==0.0.7"
         },
         "django-compat": {
             "hashes": [
