@@ -112,11 +112,10 @@
         },
         "django-configurations": {
             "hashes": [
-                "sha256:b4a4eb3ed631c2abbeb7008b5cc5d8d04b190df838e7b613731d728f674f3a2f",
-                "sha256:be47e25d070fd005cc8fbd6c913c9ec37e83d04686937afe18ca6c579b2cdedb"
+                "sha256:e70433eeed10549d30bf5ca386c962505ff9f492893dd2483c52af536347adce",
+                "sha256:71d9acdff33aa034f0157b0b3d23629fe0cd499bf4d0b6d699b9ca0701d952e8"
             ],
-            "index": "pypi",
-            "version": "==2.0.0"
+            "version": "==2.1"
         },
         "django-libsass": {
             "hashes": [
