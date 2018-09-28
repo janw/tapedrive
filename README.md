@@ -5,7 +5,6 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/janw/tapedrive.svg)](https://circleci.com/gh/janw/tapedrive/tree/master)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/janw/tapedrive.svg)](https://codeclimate.com/github/janw/tapedrive)
-[![Updates](https://pyup.io/repos/github/janw/tapedrive/shield.svg)](https://pyup.io/repos/github/janw/tapedrive/)
 [![Development Status](https://img.shields.io/badge/status-beta-yellow.svg)](https:///github.com/janw/tapedrive/issues)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/janwh)
 
