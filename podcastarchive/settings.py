@@ -58,6 +58,7 @@ class Common(Configuration):
 
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = values.BooleanValue(False)
+    DEBUG_FRONTEND = values.BooleanValue(False)
 
     ALLOWED_HOSTS = values.ListValue([], environ=True)
 
@@ -72,7 +73,7 @@ class Common(Configuration):
         'django.contrib.sites',
         'whitenoise.runserver_nostatic',
         'django.contrib.staticfiles',
-        'compressor',
+        'webpack_loader',
         'bootstrap4',
 
         'podcastarchive.users',
@@ -111,6 +112,7 @@ class Common(Configuration):
                     'django.template.context_processors.request',
                     'django.contrib.auth.context_processors.auth',
                     'django.contrib.messages.context_processors.messages',
+                    'podcastarchive.context_processors.debug',
                 ],
             },
         },
@@ -179,7 +181,6 @@ class Common(Configuration):
     STATICFILES_FINDERS = [
         'django.contrib.staticfiles.finders.FileSystemFinder',
         'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-        'compressor.finders.CompressorFinder',
     ]
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "assets"),
@@ -187,12 +188,13 @@ class Common(Configuration):
     WHITENOISE_AUTOREFRESH = True
     WHITENOISE_USE_FINDERS = True
 
-    COMPRESS_PRECOMPILERS = (
-        ('text/x-scss', 'django_libsass.SassCompiler'),
-    )
-
-    COMPRESS_CACHEABLE_PRECOMPILERS = COMPRESS_PRECOMPILERS
-    LIBSASS_PRECISION = 8
+    WEBPACK_LOADER = {
+        'DEFAULT': {
+            'CACHE': not DEBUG,
+            'BUNDLE_DIR_NAME': os.path.join(STATICFILES_DIRS[0], 'dist/bundles', ''),
+            'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        }
+    }
 
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
@@ -240,12 +242,19 @@ class Common(Configuration):
         },
     }
 
+    REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.SessionAuthentication',
+        ),
+    }
+
 
 class Development(Common):
     """
     The in-development settings and the default configuration.
     """
     DEBUG = True
+    DEBUG_FRONTEND = True
 
     INTERNAL_IPS = [
         '127.0.0.1'

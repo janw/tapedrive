@@ -1,6 +1,9 @@
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
 from podcasts.models import EpisodeChapter
+from podcasts import utils
+from podcasts import conf
+
 from rest_framework import serializers
 
 
@@ -29,3 +32,9 @@ class EpisodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Episode
         fields = '__all__'
+
+
+class ApplePodcastsSearchRequestSerializer(serializers.Serializer):
+    term = serializers.CharField(trim_whitespace=True, min_length=3)
+    media = serializers.CharField(default='podcast', read_only=True)
+    limit = serializers.IntegerField(default=conf.ITUNES_SEARCH_LIMIT, read_only=True)

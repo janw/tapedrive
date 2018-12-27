@@ -1,5 +1,5 @@
 
-$custom-font-path:          "../vendor/fonts/";
+$custom-font-path:          "../../vendor/fonts/";
 @import "fonts";
 
 $font-family-sans-serif:    'Fira Sans Condensed', "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -33,7 +33,7 @@ $container-max-widths: (
 
 $wrapper-max-width: 1050px;
 
-@import "../vendor/scss/bootstrap/bootstrap";
+@import "bootstrap";
 @import "borders-responsive";
 @import "spinkit";
 @import "dark-mode";

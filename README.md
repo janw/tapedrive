@@ -12,7 +12,7 @@
 
 Tape Drive is a self-hostable podcast client with built-in archiving features. By default, all subscribed podcasts will be properly organized on disk based on a user-chosen naming scheme, and including the available meta data.
 
-## Current Affairs
+## Current state of affairs
 
 Tape Drive is built using [Django](https://djangoproject.com) **and contains beta releases on `master` branch**. While the initial feature set is being completed and stabilized, day-to-day development might also happen on master, in addition to feature branches and `develop` branch.
 
@@ -29,7 +29,7 @@ Tape Drive is built using [Django](https://djangoproject.com) **and contains bet
 
 ![Tape Drive podcast list view](assets/img/screenshots/podcasts-list.png)
 
-## Prerequisites and Setup
+## Prerequisites and setup
 
 The easiest way to deploy Tape Drive on your server is to install it via Docker. The service is [available on Docker Hub](https://hub.docker.com/r/janwh/tapedrive/), and the repository contains a [`docker-compose.yml`](docker-compose.yml) file for the real out-of-the-box experience. Alternatively you may run Tape Drive "bare metal" — all you need is Python 3.6.
 

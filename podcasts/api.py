@@ -8,24 +8,25 @@ from django.http import (
     HttpResponseForbidden, HttpResponse
 )
 
-from django.template.defaultfilters import date as _date
-from django.utils.formats import get_format
-from django.core.serializers import serialize
-
-import copy
+import json
 import requests
 from datetime import datetime
 from urllib.parse import urlparse, urlunparse, urlencode
+from dateutil import parser as dateparser
 
 from podcasts.models.listener import EpisodePlaybackState, Listener
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.utils import unify_apple_podcasts_response, HEADERS
-from podcasts.serializers import EpisodeSerializer
+from podcasts.serializers import (EpisodeSerializer, ApplePodcastsSearchRequestSerializer)
 from podcasts import utils
 from podcasts.conf import (ITUNES_TOPCHARTS_URL, ITUNES_LOOKUP_URL, ITUNES_SEARCH_URL, ITUNES_SEARCH_LIMIT)
 
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView, GenericAPIView
+from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.response import Response
 
 
 class HttpResponseNoContent(HttpResponse):
@@ -38,21 +39,26 @@ def encode_datetime(obj):
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
-@require_POST
-def podcast_add(request):
-    feed_url = request.POST.get('feed_url')
-    feed_id = request.POST.get('feed_id')
-    if not feed_url and not feed_id:
-        return HttpResponseBadRequest()
+# @require_POST
+# def podcast_add(request):
 
-    if feed_url:
-        podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
-    elif feed_id:
-        podcast, created = Podcast.objects.get_or_create_from_itunes_id(feed_id, only_first_page=True)
-    podcast.add_subscriber(request.user.listener)
-    podcast.add_follower(request.user.listener)
+class AddPodcast(APIView):
 
-    return JsonResponse({'created': created, 'url': podcast.get_absolute_url()})
+    def post(self, request, *args, **kwargs):
+        feed_url = request.data.get('feed_url')
+        feed_id = request.data.get('feed_id')
+        if not feed_url and not feed_id:
+            return HttpResponseBadRequest()
+
+        if feed_url:
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
+        elif feed_id:
+            podcast, created = Podcast.objects.get_or_create_from_itunes_id(feed_id, only_first_page=True)
+        podcast.add_subscriber(request.user.listener)
+        podcast.add_follower(request.user.listener)
+
+        return Response({'created': created, 'url': podcast.get_absolute_url()},
+                        status=status.HTTP_200_OK)
 
 
 def podcast_add_from_id(request, id):
@@ -176,15 +182,49 @@ def apple_podcasts_feed_from_id(request, id):
         return JsonResponse({'url': data['results'][0]['feedUrl']})
 
 
-@require_POST
-def apple_podcasts_search(request):
-    term = request.POST.get('term', '')
-    params = {'media': 'podcast', 'term': term, 'limit': ITUNES_SEARCH_LIMIT}
+class ApplePodcastsSearch(APIView):
+    """
+    Relay a search request to the Apple Podcasts directory API
 
-    if len(term) > 2:
-        url_parts = list(urlparse(ITUNES_SEARCH_URL))
-        url_parts[4] = urlencode(params)
-        url = urlunparse(url_parts)
-        response = requests.post(url, headers=HEADERS)
-        data = response.json()
-        return JsonResponse(unify_apple_podcasts_response(data))
+
+    **post (only):**
+    Receive and relay a search request. Requires the `term` parameter. Returns
+    the Podcasts Directory results parsed into database-adjacent fields:
+
+    * 'collectionId' => id (int)
+    * 'artistName' => author
+    * 'collectionName' => title
+    * 'genres' => genres
+    * 'collectionExplicitness' => explicit (bool)
+    * 'feedUrl' => feed_url
+    * 'artworkUrl600' => image
+    * 'releaseDate' => updated
+    """
+
+    # serializer_class set to have fields shown in browsable API, otherwise unused
+    serializer_class = ApplePodcastsSearchRequestSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = ApplePodcastsSearchRequestSerializer(data=request.data)
+
+        if serializer.is_valid():
+            url_parts = list(urlparse(ITUNES_SEARCH_URL))
+            url_parts[4] = urlencode(serializer.data)
+            url = urlunparse(url_parts)
+            response = requests.post(url, headers=HEADERS)
+            data = self._parse_search_results(response.json())
+            return Response(data=data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=400)
+
+    @staticmethod
+    def _parse_search_results(data):
+        return [dict(id=el['collectionId'],
+                     author=el['artistName'],
+                     title=el['collectionName'],
+                     genres=list(filter(('Podcasts').__ne__, el['genres'])),  # Remove 'podcasts' from genres
+                     explicit=el['collectionExplicitness'] != 'cleaned',  # Turn explicitness into boolean
+                     feed_url=el['feedUrl'],
+                     image=el['artworkUrl600'],
+                     updated=el['releaseDate'],
+                     )
+                for el in data['results'] if 'feedUrl' in el]

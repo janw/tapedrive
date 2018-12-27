@@ -13,35 +13,8 @@
     </form>
   </div>
 </div>
-
-<div class="row">
-  <div class="col">
-    <h3 class="mb-0 text-muted ">{% trans "Looking for something specific?" %}</h3>
-    <h2>{% trans "Search the Apple Podcasts Directory" %}</h2>
-  </div>
-</div>
-<div class="row mb-3">
-  <div class="col">
-    <form id="apsearch" action="#" method="post">
-      {% csrf_token %}
-      <label class="sr-only" for="id_search_term">{% trans "Search Term" %}</label>
-      <div class="input-group">
-        <input type="text" class="form-control my-2" name="search_term" id="id_search_term" placeholder="{% trans "Search Term" %}">
-        <div class="input-group-append">
-          <button data-href="{% url 'podcasts:api-search' %}" type="submit" class="btn btn-secondary my-2 px-4">{% trans "Search" %}</button>
-        </div>
-      </div>
-
-      <div id="apsearch-results" class="row px-2 mb-3" style="display:none;"></div>
-      {% css_spinner 'apsearch-results-spinner' %}
-      <div id="apsearch-noresults" class="row mb-3" style="display:none;">
-        <div class="col-12">
-          <p class="text-center">{% trans "Sorry, there were no results for your search. 👎" %}</p>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+{% csrf_token %}
+<div class="app"><apple-podcasts-search></apple-podcasts-search></div>
 
 <div class="row">
   <div class="col">
