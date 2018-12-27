@@ -6,5 +6,5 @@ echo "Compiling messages."
 python manage.py compilemessages
 
 echo "Compiling and collecting static files"
-webpack --mode production
+./node_modules/webpack/bin/webpack.js --mode production
 python manage.py collectstatic --no-input -v0 --ignore "src"
