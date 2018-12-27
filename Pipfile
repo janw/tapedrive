@@ -12,7 +12,7 @@ watchdog = "*"
 Werkzeug = "*"
 
 [packages]
-Django = ">=2.1,<2.2"
+Django = ">=2.0,<2.1"
 django-activity-stream = "*"
 django-background-tasks = "*"
 "django-bootstrap4" = "*"
@@ -33,6 +33,7 @@ mysqlclient = "*"
 "bs4" = "*"
 djangorestframework = ">=3.8.2"
 django-webpack-loader = "*"
+html5lib = "*"
 
 [requires]
 python_version = "3.6"
