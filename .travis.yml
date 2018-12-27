@@ -11,6 +11,7 @@ install:
   - pip install pipenv coveralls transifex-client
   - pipenv install --system
   - npm install
+  - ./prepare
 
 script:
   - coverage run --source='.' manage.py test podcasts.tests
