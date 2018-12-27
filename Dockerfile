@@ -23,9 +23,7 @@ COPY . /app
 WORKDIR /app
 
 ARG DATABASE_URL="sqlite:////tmp.db"
-RUN python manage.py compilemessages \
-  && python manage.py compress --force \
-  && python manage.py collectstatic --no-input -v0
+RUN ["./prepare.sh"]
 
 EXPOSE 8273
 VOLUME /app /data
