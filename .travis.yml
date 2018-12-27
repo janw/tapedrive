@@ -10,6 +10,7 @@ env:
 install:
   - pip install pipenv coveralls transifex-client
   - pipenv install --system
+  - npm install
 
 script:
   - coverage run --source='.' manage.py test podcasts.tests
@@ -18,18 +19,3 @@ after_success:
   - coveralls --data_file=.coverage --config_file=.coveragerc
   - sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
   - tx push -s
-
-notifications:
-  webhooks:
-    urls:
-    - https://webhooks.gitter.im/e/f5ad277b8006a8c307f3
-    on_success: change
-    on_failure: always
-    on_start: never
-
-
-deploy:
-  provider: script
-  script: docker push "${IMAGE_NAME}:latest"
-  on:
-    branch: master
