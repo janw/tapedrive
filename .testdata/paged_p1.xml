@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" media="screen" href="/~files/feed-premium.xsl"?>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+
 <rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:bitlove="http://bitlove.org" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:psc="http://podlove.org/simple-chapters" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:fh="http://purl.org/syndication/history/1.0" xmlns:feedpress="https://feed.press/xmlns" version="2.0">
   <channel>
     <feedpress:locale>en</feedpress:locale>
@@ -17,9 +17,9 @@
     <atom:link rel="alternate" type="application/rss+xml" title="CRE: Technik, Kultur, Gesellschaft (MP3 Audio)" href="http://cre.fm/feed/mp3"/>
     <atom:link rel="alternate" type="application/rss+xml" title="CRE: Technik, Kultur, Gesellschaft (Ogg Vorbis Audio)" href="http://cre.fm/feed/oga"/>
     <atom:link rel="alternate" type="application/rss+xml" title="CRE: Technik, Kultur, Gesellschaft (Ogg Opus Audio)" href="http://cre.fm/feed/opus"/>
-    <atom:link rel="next" href="http://cre.fm/feed/m4a?paged=2"/>
-    <atom:link rel="first" href="http://cre.fm/feed/m4a"/>
-    <atom:link rel="last" href="http://cre.fm/feed/m4a?paged=4"/>
+    <atom:link rel="next" href="https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/paged_p2.xml"/>
+    <atom:link rel="first" href="https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/paged_p1.xml"/>
+    <atom:link rel="last" href="https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/paged_p2.xml"/>
     <language>de-DE</language>
     <atom:link rel="hub" href="http://metaebene.superfeedr.com"/>
     <fyyd:verify xmlns:fyyd="https://fyyd.de/fyyd-ns/">19k8ek636elsgxy7ez2egvhDwoboeok8is5tyN</fyyd:verify>
@@ -55,7 +55,7 @@
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre218-diamanten.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE218 Diamanten" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/8a/2da408c827df6d3a4ae5b480d82f67/cre218-diamanten_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/8a/2da408c827df6d3a4ae5b480d82f67/cre218-diamanten_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/8a/2da408c827df6d3a4ae5b480d82f67/cre218-diamanten_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/8a/2da408c827df6d3a4ae5b480d82f67/cre218-diamanten_600x600.jpg 3x"/>
 
   </a>
@@ -150,7 +150,7 @@ Reinhard Remfort
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=http://minkorrekt.de/" alt="Methodisch inkorrekt | der methodisch inkorrekte Wissenschaftspodcast" title="Methodisch inkorrekt | der methodisch inkorrekte Wissenschaftspodcast" /> <a href="http://minkorrekt.de/">Methodisch inkorrekt | der methodisch inkorrekte Wissenschaftspodcast</a></li>
 
@@ -460,7 +460,7 @@ Reinhard Remfort
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=https://raumzeit-podcast.de/2013/07/05/rz054-space-elevator/" alt="RZ054 Space Elevator | Raumzeit" title="RZ054 Space Elevator | Raumzeit" /> <a href="https://raumzeit-podcast.de/2013/07/05/rz054-space-elevator/">RZ054 Space Elevator | Raumzeit</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -512,7 +512,7 @@ Reinhard Remfort
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre217-mythos-68er.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE217 Mythos 68er" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/c4/dc5213b33b994f66fe2a9bd91effe9/cre217-mythos-68er_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/c4/dc5213b33b994f66fe2a9bd91effe9/cre217-mythos-68er_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/c4/dc5213b33b994f66fe2a9bd91effe9/cre217-mythos-68er_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/c4/dc5213b33b994f66fe2a9bd91effe9/cre217-mythos-68er_600x600.jpg 3x"/>
 
   </a>
@@ -607,7 +607,7 @@ Michael Sontheimer
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Sperrstunde" alt="Sperrstunde – Wikipedia" title="Sperrstunde – Wikipedia" /> <a href="https://de.wikipedia.org/wiki/Sperrstunde">Sperrstunde – Wikipedia</a></li>
 
@@ -1002,7 +1002,7 @@ Michael Sontheimer
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://www.amazon.de/Berlin-Stadt-Revolte-Michael-Sontheimer/dp/3861539888/&tag=crepodcast-21" alt="Michael Sontheimer, Peter Wensierski: &quot;Berlin – Stadt der Revolte&quot;" title="Michael Sontheimer, Peter Wensierski: &quot;Berlin – Stadt der Revolte&quot;" /> <a href="https://www.amazon.de/Berlin-Stadt-Revolte-Michael-Sontheimer/dp/3861539888/&tag=crepodcast-21">Michael Sontheimer, Peter Wensierski: &quot;Berlin – Stadt der Revolte&quot;</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -1059,7 +1059,7 @@ Michael Sontheimer
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre216-chilikultur.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE216 Chilikultur" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/c7/6f41ac092220252ef55d52d07f7eeb/cre216-chilikultur_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/c7/6f41ac092220252ef55d52d07f7eeb/cre216-chilikultur_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/c7/6f41ac092220252ef55d52d07f7eeb/cre216-chilikultur_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/c7/6f41ac092220252ef55d52d07f7eeb/cre216-chilikultur_600x600.jpg 3x"/>
 
   </a>
@@ -1164,7 +1164,7 @@ Volker Tripp
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Paprika" alt="Paprika – Wikipedia" title="Paprika – Wikipedia" /> <a href="https://de.wikipedia.org/wiki/Paprika">Paprika – Wikipedia</a></li>
 
@@ -1434,7 +1434,7 @@ Volker Tripp
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Prinzessinneng%C3%A4rten" alt="Prinzessinnengärten – Wikipedia" title="Prinzessinnengärten – Wikipedia" /> <a href="https://de.wikipedia.org/wiki/Prinzessinneng%C3%A4rten">Prinzessinnengärten – Wikipedia</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -1490,7 +1490,7 @@ Volker Tripp
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre215-kurdistan.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE215 Kurdistan" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/4c/dc40953aee5ac126171fa6d2c9f7b6/cre215-kurdistan_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/4c/dc40953aee5ac126171fa6d2c9f7b6/cre215-kurdistan_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/4c/dc40953aee5ac126171fa6d2c9f7b6/cre215-kurdistan_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/4c/dc40953aee5ac126171fa6d2c9f7b6/cre215-kurdistan_600x600.jpg 3x"/>
 
   </a>
@@ -1605,7 +1605,7 @@ Enno Lenze
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://www.berlinstory.de/hitler-dokumentation/" alt="Hitler Dokumentation - Wie konnte es geschehen? Hitler Ausstellung Berlin" title="Hitler Dokumentation - Wie konnte es geschehen? Hitler Ausstellung Berlin" /> <a href="https://www.berlinstory.de/hitler-dokumentation/">Hitler Dokumentation - Wie konnte es geschehen? Hitler Ausstellung Berlin</a></li>
 
@@ -1765,7 +1765,7 @@ Enno Lenze
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://www.enforcetac.com/" alt="Fachmesse für Behörden mit Sicherheitsaufgaben | Enforce Tac" title="Fachmesse für Behörden mit Sicherheitsaufgaben | Enforce Tac" /> <a href="https://www.enforcetac.com/">Fachmesse für Behörden mit Sicherheitsaufgaben | Enforce Tac</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -1817,7 +1817,7 @@ Enno Lenze
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre214-satellitentelefonie.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE214 Satellitentelefonie" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/33/c2c8e00ccf91d206692621c566395a/cre214-satellitentelefonie_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/33/c2c8e00ccf91d206692621c566395a/cre214-satellitentelefonie_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/33/c2c8e00ccf91d206692621c566395a/cre214-satellitentelefonie_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/33/c2c8e00ccf91d206692621c566395a/cre214-satellitentelefonie_600x600.jpg 3x"/>
 
   </a>
@@ -1917,7 +1917,7 @@ Michael "nibbler" Horn
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Siemens_S25" alt="Siemens S25" title="Siemens S25" /> <a href="https://de.wikipedia.org/wiki/Siemens_S25">Siemens S25</a></li>
 
@@ -2172,7 +2172,7 @@ Michael "nibbler" Horn
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://en.wikipedia.org/wiki/Lawful_interception" alt="Lawful interception" title="Lawful interception" /> <a href="https://en.wikipedia.org/wiki/Lawful_interception">Lawful interception</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -2228,7 +2228,7 @@ Michael "nibbler" Horn
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre213-brot.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE213 Brot" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/d4/066b2fd809eb200edb814ce4c99011/cre213-brot_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/d4/066b2fd809eb200edb814ce4c99011/cre213-brot_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/d4/066b2fd809eb200edb814ce4c99011/cre213-brot_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/d4/066b2fd809eb200edb814ce4c99011/cre213-brot_600x600.jpg 3x"/>
 
   </a>
@@ -2328,7 +2328,7 @@ Lutz Geißler
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://cre.fm/cre119-kaffee" alt="CRE119 Kaffee" title="CRE119 Kaffee" /> <a href="http://cre.fm/cre119-kaffee">CRE119 Kaffee</a></li>
 
@@ -2623,7 +2623,7 @@ Lutz Geißler
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://www.amazon.de/Brotbackbuch-Nr-Alltagsrezepte-Tipps-naturbelassenes/dp/3800183749/" alt="Lutz Geißler: Brotbackbuch Nr. 2: Alltagsrezepte und Tipps für naturbelassenes Brot" title="Lutz Geißler: Brotbackbuch Nr. 2: Alltagsrezepte und Tipps für naturbelassenes Brot" /> <a href="https://www.amazon.de/Brotbackbuch-Nr-Alltagsrezepte-Tipps-naturbelassenes/dp/3800183749/">Lutz Geißler: Brotbackbuch Nr. 2: Alltagsrezepte und Tipps für naturbelassenes Brot</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -2680,7 +2680,7 @@ Lutz Geißler
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre212-saudi-arabien.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE212 Saudi Arabien" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/af/0a01d7f5886e614ed9da00d4b7afa1/cre212-saudi-arabien_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/af/0a01d7f5886e614ed9da00d4b7afa1/cre212-saudi-arabien_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/af/0a01d7f5886e614ed9da00d4b7afa1/cre212-saudi-arabien_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/af/0a01d7f5886e614ed9da00d4b7afa1/cre212-saudi-arabien_600x600.jpg 3x"/>
 
   </a>
@@ -2775,7 +2775,7 @@ Miriam Seyffarth
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://www.youtube.com/watch?v=KQEeXmcWOxI" alt="Saudi Historian: Our Women Should Not Be Allowed to Drive Lest They Get Raped" title="Saudi Historian: Our Women Should Not Be Allowed to Drive Lest They Get Raped" /> <a href="https://www.youtube.com/watch?v=KQEeXmcWOxI">Saudi Historian: Our Women Should Not Be Allowed to Drive Lest They Get Raped</a></li>
 
@@ -2945,7 +2945,7 @@ Miriam Seyffarth
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Listicle" alt="Listicle" title="Listicle" /> <a href="https://de.wikipedia.org/wiki/Listicle">Listicle</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -3003,7 +3003,7 @@ Ich spreche mit dem Boeing- und Airbus-Piloten Stefan Müller über diese Welt m
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre211-ziviler-luftverkehr.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE211 Ziviler Luftverkehr" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/14/f3ed6eba911a10ed15577679407d4e/cre211-ziviler-luftverkehr_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/14/f3ed6eba911a10ed15577679407d4e/cre211-ziviler-luftverkehr_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/14/f3ed6eba911a10ed15577679407d4e/cre211-ziviler-luftverkehr_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/14/f3ed6eba911a10ed15577679407d4e/cre211-ziviler-luftverkehr_600x600.jpg 3x"/>
 
   </a>
@@ -3104,7 +3104,7 @@ Stefan Müller
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="link"><img src="https://www.google.com/s2/favicons?domain=https://www.flightradar24.com" alt="flightradar24" title="flightradar24" /> <a href="https://www.flightradar24.com">flightradar24</a></li>
 
@@ -3294,7 +3294,7 @@ Stefan Müller
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Ground_Based_Augmentation_System" alt="Ground Based Augmentation System" title="Ground Based Augmentation System" /> <a href="https://de.wikipedia.org/wiki/Ground_Based_Augmentation_System">Ground Based Augmentation System</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -3369,7 +3369,7 @@ Ich spreche mit Jäger und Podcaster Jochen Schumacher über Geschichte, Ausbild
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre210-die-jagd.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE210 Die Jagd" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/b1/fc4a557de2ae2e95feb4b0ed8bd320/cre210-die-jagd_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/b1/fc4a557de2ae2e95feb4b0ed8bd320/cre210-die-jagd_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/b1/fc4a557de2ae2e95feb4b0ed8bd320/cre210-die-jagd_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/b1/fc4a557de2ae2e95feb4b0ed8bd320/cre210-die-jagd_600x600.jpg 3x"/>
 
   </a>
@@ -3471,7 +3471,7 @@ Jochen Schumacher
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="link"><img src="https://www.google.com/s2/favicons?domain=http://jagdfunk.de" alt="Jagdfunk" title="Jagdfunk" /> <a href="http://jagdfunk.de">Jagdfunk</a></li>
 
@@ -3751,7 +3751,7 @@ Jochen Schumacher
 <li><span style="display: inline-block" class="link"><img src="https://www.google.com/s2/favicons?domain=http://www.hubertus-fieldsports.de/Ablage/Delikatessen-der-Luefte.pdf" alt="Krähenburger (PDF)" title="Krähenburger (PDF)" /> <a href="http://www.hubertus-fieldsports.de/Ablage/Delikatessen-der-Luefte.pdf">Krähenburger (PDF)</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -3815,7 +3815,7 @@ Ich spreche mit dem Initiator des Projekts, Lennart Poettering, der schon vorher
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre209-das-linux-system.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE209 Das Linux System" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/2e/2b80dca448aaeb0c8297b2826349ca/cre209-das-linux-system_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/2e/2b80dca448aaeb0c8297b2826349ca/cre209-das-linux-system_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/2e/2b80dca448aaeb0c8297b2826349ca/cre209-das-linux-system_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/2e/2b80dca448aaeb0c8297b2826349ca/cre209-das-linux-system_600x600.jpg 3x"/>
 
   </a>
@@ -3917,7 +3917,7 @@ Lennart Poettering
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Schneider_Euro_PC" alt="Schneider Euro PC" title="Schneider Euro PC" /> <a href="https://de.wikipedia.org/wiki/Schneider_Euro_PC">Schneider Euro PC</a></li>
 
@@ -4152,7 +4152,7 @@ Lennart Poettering
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Nmap" alt="nmap" title="nmap" /> <a href="https://de.wikipedia.org/wiki/Nmap">nmap</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -4203,7 +4203,7 @@ Lennart Poettering
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre208-neuronale-netze.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE208 Neuronale Netze" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/3c/c03b18f92153aea90211bbbe1011e9/cre208-neuronale-netze_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/3c/c03b18f92153aea90211bbbe1011e9/cre208-neuronale-netze_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/3c/c03b18f92153aea90211bbbe1011e9/cre208-neuronale-netze_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/3c/c03b18f92153aea90211bbbe1011e9/cre208-neuronale-netze_600x600.jpg 3x"/>
 
   </a>
@@ -4303,7 +4303,7 @@ Ulf Schöneberg
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Sinclair_ZX81" alt="Sinclair ZX81" title="Sinclair ZX81" /> <a href="https://de.wikipedia.org/wiki/Sinclair_ZX81">Sinclair ZX81</a></li>
 
@@ -4508,7 +4508,7 @@ Ulf Schöneberg
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Technologische_Singularit%C3%A4t" alt="Technologische Singularität" title="Technologische Singularität" /> <a href="https://de.wikipedia.org/wiki/Technologische_Singularit%C3%A4t">Technologische Singularität</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -4557,7 +4557,7 @@ Ulf Schöneberg
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre207-planetarien.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE207 Planetarien" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/cc/ddf942b284e556b2a17542e5aafbb9/cre207-planetarien_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/cc/ddf942b284e556b2a17542e5aafbb9/cre207-planetarien_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/cc/ddf942b284e556b2a17542e5aafbb9/cre207-planetarien_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/cc/ddf942b284e556b2a17542e5aafbb9/cre207-planetarien_600x600.jpg 3x"/>
 
   </a>
@@ -4683,7 +4683,7 @@ Tim Florian Horn
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/Planetarium" alt="Planetarium" title="Planetarium" /> <a href="http://de.wikipedia.org/wiki/Planetarium">Planetarium</a></li>
 
@@ -4918,7 +4918,7 @@ Tim Florian Horn
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/Fischaugenobjektiv" alt="Fischaugenobjektiv" title="Fischaugenobjektiv" /> <a href="http://de.wikipedia.org/wiki/Fischaugenobjektiv">Fischaugenobjektiv</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -4973,7 +4973,7 @@ Audiologe und Softwareentwickler Stefan Brill entwickelt entsprechende Algorithm
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre206-das-ohr.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE206 Das Ohr" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/49/d9563b86541b8dd8acc9625c31d580/cre206-das-ohr_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/49/d9563b86541b8dd8acc9625c31d580/cre206-das-ohr_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/49/d9563b86541b8dd8acc9625c31d580/cre206-das-ohr_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/49/d9563b86541b8dd8acc9625c31d580/cre206-das-ohr_600x600.jpg 3x"/>
 
   </a>
@@ -5065,7 +5065,7 @@ Stefan Brill
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/Eberhard_Zwicker" alt="Eberhard Zwicker" title="Eberhard Zwicker" /> <a href="http://de.wikipedia.org/wiki/Eberhard_Zwicker">Eberhard Zwicker</a></li>
 
@@ -5290,7 +5290,7 @@ Stefan Brill
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/Albert_Lasker_Award_for_Clinical_Medical_Research" alt="Lasker~DeBakey Clinical Medical Research Award" title="Lasker~DeBakey Clinical Medical Research Award" /> <a href="http://de.wikipedia.org/wiki/Albert_Lasker_Award_for_Clinical_Medical_Research">Lasker~DeBakey Clinical Medical Research Award</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -5345,7 +5345,7 @@ Jens Ohlig hat Wikidata mit entwickelt und im Gespräch mit Tim Pritlove erläut
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre205-wikidata.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE205 Wikidata" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/ac/2dc582f359c30d4c0120c1f782f241/cre205-wikidata_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/ac/2dc582f359c30d4c0120c1f782f241/cre205-wikidata_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/ac/2dc582f359c30d4c0120c1f782f241/cre205-wikidata_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/ac/2dc582f359c30d4c0120c1f782f241/cre205-wikidata_600x600.jpg 3x"/>
 
   </a>
@@ -5452,7 +5452,7 @@ Jens Ohlig
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter"> Links</li>
 
@@ -5712,7 +5712,7 @@ Jens Ohlig
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=https://de.wikipedia.org/wiki/Wolfram_Alpha" alt="Wolfram Alpha" title="Wolfram Alpha" /> <a href="https://de.wikipedia.org/wiki/Wolfram_Alpha">Wolfram Alpha</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -5769,7 +5769,7 @@ Regine Heidorn ist eine erfahrene Geocacherin und hat schon mehr als tausend Ver
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre204-geocaching.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE204 Geocaching" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/4d/6d24bf65918945b7debdee7f42b9bb/cre204-geocaching_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/4d/6d24bf65918945b7debdee7f42b9bb/cre204-geocaching_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/4d/6d24bf65918945b7debdee7f42b9bb/cre204-geocaching_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/4d/6d24bf65918945b7debdee7f42b9bb/cre204-geocaching_600x600.jpg 3x"/>
 
   </a>
@@ -5871,7 +5871,7 @@ Tim Pritlove
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://www.youtube.com/watch?v=6R6ItZhHRGI" alt="The Most Evil Geocache Hide Ever" title="The Most Evil Geocache Hide Ever" /> <a href="http://www.youtube.com/watch?v=6R6ItZhHRGI">The Most Evil Geocache Hide Ever</a></li>
 
@@ -6101,7 +6101,7 @@ Tim Pritlove
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/Monkey_Island" alt="Monkey Island" title="Monkey Island" /> <a href="http://de.wikipedia.org/wiki/Monkey_Island">Monkey Island</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -6159,7 +6159,7 @@ Tim Pritlove diskutiert mit dem Online-Journalisten Stephan Dörner über die Ch
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre203-online-journalismus.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE203 Online-Journalismus" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/3f/010fd35f43b146ab4beaefc24f4d0a/cre203-online-journalismus_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/3f/010fd35f43b146ab4beaefc24f4d0a/cre203-online-journalismus_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/3f/010fd35f43b146ab4beaefc24f4d0a/cre203-online-journalismus_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/3f/010fd35f43b146ab4beaefc24f4d0a/cre203-online-journalismus_600x600.jpg 3x"/>
 
   </a>
@@ -6256,7 +6256,7 @@ Stephan Dörner
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter topic"> Vorstellung</li>
 
@@ -6611,7 +6611,7 @@ Stephan Dörner
 <li><span style="display: inline-block" class=""><img src="https://www.google.com/s2/favicons?domain=http://www.stefan-niggemeier.de/blog/" alt="Blog" title="Blog" /> <a href="http://www.stefan-niggemeier.de/blog/">Blog</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -6665,7 +6665,7 @@ Caspar Clemens Mierau ist Medienkulturwissenschaftler und Cineast und hat sich i
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre202-hackerfilme.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE202 Hackerfilme" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/f5/41d7745fa6610c7dd6835e554dd265/cre202-hackerfilme_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/f5/41d7745fa6610c7dd6835e554dd265/cre202-hackerfilme_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/f5/41d7745fa6610c7dd6835e554dd265/cre202-hackerfilme_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/f5/41d7745fa6610c7dd6835e554dd265/cre202-hackerfilme_600x600.jpg 3x"/>
 
   </a>
@@ -6768,7 +6768,7 @@ Caspar Clemens Mierau
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter"> Intro</li>
 
@@ -7513,7 +7513,7 @@ Caspar Clemens Mierau
 <li><span style="display: inline-block" class="link"><img src="https://www.google.com/s2/favicons?domain=http://www.whoismcafee.com" alt="Who is McAfee" title="Who is McAfee" /> <a href="http://www.whoismcafee.com">Who is McAfee</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -7589,7 +7589,7 @@ Im Gespräch mit Tim Pritlove berichtet Doobee von Höhlen, Höhlenforschung und
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre201-hoehlenforschung.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE201 H&#xF6;hlenforschung" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/8b/ecc3eb0ef31f4bc651b27bdd104968/cre201-hoehlenforschung_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/8b/ecc3eb0ef31f4bc651b27bdd104968/cre201-hoehlenforschung_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/8b/ecc3eb0ef31f4bc651b27bdd104968/cre201-hoehlenforschung_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/8b/ecc3eb0ef31f4bc651b27bdd104968/cre201-hoehlenforschung_600x600.jpg 3x"/>
 
   </a>
@@ -7717,7 +7717,7 @@ Maurice Kiefel
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter"> Intro</li>
 
@@ -8212,7 +8212,7 @@ Maurice Kiefel
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/C-base" alt="c-base" title="c-base" /> <a href="http://de.wikipedia.org/wiki/C-base">c-base</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -8277,7 +8277,7 @@ Im Gespräch mit Tim Pritlove erzählt der Architekt und Stadtplaner Thomas Stel
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre200-stadtplanung.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE200 Stadtplanung" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/eb/58370a26439a271ee12d5802e2f375/cre200-stadtplanung_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/eb/58370a26439a271ee12d5802e2f375/cre200-stadtplanung_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/eb/58370a26439a271ee12d5802e2f375/cre200-stadtplanung_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/eb/58370a26439a271ee12d5802e2f375/cre200-stadtplanung_600x600.jpg 3x"/>
 
   </a>
@@ -8406,7 +8406,7 @@ Maurice Kiefel
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter"> Intro</li>
 
@@ -9186,7 +9186,7 @@ Maurice Kiefel
 <li><span style="display: inline-block" class="glossary"><img src="https://www.google.com/s2/favicons?domain=http://de.wikipedia.org/wiki/Seidenstra%C3%9Fe" alt="Seidenstraße" title="Seidenstraße" /> <a href="http://de.wikipedia.org/wiki/Seidenstra%C3%9Fe">Seidenstraße</a></li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -9253,7 +9253,7 @@ Im Gespräch mit Tim Pritlove berichtet Felix Vogel von seinen Erfahrungen mit N
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre199-nethack.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE199 NetHack" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/c1/e55790457b94132b92963eea649897/cre199-nethack_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/c1/e55790457b94132b92963eea649897/cre199-nethack_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/c1/e55790457b94132b92963eea649897/cre199-nethack_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/c1/e55790457b94132b92963eea649897/cre199-nethack_600x600.jpg 3x"/>
 
   </a>
@@ -9461,7 +9461,7 @@ Im Gespräch mit Tim Pritlove berichtet Tina Lorenz aus ihrer Forschung und ihre
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre198-pornographie.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE198 Pornographie" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/3e/1cc7e9e6aceac7ae6ae7e71eb2a821/cre198-pornographie_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/3e/1cc7e9e6aceac7ae6ae7e71eb2a821/cre198-pornographie_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/3e/1cc7e9e6aceac7ae6ae7e71eb2a821/cre198-pornographie_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/3e/1cc7e9e6aceac7ae6ae7e71eb2a821/cre198-pornographie_600x600.jpg 3x"/>
 
   </a>
@@ -9719,7 +9719,7 @@ Im Gespräch mit Tim Pritlove erläutert Clemens Schrimpe die notwendigen Grundl
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre197-ipv6.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE197 IPv6" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/b5/2897c2d7d38d8a013919549843693e/cre197-ipv6_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/b5/2897c2d7d38d8a013919549843693e/cre197-ipv6_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/b5/2897c2d7d38d8a013919549843693e/cre197-ipv6_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/b5/2897c2d7d38d8a013919549843693e/cre197-ipv6_600x600.jpg 3x"/>
 
   </a>
@@ -9819,7 +9819,7 @@ Tim Pritlove
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter"> Intro</li>
 
@@ -12349,7 +12349,7 @@ Tim Pritlove
 <li><span style="display: inline-block" class="chapter"> CRE Outro</li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -12513,7 +12513,7 @@ Themen: Persönliche Sozialisierung in Ost und West; Frauen in der DDR; Selbstve
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre196-feminismus.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE196 Feminismus" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/70/cfbe39c7e4e65be02c803d1dfcd799/cre196-feminismus_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/70/cfbe39c7e4e65be02c803d1dfcd799/cre196-feminismus_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/70/cfbe39c7e4e65be02c803d1dfcd799/cre196-feminismus_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/70/cfbe39c7e4e65be02c803d1dfcd799/cre196-feminismus_600x600.jpg 3x"/>
 
   </a>
@@ -12722,7 +12722,7 @@ Themen: Geschichte der Hirnforschung; Theorien der Funktionsweise; Das Hirn beim
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre195-das-gehirn.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE195 Das Gehirn" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/10/5a9ad24505eb79404ff7e6d86076e0/cre195-das-gehirn_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/10/5a9ad24505eb79404ff7e6d86076e0/cre195-das-gehirn_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/10/5a9ad24505eb79404ff7e6d86076e0/cre195-das-gehirn_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/10/5a9ad24505eb79404ff7e6d86076e0/cre195-das-gehirn_600x600.jpg 3x"/>
 
   </a>
@@ -12969,7 +12969,7 @@ Themen: Brot backen heißt Bier brauen; Bier selber brauen; der magische Zauber
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre194-bier.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE194 Bier" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/ad/0a06119a945bc69746c9d40188b85b/cre194-bier_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/ad/0a06119a945bc69746c9d40188b85b/cre194-bier_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/ad/0a06119a945bc69746c9d40188b85b/cre194-bier_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/ad/0a06119a945bc69746c9d40188b85b/cre194-bier_600x600.jpg 3x"/>
 
   </a>
@@ -13098,12 +13098,12 @@ Evita Bley
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class=""> foo</li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -13248,7 +13248,7 @@ Themen: 4000 Bits; Binäre Eingabe; Assembler-Code auf Lochstreifen; Papierkörb
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre193-old-school-computing.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE193 Old School Computing" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/0a/0cc7f3a80878c527965aa628023f6f/cre193-old-school-computing_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/0a/0cc7f3a80878c527965aa628023f6f/cre193-old-school-computing_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/0a/0cc7f3a80878c527965aa628023f6f/cre193-old-school-computing_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/0a/0cc7f3a80878c527965aa628023f6f/cre193-old-school-computing_600x600.jpg 3x"/>
 
   </a>
@@ -13472,7 +13472,7 @@ Damals wie heute steht die Idee des Poststrukturalismus im Mittelpunkt und währ
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre192-poststrukturalismus-2.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE192 Poststrukturalismus 2" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/92/2acda9613d6f91f03e1873bd72737e/cre192-poststrukturalismus-2_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/92/2acda9613d6f91f03e1873bd72737e/cre192-poststrukturalismus-2_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/92/2acda9613d6f91f03e1873bd72737e/cre192-poststrukturalismus-2_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/92/2acda9613d6f91f03e1873bd72737e/cre192-poststrukturalismus-2_600x600.jpg 3x"/>
 
   </a>
@@ -13696,7 +13696,7 @@ Themen: DFÜ in den 80ern; X.25; Telefontarife in Berlin; Tarife nach Mondphase;
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre191-internet-im-festnetz.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE191 Internet im Festnetz" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/05/a1794bbe9af91d18652ab653eb1a04/cre191-internet-im-festnetz_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/05/a1794bbe9af91d18652ab653eb1a04/cre191-internet-im-festnetz_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/05/a1794bbe9af91d18652ab653eb1a04/cre191-internet-im-festnetz_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/05/a1794bbe9af91d18652ab653eb1a04/cre191-internet-im-festnetz_600x600.jpg 3x"/>
 
   </a>
@@ -13824,7 +13824,7 @@ Max Merz
 
 <div><div class='osfx-shownote-block'>
     <ul>
-    
+
 
 <li><span style="display: inline-block" class="chapter"> Intro</li>
 
@@ -16394,7 +16394,7 @@ Max Merz
 <li><span style="display: inline-block" class="chapter"> Outro</li>
 
     </ul>
-    
+
 
 </div></div>
 
@@ -16465,7 +16465,7 @@ Themen: Entstehung der Rhetorik im antiken Griechenland; Sprechen mit einem Kies
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre190-rhetorik.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE190 Rhetorik" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/61/6f9007c1731b963671e53dd0af094e/cre190-rhetorik_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/61/6f9007c1731b963671e53dd0af094e/cre190-rhetorik_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/61/6f9007c1731b963671e53dd0af094e/cre190-rhetorik_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/61/6f9007c1731b963671e53dd0af094e/cre190-rhetorik_600x600.jpg 3x"/>
 
   </a>
@@ -16680,7 +16680,7 @@ Themen: 28C3; Chaos macht Schule; Motivation und Zielgruppen; Inhaltliche Gestal
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre189-chaos-macht-schule.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE189 Chaos macht Schule" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/13/55af3652826a3b3b66be3040351b16/cre189-chaos-macht-schule_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/13/55af3652826a3b3b66be3040351b16/cre189-chaos-macht-schule_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/13/55af3652826a3b3b66be3040351b16/cre189-chaos-macht-schule_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/13/55af3652826a3b3b66be3040351b16/cre189-chaos-macht-schule_600x600.jpg 3x"/>
 
   </a>
@@ -16876,7 +16876,7 @@ Themen: Was es bedeutet, online zu gehen; Brieffreundschaften; Netzpolitischer A
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre188-telecomix.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE188 Telecomix" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/ff/0edc01e5859ab613842a004e78573c/cre188-telecomix_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/ff/0edc01e5859ab613842a004e78573c/cre188-telecomix_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/ff/0edc01e5859ab613842a004e78573c/cre188-telecomix_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/ff/0edc01e5859ab613842a004e78573c/cre188-telecomix_600x600.jpg 3x"/>
 
   </a>
@@ -17086,7 +17086,7 @@ Themen: Modellflug; Modellflugzeuge Funkvideo; autonomer Flug; der Terrorist im 
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre187-paparazzi.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE187 Paparazzi" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/84/d94e3d22fb644b6ec9fe9162c54a1e/cre187-paparazzi_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/84/d94e3d22fb644b6ec9fe9162c54a1e/cre187-paparazzi_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/84/d94e3d22fb644b6ec9fe9162c54a1e/cre187-paparazzi_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/84/d94e3d22fb644b6ec9fe9162c54a1e/cre187-paparazzi_600x600.jpg 3x"/>
 
   </a>
@@ -17308,7 +17308,7 @@ Themen: Bau und Zweck des Astropeilers; Stillegung und Wiederinbetriebnahme; Gr�
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre186-astropeiler.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE186 Astropeiler" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/1f/2bfc8fc0e13ea3ca33c468e1440b72/cre186-astropeiler_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/1f/2bfc8fc0e13ea3ca33c468e1440b72/cre186-astropeiler_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/1f/2bfc8fc0e13ea3ca33c468e1440b72/cre186-astropeiler_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/1f/2bfc8fc0e13ea3ca33c468e1440b72/cre186-astropeiler_600x600.jpg 3x"/>
 
   </a>
@@ -17535,7 +17535,7 @@ Themen: Gründung der Hedonistischen Internationale; Manifest; G8-Gipfel in Genu
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre185-hedonistische-internationale.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE185 Hedonistische Internationale" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/a4/25510d16414bb076f97ac6bbae632f/cre185-hedonistische-internationale_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/a4/25510d16414bb076f97ac6bbae632f/cre185-hedonistische-internationale_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/a4/25510d16414bb076f97ac6bbae632f/cre185-hedonistische-internationale_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/a4/25510d16414bb076f97ac6bbae632f/cre185-hedonistische-internationale_600x600.jpg 3x"/>
 
   </a>
@@ -17753,7 +17753,7 @@ Themen: Somalia-Einsatz; Bundeswehr-Geschichte; Verankerung in der Gesellschaft;
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre184-bundeswehr.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE184 Bundeswehr" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/f6/1c6d32c3da35d18907acf04e92a4bc/cre184-bundeswehr_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/f6/1c6d32c3da35d18907acf04e92a4bc/cre184-bundeswehr_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/f6/1c6d32c3da35d18907acf04e92a4bc/cre184-bundeswehr_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/f6/1c6d32c3da35d18907acf04e92a4bc/cre184-bundeswehr_600x600.jpg 3x"/>
 
   </a>
@@ -17929,7 +17929,7 @@ Themen: Unterschied zwischen Sprechfunk und Bündelfunk; Entwicklung des Bündel
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre183-tetra-buendelfunk.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE183 TETRA B&#xFC;ndelfunk" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/28/63f49179fd42bf2c96ddb3d8f9ad98/cre183-tetra-buendelfunk_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/28/63f49179fd42bf2c96ddb3d8f9ad98/cre183-tetra-buendelfunk_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/28/63f49179fd42bf2c96ddb3d8f9ad98/cre183-tetra-buendelfunk_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/28/63f49179fd42bf2c96ddb3d8f9ad98/cre183-tetra-buendelfunk_600x600.jpg 3x"/>
 
   </a>
@@ -18123,7 +18123,7 @@ Themen: kommutative asymmetrische Kryptosysteme; Double Spending Problem; Blindi
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre182-elektronisches-geld.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE182 Elektronisches Geld" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/91/54e1aa02db6dc682d99b42e4896e90/cre182-elektronisches-geld_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/91/54e1aa02db6dc682d99b42e4896e90/cre182-elektronisches-geld_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/91/54e1aa02db6dc682d99b42e4896e90/cre182-elektronisches-geld_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/91/54e1aa02db6dc682d99b42e4896e90/cre182-elektronisches-geld_600x600.jpg 3x"/>
 
   </a>
@@ -18320,7 +18320,7 @@ Themen: frühe Projekte; Google Maps-Barken im Stadtraum; gefälschte Google-Aut
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre181-aram-bartholl.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE181 Aram Bartholl" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/55/c244d56e14b7450f85f1d3cbe301bc/cre181-aram-bartholl_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/55/c244d56e14b7450f85f1d3cbe301bc/cre181-aram-bartholl_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/55/c244d56e14b7450f85f1d3cbe301bc/cre181-aram-bartholl_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/55/c244d56e14b7450f85f1d3cbe301bc/cre181-aram-bartholl_600x600.jpg 3x"/>
 
   </a>
@@ -18483,7 +18483,7 @@ Themen: Energiesparen in der Antike und im Mittelalter; grundlegende Techniken d
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre180-passivhaeuser.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE180 Passivh&#xE4;user" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/38/c79aa9aeccfbd2f2718e080c4726c7/cre180-passivhaeuser_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/38/c79aa9aeccfbd2f2718e080c4726c7/cre180-passivhaeuser_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/38/c79aa9aeccfbd2f2718e080c4726c7/cre180-passivhaeuser_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/38/c79aa9aeccfbd2f2718e080c4726c7/cre180-passivhaeuser_600x600.jpg 3x"/>
 
   </a>
@@ -18650,7 +18650,7 @@ Themen: Sicherheit der GSM-Kryptografie; Denkbare und praktische Denial of Servi
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre179-gsm-security.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE179 GSM Security" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/f5/be8c18aa2246100b695d4b833d74c1/cre179-gsm-security_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/f5/be8c18aa2246100b695d4b833d74c1/cre179-gsm-security_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/f5/be8c18aa2246100b695d4b833d74c1/cre179-gsm-security_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/f5/be8c18aa2246100b695d4b833d74c1/cre179-gsm-security_600x600.jpg 3x"/>
 
   </a>
@@ -18827,7 +18827,7 @@ Themen: Medienkompetenzzentren in Berlin; Sozialpädagogie; wer geht in Medienko
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre178-jugendmedienarbeit.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE178 Jugendmedienarbeit" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/54/cd2dbade284e06b63179924ecb4c51/cre178-jugendmedienarbeit_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/54/cd2dbade284e06b63179924ecb4c51/cre178-jugendmedienarbeit_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/54/cd2dbade284e06b63179924ecb4c51/cre178-jugendmedienarbeit_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/54/cd2dbade284e06b63179924ecb4c51/cre178-jugendmedienarbeit_600x600.jpg 3x"/>
 
   </a>
@@ -19005,7 +19005,7 @@ Themen: Computerindustrie und der Homecomputer-Markt Anfang der 1980er Jahre; ü
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre177-commodore-64.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE177 Commodore 64" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/f6/70c122d1503eec8c9e233068012678/cre177-commodore-64_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/f6/70c122d1503eec8c9e233068012678/cre177-commodore-64_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/f6/70c122d1503eec8c9e233068012678/cre177-commodore-64_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/f6/70c122d1503eec8c9e233068012678/cre177-commodore-64_600x600.jpg 3x"/>
 
   </a>
@@ -19235,7 +19235,7 @@ Themen: Entwicklung von frühen Diensten im Internet; Webmail; Verteiltes Rechne
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre176-cloud-computing.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE176 Cloud Computing" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/ba/3d2062bc20a0025b0d43c84d76c9ef/cre176-cloud-computing_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/ba/3d2062bc20a0025b0d43c84d76c9ef/cre176-cloud-computing_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/ba/3d2062bc20a0025b0d43c84d76c9ef/cre176-cloud-computing_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/ba/3d2062bc20a0025b0d43c84d76c9ef/cre176-cloud-computing_600x600.jpg 3x"/>
 
   </a>
@@ -19449,7 +19449,7 @@ Themen: Mythos Hackerernährung; Soziale Funktion der Kaffeemaschine; Coca-Cola 
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre175-hackerbrausen.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE175 Hackerbrausen" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/c6/c0d57888ee41dde8ab157be860e819/cre175-hackerbrausen_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/c6/c0d57888ee41dde8ab157be860e819/cre175-hackerbrausen_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/c6/c0d57888ee41dde8ab157be860e819/cre175-hackerbrausen_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/c6/c0d57888ee41dde8ab157be860e819/cre175-hackerbrausen_600x600.jpg 3x"/>
 
   </a>
@@ -19717,7 +19717,7 @@ Themen: Bild des Architekten; Bauhaus; Ostranenie und die Entfremdung des Zuscha
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre174-kunst-kultur-gesellschaft.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE174 Kunst, Kultur, Gesellschaft" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/e7/09e691f78cc67ddc23c95839ea5f5f/cre174-kunst-kultur-gesellschaft_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/e7/09e691f78cc67ddc23c95839ea5f5f/cre174-kunst-kultur-gesellschaft_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/e7/09e691f78cc67ddc23c95839ea5f5f/cre174-kunst-kultur-gesellschaft_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/e7/09e691f78cc67ddc23c95839ea5f5f/cre174-kunst-kultur-gesellschaft_600x600.jpg 3x"/>
 
   </a>
@@ -19898,7 +19898,7 @@ Themen: Entwicklung der Rollenspiele aus Konfliktsimulationen; Die Fantasy-Welt 
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre173-rollenspiele.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE173 Rollenspiele" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/f1/b353aa649b34eb5b4504c0dec54f11/cre173-rollenspiele_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/f1/b353aa649b34eb5b4504c0dec54f11/cre173-rollenspiele_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/f1/b353aa649b34eb5b4504c0dec54f11/cre173-rollenspiele_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/f1/b353aa649b34eb5b4504c0dec54f11/cre173-rollenspiele_600x600.jpg 3x"/>
 
   </a>
@@ -20115,7 +20115,7 @@ Themen: Datenreisen der Frühzeit; Phone Phreaking; die Verbindung nach Deutschl
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre172-holland-und-die-hacker.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE172 Holland und die Hacker" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/80/76556837bab7f403b4e0e8daaa8767/cre172-holland-und-die-hacker_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/80/76556837bab7f403b4e0e8daaa8767/cre172-holland-und-die-hacker_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/80/76556837bab7f403b4e0e8daaa8767/cre172-holland-und-die-hacker_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/80/76556837bab7f403b4e0e8daaa8767/cre172-holland-und-die-hacker_600x600.jpg 3x"/>
 
   </a>
@@ -20315,7 +20315,7 @@ Themen: Loktypen; Schienensysteme; Stromsysteme; Sicherheit und Streckenblöcke;
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre171-die-eisenbahn.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE171 Die Eisenbahn" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/12/a84d8e68d7a6b712bcf38dc69a86e1/cre171-die-eisenbahn_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/12/a84d8e68d7a6b712bcf38dc69a86e1/cre171-die-eisenbahn_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/12/a84d8e68d7a6b712bcf38dc69a86e1/cre171-die-eisenbahn_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/12/a84d8e68d7a6b712bcf38dc69a86e1/cre171-die-eisenbahn_600x600.jpg 3x"/>
 
   </a>
@@ -20550,7 +20550,7 @@ Themen: Frühe Pinball-Maschinen und die Arcade; erste Computerspiele; erste Arc
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre170-arcade-games.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE170 Arcade Games" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/6d/f1d77b8026b5a5e461e47dc293844c/cre170-arcade-games_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/6d/f1d77b8026b5a5e461e47dc293844c/cre170-arcade-games_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/6d/f1d77b8026b5a5e461e47dc293844c/cre170-arcade-games_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/6d/f1d77b8026b5a5e461e47dc293844c/cre170-arcade-games_600x600.jpg 3x"/>
 
   </a>
@@ -20801,7 +20801,7 @@ Themen: Bluetooth War Driving; Frühe Sicherheitslücken; Bluetooth Kommunikatio
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre169-bluetooth.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE169 Bluetooth" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/61/91fd234251bf0f6d9d964ac26b64fa/cre169-bluetooth_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/61/91fd234251bf0f6d9d964ac26b64fa/cre169-bluetooth_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/61/91fd234251bf0f6d9d964ac26b64fa/cre169-bluetooth_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/61/91fd234251bf0f6d9d964ac26b64fa/cre169-bluetooth_600x600.jpg 3x"/>
 
   </a>
@@ -21004,7 +21004,7 @@ Themen: Rollstuhlfahrer im Alltag, der Tanzschule und dem Berghain; Planung eine
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre168-wheelmap.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE168 Wheelmap" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/3a/dafee6713c6d94e6cbafdcf011f4ea/cre168-wheelmap_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/3a/dafee6713c6d94e6cbafdcf011f4ea/cre168-wheelmap_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/3a/dafee6713c6d94e6cbafdcf011f4ea/cre168-wheelmap_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/3a/dafee6713c6d94e6cbafdcf011f4ea/cre168-wheelmap_600x600.jpg 3x"/>
 
   </a>
@@ -21224,7 +21224,7 @@ Themen: aktuelle Probleme bei Webanwendungen; Long polling und File Upload; Asyn
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre-logo-1400x1400.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE167 node.js" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_600x600.jpg 3x"/>
 
   </a>
@@ -21444,7 +21444,7 @@ Themen: was ein geeignetes Boot ausmacht; Verdränger und Gleiter; der Mast und 
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre166-segeln.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE166 Segeln" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/b0/2f41eb3140158dcb38898f73d8154a/cre166-segeln_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/b0/2f41eb3140158dcb38898f73d8154a/cre166-segeln_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/b0/2f41eb3140158dcb38898f73d8154a/cre166-segeln_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/b0/2f41eb3140158dcb38898f73d8154a/cre166-segeln_600x600.jpg 3x"/>
 
   </a>
@@ -21689,7 +21689,7 @@ Themen: was die Privatsphäre umfasst; Intimsphäre; die Sozialsphäre; die Öff
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre-logo-1400x1400.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE165 Privatsph&#xE4;re" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_600x600.jpg 3x"/>
 
   </a>
@@ -21892,7 +21892,7 @@ Themen: Journalismus und Urheberrecht; Entstehung der Plattform irights.info; Be
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre-logo-1400x1400.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE164 Urheberrecht" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_600x600.jpg 3x"/>
 
   </a>
@@ -22095,7 +22095,7 @@ Themen: Geschichte und verwandte Programmiersprache; Designprinzipien von Ruby; 
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre-logo-1400x1400.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE163 Ruby und Rails" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_600x600.jpg 3x"/>
 
   </a>
@@ -22318,7 +22318,7 @@ Themen: Typen von Brettspielen; besondere Bedeutung von Brettspielen in Deutschl
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre162-brettspiele.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE162 Brettspiele" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/c0/3ee129e8186f5349591079e5cfed9d/cre162-brettspiele_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/c0/3ee129e8186f5349591079e5cfed9d/cre162-brettspiele_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/c0/3ee129e8186f5349591079e5cfed9d/cre162-brettspiele_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/c0/3ee129e8186f5349591079e5cfed9d/cre162-brettspiele_600x600.jpg 3x"/>
 
   </a>
@@ -22532,7 +22532,7 @@ Themen: Ars Electronica; Gründung des CCC; eine Welt ohne Netze; erste Schritte
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre-logo-1400x1400.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE161 Der CCC und die &#xD6;ffentlichkeit" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/6b/8074d85b886d8dedb4945715694ba7/cre-technik-kultur-gesellschaft_600x600.jpg 3x"/>
 
   </a>
@@ -22749,7 +22749,7 @@ Themen: Agitatoren in der Schule, Altstoffsammlung (Crowdsourcing), Verkehr, Gem
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre160-ddr.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE160 DDR" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/26/cfff1e2e178aabc9c515388ad3d125/cre160-ddr_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/26/cfff1e2e178aabc9c515388ad3d125/cre160-ddr_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/26/cfff1e2e178aabc9c515388ad3d125/cre160-ddr_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/26/cfff1e2e178aabc9c515388ad3d125/cre160-ddr_600x600.jpg 3x"/>
 
   </a>
@@ -22987,7 +22987,7 @@ Themen: Struktur und Aufgaben der Geheimdienste; Geheimhaltungsstufen und Sicher
 
 <div>
   <a target="_blank" href="https://meta.metaebene.me/media/cre/cre159-nachrichtendienste.jpg">
-      
+
 <img class="episode" alt="Episode image forCRE159 Nachrichtendienste" width="200" height="200" src="http://cre.fm/wp-content/cache/podlove/07/ed46e069ffd70796191835377b9650/cre159-nachrichtendienste_200x200.jpg" srcset="http://cre.fm/wp-content/cache/podlove/07/ed46e069ffd70796191835377b9650/cre159-nachrichtendienste_200x200.jpg 1x, http://cre.fm/wp-content/cache/podlove/07/ed46e069ffd70796191835377b9650/cre159-nachrichtendienste_400x400.jpg 2x, http://cre.fm/wp-content/cache/podlove/07/ed46e069ffd70796191835377b9650/cre159-nachrichtendienste_600x600.jpg 3x"/>
 
   </a>

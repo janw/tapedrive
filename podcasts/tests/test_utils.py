@@ -1,12 +1,12 @@
 from django.test import TestCase
 from podcasts import utils
 
-TEST_FEED = 'http://feeds.5by5.tv/killingtime'
-TEST_FEED_NONEXISTENT = 'http://localhost/killingnothing'
-TEST_FEED_HTTPERROR = 'https://github.com/janwh/nonexistenturl'
-TEST_FEED_MALFORMED = 'https://raw.githubusercontent.com/kurtmckee/feedparser/develop/tests/illformed/aaa_illformed.xml'
-TEST_FEED_NEXT_PAGE = 'http://cre.fm/feed/m4a'
-TEST_FEED_SUBTITLE_TOO_LONG = 'https://rss.art19.com/caliphate'
+TEST_FEED = 'https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/valid.xml'
+TEST_FEED_NONEXISTENT = 'http://localhost/nonexistent'
+TEST_FEED_HTTPERROR = 'https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/literally_nonexistent.xml'
+TEST_FEED_MALFORMED = 'https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/invalid.xml'
+TEST_FEED_NEXT_PAGE = 'https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/paged_p1.xml'
+TEST_FEED_SUBTITLE_TOO_LONG = 'https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/subtitle_too_long.xml'
 
 
 class ResolveSegmentsTestCase(TestCase):
