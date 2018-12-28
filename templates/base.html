@@ -1,11 +1,12 @@
-<!DOCTYPE html>{% load i18n staticfiles podcasts_tags %}{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>{% load i18n staticfiles podcasts_tags %}{% get_current_language as LANGUAGE_CODE %}{% load render_bundle from webpack_loader %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
   <head>
     <title>{% block title %}{% trans "Tape Drive" %}{% endblock title %}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'dist/css/main.css' %}" type="text/css" media="all" charset="utf-8">
 
+    <!-- Render webpack bundled CSS -->
+    {% render_bundle 'main' 'css' %}
 
     {% block load_javascript %}
       <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
@@ -46,14 +47,7 @@
         </div>
       </footer>
 
-      {% load render_bundle from webpack_loader %}
-      {% render_bundle 'main' %}
-
-      {% if DEBUG_FRONTEND %}
-        <script src="{% static 'dist/js/base.js' %}"></script>
-      {% else %}
-        <script src="{% static 'dist/js/base.min.js' %}"></script>
-      {% endif %}
+      {% render_bundle 'main' 'js' %}
     </body>
   {% endblock body %}
 </html>

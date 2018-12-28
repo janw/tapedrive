@@ -1,3 +1,6 @@
+
+import './../scss/main.scss'
+
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
@@ -27,5 +30,3 @@ new Vue({
 	}
 })
 
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'

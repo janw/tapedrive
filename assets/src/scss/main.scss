@@ -33,7 +33,7 @@ $container-max-widths: (
 
 $wrapper-max-width: 1050px;
 
-@import "bootstrap";
+@import "~bootstrap/scss/bootstrap";
 @import "borders-responsive";
 @import "spinkit";
 @import "dark-mode";
