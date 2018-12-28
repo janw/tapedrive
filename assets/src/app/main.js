@@ -16,7 +16,7 @@ Vue.http.interceptors.push(function (request){
 
 Vue.component('spinner', require('vue-spinner-component/src/Spinner.vue'));
 import ApplePodcastsSearch from './components/ApplePodcastsSearch.vue'
-
+import ApplePodcastsTopResults from './components/ApplePodcastsTopResults.vue'
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
 
@@ -24,6 +24,7 @@ new Vue({
 	el: '.app',
 	components: {
 		ApplePodcastsSearch,
+        ApplePodcastsTopResults,
 	},
    	loading: false,
 	methods: {

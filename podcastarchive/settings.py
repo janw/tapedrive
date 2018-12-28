@@ -188,13 +188,15 @@ class Common(Configuration):
     WHITENOISE_AUTOREFRESH = True
     WHITENOISE_USE_FINDERS = True
 
-    WEBPACK_LOADER = {
-        'DEFAULT': {
-            'CACHE': not DEBUG,
-            'BUNDLE_DIR_NAME': os.path.join(STATICFILES_DIRS[0], 'dist/bundles', ''),
-            'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
-        }
-    }
+    # WEBPACK_LOADER = {
+    #     'DEFAULT': {
+    #         'CACHE': not DEBUG,
+    #         'BUNDLE_DIR_NAME': os.path.join(STATICFILES_DIRS[0], 'bundles', ''),
+    #         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    #         'POLL_INTERVAL': 0.1,
+    #         'TIMEOUT': None,
+    #     }
+    # }
 
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')

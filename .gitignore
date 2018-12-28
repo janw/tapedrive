@@ -92,6 +92,7 @@ local_settings.py
 
 # compiled assets
 assets/dist/
+assets/webpack_bundles/
 .sass-cache/
 
 # downloaded test feeds

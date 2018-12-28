@@ -4,11 +4,12 @@ var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   mode: 'development',
-  entry: './assets/src/app/main.js',
+  entry: ['./assets/src/app/main', ],
   output: {
-    path: path.resolve(__dirname, './assets/dist/bundles'),
+    path: path.resolve('./assets/webpack_bundles/'),
     filename: "[name]-[hash].js",
-    publicPath: '/static/dist/bundles/',
+    publicPath: '/static/webpack_bundles/',
+    // publicPath: 'http://localhost:3000/assets/bundles/', // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
   },
   module: {
     rules: [
@@ -80,15 +81,9 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js'
     }
   },
-  // devServer: {
-  //   historyApiFallback: true,
-  //   noInfo: true
-  // },
-  // performance: {
-  //   hints: false
-  // },
-  // devtool: '#eval-source-map'
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new BundleTracker({filename: './webpack-stats.json'})
   ]
 }
