@@ -10,7 +10,7 @@ env:
 install:
   - pip install poetry coveralls
   - poetry config settings.virtualenvs.create false
-  - poetry install --no-interaction
+  - poetry --no-interaction install
   - npm install
   - chmod +x prepare.sh
   - ./prepare.sh
