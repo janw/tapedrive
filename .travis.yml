@@ -8,8 +8,9 @@ env:
   - ENVIRONMENT=Production
 
 install:
-  - pip install pipenv coveralls transifex-client
-  - pipenv install --system
+  - pip install poetry coveralls
+  - poetry config settings.virtualenvs.create false
+  - poetry install --no-interaction
   - npm install
   - chmod +x prepare.sh
   - ./prepare.sh
@@ -19,5 +20,3 @@ script:
 
 after_success:
   - coveralls --data_file=.coverage --config_file=.coveragerc
-  # - sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
-  # - tx push -s
