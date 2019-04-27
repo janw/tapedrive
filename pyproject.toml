@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "tapedrive"
+version = "0.1.0"
+description = "The selfhosted Podcast Archive"
+authors = ["Jan Willhaus <mail@janwillhaus.de>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Django = "~2.0"
+django-activity-stream = "^0.7.0"
+django-background-tasks = "^1.2"
+django-bootstrap4 = "^0.0.8"
+django_compressor = "^2.2"
+django-configurations = "^2.1"
+django-libsass = "^0.7.0"
+bleach = "^3.1"
+feedparser = "^5.2"
+beautifulsoup4 = "^4.7"
+dj-database-url = "^0.5.0"
+langcodes = "^1.4"
+Markdown = "^3.1"
+Pillow = "^6.0"
+requests = "^2.21"
+whitenoise = "^4.1"
+python-dateutil = "^2.8"
+psycopg2-binary = "^2.8"
+mysqlclient = "^1.4"
+djangorestframework = "^3.9"
+django-webpack-loader = "^0.6.0"
+html5lib = "^1.0"
+
+[tool.poetry.dev-dependencies]
+coverage = "^4.5"
+django-debug-toolbar = "^1.11"
+django-extensions = "^2.1"
+django-livereload-server = "^0.3.2"
+watchdog = "^0.9.0"
+Werkzeug = "^0.15.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
