@@ -11,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 import os
 import random
+from tempfile import TemporaryDirectory
 
 from configurations import Configuration, values
 
@@ -273,7 +274,11 @@ class Development(Common):
 
 
 class Testing(Common):
-    pass
+
+    with TemporaryDirectory() as tmpdirname:
+        DATABASES = DatabaseURLValueWithOptions(
+            "sqlite:///{}".format(os.path.join(tmpdirname, "tapedrive-testing.sqlite3"))
+        )
 
 
 class Staging(Common):
