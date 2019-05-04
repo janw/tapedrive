@@ -8,8 +8,19 @@ variables:
   DOCKER_DRIVER: overlay2
 
 stages:
+  - test
   - build
   - tag
+
+
+.python:
+  image: python:3.7
+  stage: test
+  before_script:
+    - pip install poetry
+    - poetry config settings.virtualenvs.create false
+    - poetry --no-interaction install
+
 
 before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
