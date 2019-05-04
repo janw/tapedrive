@@ -69,6 +69,7 @@ exclude = '''
   | assets
   | locale
   | node_modules
+  | migrations
 )/
 '''
 
