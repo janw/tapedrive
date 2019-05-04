@@ -6,8 +6,10 @@ htmlcov
 secret.txt
 __research_material
 assets/img/screenshots/
-mediafiles/*
-staticfiles/*
+mediafiles
+staticfiles
 *ipynb
 *.mo
 __pycache__
+node_modules
+*.sqlite3
