@@ -9,4 +9,4 @@ do
 done
 
 echo -e "\nDatabase ready."
-exec ./start.sh
+exec ./bin/start.sh

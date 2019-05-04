@@ -5,7 +5,8 @@ htmlcov
 .coverage
 secret.txt
 __research_material
-assets/img/screenshots/
+assets/img/screenshots
+assets/dist
 mediafiles
 staticfiles
 *ipynb
