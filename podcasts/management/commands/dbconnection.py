@@ -21,7 +21,7 @@ class Command(BaseCommand):
             try:
                 connection.ensure_connection()
             except Exception:
-                print('Connection to database cannot be established.')
+                print("Connection to database cannot be established.")
                 time.sleep(1)
             else:
                 sys.exit(0)

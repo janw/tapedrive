@@ -7,7 +7,7 @@ from podcasts.models.listener import EpisodePlaybackState
 # Register your models here.
 @admin.register(Podcast)
 class PodcastAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'fetched', 'updated')
+    list_display = ("title", "author", "fetched", "updated")
     pass
 
 
@@ -17,9 +17,7 @@ class PlaybackStateInline(admin.TabularInline):
 
 @admin.register(Episode)
 class EpisodeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'podcast', 'published', 'guid')
-    readonly_fields = ('media_url', 'link', 'guid', 'slug')
+    list_display = ("title", "podcast", "published", "guid")
+    readonly_fields = ("media_url", "link", "guid", "slug")
 
-    inlines = [
-        PlaybackStateInline,
-    ]
+    inlines = [PlaybackStateInline]
