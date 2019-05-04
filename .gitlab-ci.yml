@@ -37,7 +37,11 @@ black:
 flake8:
   extends: .python
   script:
-    - flake8
+    - flake8 --format=junit-xml --output-file flake8.xml
+  artifacts:
+    reports:
+      junit: flake8.xml
+
 
 
 before_script:
