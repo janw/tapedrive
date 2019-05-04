@@ -10,6 +10,7 @@ stages:
     - pip install poetry
     - poetry config settings.virtualenvs.create false
     - poetry --no-interaction install
+    - ./prepare.sh
 
 pytest:
   extends: .python

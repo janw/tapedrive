@@ -13,7 +13,6 @@ RUN apk --no-cache add --virtual build-dependencies postgresql-dev \
   && poetry --no-interaction install --no-dev \
   && apk del build-dependencies
 
-
 # User-accessible environment
 ENV ENVIRONMENT=PRODUCTION
 ENV DJANGO_ALLOWED_HOSTS=127.0.0.1
@@ -23,9 +22,9 @@ WORKDIR /app
 
 # Arbitrary database_url to allow manage.py commands at build time
 ARG DATABASE_URL="sqlite:////tmp.db"
-RUN ["./prepare.sh"]
+RUN ["./bin/prepare.sh"]
 
 EXPOSE 8273
 VOLUME /app /data
 
-CMD ["./start.sh"]
+CMD ["./bin/start.sh"]
