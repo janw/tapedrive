@@ -303,6 +303,8 @@ class Development(Common):
         },
     }
 
+class Testing(Common):
+    pass
 
 class Staging(Common):
     """
