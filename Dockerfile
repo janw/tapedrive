@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM python:3.7-alpine
 LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 
 ENV PIP_NO_CACHE_DIR off
@@ -6,9 +6,8 @@ ENV PYTHONUNBUFFERED 1
 
 COPY pyproject.toml poetry.lock ./
 
-RUN apk --no-cache add mariadb-client-libs libstdc++ jpeg-dev bash gettext \
-  && apk --no-cache add --virtual build-dependencies postgresql-dev mysql-dev \
-  zlib-dev build-base \
+RUN apk --no-cache add --virtual build-dependencies postgresql-dev \
+  mysql-dev libstdc++ jpeg-dev bash gettext zlib-dev build-base \
   && pip install --upgrade pip poetry gunicorn honcho \
   && poetry config settings.virtualenvs.create false \
   && poetry --no-interaction install --no-dev \
@@ -17,13 +16,12 @@ RUN apk --no-cache add mariadb-client-libs libstdc++ jpeg-dev bash gettext \
 
 # User-accessible environment
 ENV ENVIRONMENT=PRODUCTION
-
-# Arbitrary database_url to allow manage.py commands at build time
 ENV DJANGO_ALLOWED_HOSTS=127.0.0.1
 
 COPY . /app
 WORKDIR /app
 
+# Arbitrary database_url to allow manage.py commands at build time
 ARG DATABASE_URL="sqlite:////tmp.db"
 RUN ["./prepare.sh"]
 

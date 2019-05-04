@@ -1,17 +1,7 @@
-image: docker:stable
-
-services:
-  - docker:dind
-
-variables:
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
-
 stages:
   - test
   - build
   - tag
-
 
 .python:
   image: python:3.7
@@ -25,6 +15,9 @@ pytest:
   extends: .python
   script:
     - pytest --junitxml=pytest.xml
+  after_script:
+    - coveralls --data_file=.coverage
+
   artifacts:
     reports:
       junit: pytest.xml
@@ -43,12 +36,19 @@ flake8:
       junit: flake8.xml
 
 
-
-before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+.docker:
+  image: docker:stable
+  stage: build
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 build:
-  stage: build
+  extends: .docker
   script:
     - docker pull $CI_REGISTRY_IMAGE:latest || true
     - docker build
@@ -57,6 +57,7 @@ build:
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
 tag latest:
+  extends: .docker
   stage: tag
   script:
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
