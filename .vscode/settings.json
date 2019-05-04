@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "${env:HOME}/Library/Caches/pypoetry/virtualenvs/tapedrive-py3.7/bin/python",
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black"
+}

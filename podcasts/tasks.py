@@ -18,7 +18,7 @@ def download_episode(media_url, file_path, id):
 
     # Get Episode from database
     episode = Episode.objects.get(id=id)
-    print('Downloading episode %s ...' % episode)
+    print("Downloading episode %s ..." % episode)
 
     # Download the file
     filesize = download_file(media_url, file_path)
@@ -28,25 +28,26 @@ def download_episode(media_url, file_path, id):
         episode.file_size = filesize
         episode.downloaded = timezone.now()
         episode.save()
-        action.send(episode, verb='was downloaded')
+        action.send(episode, verb="was downloaded")
     else:
-        action.send(episode, verb='failed downloading')
+        action.send(episode, verb="failed downloading")
 
 
 @background()
 def regular_feed_refresh():
-    psettings = PodcastsSettings.objects.get(site__id=getattr(settings, 'SITE_ID', 1))
+    psettings = PodcastsSettings.objects.get(site__id=getattr(settings, "SITE_ID", 1))
 
-    print('Refreshing followed feeds ...')
+    print("Refreshing followed feeds ...")
     # Refresh feeds of podcasts with at least one follower
     for podcast in Podcast.objects.filter(followers__isnull=False).iterator():
         podcast.update()
         podcast.save()
 
-    print('Queueing downloads for subscribed feeds ...')
+    print("Queueing downloads for subscribed feeds ...")
     for podcast in Podcast.objects.filter(subscribers__isnull=False).iterator():
         podcast.queue_missing_episodes_download_tasks(
             storage_directory=psettings.storage_directory,
-            naming_scheme=psettings.naming_scheme)
+            naming_scheme=psettings.naming_scheme,
+        )
 
-    print('All done for now.')
+    print("All done for now.")

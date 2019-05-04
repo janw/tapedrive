@@ -1,1 +1,1 @@
-default_app_config = 'podcasts.apps.PodcastsConfig'
+default_app_config = "podcasts.apps.PodcastsConfig"
