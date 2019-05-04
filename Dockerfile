@@ -4,19 +4,21 @@ LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 ENV PIP_NO_CACHE_DIR off
 ENV PYTHONUNBUFFERED 1
 
-COPY Pipfile* /
+COPY pyproject.toml poetry.lock ./
 
 RUN apk --no-cache add mariadb-client-libs libstdc++ jpeg-dev bash gettext \
   && apk --no-cache add --virtual build-dependencies postgresql-dev mysql-dev \
   zlib-dev build-base \
-  && pip install --upgrade pip pipenv gunicorn honcho \
-  && pipenv install --system \
+  && pip install --upgrade pip poetry gunicorn honcho \
+  && poetry config settings.virtualenvs.create false \
+  && poetry --no-interaction install --no-dev \
   && apk del build-dependencies
 
-# Arbitrary database_url to allow manage.py commands at build time
 
 # User-accessible environment
 ENV ENVIRONMENT=PRODUCTION
+
+# Arbitrary database_url to allow manage.py commands at build time
 ENV DJANGO_ALLOWED_HOSTS=127.0.0.1
 
 COPY . /app
