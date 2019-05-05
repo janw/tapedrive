@@ -3,7 +3,7 @@ set -e
 
 # Setup front-end stuff
 npm update
-"`npm bin`/webpack" --mode production
+node "`npm bin`/webpack" --mode production
 
 
 # Django setup tasks

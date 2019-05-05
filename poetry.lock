@@ -150,18 +150,6 @@ version = "0.7.0"
 
 [[package]]
 category = "main"
-description = "A helper class for handling configuration defaults of packaged apps gracefully."
-name = "django-appconf"
-optional = false
-python-versions = "*"
-version = "1.0.3"
-
-[package.dependencies]
-django = "*"
-six = "*"
-
-[[package]]
-category = "main"
 description = "Database backed asynchronous task queue"
 name = "django-background-tasks"
 optional = false
@@ -193,19 +181,6 @@ six = ">=1.10.0"
 
 [[package]]
 category = "main"
-description = "Compresses linked and inline JavaScript or CSS into single cached files."
-name = "django-compressor"
-optional = false
-python-versions = "*"
-version = "2.2"
-
-[package.dependencies]
-django-appconf = ">=1.0"
-rcssmin = "1.0.6"
-rjsmin = "1.0.12"
-
-[[package]]
-category = "main"
 description = "A helper for organizing Django settings."
 name = "django-configurations"
 optional = false
@@ -234,18 +209,6 @@ version = "2.1.6"
 
 [package.dependencies]
 six = ">=1.2"
-
-[[package]]
-category = "main"
-description = "A django-compressor filter to compile SASS files using libsass"
-name = "django-libsass"
-optional = false
-python-versions = "*"
-version = "0.7"
-
-[package.dependencies]
-django-compressor = ">=1.3"
-libsass = ">=0.7.0"
 
 [[package]]
 category = "dev"
@@ -401,17 +364,6 @@ version = "1.4.1"
 
 [package.dependencies]
 marisa-trie = "*"
-
-[[package]]
-category = "main"
-description = "Sass for Python: A straightforward binding of libsass for Python."
-name = "libsass"
-optional = false
-python-versions = "*"
-version = "0.18.0"
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 category = "main"
@@ -618,14 +570,6 @@ version = "5.1"
 
 [[package]]
 category = "main"
-description = "CSS Minifier"
-name = "rcssmin"
-optional = false
-python-versions = "*"
-version = "1.0.6"
-
-[[package]]
-category = "main"
 description = "Python HTTP for Humans."
 name = "requests"
 optional = false
@@ -637,14 +581,6 @@ certifi = ">=2017.4.17"
 chardet = ">=3.0.2,<3.1.0"
 idna = ">=2.5,<2.9"
 urllib3 = ">=1.21.1,<1.25"
-
-[[package]]
-category = "main"
-description = "Javascript Minifier"
-name = "rjsmin"
-optional = false
-python-versions = "*"
-version = "1.0.12"
 
 [[package]]
 category = "main"
@@ -770,7 +706,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "8cbc83dbd3e35fc5b41ac42fa8bd009f63786d801229f9639d2332a1a2cb7516"
+content-hash = "e80c303c41a2f7d814ecd71aaec1f20c342f9d125888b7534c6d70d0f753ceaf"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -790,15 +726,12 @@ coveralls = ["baa26648430d5c2225ab12d7e2067f75597a4b967034bba7e3d5ab7501d207a1",
 dj-database-url = ["4aeaeb1f573c74835b0686a2b46b85990571159ffc21aa57ecd4d1e1cb334163", "851785365761ebe4994a921b433062309eb882fedd318e1b0fcecc607ed02da9"]
 django = ["665457d4146bbd34ae9d2970fa3b37082d7b225b0671bfd24c337458f229db78", "bde46d4dbc410678e89bc95ea5d312dd6eb4c37d0fa0e19c9415cad94addf22f"]
 django-activity-stream = ["4d356d640e6298c559c861bf05f63f4e0e0bffa95005f7253ebca788555a64cf"]
-django-appconf = ["35f13ca4d567f132b960e2cd4c832c2d03cb6543452d34e29b7ba10371ba80e3", "c98a7af40062e996b921f5962a1c4f3f0c979fa7885f7be4710cceb90ebe13a6"]
 django-background-tasks = ["35a9a54961f3e4486ab2f9482d1e8ac63ab4f47e5e0b7e654a22f7002299ffae"]
 django-bootstrap4 = ["9f115534ae8d052d397201f3d716c10d7c9832b422e44dd7382418c6f274df18"]
 django-compat = ["3ac9a3bedc56b9365d9eb241bc5157d0c193769bf995f9a78dc1bc24e7c2331b"]
-django-compressor = ["7732676cfb9d58498dfb522b036f75f3f253f72ea1345ac036434fdc418c2e57", "9616570e5b08e92fa9eadc7a1b1b49639cce07ef392fc27c74230ab08075b30f"]
 django-configurations = ["71d9acdff33aa034f0157b0b3d23629fe0cd499bf4d0b6d699b9ca0701d952e8", "e70433eeed10549d30bf5ca386c962505ff9f492893dd2483c52af536347adce"]
 django-debug-toolbar = ["89d75b60c65db363fb24688d977e5fbf0e73386c67acf562d278402a10fc3736", "c2b0134119a624f4ac9398b44f8e28a01c7686ac350a12a74793f3dd57a9eea0"]
 django-extensions = ["109004f80b6f45ad1f56addaa59debca91d94aa0dc1cb19678b9364b4fe9b6f4", "307766e5e6c1caffe76c5d99239d8115d14ae3f7cab2cd991fcffd763dad904b"]
-django-libsass = ["49db3334b87e1f7955c4f9fb9945bc296f8bfd27a14d6d89706e4b0e5dc5de1c"]
 django-livereload-server = ["6c8da1cb356d9a7fd044d0a50342574aad168522d5d8d25bbdc4ddd9fd196eab"]
 django-webpack-loader = ["60bab6b9a037a5346fad12d2a70a6bc046afb33154cf75ed640b93d3ebd5f520", "970b968c2a8975fb7eff56a3bab5d0d90d396740852d1e0c50c5cfe2b824199a"]
 djangorestframework = ["8a435df9007c8b7d8e69a21ef06650e3c0cbe0d4b09e55dd1bd74c89a75a9fcd", "f7a266260d656e1cf4ca54d7a7349609dc8af4fe2590edd0ecd7d7643ea94a17"]
@@ -814,7 +747,6 @@ html5lib = ["20b159aa3badc9d5ee8f5c647e5efd02ed2a66ab8d354930bd9ff139fc1dc0a3", 
 idna = ["c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407", "ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"]
 junit-xml = ["602f1c480a19d64edb452bf7632f76b5f2cb92c1938c6e071dcda8ff9541dc21"]
 langcodes = ["22cff103b6c0f3c9907d9a51c2d634177a50a189672ad16d959a3e2cd48eadab"]
-libsass = ["2ae3b061a7d250fb47e5fdad1a8191600ca15dc604e76b109b6d3bf8e08fd2ed", "2ee186aa682a035a53c557b7e61ce562a1114f1a1a992d0ba962cbc3e82c490c", "366f4fd5a5eab4a519beb583e9fa78718cf2c0f40e92ed835d7ed23b82e5d954", "5511b3c62e8d97daf929c63bd516b794f0a06acd09dd261445d864e48290551b", "7462da168c8fb997b31cb4dc3ee5adb9af2d106f7b92c2d57a1c68a56ae5a3a0", "84a16ec5cf7842ff5bc2caed2c032ed624d587699797bc2a4d4a8e41f579b6e7", "8fc0360ee99224f7a3cb09987e641171d34180759f467ba3d15934102ade396f", "a6c5535a21a07d769151453270bc6a8373b821d1d2fd9810d84fccfe315ab188", "b375bfbf3c86ec0f4a27f266b44b2753a4b8cab7e73649eed7afcad84bc56257", "b548af46c1a606aed93da2566901146005d6065f73fefc63d256ba62ba1f803d", "bb30fc7125350c64925a98cb90da7979f76bb0ea1a0157e8aeb268f8da38e296", "c2f386677514f9fc758631328bd318dd3e9d839ad7b6e248ec4535a191bfd271", "d1f301637ad5768aecc81d17dcf40a68f2e11b7ca8b427dbb9f8972c150d303e", "e0cf54dddf2cc6e373005bed6e46ccdce1f3a77bd169ab505c3a8ad9023eee5f", "e8941881063691d50f9cc8b8d6d8fd7bec86a8c461b2a4fc87188a5fc44d6ba4", "f4b29b0c70d753c754a58aaad7c31ad3309ca4a26f9aa64e695157251f6832ad"]
 marisa-trie = ["4419abb6b603c97e863fad994abe57ed247fb12491f4bbacb2d762bd2e8958b6", "c73bc25d868e8c4ea7aa7f1e19892db07bba2463351269b05340ccfa06eb2baf"]
 markdown = ["fc4a6f69a656b8d858d7503bda633f4dd63c2d70cf80abdc6eafa64c4ae8c250", "fe463ff51e679377e3624984c829022e2cfb3be5518726b06f608a07a3aad680"]
 mccabe = ["ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42", "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"]
@@ -836,9 +768,7 @@ pytest-vcr = ["23ee51b75abbcc43d926272773aae4f39f93aceb75ed56852d0bf618f92e1896"
 python-dateutil = ["7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb", "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"]
 pytz = ["303879e36b721603cc54604edcac9d20401bdbe31e1e4fdee5b9f98d5d31dfda", "d747dd3d23d77ef44c6a3526e274af6efeb0a6f1afd5a69ba4d5be4098c8e141"]
 pyyaml = ["1adecc22f88d38052fb787d959f003811ca858b799590a5eaa70e63dca50308c", "436bc774ecf7c103814098159fbb84c2715d25980175292c648f2da143909f95", "460a5a4248763f6f37ea225d19d5c205677d8d525f6a83357ca622ed541830c2", "5a22a9c84653debfbf198d02fe592c176ea548cccce47553f35f466e15cf2fd4", "7a5d3f26b89d688db27822343dfa25c599627bc92093e788956372285c6298ad", "9372b04a02080752d9e6f990179a4ab840227c6e2ce15b95e1278456664cf2ba", "a5dcbebee834eaddf3fa7366316b880ff4062e4bcc9787b78c7fbb4a26ff2dd1", "aee5bab92a176e7cd034e57f46e9df9a9862a71f8f37cad167c6fc74c65f5b4e", "c51f642898c0bacd335fc119da60baae0824f2cde95b0330b56c0553439f0673", "c68ea4d3ba1705da1e0d85da6684ac657912679a649e8868bd850d2c299cce13", "e23d0cc5299223dcc37885dae624f382297717e459ea24053709675a976a3e19"]
-rcssmin = ["ca87b695d3d7864157773a61263e5abb96006e9ff0e021eff90cbe0e1ba18270"]
 requests = ["502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e", "7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"]
-rjsmin = ["dd9591aa73500b08b7db24367f8d32c6470021f39d5ab4e50c7c02e4401386f1"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 soupsieve = ["6898e82ecb03772a0d82bd0d0a10c0d6dcc342f77e0701d0ec4a8271be465ece", "b20eff5e564529711544066d7dc0f7661df41232ae263619dede5059799cdfca"]
 sqlparse = ["40afe6b8d4b1117e7dff5504d7a8ce07d9a1b15aeeade8a2d10f130a834f8177", "7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873"]

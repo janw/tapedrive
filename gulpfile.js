@@ -1,54 +1,48 @@
-var gulp         = require("gulp"),
+var gulp = require("gulp"),
     autoprefixer = require("gulp-autoprefixer"),
-    concat       = require('gulp-concat'),
-    rename       = require('gulp-rename'),
-    sass         = require("gulp-sass"),
-    uglify       = require('gulp-uglify'),
-    webpack      = require('webpack-stream'),
-    gutil        = require('gulp-util');
+    concat = require('gulp-concat'),
+    rename = require('gulp-rename'),
+    sass = require("gulp-sass"),
+    webpack = require('webpack-stream');
 
+sass.compiler = require('node-sass');
 
 var src_dir = "./assets/src"
 var dist_dir = "./assets/dist"
 
-var scss_src = src_dir+"/scss/**/*.scss"
-var scss_dest = dist_dir+"/css"
+var scss_src = src_dir + "/scss/**/*.scss"
+var scss_dest = dist_dir + "/css"
 
-var js_src = src_dir+"/js/*.js"
-var js_dest = dist_dir+"/js"
+var js_src = src_dir + "/js/*.js"
+var js_dest = dist_dir + "/js"
 
-var app_src = src_dir+"/app/webpack.js"
-var app_dest = dist_dir+"/js"
-
-function logError (err) {
-    gutil.log(gutil.colors.red('[Error]'), err.toString());
-}
+var app_src = src_dir + "/app/webpack.js"
+var app_dest = dist_dir + "/js"
 
 gulp.task("scss", function () {
     gulp.src(scss_src, { sourcemaps: true })
         .pipe(sass({
-            outputStyle : "compressed",
+            outputStyle: "compressed",
             precision: 8,
             includePaths: ['node_modules/bootstrap/scss'],
         }))
         .pipe(autoprefixer({
-            browsers : ["last 2 versions"]
+            browsers: ["last 2 versions"]
         }))
         .pipe(gulp.dest(scss_dest))
 });
 
 gulp.task("basejs", function () {
     gulp.src([
-            './node_modules/jquery/dist/jquery.js',
-            './node_modules/popper.js/dist/umd/popper.js',
-            './node_modules/bootstrap/dist/js/bootstrap.js',
-            './node_modules/jsrender/jsrender.js',
-            js_src,
-        ],  { sourcemaps: true })
+        './node_modules/jquery/dist/jquery.js',
+        './node_modules/popper.js/dist/umd/popper.js',
+        './node_modules/bootstrap/dist/js/bootstrap.js',
+        './node_modules/jsrender/jsrender.js',
+        js_src,
+    ], { sourcemaps: true })
         .pipe(concat('base.js'))
         .pipe(gulp.dest(js_dest))
         .pipe(rename('base.min.js'))
-        .pipe(uglify())
         .on('error', logError)
         .pipe(gulp.dest(js_dest));
 });
@@ -56,7 +50,7 @@ gulp.task("basejs", function () {
 gulp.task("appjs", function () {
     return gulp.src(app_src)
         .pipe(webpack({
-          // Any configuration options...
+            // Any configuration options...
         }))
         .pipe(gulp.dest(app_dest));
 });
