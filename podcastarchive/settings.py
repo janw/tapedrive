@@ -85,7 +85,6 @@ class Common(Configuration):
         "django.contrib.sites",
         "whitenoise.runserver_nostatic",
         "django.contrib.staticfiles",
-        "webpack_loader",
         "bootstrap4",
         "podcastarchive.users",
         "podcasts",
@@ -181,14 +180,6 @@ class Common(Configuration):
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
     WHITENOISE_AUTOREFRESH = True
     WHITENOISE_USE_FINDERS = True
-
-    WEBPACK_LOADER = {
-        "DEFAULT": {
-            "CACHE": not DEBUG,
-            "BUNDLE_DIR_NAME": os.path.join(STATICFILES_DIRS[0], "dist/bundles", ""),
-            "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
-        }
-    }
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
