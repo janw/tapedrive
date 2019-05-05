@@ -10,7 +10,6 @@ stages:
     key: pip-cache
     paths:
       - .cache/pip
-      - /usr/local/lib/python3.7/site-packages
       - .pytest_cache
   variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
@@ -19,7 +18,6 @@ stages:
     - poetry debug:info
     - poetry config settings.virtualenvs.create false
     - poetry --no-interaction install
-    - cp webpack-stats.json.example webpack-stats.json
 
 pytest:
   extends: .python

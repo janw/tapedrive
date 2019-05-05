@@ -9,21 +9,20 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
-    "css-loader": "^2.1.1",
+    "gulp": "^4.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-dart-sass": "^0.9.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "holderjs": "^2.9.6",
     "jquery": "^3.4.1",
     "jsrender": "^0.9.91",
     "popper.js": "^1.15.0",
-    "sass-loader": "^7.1.0",
     "vue": "^2.6.10",
     "vue-cookie": "^1.1.4",
-    "vue-loader": "^14.2.4",
     "vue-resource": "^1.5.1",
     "vue-spinners": "^1.0.2",
-    "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.30.0",
-    "webpack-bundle-tracker": "^0.3.0",
-    "webpack-cli": "^3.3.2",
-    "webpack-stream": "^4.0.3"
+    "vue-template-compiler": "^2.6.10"
   },
   "devDependencies": {}
 }

@@ -6,9 +6,9 @@ WORKDIR /app
 COPY yarn.lock package.json ./
 RUN yarn install
 
-COPY webpack.config.js ./
-COPY assets/src ./assets/src
-RUN node `yarn bin`/webpack --mode production
+COPY gulpfile.js ./
+COPY assets ./assets
+RUN node `yarn bin`/gulp
 
 FROM python:3.7-alpine
 
