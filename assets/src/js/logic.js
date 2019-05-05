@@ -25,7 +25,7 @@ function csrfSafeMethod(method) {
 function fireApiCall(url, successfn) {
     var csrftoken = getCookie('csrftoken');
     $.ajax({
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
@@ -37,7 +37,7 @@ function fireApiCall(url, successfn) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: [
-            function(msg) {
+            function (msg) {
                 console.log(msg);
             },
             successfn,
@@ -49,27 +49,27 @@ function fireApiCall(url, successfn) {
 function insertAtCaret(txtarea, text) {
     var strPos = 0;
     var br = ((txtarea[0].selectionStart || txtarea[0].selectionStart == '0') ?
-        "ff" : (document.selection ? "ie" : false ) );
+        "ff" : (document.selection ? "ie" : false));
     if (br == "ie") {
         txtarea.focus();
         var range = document.selection.createRange();
-        range.moveStart ('character', -txtarea.val().length);
+        range.moveStart('character', -txtarea.val().length);
         strPos = range.text.length;
     }
     else if (br == "ff") {
         strPos = txtarea[0].selectionStart;
     }
 
-    var front = (txtarea.val()).substring(0,strPos);
-    var back = (txtarea.val()).substring(strPos,txtarea.val().length);
-    txtarea.val(front+text+back);
+    var front = (txtarea.val()).substring(0, strPos);
+    var back = (txtarea.val()).substring(strPos, txtarea.val().length);
+    txtarea.val(front + text + back);
     strPos = strPos + text.length;
     if (br == "ie") {
         txtarea.focus();
         var range = document.selection.createRange();
-        range.moveStart ('character', -txtarea.val().length);
-        range.moveStart ('character', strPos);
-        range.moveEnd ('character', 0);
+        range.moveStart('character', -txtarea.val().length);
+        range.moveStart('character', strPos);
+        range.moveEnd('character', 0);
         range.select();
     }
     else if (br == "ff") {
@@ -86,14 +86,14 @@ function insertAtCaret(txtarea, text) {
 //
 
 
-$('.ajax-call-reload').click(function() {
+$('.ajax-call-reload').click(function () {
     var $a = $(this);
-    $a.prop("disabled",true).addClass("disabled")
-    fireApiCall($a.data('href'), function(msg){location.reload();})
+    $a.prop("disabled", true).addClass("disabled")
+    fireApiCall($a.data('href'), function (msg) { location.reload(); })
     return false;
 });
 
-$('button.subscribe-toggle').click(function() {
+$('button.subscribe-toggle').click(function () {
     var $a = $(this);
     if ($a.attr('id') == 'subscribe') {
         var antagonist = 'button#unsubscribe'
@@ -101,16 +101,16 @@ $('button.subscribe-toggle').click(function() {
     else {
         var antagonist = 'button#subscribe'
     }
-    $a.prop("disabled",true).addClass("disabled")
-    fireApiCall($a.data('href'), function(msg){
-        $(antagonist).prop("disabled",false).removeClass("disabled")
+    $a.prop("disabled", true).addClass("disabled")
+    fireApiCall($a.data('href'), function (msg) {
+        $(antagonist).prop("disabled", false).removeClass("disabled")
     })
     return false;
 });
 
-$('button.download-toggle').click(function() {
+$('button.download-toggle').click(function () {
     var $a = $(this);
-    $a.prop("disabled",true).addClass("disabled")
+    $a.prop("disabled", true).addClass("disabled")
     fireApiCall($a.data('href'));
     return false;
 });
@@ -122,10 +122,10 @@ $('button.download-toggle').click(function() {
 // EPISODE-CENTRIC FUNCTIONALITY
 //
 
-var template_helpers = {gettext: gettext};
+var template_helpers = { gettext: gettext };
 var episode_details = $.templates('#episode-details-template');
-$('.episode-details-link').each(function(index) {
-    $(this).on("click", function(e){
+$('.episode-details-link').each(function (index) {
+    $(this).on("click", function (e) {
         e.preventDefault;
         var href = $(this).data('href');
         var jqxhr = $.ajax({
@@ -133,46 +133,46 @@ $('.episode-details-link').each(function(index) {
             type: 'GET',
             dataType: 'json',
         })
-        .done(function (data, textStatus, jqXHR) {
-            var htmlOutput = episode_details.render(data, template_helpers);
-            $("#episodeDetailsModalContainer").html(htmlOutput);
-            $('#episodeDetails').modal('show');
-            $('button.download-toggle').click(function() {
-                var $a = $(this);
-                $a.prop("disabled",true).addClass("disabled")
-                fireApiCall($a.data('href'));
-                return false;
+            .done(function (data, textStatus, jqXHR) {
+                var htmlOutput = episode_details.render(data, template_helpers);
+                $("#episodeDetailsModalContainer").html(htmlOutput);
+                $('#episodeDetails').modal('show');
+                $('button.download-toggle').click(function () {
+                    var $a = $(this);
+                    $a.prop("disabled", true).addClass("disabled")
+                    fireApiCall($a.data('href'));
+                    return false;
+                });
+                replace_images();
             });
-            replace_images();
-        });
     });
 });
 
-function replace_images () {
+function replace_images() {
 
-    $('.has-src').hide().wrap(function() {
+    $('.has-src').hide().wrap(function () {
         return '<span class="img-has-src">' + $(this).text() + '</span>';
     });
 
-    $('a').has('img.has-src').each(function(index) {
+    $('a').has('img.has-src').each(function (index) {
         $(this).data('href', $(this).attr('href'));
         $(this).attr('href', '#');
-        $(this).on("click", function(e){
+        $(this).on("click", function (e) {
             e.preventDefault;
             console.log('Clicked img');
         });
-     });
+    });
 
-    $('.img-has-src').each(function(index) {
+    $('.img-has-src').each(function (index) {
         var img = $($(this).find('img.has-src')[0]);
         $('<span class="img-alt">' + img.attr('alt') + '</span>').prependTo(this);
 
-        $(this).on("click", function(event){
+        $(this).on("click", function (event) {
             event.preventDefault;
             var target = $(event.target);
             console.log('Target:', target);
 
-            if (target.attr('class') == 'img-alt'){
+            if (target.attr('class') == 'img-alt') {
                 var wrapper = target.parent();
                 console.log('clicked the alt')
             }
@@ -198,7 +198,7 @@ function replace_images () {
 //
 
 
-$('.naming-scheme-segments > code').click(function() {
+$('.naming-scheme-segments > code').click(function () {
     var $input = $('#id_app-naming_scheme')
     insertAtCaret($input, $(this).text())
 })
@@ -212,9 +212,9 @@ $('.naming-scheme-segments > code').click(function() {
 
 var podcast_card = $.templates('#apsearch-template');
 
-function searchReturn (data, textStatus, jqXHR) {
+function searchReturn(data, textStatus, jqXHR) {
     $('#apsearch-results-spinner').hide();
-    if (data.resultCount == 0){
+    if (data.resultCount == 0) {
         $('#apsearch-results').hide()
         $('#apsearch-noresults').show();
     }
@@ -228,7 +228,7 @@ function searchReturn (data, textStatus, jqXHR) {
     return false;
 }
 
-function topchartsReturn (data) {
+function topchartsReturn(data) {
     topcharts_results = data.results;
     var htmlOutput = podcast_card.render(data.results);
     $("#apsearch-topcharts").html(htmlOutput).show();
@@ -236,11 +236,11 @@ function topchartsReturn (data) {
     return false;
 }
 
-$('#apsearch-addfeed').on("click", function(e){
+$('#apsearch-addfeed').on("click", function (e) {
     e.preventDefault;
     $(this).attr('disabled', 'disabled');
     var jqxhr = $.ajax({
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             }
@@ -253,22 +253,22 @@ $('#apsearch-addfeed').on("click", function(e){
         },
         dataType: 'json',
     })
-    .done(function (data) {
-        if (data.created == false) {
-            console.log('Already there');
-        }
-        $('#apsearch-addfeed').hide();
-        $('#apsearch-feedadded').attr('href', data.url).show();
-    });
+        .done(function (data) {
+            if (data.created == false) {
+                console.log('Already there');
+            }
+            $('#apsearch-addfeed').hide();
+            $('#apsearch-feedadded').attr('href', data.url).show();
+        });
 });
 
 $('#apsearch-details').on('show.bs.modal', function (e) {
     result_id = $(e.relatedTarget).data('id')
-    result = search_results.find(function(el) {
+    result = search_results.find(function (el) {
         return el.id === result_id
     });
     if (typeof result === 'undefined') {
-        result = topcharts_results.find(function(el) {
+        result = topcharts_results.find(function (el) {
             return el.id === result_id
         });
     }
@@ -321,10 +321,10 @@ $('#apsearch-details').on('show.bs.modal', function (e) {
 //     return false;
 // });
 
-$('#apsearch-topcharts-refresh').click(function(e){
+$('#apsearch-topcharts-refresh').click(function (e) {
     e.preventDefault;
     var jqxhr = $.ajax({
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             $('#apsearch-topcharts-spinner').show();
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
@@ -334,9 +334,9 @@ $('#apsearch-topcharts-refresh').click(function(e){
         type: 'GET',
         dataType: 'json',
     })
-    .done(topchartsReturn)
-    .always(function() {
-        $('#apsearch-topcharts-spinner').hide();
-    });
+        .done(topchartsReturn)
+        .always(function () {
+            $('#apsearch-topcharts-spinner').hide();
+        });
     return false;
 });
