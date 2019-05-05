@@ -6,27 +6,30 @@ stages:
 .python:
   image: python:3.7
   stage: test
+  cache:
+    key: pip-cache
+    paths:
+      - .cache/pip
+      - /usr/local/lib/python3.7/site-packages
+      - .pytest_cache
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   before_script:
     - pip install poetry
+    - poetry debug:info
     - poetry config settings.virtualenvs.create false
     - poetry --no-interaction install
-    - ./prepare.sh
+    - cp webpack-stats.json.example webpack-stats.json
 
 pytest:
   extends: .python
   script:
     - pytest --junitxml=pytest.xml
-  after_script:
-    - coveralls --data_file=.coverage
+    - coveralls
   artifacts:
     reports:
       junit: pytest.xml
   coverage: '/^TOTAL\s+\d+\s+\d+\s+(\d+\%)$/'
-
-black:
-  extends: .python
-  script:
-    - black --check --verbose .
 
 flake8:
   extends: .python
@@ -36,14 +39,24 @@ flake8:
     reports:
       junit: flake8.xml
 
+black:
+  extends: .python
+  cache:
+    key: black-cache
+    paths:
+    - .cache/pip
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  before_script:
+    - pip install -U black
+  script:
+    - black --check --verbose .
+  artifacts: {}
 
 .docker:
   image: docker:stable
   stage: build
-  services:
-    - docker:dind
   variables:
-    DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
