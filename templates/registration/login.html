@@ -5,7 +5,7 @@
 		<style>
 			.backdrop {
 				display: block;
-				background-image: url({% static 'img/michael-mroczek-195362-unsplash.jpg' %});
+				background-image: url({% static 'dist/img/michael-mroczek-195362-unsplash.jpg' %});
 				animation: filter-animation 4s;
 			}
 			.form-signin {  max-width: 400px; }
@@ -14,7 +14,7 @@
 
 {% block content %}
 <form method="post">
-	<img class="img-logo w-50" src="{% static 'img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
+	<img class="img-logo w-50" src="{% static 'dist/img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
 	<h1 class="my-4">{% trans "Log in" %}</h1>
 	{% csrf_token %}
 	{% if form.errors %}

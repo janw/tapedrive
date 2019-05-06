@@ -10,7 +10,7 @@
 {% block body %}
 	<body class="h-100 d-flex align-items-center py-5 text-center">
 		<div class="form-signin" method="post">
-			<img class="img-logo w-50" src="{% static 'img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
+			<img class="img-logo w-50" src="{% static 'dist/img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
 			<h1 class="my-4">{% trans "Logged out" %}</h1>
 			<p>{% trans "Thanks for spending some quality time with Tape Drive today." %}</p>
 	    	<a href="{% url 'login' %}" class="btn btn-outline-secondary mt-5 px-3" role="button">{% trans "Log in again" %}</a>

@@ -5,7 +5,7 @@
     {% if podcast.image %}
       <img class="img-logo w-50 filter-fade border rounded" src="{{podcast.image.url}}" alt="{% blocktrans with title=podcast.title %}{{title}}'s Logo{% endblocktrans %}">
     {% else %}
-      <img class="img-logo w-50 filter-fade" src="{% static 'img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
+      <img class="img-logo w-50 filter-fade" src="{% static 'dist/img/icon@3x.png' %}" alt="{% trans "Tape Drive Logo" %}">
     {% endif %}
     <h1 class="my-4">{% blocktrans with title=podcast.title %}Delete {{title}}?{% endblocktrans %}</h1>
     {% csrf_token %}
