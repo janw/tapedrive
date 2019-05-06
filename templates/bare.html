@@ -14,10 +14,6 @@
   	</div>
 
     <div class="backdrop"></div>
-    {% if DEBUG_FRONTEND %}
-        <script src="{% static 'dist/js/base.js' %}"></script>
-    {% else %}
-        <script src="{% static 'dist/js/base.min.js' %}"></script>
-    {% endif %}
+    <script src="{% static 'dist/js/legacy.js' %}"></script>
 </body>
 {% endblock body %}
