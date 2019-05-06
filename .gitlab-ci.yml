@@ -66,7 +66,7 @@ build:
     - docker build
       --cache-from $CI_REGISTRY_IMAGE:latest
       --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG .
-    - if [[ "$CI_COMMIT_REF_SLUG" -eq master ]]; then; docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG $CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHORT_SHA; fi
+    - if [[ "$CI_COMMIT_REF_SLUG" -eq master ]]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG $CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHORT_SHA; fi
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
 
 tag latest:
