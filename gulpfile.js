@@ -17,7 +17,6 @@ var base = './assets/src',
     paths = {
         css: base + '/css/**/*.css',
         sass: base + '/scss/**/*.scss',
-        fonts: base + '/fonts',
         images: base + '/img/**/*',
         js: base + '/js/**/*.js',
         templates: './**/templates/**/*.html',
@@ -26,7 +25,6 @@ var base = './assets/src',
     };
 
 function styles() {
-    console.log(paths.sass)
     return gulp.src(paths.sass)
         .pipe(sass({
             outputStyle: "compressed",

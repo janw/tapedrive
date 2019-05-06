@@ -11,7 +11,7 @@ services:
       MYSQL_USER: tapedrive
       MYSQL_PASSWORD: t4pedr1ve
   web:
-    image: janwh/tapedrive
+    image: registry.gitlab.com/janw/tapedrive
     container_name: tapedrive_web
     command: ["./start-waiting.sh"]
     volumes:

@@ -1,5 +1,5 @@
 
-$custom-font-path:          "../../vendor/fonts/";
+$custom-font-path:          "../../fonts/";
 @import "fonts";
 
 $font-family-sans-serif:    'Fira Sans Condensed', "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -105,9 +105,6 @@ $wrapper-max-width: 1050px;
   & ul {
     padding-left: 1.5rem;
     margin-left: 0;
-  }
-  & ul > li {
-
   }
 }
 
