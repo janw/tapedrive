@@ -13,24 +13,20 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync').create(),
     reload = browserSync.reload;
 
-class pathsConfig {
-    constructor(appName) {
-        this.app = "./" + (appName || pjson.name);
-        return {
-            app: this.app,
-            templates: this.app + '/**/templates/**/*.html',
-            css: this.app + '/assets/src/css/**/*.css',
-            sass: this.app + '/assets/src/scss/**/*.scss',
-            fonts: this.app + '/assets/src/fonts',
-            images: this.app + '/assets/src/img/**/*',
-            js: this.app + '/assets/src/js/**/*.js',
-            dist: this.app + '/assets/dist',
-        };
-    }
-}
-var paths = new pathsConfig();
+var base = './assets/src',
+    paths = {
+        css: base + '/css/**/*.css',
+        sass: base + '/scss/**/*.scss',
+        fonts: base + '/fonts',
+        images: base + '/img/**/*',
+        js: base + '/js/**/*.js',
+        templates: './**/templates/**/*.html',
+        dist: './assets/dist',
+        app: './',
+    };
 
 function styles() {
+    console.log(paths.sass)
     return gulp.src(paths.sass)
         .pipe(sass({
             outputStyle: "compressed",
@@ -81,18 +77,21 @@ function browSync() {
 }
 
 function watch() {
-
     gulp.watch(paths.sass, styles);
     gulp.watch(paths.js, scripts).on("change", reload);
     gulp.watch(paths.images, imgCompression);
     gulp.watch(paths.templates).on("change", reload);
+}
 
+function clean() {
+    return del([paths.dist])
 }
 
 var build = gulp.parallel(styles, scripts, imgCompression)
 var defaultTask = gulp.series(build, runServer, browSync)
 
 exports.build = build
+exports.clean = clean
 exports.runserv = runServer
 exports.browsync = browSync
 exports.default = defaultTask

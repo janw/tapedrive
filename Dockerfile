@@ -8,7 +8,8 @@ RUN yarn install
 
 COPY gulpfile.js ./
 COPY assets ./assets
-RUN node `yarn bin`/gulp build
+RUN node `yarn bin`/gulp build \
+  && ls -l /app/assets/dist
 
 FROM python:3.7-alpine
 
