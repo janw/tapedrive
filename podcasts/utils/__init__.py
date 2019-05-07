@@ -11,23 +11,13 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
 
 import requests
-from bs4 import BeautifulSoup
-from dateutil import parser as dateparser
 from feedparser import CharacterEncodingOverride
-from markdown import markdown
 from PIL import Image
 
-from django.utils.text import format_lazy
-from django.template.defaultfilters import slugify
 from django.conf import settings
 
-from podcasts.utils.filters import (
-    subtitle_cleaner,
-    summary_cleaner,
-    shownotes_cleaner,
-    shownotes_image_cleaner,
-)
-
+from podcasts.utils.filters import shownotes_image_cleaner
+from podcasts.utils.parsers.feed_content import parse_feed_info
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -35,112 +25,7 @@ logger = logging.getLogger(__name__)
 USER_AGENT = "Podcast-Archive/0.1 (https://github.com/janw/tapedrive)"
 HEADERS = {"User-Agent": USER_AGENT}
 
-# Summary, Subtitle not included, parsed separately
-PODCAST_INFO_KEYS = [
-    "author",
-    "language",
-    "link",
-    "title",
-    "image",
-    "itunes_explicit",
-    "itunes_type",
-    "generator",
-    "updated",
-]
-
-EPISODE_INFO_KEYS = ["link", "subtitle", "title", "published", "description", "guid"]
-
-CLEAN_HTML_GLOBAL = ["summary", "subtitle"]
-CLEAN_HTML_EPISODE = ["description", "subtitle"]
-
-
-ALLOWED_HTML_TAGS = [
-    "a",
-    "abbr",
-    "acronym",
-    "b",
-    "blockquote",
-    "code",
-    "em",
-    "i",
-    "li",
-    "ol",
-    "p",
-    "strong",
-    "ul",
-]
-
-ALLOWED_HTML_ATTRIBUTES = {
-    "a": ["href", "title"],
-    "acronym": ["title"],
-    "abbr": ["title"],
-}
-
-EXTENDED_HTML_TAGS = [
-    "h1",
-    "h2",
-    "h3" "h4",
-    "h5",
-    "h6",
-    "img",
-    "table",
-    "thead",
-    "tbody",
-    "tr",
-    "th",
-    "td",
-]
-
-EXTENDED_HTML_ATTRIBUTES = {"img": ["rel", "src", "alt"], "td": ["colspan", "rowspan"]}
-
-
-# Mappings of usable segment => field name
-AVAILABLE_PODCAST_SEGMENTS = {
-    "podcast_slug": "slug",
-    "podcast_type": "itunes_type",
-    "podcast_title": "title",
-    "podcast_subtitle": "subtitle",
-    "podcast_author": "author",
-    "podcast_language": "language",
-    "podcast_explicit": "itunes_explicit",
-    "podcast_updated": "updated",
-}
-
-AVAILABLE_EPISODE_SEGMENTS = {
-    "episode_slug": "slug",
-    "episode_id": "id",
-    "episode_date": "published",
-    "episode_number": "itunes_episode",
-    "episode_type": "itunes_episodetype",
-    "episode_title": "title",
-}
-
-UNIFYING_EPISODE_SEGMENTS = [
-    "episode_slug",
-    "episode_id",
-    "episode_date",
-    "episode_number",
-    "episode_title",
-]
-
-ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
-
 feed_info = namedtuple("feed_info", ["data", "url", "next_page", "last_page"])
-
-
-def get_segments_html(segments):
-    if isinstance(segments, dict):
-        segments = list(segments.keys())
-    return "<code>$" + "</code>, <code>$".join(segments) + "</code>"
-
-
-def resolve_segments(string):
-    return format_lazy(
-        string,
-        podcast_segments=get_segments_html(AVAILABLE_PODCAST_SEGMENTS),
-        episode_segments=get_segments_html(AVAILABLE_EPISODE_SEGMENTS),
-        unifying_segments=get_segments_html(UNIFYING_EPISODE_SEGMENTS),
-    )
 
 
 def refresh_feed(feed_url):
@@ -179,141 +64,11 @@ def refresh_feed(feed_url):
     return feed_info(parse_feed_info(feedobj), response.url, next_page, last_page)
 
 
-def sanitize_subtitle(object):
-    # Properly process subtitle
-    if "subtitle" in object:
-        # As per spec, subtitle should be plain text and up to 255 characters.
-        subtitle = subtitle_cleaner.clean(object.get("subtitle", ""))
-        if len(subtitle) > 255:
-            logger.warning("Subtitle too long, will be truncated")
-            subtitle = subtitle[:251] + " ..."
-        return subtitle
-
-
-def sanitize_summary(object):
-    # Properly process summary/description
-    if "summary_detail" in object:
-        # If summary properly announces as markdown parse it out
-        if object["summary_detail"]["type"] == "text/markdown":
-            html = markdown(object["summary_detail"]["value"])
-        else:
-            html = object["summary_detail"]["value"]
-    elif "summary" in object:
-        html = object.get("summary", "")
-    else:
-        html = object.get("description", "")
-
-    # In any case, clean the thing from weird HTML shenanigans
-    return summary_cleaner.clean(html)
-
-
-def sanitize_shownotes(object, max_headline=2):
-    content = object.get("content")
-    if not content:
-        return None
-
-    html = max(content, key=lambda c: len(c.get("value", ""))).get("value", "")
-    soup = BeautifulSoup(html, "html.parser")
-    for script in soup.find_all("script"):
-        script.decompose()
-    adjust_headline_levels(soup, max_headline)
-    return shownotes_cleaner.clean(str(soup))
-
-
-def parse_chapters(object):
-    chapters = []
-    if "psc_chapters" in object:
-        chapters = object["psc_chapters"].get("chapters", [])
-        for i, chap in enumerate(chapters):
-            chapters[i]["starttime"] = chap["start_parsed"]
-            del chapters[i]["start_parsed"]
-            del chapters[i]["start"]
-
-            if "href" in chap:
-                chapters[i]["link"] = chap["href"]
-                del chapters[i]["href"]
-
-    return chapters
-
-
 def replace_shownotes_images(content, allowed_domains=False):
     if len(allowed_domains) == 1 and allowed_domains[0] == "*":
         return content
     else:
         return shownotes_image_cleaner.clean(content, allowed_domains=allowed_domains)
-
-
-def adjust_headline_levels(soup, max_level=3):
-    top_level_content = 1
-    for level in range(1, 6):
-        if soup.find("h%d" % level):
-            top_level_content = level
-            break
-
-    if top_level_content < max_level:
-        transposal = max_level - top_level_content
-        for level in reversed(range(1, 5)):
-            newlevel = min((level + transposal, 6))
-            for h in soup.find_all("h%d" % level):
-                new_tag = soup.new_tag("h%d" % newlevel)
-                new_tag.string = h.string
-                h.replace_with(new_tag)
-
-
-def parse_feed_info(parsed_feed):
-    feed_info = {}
-
-    feed = parsed_feed["feed"]
-    for key in PODCAST_INFO_KEYS:
-        feed_info[key] = feed.get(key, None)
-
-        if key == "updated" and feed_info[key] is not None:
-            feed_info[key] = dateparser.parse(feed_info[key])
-        elif key == "image" and "href" in feed_info[key].keys():
-            feed_info[key] = feed_info[key]["href"]
-
-    feed_info["subtitle"] = sanitize_subtitle(feed)
-    feed_info["summary"] = sanitize_summary(feed)
-
-    # Process episode list separately
-    episode_list = parsed_feed.get("items", False) or parsed_feed.get("entries", False)
-    if episode_list:
-        feed_info["episodes"] = [
-            parse_episode_info(episode) for episode in episode_list
-        ]
-    else:
-        feed_info["episodes"] = []
-
-    return feed_info
-
-
-def parse_episode_info(episode):
-    episode_info = {}
-    for key in EPISODE_INFO_KEYS:
-        episode_info[key] = episode.get(key, None)
-
-        if key == "published" and episode_info[key] is not None:
-            episode_info[key] = dateparser.parse(episode_info[key])
-        elif (
-            key == "image"
-            and episode_info.get(key, None) is not None
-            and "href" in episode_info[key].keys()
-        ):
-            episode_info[key] = episode_info[key]["href"]
-        elif key == "title":
-            episode_info["slug"] = slugify(episode_info["title"])
-
-    episode_info["subtitle"] = sanitize_subtitle(episode)
-    episode_info["description"] = sanitize_summary(episode)
-    episode_info["shownotes"] = sanitize_shownotes(episode)
-    episode_info["chapters"] = parse_chapters(episode)
-
-    episode_info["media_url"] = None
-    for link in episode["links"]:
-        if "rel" in link.keys() and link["rel"] == "enclosure":
-            episode_info["media_url"] = link["href"]
-
-    return episode_info
 
 
 def chunks(l, n):

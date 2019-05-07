@@ -11,8 +11,8 @@ import itertools
 
 from podcasts.conf import STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT
 from podcasts.models import BigPositiveIntegerField
-from podcasts.utils import (
-    strip_url,
+from podcasts.utils import strip_url
+from podcasts.utils.properties import (
     AVAILABLE_EPISODE_SEGMENTS,
     AVAILABLE_PODCAST_SEGMENTS,
 )

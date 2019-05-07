@@ -1,5 +1,6 @@
 from django.test import TestCase
 from podcasts import utils
+from podcasts.utils import properties
 
 TEST_FEED = (
     "https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/valid.xml"
@@ -27,7 +28,7 @@ class ResolveSegmentsTestCase(TestCase):
             "e</code>, <code>$episode_title</code>||<code>$episode_slug</code>, <code>$episode_id</code>, "
             "<code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_title</code>"
         )
-        self.assertEqual(utils.resolve_segments(self.string), should_become)
+        self.assertEqual(properties.resolve_segments(self.string), should_become)
 
 
 class FeedRefreshTestCase(TestCase):
@@ -69,5 +70,6 @@ class FeedRefreshTestCase(TestCase):
             self.assertTrue(feed_info.data["subtitle"].endswith(" ..."))
 
         self.assertEqual(
-            logs.output, ["WARNING:podcasts.utils:Subtitle too long, will be truncated"]
+            logs.output,
+            ["WARNING:podcasts.utils.sanitizers:Subtitle too long, will be truncated"],
         )
