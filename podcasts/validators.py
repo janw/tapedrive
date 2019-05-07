@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import gettext as _, ngettext
-from podcasts.utils import UNIFYING_EPISODE_SEGMENTS, ALL_VALID_SEGMENTS
+from podcasts.utils.properties import UNIFYING_EPISODE_SEGMENTS, ALL_VALID_SEGMENTS
 
 import os
 import re

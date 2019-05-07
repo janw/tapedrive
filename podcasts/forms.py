@@ -5,7 +5,7 @@ from django.forms import ModelForm, Form
 
 from podcasts.models import PodcastsSettings
 from podcasts.models.listener import Listener
-from podcasts.utils import resolve_segments
+from podcasts.utils.properties import resolve_segments
 
 
 class NewFromURLForm(Form):
