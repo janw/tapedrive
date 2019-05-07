@@ -1,75 +1,75 @@
-from django.test import TestCase
+import logging
+
+import pytest
+
 from podcasts import utils
 from podcasts.utils import properties
 
-TEST_FEED = (
-    "https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/valid.xml"
+FIXTURES_URL = (
+    "https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/"
 )
-TEST_FEED_NONEXISTENT = "http://localhost/nonexistent"
-TEST_FEED_HTTPERROR = "https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/literally_nonexistent.xml"
+
+TEST_FEED = FIXTURES_URL + "valid.xml"
 TEST_FEED_MALFORMED = (
-    "https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/invalid.xml"
+    "http://localhost/nonexistent",  # Connection Error
+    FIXTURES_URL + "literally_nonexistent.xml",  # Not Found
+    FIXTURES_URL + "invalid.xml",  # Invalid Feed
 )
-TEST_FEED_NEXT_PAGE = (
-    "https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/paged_p1.xml"
-)
-TEST_FEED_SUBTITLE_TOO_LONG = "https://raw.githubusercontent.com/janw/tapedrive/master/.testdata/subtitle_too_long.xml"
+TEST_FEED_NEXT_PAGE = FIXTURES_URL + "paged_p1.xml"
+TEST_FEED_SUBTITLE_TOO_LONG = FIXTURES_URL + "subtitle_too_long.xml"
 
 
-class ResolveSegmentsTestCase(TestCase):
+def test_valid_help_string():
     string = "{podcast_segments}||{episode_segments}||{unifying_segments}"
-
-    def test_valid_help_string(self):
-        should_become = (
-            "<code>$podcast_slug</code>, <code>$podcast_type</code>, <code>$podcast_title</code>, <code>$p"
-            "odcast_subtitle</code>, <code>$podcast_author</code>, <code>$podcast_language</code>, <code>$"
-            "podcast_explicit</code>, <code>$podcast_updated</code>||<code>$episode_slug</code>, <code>$ep"
-            "isode_id</code>, <code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_typ"
-            "e</code>, <code>$episode_title</code>||<code>$episode_slug</code>, <code>$episode_id</code>, "
-            "<code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_title</code>"
-        )
-        self.assertEqual(properties.resolve_segments(self.string), should_become)
+    should_become = (
+        "<code>$podcast_slug</code>, <code>$podcast_type</code>, <code>$podcast_title</code>, <code>$p"
+        "odcast_subtitle</code>, <code>$podcast_author</code>, <code>$podcast_language</code>, <code>$"
+        "podcast_explicit</code>, <code>$podcast_updated</code>||<code>$episode_slug</code>, <code>$ep"
+        "isode_id</code>, <code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_typ"
+        "e</code>, <code>$episode_title</code>||<code>$episode_slug</code>, <code>$episode_id</code>, "
+        "<code>$episode_date</code>, <code>$episode_number</code>, <code>$episode_title</code>"
+    )
+    assert properties.resolve_segments(string) == should_become
 
 
-class FeedRefreshTestCase(TestCase):
-    def test_valid_feed(self):
-        feed_info = utils.refresh_feed(TEST_FEED)
-        self.assertIsNotNone(feed_info)
-        self.assertEqual(feed_info.data["title"], "Killing Time")
+@pytest.mark.vcr()
+def test_valid_feed():
+    feed_info = utils.refresh_feed(TEST_FEED)
+    assert feed_info is not None
+    assert feed_info.data["title"] == "Killing Time"
 
-    def test_various_feeds(self):
-        """Querying an invalid feed should always fail softly, returning None"""
-        with self.assertLogs("podcasts.utils", level="INFO") as logs:
-            feed_info = utils.refresh_feed(TEST_FEED_NONEXISTENT)
-            self.assertIsNone(feed_info)
 
-            feed_info = utils.refresh_feed(TEST_FEED_HTTPERROR)
-            self.assertIsNone(feed_info)
+@pytest.mark.vcr()
+@pytest.mark.parametrize(
+    "feed,expected,message",
+    [
+        (0, None, "Connection error"),
+        (1, None, "Not Found"),
+        (2, None, "Feed is malformatted"),
+    ],
+)
+def test_invalid_feed(feed, expected, message, caplog):
+    """Querying an invalid feed should always fail softly, returning None."""
+    caplog.set_level(logging.ERROR, logger="podcasts.utils")
+    assert utils.refresh_feed(TEST_FEED_MALFORMED[feed]) is expected
+    assert message in caplog.text
 
-            feed_info = utils.refresh_feed(TEST_FEED_MALFORMED)
-            self.assertIsNone(feed_info)
 
-            feed_info = utils.refresh_feed(TEST_FEED_NEXT_PAGE)
-            self.assertIsNotNone(feed_info.next_page)
+@pytest.mark.vcr()
+def test_paged_feed(caplog):
+    """Test proper handling of a paged feed."""
+    caplog.set_level(logging.INFO, logger="podcasts.utils")
 
-        self.assertEqual(
-            logs.output,
-            [
-                "ERROR:podcasts.utils:Connection error",
-                "ERROR:podcasts.utils:HTTP error 404: Not Found",
-                "ERROR:podcasts.utils:Feed is malformatted",
-                "INFO:podcasts.utils:Feed has next page",
-            ],
-        )
+    feed_info = utils.refresh_feed(TEST_FEED_NEXT_PAGE)
+    assert feed_info.next_page is not None
+    assert "Feed has next page" in caplog.text
 
-    def test_long_subtitle_feed(self):
-        """Test if an overly long subtitle is properly truncated"""
-        with self.assertLogs("podcasts.utils", level="INFO") as logs:
-            feed_info = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
-            self.assertTrue(len(feed_info.data["subtitle"]) == 255)
-            self.assertTrue(feed_info.data["subtitle"].endswith(" ..."))
 
-        self.assertEqual(
-            logs.output,
-            ["WARNING:podcasts.utils.sanitizers:Subtitle too long, will be truncated"],
-        )
+@pytest.mark.vcr()
+def test_long_subtitle_feed(caplog):
+    """Test if an overly long subtitle is properly truncated"""
+    caplog.set_level(logging.WARNING, logger="podcasts.utils")
+    feed_info = utils.refresh_feed(TEST_FEED_SUBTITLE_TOO_LONG)
+    assert len(feed_info.data["subtitle"]) == 255
+    assert feed_info.data["subtitle"].endswith(" ...")
+    assert "Subtitle too long, will be truncated" in caplog.text

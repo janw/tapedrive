@@ -22,7 +22,7 @@ stages:
 pytest:
   extends: .python
   script:
-    - pytest --junitxml=pytest.xml
+    - pytest --junitxml=pytest.xml --vcr-record=none
     - coveralls
   artifacts:
     reports:
