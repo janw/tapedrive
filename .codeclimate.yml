@@ -1,0 +1,18 @@
+version: "2"
+checks:
+  file-lines:
+    config:
+      threshold: 250
+  method-complexity:
+    config:
+      threshold: 18
+  method-count:
+    config:
+      threshold: 20
+  method-lines:
+    config:
+      threshold: 40
+exclude_patterns:
+  - "**/migrations/"
+  - "**/tests/"
+  - "**/templates/"
