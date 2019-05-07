@@ -1,27 +1,32 @@
+import os
+import feedparser
+import logging
+import tempfile
+import xml.etree.ElementTree as etree
+from collections import namedtuple
+from io import BytesIO
+from shutil import copyfileobj, move
+from urllib.parse import urlparse, urlunparse
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError, URLError
+
+import requests
+from bs4 import BeautifulSoup
+from dateutil import parser as dateparser
+from feedparser import CharacterEncodingOverride
+from markdown import markdown
+from PIL import Image
+
 from django.utils.text import format_lazy
 from django.template.defaultfilters import slugify
 from django.conf import settings
 
-
-from collections import namedtuple
-from dateutil import parser as dateparser
-from feedparser import CharacterEncodingOverride
-from io import BytesIO
-from markdown import markdown
-from PIL import Image
-from shutil import copyfileobj, move
-from urllib.parse import urlparse, urlunparse
-from urllib.request import urlopen, Request
-from bleach.sanitizer import Cleaner
-from html5lib.filters.base import Filter
-import feedparser
-import logging
-import os
-import requests
-import tempfile
-import urllib
-import xml.etree.ElementTree as etree
-from bs4 import BeautifulSoup
+from podcasts.utils.filters import (
+    subtitle_cleaner,
+    summary_cleaner,
+    shownotes_cleaner,
+    shownotes_image_cleaner,
+)
 
 
 # Get an instance of a logger
@@ -121,84 +126,6 @@ UNIFYING_EPISODE_SEGMENTS = [
 ALL_VALID_SEGMENTS = {**AVAILABLE_EPISODE_SEGMENTS, **AVAILABLE_PODCAST_SEGMENTS}
 
 feed_info = namedtuple("feed_info", ["data", "url", "next_page", "last_page"])
-
-
-class CleanerWithOptions(Cleaner):
-    def clean(self, text, allowed_domains=False):
-        if not allowed_domains:
-            allowed_domains = []
-        import six
-        from bleach.utils import force_unicode
-        from bleach.sanitizer import BleachSanitizerFilter
-
-        if not isinstance(text, six.string_types):
-            message = "argument cannot be of '{name}' type, must be of text type".format(
-                name=text.__class__.__name__
-            )
-            raise TypeError(message)
-
-        if not text:
-            return ""
-
-        text = force_unicode(text)
-        dom = self.parser.parseFragment(text)
-        filtered = BleachSanitizerFilter(
-            source=self.walker(dom),
-            # Bleach-sanitizer-specific things
-            attributes=self.attributes,
-            strip_disallowed_elements=self.strip,
-            strip_html_comments=self.strip_comments,
-            # html5lib-sanitizer things
-            allowed_elements=self.tags,
-            allowed_css_properties=self.styles,
-            allowed_protocols=self.protocols,
-            allowed_svg_properties=[],
-        )
-
-        # Apply any filters after the BleachSanitizerFilter
-        for filter_class in self.filters:
-            fc = filter_class(source=filtered)
-            filtered = fc.__iter__(allowed_domains=allowed_domains)
-
-        return self.serializer.render(filtered)
-
-
-class ImgSrcFilter(Filter):
-    def __iter__(self, **kwargs):
-        allowed_domains = kwargs.pop("allowed_domains", [])
-        for token in Filter.__iter__(self):
-            if token["type"] in ["StartTag", "EmptyTag"] and token["data"]:
-                data_alt = None
-                data_src = None
-                for attr, value in token["data"].items():
-                    if attr[1] in ("alt", "src"):
-                        data_alt = value
-
-                if data_src:
-                    domain = clean_link(data_src)
-                    if domain not in allowed_domains:
-                        token["data"][(None, "data-src")] = data_src
-                        token["data"][(None, "class")] = "has-src"
-                        token["data"][(None, "alt")] = format_lazy(
-                            "Image from {domain}", domain=domain
-                        )
-                        token["data"][(None, "src")] = ""
-                        if data_alt:
-                            token["data"][(None, "data-alt")] = data_alt
-            yield token
-
-
-subtitle_cleaner = Cleaner(tags=[], strip=True)
-
-summary_cleaner = Cleaner(
-    tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES, strip=True
-)
-
-shownotes_cleaner = Cleaner(
-    tags=ALLOWED_HTML_TAGS + EXTENDED_HTML_TAGS,
-    attributes={**ALLOWED_HTML_ATTRIBUTES, **EXTENDED_HTML_ATTRIBUTES},
-    strip=True,
-)
 
 
 def get_segments_html(segments):
@@ -313,13 +240,7 @@ def replace_shownotes_images(content, allowed_domains=False):
     if len(allowed_domains) == 1 and allowed_domains[0] == "*":
         return content
     else:
-        cleaner = CleanerWithOptions(
-            tags=ALLOWED_HTML_TAGS + EXTENDED_HTML_TAGS,
-            attributes={**ALLOWED_HTML_ATTRIBUTES, **EXTENDED_HTML_ATTRIBUTES},
-            strip=True,
-            filters=[ImgSrcFilter],
-        )
-        return cleaner.clean(content, allowed_domains=allowed_domains)
+        return shownotes_image_cleaner.clean(content, allowed_domains=allowed_domains)
 
 
 def adjust_headline_levels(soup, max_level=3):
@@ -432,7 +353,7 @@ def download_file(link, filename):
         move(outfile.name, filename)
         return total_size
 
-    except (urllib.error.HTTPError, urllib.error.URLError) as error:
+    except (HTTPError, URLError) as error:
         logger.error("Download failed. Query returned '%s'" % error)
         return
     except KeyboardInterrupt:
@@ -510,22 +431,6 @@ def strip_url(link):
     linkpath = urlparse(link).path
     extension = os.path.splitext(linkpath)[1]
     return linkpath, extension
-
-
-def clean_link(link, include_path=False):
-    parsed = urlparse(link)
-    netloc = parsed.netloc
-    if parsed.netloc.startswith("www."):
-        netloc = netloc[4:]
-
-    if include_path:
-        path = parsed.path.rstrip("/")
-        splits = str.split(path, "/")
-        if len(splits) > 2:
-            path = "/…/" + splits[-1]
-
-        return netloc + path
-    return netloc
 
 
 def handle_uploaded_file(f):
