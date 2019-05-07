@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Podcast-Archive/0.1 (https://github.com/janw/tapedrive)
+    method: GET
+    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/literally_nonexistent.xml
+  response:
+    body:
+      string: '404: Not Found
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '15'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Date:
+      - Tue, 07 May 2019 17:31:15 GMT
+      Expires:
+      - Tue, 07 May 2019 17:36:15 GMT
+      Source-Age:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Authorization,Accept-Encoding
+      Via:
+      - 1.1 varnish
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Fastly-Request-ID:
+      - c61668973a50c69663badf33446c65c85c2b8c6a
+      X-Frame-Options:
+      - deny
+      X-GitHub-Request-Id:
+      - D964:7FD7:16AE4:19D9E:5CD1C0E2
+      X-Served-By:
+      - cache-fra19126-FRA
+      X-Timer:
+      - S1557250275.006511,VS0,VE151
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
+version: 1
