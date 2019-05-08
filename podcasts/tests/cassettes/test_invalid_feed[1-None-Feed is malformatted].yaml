@@ -11,27 +11,35 @@ interactions:
       User-Agent:
       - Podcast-Archive/0.1 (https://github.com/janw/tapedrive)
     method: GET
-    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/literally_nonexistent.xml
+    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/invalid.xml
   response:
     body:
-      string: '404: Not Found
-
-        '
+      string: !!binary |
+        H4sIAAAAAAAAA7NR1NXlckktTi7KLCjJzM+zUsjMyUnLL8pNTVGI8PXhcq0oSE0usVIAg6T8qnwu
+        XV07Lpui4mKFstSiYqAOWyUjPQMloJg+UBAANxuSNk8AAAA=
     headers:
       Accept-Ranges:
       - bytes
       Access-Control-Allow-Origin:
       - '*'
+      Cache-Control:
+      - max-age=300
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
-      - '15'
+      - '92'
       Content-Security-Policy:
       - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
       Date:
-      - Tue, 07 May 2019 17:31:15 GMT
+      - Wed, 08 May 2019 19:27:45 GMT
+      ETag:
+      - '"044edc24026f8be483133f2fd539ee3f0ba49368"'
       Expires:
-      - Tue, 07 May 2019 17:36:15 GMT
+      - Wed, 08 May 2019 19:32:45 GMT
       Source-Age:
       - '0'
       Strict-Transport-Security:
@@ -47,18 +55,20 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Fastly-Request-ID:
-      - c61668973a50c69663badf33446c65c85c2b8c6a
+      - 75aa362bd49e153cb3f01a468e2d80f9a1f5cf2d
       X-Frame-Options:
       - deny
+      X-Geo-Block-List:
+      - ''
       X-GitHub-Request-Id:
-      - D964:7FD7:16AE4:19D9E:5CD1C0E2
+      - E082:24AA:8CD3:A24C:5CD32DB1
       X-Served-By:
-      - cache-fra19126-FRA
+      - cache-hhn1542-HHN
       X-Timer:
-      - S1557250275.006511,VS0,VE151
+      - S1557343666.540201,VS0,VE158
       X-XSS-Protection:
       - 1; mode=block
     status:
-      code: 404
-      message: Not Found
+      code: 200
+      message: OK
 version: 1

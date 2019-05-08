@@ -1,6 +1,7 @@
 import logging
 
 import pytest
+import requests
 
 from podcasts import utils
 from podcasts.utils import properties
@@ -11,7 +12,6 @@ FIXTURES_URL = (
 
 TEST_FEED = FIXTURES_URL + "valid.xml"
 TEST_FEED_MALFORMED = (
-    "http://localhost/nonexistent",  # Connection Error
     FIXTURES_URL + "literally_nonexistent.xml",  # Not Found
     FIXTURES_URL + "invalid.xml",  # Invalid Feed
 )
@@ -41,18 +41,23 @@ def test_valid_feed():
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "feed,expected,message",
-    [
-        (0, None, "Connection error"),
-        (1, None, "Not Found"),
-        (2, None, "Feed is malformatted"),
-    ],
+    "feed,expected,message", [(0, None, "Not Found"), (1, None, "Feed is malformatted")]
 )
 def test_invalid_feed(feed, expected, message, caplog):
     """Querying an invalid feed should always fail softly, returning None."""
     caplog.set_level(logging.ERROR, logger="podcasts.utils")
     assert utils.refresh_feed(TEST_FEED_MALFORMED[feed]) is expected
     assert message in caplog.text
+
+
+def test_connection_error(mocker, caplog):
+    mock_requests = mocker.patch(
+        "podcasts.utils.requests.get", side_effect=requests.exceptions.ConnectionError
+    )
+    caplog.set_level(logging.ERROR, logger="podcasts.utils")
+    assert utils.refresh_feed("https://any.feed/is/fine/here") is None
+    assert "Connection error" in caplog.text
+    mock_requests.assert_called_once()
 
 
 @pytest.mark.vcr()
