@@ -13,4 +13,4 @@ exclude =
     migrations
     mediafiles/
     node_modules/
-max-complexity = 18
+max-complexity = 10

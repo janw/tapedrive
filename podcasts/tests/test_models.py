@@ -2,8 +2,6 @@ import logging
 
 import pytest
 
-from django.test import TestCase
-
 from django.contrib.sites.models import Site
 from django.db import transaction
 from django.db.utils import IntegrityError
