@@ -1,0 +1,47 @@
+{
+  "name": "tapedrive",
+  "version": "0.2.0",
+  "description": "A self-hostable podcast client with built-in archiving features.",
+  "main": "assets/dist/bundles/main.js",
+  "repository": "git@github.com:janw/tapedrive.git",
+  "author": "Jan Willhaus <mail@janwillhaus.de>",
+  "license": "Apache-2.0",
+  "scripts": {
+    "serve": "webpack-dev-server",
+    "build": "NODE_ENV=production webpack"
+  },
+  "dependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.5",
+    "bootstrap-vue": "^2.0.0-rc.28",
+    "css-loader": "^2.1.1",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "typeface-fira-sans-condensed": "^0.0.72",
+    "vue": "^2.6.10",
+    "vue-cookie2": "^1.2.6",
+    "vue-loader": "^15.7.0",
+    "vue-resource": "^1.5.1",
+    "vue-router": "^3.1.2",
+    "vue-spinners": "^1.0.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.0.4",
+    "file-loader": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "style-loader": "^1.0.0",
+    "terser-webpack-plugin": "^1.4.1",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.1"
+  }
+}

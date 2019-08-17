@@ -142,12 +142,3 @@ export default {
   }
 };
 </script>
-
-
-<style>
-.sl-spinner {
-  display: inline-block;
-  margin-bottom: -2px;
-  margin-left: 6px;
-}
-</style>

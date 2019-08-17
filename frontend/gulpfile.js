@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     del = require('del'),
     plumber = require('gulp-plumber'),
     uglify = require('gulp-uglify'),
+    babel = require('gulp-babel'),
     concat = require('gulp-concat'),
     imagemin = require('gulp-imagemin'),
     exec = require('child_process').exec,
@@ -19,6 +20,7 @@ var base = './assets/src',
         sass: base + '/scss/**/*.scss',
         images: base + '/img/**/*',
         js: base + '/js/**/*.js',
+        vue: base + '/app/**/*.js',
         templates: './**/templates/**/*.html',
         dist: './assets/dist',
         app: './',
@@ -49,10 +51,23 @@ function scripts() {
         paths.js])
         .pipe(plumber()) // Checks for errors
         .pipe(concat("legacy.js"))
-        .pipe(uglify()) // Minifies the js
-        .pipe(rename({ suffix: '.min' }))
+        // .pipe(uglify()) // Minifies the js
+        // .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(paths.dist + '/js'));
 }
+
+function vueify() {
+    return gulp.src(paths.vue)
+        .pipe(plumber()) // Checks for errors
+        .pipe(babel({
+            presets: ['@babel/preset-env']
+        }))
+        // .pipe(uglify()) // Minifies the js
+        // .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest(paths.dist + '/js'));
+}
+
+
 
 function imgCompression() {
     return gulp.src(paths.images)
@@ -85,7 +100,7 @@ function clean() {
     return del([paths.dist])
 }
 
-var build = gulp.parallel(styles, scripts, imgCompression)
+var build = gulp.parallel(styles, scripts, vueify)
 var defaultTask = gulp.series(build, runServer, browSync)
 
 exports.build = build
@@ -95,5 +110,6 @@ exports.browsync = browSync
 exports.default = defaultTask
 exports.imgcomp = imgCompression
 exports.scripts = scripts
+exports.vueify = vueify
 exports.styles = styles
 exports.watch = gulp.series(defaultTask, watch)
