@@ -6,13 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'dist/css/main.css' %}" type="text/css" media="all" charset="utf-8">
 
-
     {% block load_javascript %}
       <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     {% endblock load_javascript %}
 
     {% block extra_head %}{% endblock extra_head %}
-
 
   </head>
   {% block body %}
@@ -47,6 +45,7 @@
       </footer>
 
       <script src="{% static 'dist/js/legacy.js' %}"></script>
+      <script src="{% static 'dist/js/main.js' %}"></script>
     </body>
   {% endblock body %}
 </html>

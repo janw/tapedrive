@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language_from_request
 from langcodes import Language
-from podcasts import utils
+from podcasts.utils import filters
 
 register = template.Library()
 
@@ -36,7 +36,7 @@ def add_next_self(context):
 
 @register.simple_tag(takes_context=False)
 def clean_link(link, include_path=True):
-    return utils.clean_link(link, include_path)
+    return filters.clean_link(link, include_path)
 
 
 @register.simple_tag(takes_context=True)
