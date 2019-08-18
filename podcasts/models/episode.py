@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.db.transaction import atomic
@@ -95,10 +96,10 @@ class Episode(models.Model):
     )
 
     # Listeners and states
-    listeners = models.ManyToManyField(
-        "podcasts.Listener",
+    user = models.ManyToManyField(
+        get_user_model(),
         through="EpisodePlaybackState",
-        through_fields=("episode", "listener"),
+        through_fields=("episode", "user"),
         verbose_name=_("Episodes' Listeners"),
     )
 
@@ -215,3 +216,22 @@ def log_activity(sender, instance, created, **kwargs):
                 target=instance.podcast,
                 timestamp=instance.published,
             )
+
+
+class EpisodePlaybackState(models.Model):
+    episode = models.ForeignKey(
+        "podcasts.Episode", on_delete=models.CASCADE, related_name="playbackstates"
+    )
+    user = models.ForeignKey(
+        get_user_model(), on_delete=models.CASCADE, related_name="playbackstates"
+    )
+    position = models.PositiveIntegerField(
+        default=0, verbose_name=_("Playback Position")
+    )
+    completed = models.BooleanField(default=False, verbose_name=_("Playback Completed"))
+
+    def __str__(self):
+        return "%(user)s's state on %(episode)s" % {
+            "user": self.listener,
+            "episode": self.episode,
+        }
