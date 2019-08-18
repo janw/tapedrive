@@ -90,7 +90,7 @@ class PodcastManager(models.Manager):
 
 class Podcast(models.Model):
     title = models.CharField(
-        blank=False, null=False, max_length=255, verbose_name=_("Podcast Title")
+        default="Untitled", null=False, max_length=255, verbose_name=_("Podcast Title")
     )
     subtitle = models.CharField(
         blank=True, null=True, max_length=255, verbose_name=_("Podcast Subtitle")

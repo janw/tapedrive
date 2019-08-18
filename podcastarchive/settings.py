@@ -83,7 +83,7 @@ class Common(Configuration):
         "django.contrib.messages",
         "django.contrib.humanize",
         "django.contrib.sites",
-        "whitenoise.runserver_nostatic",
+        # "whitenoise.runserver_nostatic",
         "django.contrib.staticfiles",
         "bootstrap4",
         "podcastarchive.users",
@@ -95,7 +95,7 @@ class Common(Configuration):
 
     MIDDLEWARE = [
         "django.middleware.security.SecurityMiddleware",
-        "whitenoise.middleware.WhiteNoiseMiddleware",
+        # "whitenoise.middleware.WhiteNoiseMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
         "django.middleware.common.CommonMiddleware",
         "django.middleware.csrf.CsrfViewMiddleware",
@@ -131,7 +131,7 @@ class Common(Configuration):
     # Database
     # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
     DATABASES = DatabaseURLValueWithOptions(
-        "mysql://tapedrive:tapedrive@localhost/tapedrive"
+        "postgres://tapedrive:tapedrive@localhost/tapedrive"
     )
 
     # Password validation
