@@ -18,6 +18,8 @@
           <b-nav class="justify-content-center mt-2 mt-md-0 ml-md-auto">
             <b-nav-item
               v-for="route in $router.options.routes"
+              :active="$route.path === route.path"
+              active-class="active"
               :to="route"
               :key="route.path"
             >{{route.name}}</b-nav-item>

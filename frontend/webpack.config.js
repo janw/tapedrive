@@ -34,7 +34,7 @@ const baseConfig = {
             {
                 test: /\.s?[ac]ss$/,
                 use: [
-                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    'style-loader',
                     'vue-style-loader',
                     'css-loader',
                     'sass-loader',
@@ -55,12 +55,17 @@ const baseConfig = {
             {
                 test: /\.(gif|png|jpe?g|svg)$/i,
                 use: [
-                    'file-loader',
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'img/'
+                        }
+                    },
                     {
                         loader: 'image-webpack-loader',
                         options: {
-                            disable: true,
-                            outputPath: 'img/'
+                            disable: false,
                         },
                     },
                 ],
@@ -68,7 +73,7 @@ const baseConfig = {
         ]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.vue', '.js'],
         alias: {
             vue: 'vue/dist/vue.js',
             '@': path.resolve(__dirname, 'src')
@@ -104,7 +109,7 @@ const devConfig = {
         port: 9000,
         proxy: [{
             context: ['/api'],
-            target: 'http://localhost:8080',
+            target: 'http://localhost:8000',
             ws: true
         }]
     }
@@ -125,7 +130,10 @@ const prodConfig = {
                     }
                 }
             }),
-        ]
+        ],
+        splitChunks: {
+            chunks: 'all'
+        }
     }
 };
 
