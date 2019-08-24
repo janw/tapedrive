@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="wrapper">
-      <header id="navbar" class="border-bottom pt-3 p-md-2 mb-3">
+      <header v-if="!$route.meta.hideHeader" id="navbar" class="border-bottom pt-3 p-md-2 mb-3">
         <div class="container d-flex flex-column flex-md-row align-items-center">
           <a
             class="d-flex align-items-center align-items-center align-items-md-center site-title"
@@ -55,7 +55,7 @@
 export default {
   name: "wrapper",
   computed: {
-    menuRoutes: function() {
+    menuRoutes() {
       return this.$router.options.routes.filter(function(route) {
         return route.showOnMenu == true;
       });
