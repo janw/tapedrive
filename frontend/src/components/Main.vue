@@ -17,12 +17,12 @@
 
           <b-nav class="justify-content-center mt-2 mt-md-0 ml-md-auto">
             <b-nav-item
-              v-for="route in $router.options.routes"
+              v-for="route in menuRoutes"
               :active="$route.path === route.path"
               active-class="active"
               :to="route"
               :key="route.path"
-            >{{route.name}}</b-nav-item>
+            >{{route.name}} {{$route.path === route.path}}</b-nav-item>
             <b-nav-item-dropdown id="dropdown-settings" text="<Username>">
               <b-dropdown-header class="pb-0">Logged in as</b-dropdown-header>
               <p class="mx-4 mb-2">Username</p>
@@ -36,7 +36,9 @@
         </div>
       </header>
       <main role="main" class="container pt-3">
-        <router-view></router-view>
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </main>
       <footer class="footer">
         <div class="container">
@@ -52,6 +54,27 @@
 
 <script>
 export default {
-  name: "wrapper"
+  name: "wrapper",
+  computed: {
+    menuRoutes: function() {
+      return this.$router.options.routes.filter(function(route) {
+        return route.showOnMenu == true;
+      });
+    }
+  }
 };
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.1s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+</style>

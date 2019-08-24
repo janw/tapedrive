@@ -1,21 +1,52 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
+import Login from '@/components/Login'
+import PodcastDetail from '@/components/PodcastDetail'
 import AddFeeds from '@/components/AddFeeds'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
     routes: [
         {
             path: '/add',
             name: 'Add Feeds',
-            component: AddFeeds
+            component: AddFeeds,
+            showOnMenu: true
         },
         {
             path: '/',
             name: 'Podcasts',
-            component: Home
+            component: Home,
+            showOnMenu: true
+        },
+        {
+            path: '/podcast/:slug',
+            name: 'PodcastDetail',
+            component: PodcastDetail,
+            props: true
+        },
+        {
+            path: '/login',
+            name: 'Login',
+            component: Login
         },
     ],
 })
+
+router.beforeEach((to, from, next) => {
+    if (localStorage.getItem('access') == null && to.name !== "Login") {
+        console.log("Redirecting to login")
+        next({
+            path: '/login',
+            params: { nextUrl: to.fullPath }
+        })
+    } else {
+        next()
+    }
+})
+
+
+
+export default router

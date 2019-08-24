@@ -25,6 +25,7 @@ psycopg2-binary = "^2.8"
 mysqlclient = "^1.4"
 djangorestframework = "^3.9"
 html5lib = "^1.0"
+djangorestframework_simplejwt = "^4.3"
 
 [tool.poetry.dev-dependencies]
 black = {version = "*",allows-prereleases = true}
