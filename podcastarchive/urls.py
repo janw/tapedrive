@@ -18,7 +18,7 @@ router.register(r"podcasts", views.PodcastViewSet)
 router.register(r"episodes", views.EpisodeViewSet)
 
 urlpatterns = [
-    path("api/", include(router.urls)),
+    path("api/", include(router.urls), name="api-root"),
     path("api/auth/", include("rest_framework.urls")),
     path("admin/", admin.site.urls),
     path("api/user/", UserView.as_view(), name="user_details"),

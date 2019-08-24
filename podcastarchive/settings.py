@@ -83,7 +83,6 @@ class Common(Configuration):
         "django.contrib.messages",
         "django.contrib.humanize",
         "django.contrib.sites",
-        # "whitenoise.runserver_nostatic",
         "django.contrib.staticfiles",
         "bootstrap4",
         "podcastarchive.users",
@@ -95,16 +94,14 @@ class Common(Configuration):
 
     MIDDLEWARE = [
         "django.middleware.security.SecurityMiddleware",
-        # "whitenoise.middleware.WhiteNoiseMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
         "django.middleware.common.CommonMiddleware",
-        "django.middleware.csrf.CsrfViewMiddleware",
+        # "django.middleware.csrf.CsrfViewMiddleware",
         "django.middleware.locale.LocaleMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
         "django.contrib.sites.middleware.CurrentSiteMiddleware",
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
-        # "podcastarchive.users.middleware.LoginRequiredMiddleware",
     ]
 
     ROOT_URLCONF = "podcastarchive.urls"
@@ -145,10 +142,7 @@ class Common(Configuration):
         {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
     ]
 
-    # LOGIN_URL = "/login/"
-    # LOGOUT_URL = "/logout/"
-    # LOGIN_REDIRECT_URL = "podcasts:podcasts-list"
-    # LOGIN_EXEMPT_URLS = ["admin/", "password/reset/", "static/"]
+    LOGIN_REDIRECT_URL = "api-root"
 
     SITE_ID = 1
     SITE_NAME = "Tape Drive"
@@ -178,8 +172,6 @@ class Common(Configuration):
         "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     ]
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
-    WHITENOISE_AUTOREFRESH = True
-    WHITENOISE_USE_FINDERS = True
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
@@ -216,10 +208,11 @@ class Common(Configuration):
     }
 
     REST_FRAMEWORK = {
+        "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
         "DEFAULT_AUTHENTICATION_CLASSES": (
             "rest_framework.authentication.SessionAuthentication",
             "rest_framework_simplejwt.authentication.JWTAuthentication",
-        )
+        ),
     }
 
 

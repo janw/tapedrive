@@ -18,6 +18,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "subscribed_podcasts",
             "interested_podcasts",
         ]
+        extra_kwargs = {
+            "subscribed_podcasts": {"lookup_field": "slug"},
+            "interested_podcasts": {"lookup_field": "slug"},
+        }
 
 
 class UserViewSet(viewsets.ModelViewSet):

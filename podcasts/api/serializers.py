@@ -13,6 +13,11 @@ class PodcastSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {"url": {"lookup_field": "slug"}}
 
 
+class PodcastListSerializer(PodcastSerializer):
+    class Meta(PodcastSerializer.Meta):
+        fields = ("title", "slug", "id", "subtitle", "image", "url")
+
+
 class EpisodeChapterSerializer(serializers.ModelSerializer):
     class Meta:
         model = EpisodeChapter
