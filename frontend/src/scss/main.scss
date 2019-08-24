@@ -241,56 +241,6 @@ footer.footer {
   }
 }
 
-.form-signin {
-  @extend .border;
-  @extend .rounded;
-  @extend .shadow;
-  width: 100%;
-  max-width: 550px;
-  margin: auto;
-  padding: 20px;
-
-  @include  media-breakpoint-up(sm) {
-    padding: 60px;
-  }
-
-  &, & input {
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    background: rgba($white, 0.9);
-  }
-
-  & .form-control {
-    position: relative;
-    box-sizing: border-box;
-    height: auto;
-    padding: 10px;
-    font-size: 16px;
-  }
-
-  & input[name="username"], & input[name="new_password1"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  & input[name="password"], & input[name="new_password2"] {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  & input:focus, & button:focus {
-    outline: none;
-    box-shadow: 0 0 3px $secondary;
-    border-color: $secondary;
-    z-index: 2;
-    background: rgba($secondary, 0.1);
-    border-radius: $border-radius !important;
-  }
-
-  #reset_link {
-    font-size: 0.8rem;
-  }
-}
 
 input[type="file"] {
   @extend .form-control;
@@ -304,25 +254,6 @@ input[type="file"] {
 .filter-fade {
     filter: grayscale(1) brightness(60%) contrast(150%);
     opacity: 0.5;
-}
-
-.backdrop {
-  background-color: $white;
-  display: none;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: -100;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  opacity: 0.5;
 }
 
 @keyframes filter-animation {
