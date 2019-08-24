@@ -9,6 +9,8 @@ class PodcastSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Podcast
         fields = "__all__"
+        lookup_field = "slug"
+        extra_kwargs = {"url": {"lookup_field": "slug"}}
 
 
 class EpisodeChapterSerializer(serializers.ModelSerializer):

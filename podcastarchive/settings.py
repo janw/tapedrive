@@ -104,7 +104,7 @@ class Common(Configuration):
         "django.contrib.messages.middleware.MessageMiddleware",
         "django.contrib.sites.middleware.CurrentSiteMiddleware",
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
-        "podcastarchive.users.middleware.LoginRequiredMiddleware",
+        # "podcastarchive.users.middleware.LoginRequiredMiddleware",
     ]
 
     ROOT_URLCONF = "podcastarchive.urls"
@@ -145,10 +145,10 @@ class Common(Configuration):
         {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
     ]
 
-    LOGIN_URL = "/login/"
-    LOGOUT_URL = "/logout/"
-    LOGIN_REDIRECT_URL = "podcasts:podcasts-list"
-    LOGIN_EXEMPT_URLS = ["admin/", "password/reset/", "static/"]
+    # LOGIN_URL = "/login/"
+    # LOGOUT_URL = "/logout/"
+    # LOGIN_REDIRECT_URL = "podcasts:podcasts-list"
+    # LOGIN_EXEMPT_URLS = ["admin/", "password/reset/", "static/"]
 
     SITE_ID = 1
     SITE_NAME = "Tape Drive"
@@ -218,6 +218,7 @@ class Common(Configuration):
     REST_FRAMEWORK = {
         "DEFAULT_AUTHENTICATION_CLASSES": (
             "rest_framework.authentication.SessionAuthentication",
+            "rest_framework_simplejwt.authentication.JWTAuthentication",
         )
     }
 
