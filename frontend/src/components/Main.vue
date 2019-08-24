@@ -22,14 +22,16 @@
               :to="route"
               :key="route.path"
             >{{route.name}}</b-nav-item>
-            <b-nav-item-dropdown id="dropdown-settings" text="<Username>">
+            <b-nav-item-dropdown id="dropdown-settings" :text="username">
               <b-dropdown-header class="pb-0">Logged in as</b-dropdown-header>
-              <p class="mx-4 mb-2">Username</p>
+              <p class="mx-4 mb-2">{{username}}</p>
               <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item>Administration</b-dropdown-item>
+              <b-dropdown-item>
+                <a href="/admin">Administration</a>
+              </b-dropdown-item>
               <b-dropdown-item>Settings</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item>Log out</b-dropdown-item>
+              <b-dropdown-item v-on:click="logOut()">Log out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-nav>
         </div>
@@ -59,12 +61,26 @@ export default {
       return this.$router.options.routes.filter(function(route) {
         return route.showOnMenu == true;
       });
+    },
+    username() {
+      return localStorage.getItem("user");
+    }
+  },
+  methods: {
+    logOut() {
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      this.$router.push("/login");
     }
   }
 };
 </script>
 
 <style>
+a h1 {
+  color: #333;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition-duration: 0.1s;

@@ -105,12 +105,11 @@ const devConfig = {
     mode: 'development',
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
-        compress: true,
+        compress: false,
         port: 9000,
         proxy: [{
-            context: ['/api'],
+            context: ['/api', '/admin'],
             target: 'http://localhost:8000',
-            ws: true
         }]
     }
 };

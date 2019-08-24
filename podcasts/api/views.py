@@ -12,7 +12,13 @@ class PodcastViewSet(viewsets.ModelViewSet):
 
     queryset = Podcast.objects.all()
     serializer_class = serializers.PodcastSerializer
+    list_serializer_class = serializers.PodcastListSerializer
     lookup_field = "slug"
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return self.list_serializer_class
+        return self.serializer_class
 
     def get_queryset(self, *args, **kwargs):
         return self.queryset.filter(subscribers=self.request.user)
