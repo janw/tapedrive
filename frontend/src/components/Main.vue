@@ -17,12 +17,11 @@
 
           <b-nav class="justify-content-center mt-2 mt-md-0 ml-md-auto">
             <b-nav-item
+              v-bind:class="{ active: $route.path === route.path }"
               v-for="route in menuRoutes"
-              :active="$route.path === route.path"
-              active-class="active"
               :to="route"
               :key="route.path"
-            >{{route.name}} {{$route.path === route.path}}</b-nav-item>
+            >{{route.name}}</b-nav-item>
             <b-nav-item-dropdown id="dropdown-settings" text="<Username>">
               <b-dropdown-header class="pb-0">Logged in as</b-dropdown-header>
               <p class="mx-4 mb-2">Username</p>
