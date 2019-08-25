@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 from rest_framework import routers
 
 from podcastarchive.users.serializers import UserViewSet, UserView
@@ -18,6 +19,7 @@ router.register(r"podcasts", views.PodcastViewSet)
 router.register(r"episodes", views.EpisodeViewSet)
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="index.html"), name="index"),
     path("api/", include(router.urls), name="api-root"),
     path("api/auth/", include("rest_framework.urls")),
     path("admin/", admin.site.urls),
@@ -26,6 +28,7 @@ urlpatterns = [
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
+    *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
 ]
 
 if settings.DEBUG:
