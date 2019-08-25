@@ -15,7 +15,7 @@ const baseConfig = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: devMode ? '[name].js' : '[name].[hash].js',
+        filename: '[name].[hash:8].js',
     },
     module: {
         rules: [
@@ -91,7 +91,7 @@ const baseConfig = {
                 collapseWhitespace: true,
             },
             title: 'Tape Drive',
-            template: './template.html'
+            template: './template.html',
         }),
         new VueLoaderPlugin()
     ],
@@ -108,7 +108,7 @@ const devConfig = {
         compress: false,
         port: 9000,
         proxy: [{
-            context: ['/api', '/admin'],
+            context: ['/api', '/admin', "/static"],
             target: 'http://localhost:8000',
         }]
     }
@@ -116,6 +116,9 @@ const devConfig = {
 
 const prodConfig = {
     mode: 'production',
+    output: {
+        publicPath: "/static/",
+    },
     optimization: {
         minimizer: [
             new TerserPlugin({
@@ -130,11 +133,7 @@ const prodConfig = {
                 }
             }),
         ],
-        splitChunks: {
-            chunks: 'all'
-        }
     }
 };
-
 
 module.exports = merge(baseConfig, devMode ? devConfig : prodConfig);

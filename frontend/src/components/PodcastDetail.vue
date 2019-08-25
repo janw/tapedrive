@@ -18,7 +18,7 @@ export default {
   },
   created() {
     this.$api
-      .get(`/podcasts/${this.slug}/`)
+      .get(`/api/podcasts/${this.slug}/`)
       .then(response => {
         this.podcast = response.data;
       })

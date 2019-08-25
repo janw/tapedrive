@@ -1,4 +1,5 @@
 from django.core.files import File
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.db.transaction import atomic
@@ -7,8 +8,8 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
-
 from io import BytesIO
+
 import itertools
 import logging
 import requests
@@ -28,6 +29,8 @@ from actstream import action
 
 
 logger = logging.getLogger(__name__)
+
+User = get_user_model()
 
 
 class PodcastManager(models.Manager):
@@ -134,6 +137,13 @@ class Podcast(models.Model):
     summary = models.TextField(blank=True, null=True, verbose_name=_("Podcast Summary"))
 
     objects = PodcastManager()
+
+    subscribers = models.ManyToManyField(
+        User, verbose_name=_("Subscribers"), related_name="subscribed_podcasts"
+    )
+    followers = models.ManyToManyField(
+        User, verbose_name=_("Follwers"), related_name="interested_podcasts"
+    )
 
     class Meta:
         verbose_name = _("Podcast")

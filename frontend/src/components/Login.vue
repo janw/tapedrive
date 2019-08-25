@@ -30,7 +30,7 @@ export default {
       console.log("Logging in");
       e.preventDefault();
       this.$api
-        .post("/auth/token/", {
+        .post("/api/auth/token/", {
           username: this.username,
           password: this.password
         })

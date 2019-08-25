@@ -1,25 +1,21 @@
-version: '3'
+version: "3"
 
 services:
   db:
-    image: mysql:5.7
-    container_name: tapedrive_db
+    image: postgres
     restart: always
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
-      MYSQL_DATABASE: tapedrive
-      MYSQL_USER: tapedrive
-      MYSQL_PASSWORD: t4pedr1ve
+      POSTGRES_DATABASE: tapedrive
+      POSTGRES_USER: tapedrive
+      POSTGRES_PASSWORD: t4pedr1ve
   web:
+    build: .
     image: registry.gitlab.com/janw/tapedrive
-    container_name: tapedrive_web
-    command: ["./start-waiting.sh"]
+    restart: always
     volumes:
-      - .:/app
+      - ./media:/data
     ports:
       - "8273:8273"
-    links:
-      - db
     environment:
       DJANGO_ALLOWED_HOSTS: "*"
-      DATABASE_URL: "mysql://tapedrive:t4pedr1ve@db/tapedrive"
+      DATABASE_URL: "postgres://tapedrive:t4pedr1ve@db/tapedrive"

@@ -62,7 +62,6 @@ def create_default_settings(
     **kwargs,
 ):
     try:
-        Site = apps.get_model("sites", "Site")
         PodcastsSettings = apps.get_model("podcasts", "PodcastsSettings")
     except LookupError:
         return
@@ -73,12 +72,9 @@ def create_default_settings(
     if not PodcastsSettings.objects.using(using).exists():
         # The default settings set SITE_ID = 1 for django.contrib.sites, so we make
         # dependency on the default Site to create the initial settings object.
-        site = Site.objects.get(pk=getattr(settings, "SITE_ID", 1))
         if verbosity >= 2:
-            print("Creating default PodcastsSettings, setting site name")
-        site.name = getattr(settings, "SITE_NAME", "example.com")
-        site.save(using=using)
-        PodcastsSettings(site=site).save(using=using)
+            print("Creating default PodcastsSettings")
+        PodcastsSettings().save(using=using)
 
 
 class PodcastsConfig(AppConfig):

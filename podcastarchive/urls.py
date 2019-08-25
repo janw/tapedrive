@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from rest_framework import routers
 
-from podcastarchive.users.serializers import UserViewSet, UserView
+from listeners.serializers import UserViewSet, UserView
 from podcasts.api import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,

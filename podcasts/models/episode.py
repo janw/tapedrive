@@ -11,7 +11,6 @@ from string import Template
 import itertools
 
 from podcasts.conf import STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT
-from podcasts.models import BigPositiveIntegerField
 from podcasts.utils import strip_url
 from podcasts.utils.properties import (
     AVAILABLE_EPISODE_SEGMENTS,
@@ -88,7 +87,7 @@ class Episode(models.Model):
         allow_folders=False,
         verbose_name=_("File Location"),
     )
-    file_size = BigPositiveIntegerField(
+    file_size = models.BigIntegerField(
         blank=True, null=True, verbose_name=_("File Size")
     )
     file_sha256 = models.CharField(
