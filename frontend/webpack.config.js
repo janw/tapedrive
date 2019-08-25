@@ -1,5 +1,6 @@
 const path = require('path');
 const merge = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -80,6 +81,10 @@ const baseConfig = {
         }
     },
     plugins: [
+        new CopyWebpackPlugin([{
+            from: './images/favicon.png',
+            to: '.'
+        }], {}),
         new MiniCssExtractPlugin({
             filename: devMode ? '[name].css' : '[name].[hash].css',
             chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
