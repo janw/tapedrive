@@ -5,8 +5,10 @@ import VueSpinners from 'vue-spinners'
 import axios from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
+const apiRoot = process.env.API_ROOT ? process.env.API_ROOT : null
+
 const api = axios.create({
-	baseURL: 'http://localhost:9000/api/',
+	baseURL: apiRoot,
 	headers: {
 		Authorization: {
 			toString() {
@@ -18,7 +20,7 @@ const api = axios.create({
 
 // Function to refresh auth token
 const refreshAuthLogic = failedRequest => api.post(
-	'/auth/token/refresh/', { refresh: localStorage.getItem('refresh') })
+	'/api/auth/token/refresh/', { refresh: localStorage.getItem('refresh') })
 	.then(resp => {
 		localStorage.setItem('access', resp.data.access);
 		failedRequest.response.config.headers['Authentication'] = 'Bearer ' + resp.data.token;

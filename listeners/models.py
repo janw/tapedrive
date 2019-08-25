@@ -49,15 +49,6 @@ class User(AbstractUser):
         ("n", _("Allow None")),
     )
 
-    subscribed_podcasts = models.ManyToManyField(
-        "podcasts.Podcast",
-        verbose_name=_("Subscribed Podcasts"),
-        related_name="subscribers",
-    )
-    interested_podcasts = models.ManyToManyField(
-        "podcasts.Podcast", verbose_name=_("Added Podcasts"), related_name="followers"
-    )
-
     # Display settings
     sort_order_podcasts = models.CharField(
         choices=PODCASTS_ORDER_CHOICES,
@@ -120,4 +111,3 @@ class User(AbstractUser):
     def follow_podcast(self, podcast):
         self.interested_podcasts.add(podcast)
         self.save()
-

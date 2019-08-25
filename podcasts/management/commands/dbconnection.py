@@ -17,11 +17,17 @@ class Command(BaseCommand):
             sys.exit(0)
 
         # Wait for a proper database connection
-        while True:
+        print("Waiting for Database connection.")
+        retry_count = 30
+        while retry_count > 0:
             try:
                 connection.ensure_connection()
             except Exception:
-                print("Connection to database cannot be established.")
+                print(".", end="")
                 time.sleep(1)
+                retry_count -= 1
             else:
+                print()
                 sys.exit(0)
+        print("\nDatabase did not become available in time.")
+        sys.exit(1)

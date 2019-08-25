@@ -1,7 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.contrib.sites.models import Site
 from django.utils.translation import gettext as _
 
 import os
@@ -31,13 +28,7 @@ class IntegerRangeField(models.IntegerField):
         return super().formfield(**defaults)
 
 
-class BigPositiveIntegerField(models.PositiveIntegerField):
-    def db_type(self, connection):
-        return "bigint unsigned"
-
-
 class PodcastsSettings(models.Model):
-    site = models.OneToOneField(Site, on_delete=models.CASCADE)
     storage_directory = models.CharField(
         null=False,
         blank=False,
@@ -73,7 +64,7 @@ class PodcastsSettings(models.Model):
         verbose_name_plural = _("Podcasts Settings")
 
     def __str__(self):
-        return "%s Podcasts Settings" % self.site.name
+        return "Tape Drive Settings"
 
     def save(self, *args, **kwargs):
         # Expand user and vars now once, to prevent future changes to cause unexpected directory changes
@@ -82,9 +73,3 @@ class PodcastsSettings(models.Model):
         )
 
         super().save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Site)
-def create_site_settings(sender, instance, created, **kwargs):
-    if created:
-        PodcastsSettings.objects.create(site=instance)

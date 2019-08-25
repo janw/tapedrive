@@ -59,10 +59,10 @@ class Common(Configuration):
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
+        "django.contrib.messages",
         "django.contrib.sessions",
-        "django.contrib.sites",
         "django.contrib.staticfiles",
-        "podcastarchive.users",
+        "listeners",
         "podcasts",
         "background_task",
         "actstream",
@@ -77,7 +77,6 @@ class Common(Configuration):
         "django.middleware.locale.LocaleMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
-        "django.contrib.sites.middleware.CurrentSiteMiddleware",
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
     ]
 
@@ -92,6 +91,7 @@ class Common(Configuration):
                 "context_processors": [
                     "django.template.context_processors.request",
                     "django.contrib.auth.context_processors.auth",
+                    "django.contrib.messages.context_processors.messages",
                 ]
             },
         }
@@ -118,9 +118,6 @@ class Common(Configuration):
 
     LOGIN_REDIRECT_URL = "api-root"
 
-    SITE_ID = 1
-    SITE_NAME = "Tape Drive"
-
     # Internationalization
     # https://docs.djangoproject.com/en/2.0/topics/i18n/
     LANGUAGE_CODE = "en-us"
@@ -140,7 +137,7 @@ class Common(Configuration):
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-    AUTH_USER_MODEL = "users.User"
+    AUTH_USER_MODEL = "listeners.User"
 
     # Project settings
     COVER_IMAGE_SIZE = (500, 500)

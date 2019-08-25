@@ -101,7 +101,9 @@ assets/dist/
 *.xml
 
 # Files uploaded / saved from podcasts
+media/
 mediafiles/
+static/
 staticfiles/
 $HOME/
 
@@ -172,3 +174,4 @@ typings/
 # End of https://www.gitignore.io/api/node
 
 webpack-stats.json
+__old_templates/

@@ -23,7 +23,9 @@ export default {
     };
   },
   mounted() {
-    this.$api.get("/podcasts/").then(response => (this.data = response.data));
+    this.$api
+      .get("/api/podcasts/")
+      .then(response => (this.data = response.data));
   }
 };
 </script>
