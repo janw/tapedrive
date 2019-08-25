@@ -2,8 +2,6 @@ from django.apps import AppConfig
 from django.apps import apps as global_apps
 from django.db import DEFAULT_DB_ALIAS, router
 from django.db.models.signals import post_migrate
-from django.utils.translation import gettext_lazy as _
-from django.conf import settings
 from django.utils import timezone
 
 import logging
@@ -79,8 +77,8 @@ def create_default_settings(
 
 class PodcastsConfig(AppConfig):
     name = "podcasts"
-    verbose_name = _("Podcasts")
-    verbose_name_plural = _("Podcasts")
+    verbose_name = "Podcasts"
+    verbose_name_plural = "Podcasts"
 
     def ready(self):
         post_migrate.connect(create_default_settings, sender=self)
