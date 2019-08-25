@@ -38,7 +38,8 @@ COPY Procfile ./
 COPY manage.py ./
 COPY bin ./bin
 COPY --from=frontend /frontend/dist ./frontend/dist
-COPY podcastarchive ./podcastarchive
+COPY tapedrive ./tapedrive
+COPY listeners ./listeners
 COPY podcasts ./podcasts
 
 EXPOSE 8273

@@ -1,5 +1,5 @@
 """
-Django settings for podcastarchive project.
+Django settings for tapedrive project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/2.0/topics/settings/
@@ -80,7 +80,7 @@ class Common(Configuration):
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
     ]
 
-    ROOT_URLCONF = "podcastarchive.urls"
+    ROOT_URLCONF = "tapedrive.urls"
 
     TEMPLATES = [
         {
@@ -97,7 +97,7 @@ class Common(Configuration):
         }
     ]
 
-    WSGI_APPLICATION = "podcastarchive.wsgi.application"
+    WSGI_APPLICATION = "tapedrive.wsgi.application"
 
     # Database
     # https://docs.djangoproject.com/en/2.0/ref/settings/#databases

@@ -4,7 +4,7 @@ import sys
 
 if __name__ == "__main__":
     configuration = os.getenv("ENVIRONMENT", "development").title()
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "podcastarchive.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tapedrive.settings")
     os.environ.setdefault("DJANGO_CONFIGURATION", configuration)
 
     try:
