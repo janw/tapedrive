@@ -132,7 +132,6 @@ class Common(Configuration):
         "django.contrib.staticfiles.finders.FileSystemFinder",
         "django.contrib.staticfiles.finders.AppDirectoriesFinder",
     ]
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, "assets")]
 
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -176,14 +175,9 @@ class Development(Common):
 
     INTERNAL_IPS = ["127.0.0.1"]
 
-    INSTALLED_APPS = (
-        ["livereload"] + Common.INSTALLED_APPS + ["django_extensions", "debug_toolbar"]
-    )
+    INSTALLED_APPS = Common.INSTALLED_APPS + ["django_extensions", "debug_toolbar"]
 
-    MIDDLEWARE = Common.MIDDLEWARE + [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-        "livereload.middleware.LiveReloadScript",
-    ]
+    MIDDLEWARE = Common.MIDDLEWARE + ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
     SHELL_PLUS_PRE_IMPORTS = [
         ("podcasts.conf", "*"),
@@ -205,11 +199,14 @@ class Development(Common):
 
 
 class Testing(Common):
-
-    with TemporaryDirectory() as tmpdirname:
-        DATABASES = values.DatabaseURLValue(
-            "sqlite:///{}".format(os.path.join(tmpdirname, "tapedrive-testing.sqlite3"))
-        )
+    def __init__(self, *args, **kwargs):
+        super().__init(*args, **kwargs)
+        with TemporaryDirectory() as tmpdirname:
+            self.DATABASES = values.DatabaseURLValue(
+                "sqlite:///{}".format(
+                    os.path.join(tmpdirname, "tapedrive-testing.sqlite3")
+                )
+            )
 
 
 class Staging(Common):

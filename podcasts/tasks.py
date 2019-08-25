@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
@@ -35,19 +34,19 @@ def download_episode(media_url, file_path, id):
 
 @background()
 def regular_feed_refresh():
-    psettings = PodcastsSettings.objects.get(site__id=getattr(settings, "SITE_ID", 1))
+    for psettings in PodcastsSettings.objects.iterator():
 
-    print("Refreshing followed feeds ...")
-    # Refresh feeds of podcasts with at least one follower
-    for podcast in Podcast.objects.filter(followers__isnull=False).iterator():
-        podcast.update()
-        podcast.save()
+        print("Refreshing followed feeds ...")
+        # Refresh feeds of podcasts with at least one follower
+        for podcast in Podcast.objects.filter(followers__isnull=False).iterator():
+            podcast.update()
+            podcast.save()
 
-    print("Queueing downloads for subscribed feeds ...")
-    for podcast in Podcast.objects.filter(subscribers__isnull=False).iterator():
-        podcast.queue_missing_episodes_download_tasks(
-            storage_directory=psettings.storage_directory,
-            naming_scheme=psettings.naming_scheme,
-        )
+        print("Queueing downloads for subscribed feeds ...")
+        for podcast in Podcast.objects.filter(subscribers__isnull=False).iterator():
+            podcast.queue_missing_episodes_download_tasks(
+                storage_directory=psettings.storage_directory,
+                naming_scheme=psettings.naming_scheme,
+            )
 
     print("All done for now.")
