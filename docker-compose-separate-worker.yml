@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DATABASE: tapedrive
+      POSTGRES_USER: tapedrive
+      POSTGRES_PASSWORD: t4pedr1ve
+  web: &tapedrive
+    build: .
+    image: registry.gitlab.com/janw/tapedrive
+    restart: always
+    command: ["gunicorn", "-b", "0.0.0.0:8273", "-w", "4", "tapedrive.wsgi"]
+    volumes:
+      - ./media:/data
+    ports:
+      - "8273:8273"
+    environment:
+      DJANGO_ALLOWED_HOSTS: "*"
+      DATABASE_URL: "postgres://tapedrive:t4pedr1ve@db/tapedrive"
+  worker:
+    <<: *tapedrive
+    command: ["python", "manage.py ", "process_tasks"]
+    ports: []
