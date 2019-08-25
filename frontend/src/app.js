@@ -4,7 +4,7 @@ import VueResource from 'vue-resource'
 import VueSpinners from 'vue-spinners'
 import axios from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-
+import createErrorHandlerInterceptor from './interceptors';
 const apiRoot = process.env.API_ROOT ? process.env.API_ROOT : null
 
 const api = axios.create({
@@ -32,6 +32,8 @@ createAuthRefreshInterceptor(api, refreshAuthLogic, {
 	statusCodes: [401, 403]
 });
 
+createErrorHandlerInterceptor(api)
+
 
 var VueCookie = require('vue-cookie2');
 
@@ -49,7 +51,7 @@ Vue.use({
 	}
 })
 
-new Vue({
+export default new Vue({
 	el: '#app',
 	router,
 	template: '<Main/>',
