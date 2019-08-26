@@ -6,16 +6,37 @@ from rest_framework import serializers
 
 
 class PodcastSerializer(serializers.HyperlinkedModelSerializer):
+    episodes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
     class Meta:
         model = Podcast
-        fields = "__all__"
         lookup_field = "slug"
+        exclude = ("subscribers", "followers")
         extra_kwargs = {"url": {"lookup_field": "slug"}}
 
 
-class PodcastListSerializer(PodcastSerializer):
-    class Meta(PodcastSerializer.Meta):
-        fields = ("title", "slug", "id", "subtitle", "image", "url")
+class PodcastListSerializer(serializers.ModelSerializer):
+    num_episodes = serializers.IntegerField(read_only=True)
+    last_published = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Podcast
+        lookup_field = "slug"
+        fields = (
+            "title",
+            "slug",
+            "id",
+            "subtitle",
+            "image",
+            "num_episodes",
+            "last_published",
+        )
+
+
+class PodcastFromUrlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Podcast
+        fields = ("feed_url",)
 
 
 class EpisodeChapterSerializer(serializers.ModelSerializer):

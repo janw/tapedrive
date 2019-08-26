@@ -236,6 +236,13 @@ class Podcast(models.Model):
             return "<p>" + self.summary + "</p>"
         return self.summary
 
+    @property
+    def num_episodes(self):
+        return self.episodes.count()
+
+    def last_published(self):
+        return self.episodes.aggregate(l=models.Max("published"))["l"]
+
     @atomic
     def update(
         self,
