@@ -7,6 +7,7 @@ from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify, date as _date
 
 import os
+from uuid import uuid4
 from string import Template
 import itertools
 
@@ -21,6 +22,7 @@ from actstream import action
 
 
 class Episode(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     guid = models.CharField(
         blank=False,
         null=False,

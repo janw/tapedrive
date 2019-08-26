@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import renderers
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import status
 
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
@@ -31,6 +32,20 @@ class PodcastViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         instance = serializer.save()
         self.request.user.subscribed_podcasts.add(instance)
+
+    @action(detail=False, methods=["post"])
+    def add(self, request):
+        serializer = serializers.PodcastFromUrlSerializer(data=request.data)
+        if serializer.is_valid():
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(
+                serializer.data["feed_url"]
+            )
+            podcast.subscribers.add(request.user)
+            data = self.serializer_class(podcast, context={"request": request}).data
+            if created:
+                return Response(data, status=status.HTTP_201_CREATED)
+            return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EpisodeViewSet(viewsets.ModelViewSet):

@@ -4,7 +4,7 @@
     <img
       v-if="item.image"
       class="card-img-top d-md-none border-bottom"
-      :src="item.image.url"
+      :src="item.image"
       alt="Card image cap"
     />
     <b-card-body class="d-flex flex-column align-objects-start">
@@ -16,8 +16,23 @@
       </h3>
 
       <h6 v-if="item.subtitle" class="card-text text-muted">{{ item.subtitle }}</h6>
-      {{item.feed_url}}
+
+      <p class="card-text mt-auto mb-0 text-muted">
+        <span
+          v-if="item.fetched !== null"
+        >{{item.num_episodes}} episodes, last one published {{item.last_published | moment("from", "now")}}.</span>
+        <span v-else>Episodes have not been fetched yet</span>
+      </p>
     </b-card-body>
+    <div class="d-none d-md-block bg-dark card-img-container">
+      <div class="d-none d-md-flex flex-column h-100 justify-content-center align-objects-center">
+        <img v-if="item.image" :src="item.image" class="card-img-right" />
+        <div v-else>
+          <h6 class="mx-3 mt-3 text-muted">{{object.title}}</h6>
+          <p class="mx-3 text-muted">{% trans "(No Cover)" %}</p>
+        </div>
+      </div>
+    </div>
   </b-card>
 </template>
 
