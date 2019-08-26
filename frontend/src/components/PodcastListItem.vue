@@ -8,12 +8,7 @@
       alt="Card image cap"
     />
     <b-card-body class="d-flex flex-column align-objects-start">
-      <h3 class="card-title">
-        {{item.title}}
-        <small>
-          <b-badge>{{item.id}}</b-badge>
-        </small>
-      </h3>
+      <h3 class="card-title">{{item.title}}</h3>
 
       <h6 v-if="item.subtitle" class="card-text text-muted">{{ item.subtitle }}</h6>
 
