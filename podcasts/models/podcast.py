@@ -45,7 +45,8 @@ class PodcastManager(models.Manager):
 
         logger.info("Creating %(podcast)s" % {"podcast": feed_info.data["title"]})
         podcast = Podcast(feed_url=feed_info.url)
-        podcast.update(feed_info=feed_info, **kwargs)
+        podcast.update(feed_info=feed_info, create_episodes=False, **kwargs)
+        podcast.queue_full_update()
         return podcast
 
     def get_or_create_from_feed_url(self, feed_url, **kwargs):
@@ -232,8 +233,6 @@ class Podcast(models.Model):
 
     @property
     def summary_p(self):
-        if not self.summary.startswith("<p>"):
-            return "<p>" + self.summary + "</p>"
         return self.summary
 
     @property
@@ -241,9 +240,14 @@ class Podcast(models.Model):
         return self.episodes.count()
 
     def last_published(self):
-        return self.episodes.aggregate(l=models.Max("published"))["l"]
+        return self.episodes.aggregate(last=models.Max("published"))["last"]
 
-    @atomic
+    def queue_full_update(self):
+        from podcasts.tasks import refresh_feed
+
+        refresh_feed(self.id)
+        logger.info("Queued refresh task")
+
     def update(
         self,
         feed_info=None,

@@ -14,9 +14,9 @@
 
       <p class="card-text mt-auto mb-0 text-muted">
         <span
-          v-if="item.fetched !== null"
+          v-if="item.num_episodes > 0"
         >{{item.num_episodes}} episodes, last one published {{item.last_published | moment("from", "now")}}.</span>
-        <span v-else>Episodes have not been fetched yet</span>
+        <span v-else>No episodes yet.</span>
       </p>
     </b-card-body>
     <div class="d-none d-md-block bg-dark card-img-container">
@@ -45,17 +45,6 @@ export default {
         };
       }
     }
-  },
-  data() {
-    return {
-      //   title: "Fancy Podcast",
-      //   artist: "This cool artist",
-      //   badges: ["politics", "music"],
-      //   image: "/bla.png"
-      // },
-      modalShow: false,
-      isInTapeDrive: false
-    };
   }
 };
 </script>

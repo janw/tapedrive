@@ -3,10 +3,12 @@ from rest_framework import renderers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics
 
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.api import serializers
+from podcasts.api import pagination
 
 
 class PodcastViewSet(viewsets.ModelViewSet):
@@ -52,3 +54,12 @@ class EpisodeViewSet(viewsets.ModelViewSet):
 
     queryset = Episode.objects.all()
     serializer_class = serializers.EpisodeSerializer
+
+
+class PodcastEpisodesList(generics.ListAPIView):
+    serializer_class = serializers.EpisodeInlineSerializer
+    pagination_class = pagination.StandardResultsSetPagination
+
+    def get_queryset(self):
+        slug = self.kwargs["slug"]
+        return Episode.objects.filter(podcast__slug=slug).order_by("-published")

@@ -56,6 +56,11 @@
 <script>
 export default {
   name: "wrapper",
+  data() {
+    return {
+      loading: true
+    };
+  },
   computed: {
     menuRoutes() {
       return this.$router.options.routes.filter(function(route) {

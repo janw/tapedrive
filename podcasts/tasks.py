@@ -36,11 +36,10 @@ def download_episode(media_url, file_path, id):
 def regular_feed_refresh():
     for psettings in PodcastsSettings.objects.iterator():
 
-        print("Refreshing followed feeds ...")
+        print("Queueing feed refreshes ...")
         # Refresh feeds of podcasts with at least one follower
         for podcast in Podcast.objects.filter(followers__isnull=False).iterator():
-            podcast.update()
-            podcast.save()
+            refresh_feed(podcast.id)
 
         print("Queueing downloads for subscribed feeds ...")
         for podcast in Podcast.objects.filter(subscribers__isnull=False).iterator():
@@ -50,3 +49,9 @@ def regular_feed_refresh():
             )
 
     print("All done for now.")
+
+
+@background()
+def refresh_feed(podcast_id):
+    podcast = Podcast.objects.get(id=podcast_id)
+    podcast.update()
