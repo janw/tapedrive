@@ -3,6 +3,7 @@
     <h1>Your Podcasts</h1>
     <div class="row">
       <div class="col">
+        <Spinner :data="data" />
         <PodcastListItem v-for="item in data" v-bind:key="item.id" :item="item" />
       </div>
     </div>
@@ -11,10 +12,12 @@
 
 <script>
 import PodcastListItem from "./PodcastListItem";
+import Spinner from "./Spinner";
 export default {
   name: "home",
   components: {
-    PodcastListItem
+    PodcastListItem,
+    Spinner
   },
   data() {
     return {
@@ -22,7 +25,7 @@ export default {
       data: null
     };
   },
-  mounted() {
+  created() {
     this.$api
       .get("/api/podcasts/")
       .then(response => (this.data = response.data));

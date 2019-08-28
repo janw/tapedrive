@@ -5,8 +5,15 @@ from background_task.models import Task
 from rest_framework import serializers
 
 
+class EpisodeInlineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Episode
+        fields = ("id", "title", "subtitle", "published", "downloaded")
+
+
 class PodcastSerializer(serializers.HyperlinkedModelSerializer):
-    episodes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    num_episodes = serializers.IntegerField(read_only=True)
+    last_published = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Podcast
@@ -51,11 +58,10 @@ class EpisodeDownloadTaskSerializer(serializers.ModelSerializer):
         fields = ("task_hash", "run_at", "attempts", "failed_at")
 
 
-class EpisodeSerializer(serializers.HyperlinkedModelSerializer):
+class EpisodeSerializer(serializers.ModelSerializer):
     chapters = EpisodeChapterSerializer(many=True, read_only=True)
-    podcast = PodcastSerializer(read_only=True)
     download_task = EpisodeDownloadTaskSerializer(read_only=True)
 
     class Meta:
         model = Episode
-        fields = "__all__"
+        exclude = ("media_url",)

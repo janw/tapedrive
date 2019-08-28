@@ -22,8 +22,10 @@ const createErrorHandlerInterceptor = (api) => {
       return response;
     },
     (error) => {
-      if (error.response.status >= 500) {
-        console.log(error);
+      console.log(error);
+      if (error.response.status == 401) {
+        Vue.$router.push({ name: 'Login' });
+      } else if (error.response.status >= 500) {
         const h = Vue.$createElement;
         const vNodesMsg = h('p', { class: ['mb-0'] }, [
           `${error} on`,
@@ -64,7 +66,7 @@ const refreshAuthLogic = (failedRequest) =>
 export default {
   install(Vue) {
     createAuthRefreshInterceptor(api, refreshAuthLogic, {
-      statusCodes: [401, 403],
+      statusCodes: [403],
     });
     createErrorHandlerInterceptor(api);
 
