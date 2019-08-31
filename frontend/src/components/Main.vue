@@ -41,6 +41,7 @@
           <router-view></router-view>
         </transition>
       </main>
+      <WebPlayer />
       <footer class="footer">
         <div class="container">
           <small class="my-0 text-muted">
@@ -54,6 +55,7 @@
 </template>
 
 <script>
+import WebPlayer from "./WebPlayer";
 export default {
   name: "wrapper",
   data() {
@@ -77,7 +79,8 @@ export default {
       localStorage.removeItem("refresh");
       this.$router.push("/login");
     }
-  }
+  },
+  components: { WebPlayer }
 };
 </script>
 
