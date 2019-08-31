@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <b-alert v-model="showAlert" variant="secondary" dismissible>
-      <span v-if="item.created">Added</span>
-      <span v-else>Subscribed to</span>
-      <router-link
-        :to="{ name: 'PodcastDetail', params: { slug: item.slug }}"
-        class="alert-link"
-      >{{item.title}}</router-link>
-      from {{item.url}}
-    </b-alert>
-  </div>
+  <b-alert v-model="showAlert" variant="secondary" dismissible>
+    <span v-if="item.created_now">Added</span>
+    <span v-else>Subscribed to</span>
+    <router-link
+      :to="{ name: 'PodcastDetail', params: { slug: item.slug }}"
+      class="alert-link"
+    >{{item.title}}</router-link>
+    from {{item.feed_url}}
+  </b-alert>
 </template>
 
 <script>
@@ -24,7 +22,7 @@ export default {
           title: "Untitled",
           feed_url: "https://tapedrive.io/randomfeed.xml",
           slug: "slug-123",
-          created: true
+          created_now: true
         };
       }
     }

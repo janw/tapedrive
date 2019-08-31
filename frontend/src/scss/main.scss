@@ -1,15 +1,17 @@
-$font-family-sans-serif:    'Fira Sans Condensed', "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-$font-family-base:          $font-family-sans-serif;
-$headings-font-family:      'PT Sans Narrow', sans-serif;
-$font-size-base:            1.15rem;
-$font-weight-normal:        300;
-$font-weight-bold:          700;
+$font-family-sans-serif: 'Fira Sans Condensed', 'Segoe UI', Roboto,
+  'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+  'Segoe UI Symbol';
+$font-family-base: $font-family-sans-serif;
+$headings-font-family: 'PT Sans Narrow', sans-serif;
+$font-size-base: 1.15rem;
+$font-weight-normal: 300;
+$font-weight-bold: 700;
 
 $gray-100: #f8f9fa !default;
 $lighter: #dddddd;
 
 $theme-colors: (
-  "lighter":    $lighter,
+  'lighter': $lighter,
 );
 
 $grid-breakpoints: (
@@ -17,24 +19,23 @@ $grid-breakpoints: (
   sm: 576px,
   md: 768px,
   lg: 890px,
-  xl: 992px
+  xl: 992px,
 );
 
 $container-max-widths: (
   sm: 540px,
   md: 720px,
   lg: 840px,
-  xl: 960px
+  xl: 960px,
 );
 
 $wrapper-max-width: 1050px;
 
 @import 'bootstrap/scss/bootstrap.scss';
 @import 'bootstrap-vue/src/index.scss';
-@import "borders-responsive";
-@import "spinkit";
-@import "dark-mode";
-
+@import 'borders-responsive';
+@import 'spinkit';
+@import 'dark-mode';
 
 //
 //  Elements in the top navbar
@@ -60,7 +61,6 @@ $wrapper-max-width: 1050px;
     & h1 small {
       font-size: 75%;
     }
-
 
     &:hover {
       color: #000;
@@ -89,8 +89,6 @@ $wrapper-max-width: 1050px;
   }
 }
 
-
-
 .bg-white-transparent {
   background-color: rgba($white, 0.9);
 }
@@ -114,7 +112,7 @@ strong {
   background-color: $gray-100;
   @extend .border;
   @extend .rounded;
-  border-color:$gray-300;
+  border-color: $gray-300;
   padding: 1px;
   margin: 0.1rem;
 
@@ -123,10 +121,10 @@ strong {
     border-color: lighten($code-color, 30%) !important;
     background-color: lighten($code-color, 40%) !important;
   }
-
 }
 
-#id_app-naming_scheme, #id_app-inpath_dateformat {
+#id_app-naming_scheme,
+#id_app-inpath_dateformat {
   @extend .text-monospace;
 }
 
@@ -147,27 +145,32 @@ strong {
 }
 
 #summary p.collapse:not(.show) {
-    height: 69px !important;
-    overflow: hidden;
-    opacity: 0.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  height: 69px !important;
+  overflow: hidden;
+  opacity: 0.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 #summary p.collapsing {
-    min-height: 69px !important;
+  min-height: 69px !important;
 }
 
-.list-group-item, .list-group-item:hover{ z-index: auto; }
+.list-group-item,
+.list-group-item:hover {
+  z-index: auto;
+}
 
 @include list-group-item-variant('lighter', #fefefe, #acacac);
 @include list-group-item-variant('lightest', #ffffff, #dddddd);
 
 .card-full-link {
   position: absolute;
-  top: 0; left: 0;
-  height: 100%; width: 100%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
 }
 
 #podcast-summary {
@@ -184,7 +187,6 @@ strong {
   }
 }
 
-
 #id_listener-subscribed_podcasts {
   padding-top: 0.15rem;
 
@@ -198,14 +200,14 @@ strong {
   }
 }
 
-input[name="listener-subscribed_podcasts"] {
+input[name='listener-subscribed_podcasts'] {
   margin-right: calc(0.375rem + 1px);
 }
 
-label[for^="id_listener-subscribed_podcasts"] {
-    @extend .text-dark;
-    display: block;
-    margin-bottom: 0rem;
+label[for^='id_listener-subscribed_podcasts'] {
+  @extend .text-dark;
+  display: block;
+  margin-bottom: 0rem;
 }
 
 .col-form-label {
@@ -235,14 +237,14 @@ footer.footer {
   }
 }
 
-@include  media-breakpoint-down(md) {
-    #fullscreen_background, #credit_badge {
+@include media-breakpoint-down(md) {
+  #fullscreen_background,
+  #credit_badge {
     display: none !important;
   }
 }
 
-
-input[type="file"] {
+input[type='file'] {
   @extend .form-control;
 }
 
@@ -252,16 +254,18 @@ input[type="file"] {
 }
 
 .filter-fade {
-    filter: grayscale(1) brightness(60%) contrast(150%);
-    opacity: 0.5;
+  filter: grayscale(1) brightness(60%) contrast(150%);
+  opacity: 0.5;
 }
 
 @keyframes filter-animation {
-  0%, 25% {
+  0%,
+  25% {
     opacity: 0;
   }
 
-  0%, 75%{
+  0%,
+  75% {
     filter: grayscale(1);
   }
 
@@ -289,7 +293,8 @@ input[type="file"] {
 }
 
 @keyframes delayed-opacity-animation {
-  0%, 65% {
+  0%,
+  65% {
     opacity: 0;
   }
   100% {
@@ -297,10 +302,8 @@ input[type="file"] {
   }
 }
 
-
 $grid-columns: 10;
 $grid-gutter-width: 10px;
-
 
 .discovery-cover {
   padding-bottom: $grid-gutter-width/2;
@@ -316,7 +319,6 @@ $grid-gutter-width: 10px;
     @extend .border;
     @extend .rounded;
     @extend .shadow-sm;
-
   }
 }
 
@@ -328,4 +330,8 @@ $grid-gutter-width: 10px;
   margin: 0.1rem;
   font-size: 0.8rem;
   text-align: center;
+}
+
+.spinner-border-sm {
+  margin-bottom: 4px;
 }

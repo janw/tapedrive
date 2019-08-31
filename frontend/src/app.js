@@ -17,7 +17,7 @@ Vue.use(VueSpinners);
 Vue.use(InfiniteLoading, {
   slots: {
     spinner: Spinner,
-    noResults: 'No results available',
+    noResults: '',
     noMore: InfiniteNoMore,
   },
 });

@@ -25,20 +25,15 @@ logger = logging.getLogger(__name__)
 USER_AGENT = "Podcast-Archive/0.1 (https://github.com/janw/tapedrive)"
 HEADERS = {"User-Agent": USER_AGENT}
 
+session = requests.Session()
+session.headers.update(HEADERS)
+
 feed_info = namedtuple("feed_info", ["data", "url", "next_page", "last_page"])
 
 
 def refresh_feed(feed_url):
-    try:
-        response = requests.get(feed_url, headers=HEADERS, allow_redirects=True)
-    except requests.exceptions.ConnectionError:
-        logger.error("Connection error")
-        return None
-
-    # Escape improper feed-URL
-    if response.status_code >= 400:
-        logger.error("HTTP error %d: %s" % (response.status_code, response.reason))
-        return None
+    response = session.get(feed_url, allow_redirects=True)
+    response.raise_for_status()
 
     feedobj = feedparser.parse(response.content)
 

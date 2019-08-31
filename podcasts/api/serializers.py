@@ -40,10 +40,8 @@ class PodcastListSerializer(serializers.ModelSerializer):
         )
 
 
-class PodcastFromUrlSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Podcast
-        fields = ("feed_url",)
+class PodcastFromUrlSerializer(serializers.Serializer):
+    feed_url = serializers.URLField()
 
 
 class EpisodeChapterSerializer(serializers.ModelSerializer):
