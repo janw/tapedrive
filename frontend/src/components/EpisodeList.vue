@@ -11,6 +11,9 @@
           />
         </div>
         <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+        <div class="text-center" v-if="data.length == 0">
+          <small class="text-muted">For new podcasts it takes a few minutes for episodes to appear.</small>
+        </div>
       </b-col>
     </b-row>
     <b-modal v-if="selectedModal" size="lg" v-model="selectedModal" title="Episode Details">

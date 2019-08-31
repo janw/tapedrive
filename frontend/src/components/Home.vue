@@ -3,7 +3,6 @@
     <h1>Your Podcasts</h1>
     <b-row>
       <b-col>
-        <Spinner :data="data" />
         <PodcastListItem v-for="(item, $index) in data" :key="$index" :item="item" />
         <infinite-loading @infinite="infiniteHandler"></infinite-loading>
       </b-col>

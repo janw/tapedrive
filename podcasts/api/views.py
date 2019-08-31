@@ -7,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
 
+from requests import HTTPError, ConnectionError
+
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.api import serializers
@@ -40,13 +42,15 @@ class PodcastViewSet(viewsets.ModelViewSet):
     def add(self, request):
         serializer = serializers.PodcastFromUrlSerializer(data=request.data)
         if serializer.is_valid():
-            podcast, created = Podcast.objects.get_or_create_from_feed_url(
-                serializer.data["feed_url"]
-            )
-            podcast.subscribers.add(request.user)
+            try:
+                podcast, created = Podcast.objects.get_or_create_from_feed_url(
+                    serializer.data["feed_url"], subscriber=request.user
+                )
+            except HTTPError as exc:
+                return Response(serializer.data, status=exc.response.status_code)
+
             data = self.serializer_class(podcast, context={"request": request}).data
-            if created:
-                return Response(data, status=status.HTTP_201_CREATED)
+            data["created_now"] = created
             return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

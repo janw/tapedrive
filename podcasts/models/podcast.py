@@ -49,25 +49,29 @@ class PodcastManager(models.Manager):
         podcast.queue_full_update()
         return podcast
 
-    def get_or_create_from_feed_url(self, feed_url, **kwargs):
+    def get_or_create_from_feed_url(
+        self, feed_url, feed_info=None, subscriber=None, **kwargs
+    ):
         self._for_write = True
-        feed_info = kwargs.pop("feed_info", None)
         if not feed_info:
             feed_info = refresh_feed(feed_url)
         if not feed_info:
             logger.error("Feed %(feed)s seems dead" % {"feed": feed_url})
             return None, False
 
+        created = False
         try:
             podcast = self.get(feed_url=feed_info.url)
             logger.info("Found existing %(podcast)s" % {"podcast": podcast.title})
-            return podcast, False
         except self.model.DoesNotExist:
             # Args now include feed_info to prevent a second refresh happening down the line
-            return (
-                self.create_from_feed_url(feed_info.url, feed_info=feed_info, **kwargs),
-                True,
+            podcast = self.create_from_feed_url(
+                feed_info.url, feed_info=feed_info, **kwargs
             )
+            created = True
+        if subscriber:
+            podcast.subscribers.add(subscriber)
+        return podcast, created
 
     def create_from_itunes_id(self, itunes_id, **kwargs):
         url_parts = list(urlparse(ITUNES_LOOKUP_URL))

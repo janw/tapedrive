@@ -22,31 +22,12 @@ const createErrorHandlerInterceptor = (api) => {
       return response;
     },
     (error) => {
-      console.log(error);
+      console.error(error);
       if (error.response.status == 401) {
         Vue.$router.push({ name: 'Login' });
-      } else if (error.response.status >= 500) {
-        const h = Vue.$createElement;
-        const vNodesMsg = h('p', { class: ['mb-0'] }, [
-          `${error} on`,
-          h('br'),
-          h('code', {}, [
-            error.response.config.method.toUpperCase(),
-            ' ',
-            error.response.config.url,
-          ]),
-        ]);
-        Vue.$bvToast.toast([vNodesMsg], {
-          title: 'Backend Error',
-          variant: 'danger',
-          autoHideDelay: 5000,
-          appendToast: true,
-          toaster: 'b-toaster-bottom-right',
-          visible: true,
-          solid: true,
-        });
+      } else if (error.response.status >= 400) {
+        return Promise.reject(error.response);
       }
-      return Promise.reject(error.response);
     }
   );
 };
