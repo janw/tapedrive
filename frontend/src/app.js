@@ -1,16 +1,29 @@
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
-import VueResource from 'vue-resource';
+import InfiniteLoading from 'vue-infinite-loading';
 import VueSpinners from 'vue-spinners';
+
+import router from './router';
+import Api from './api';
+import Mixins from './mixins';
+import Main from './components/Main';
+import Spinner from './components/Spinner';
+import InfiniteNoMore from './components/InfiniteNoMore';
+
 Vue.use(require('vue-moment'));
 Vue.use(BootstrapVue);
 Vue.use(VueSpinners);
 
-import Main from './components/Main.vue';
-import router from './router';
-import Api from './api';
+Vue.use(InfiniteLoading, {
+  slots: {
+    spinner: Spinner,
+    noResults: 'No results available',
+    noMore: InfiniteNoMore,
+  },
+});
 
 Vue.use(Api);
+Vue.use(Mixins);
 
 export default new Vue({
   el: '#app',
