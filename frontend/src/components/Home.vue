@@ -1,34 +1,28 @@
 <template>
   <div>
     <h1>Your Podcasts</h1>
-    <div class="row">
-      <div class="col">
+    <b-row>
+      <b-col>
         <Spinner :data="data" />
-        <PodcastListItem v-for="item in data" v-bind:key="item.id" :item="item" />
-      </div>
-    </div>
+        <PodcastListItem v-for="(item, $index) in data" :key="$index" :item="item" />
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
 <script>
 import PodcastListItem from "./PodcastListItem";
-import Spinner from "./Spinner";
 export default {
-  name: "home",
   components: {
-    PodcastListItem,
-    Spinner
+    PodcastListItem
   },
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
-      data: null
+      endpoint: "/api/podcasts/",
+      page: 1,
+      data: []
     };
-  },
-  created() {
-    this.$api
-      .get("/api/podcasts/")
-      .then(response => (this.data = response.data));
   }
 };
 </script>

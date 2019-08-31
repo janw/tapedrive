@@ -1,3 +1,5 @@
+from django.db.models.functions import Lower
+
 from rest_framework import viewsets
 from rest_framework import renderers
 from rest_framework.decorators import action
@@ -8,12 +10,11 @@ from rest_framework import generics
 from podcasts.models.podcast import Podcast
 from podcasts.models.episode import Episode
 from podcasts.api import serializers
-from podcasts.api import pagination
 
 
 class PodcastViewSet(viewsets.ModelViewSet):
 
-    queryset = Podcast.objects.all()
+    queryset = Podcast.objects.order_by(Lower("title"))
     serializer_class = serializers.PodcastSerializer
     list_serializer_class = serializers.PodcastListSerializer
     lookup_field = "slug"
@@ -51,14 +52,17 @@ class PodcastViewSet(viewsets.ModelViewSet):
 
 
 class EpisodeViewSet(viewsets.ModelViewSet):
-
     queryset = Episode.objects.all()
     serializer_class = serializers.EpisodeSerializer
+
+    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    def shownotes(self, request, *args, **kwargs):
+        episode = self.get_object()
+        return Response(episode.shownotes)
 
 
 class PodcastEpisodesList(generics.ListAPIView):
     serializer_class = serializers.EpisodeInlineSerializer
-    pagination_class = pagination.StandardResultsSetPagination
 
     def get_queryset(self):
         slug = self.kwargs["slug"]

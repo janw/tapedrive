@@ -1,24 +1,24 @@
 <template>
-  <div class="row" v-if="data">
-    <div class="col-12">
-      <div class="list-group mb-4">
-        <EpisodeListItem
-          v-for="item in data.results"
-          :key="item.id"
-          :item="item"
-          v-on:showModal="showModal"
-        />
-
-        <div v-if="selectedModal">
-          <b-modal size="lg" v-model="selectedModal" title="Episode Details">
-            <EpisodeDetailModal :item="selectedItem" />
-            <div slot="modal-footer">
-              <b-button variant="outline-secondary" @click="hideModal">Close</b-button>
-            </div>
-          </b-modal>
+  <div v-if="data">
+    <b-row>
+      <b-col>
+        <div class="list-group mb-4">
+          <EpisodeListItem
+            v-for="item in data"
+            :key="item.id"
+            :item="item"
+            v-on:showModal="showModal"
+          />
         </div>
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+      </b-col>
+    </b-row>
+    <b-modal v-if="selectedModal" size="lg" v-model="selectedModal" title="Episode Details">
+      <EpisodeDetailModal :item="selectedItem" />
+      <div slot="modal-footer">
+        <b-button variant="outline-secondary" @click="hideModal">Close</b-button>
       </div>
-    </div>
+    </b-modal>
   </div>
 </template>
 
@@ -30,16 +30,12 @@ export default {
   props: ["slug"],
   data() {
     return {
-      data: null,
+      endpoint: `/api/podcastepisodes/${this.slug}/`,
+      page: 1,
+      data: [],
       selectedItem: {},
       selectedModal: false
     };
-  },
-  mounted() {
-    this.$api
-      .get(`/api/podcastepisodes/${this.slug}/`)
-      .then(response => (this.data = response.data))
-      .catch(e => {});
   },
   methods: {
     showModal(item) {

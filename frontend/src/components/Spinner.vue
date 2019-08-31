@@ -1,16 +1,21 @@
 <template>
   <div
-    v-if="data === null"
-    class="d-flex flex-column justify-content-center align-items-center mb-3 spinner-container"
+    class="d-flex justify-content-center align-items-center mb-3 spinner-container"
+    :class="{ 'flex-column': stacked }"
   >
-    <b-spinner variant="secondary" label="Loading ..."></b-spinner>
-    <p class="mt-3 text-muted">Loading …</p>
+    <b-spinner variant="secondary"></b-spinner>
+    <p class="my-3 mx-3 text-muted">Loading</p>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["data"]
+  props: {
+    stacked: {
+      type: Boolean,
+      default: true
+    }
+  }
 };
 </script>
 
