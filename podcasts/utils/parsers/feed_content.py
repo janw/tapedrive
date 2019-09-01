@@ -21,7 +21,15 @@ PODCAST_INFO_KEYS = [
     "updated",
 ]
 
-EPISODE_INFO_KEYS = ["link", "subtitle", "title", "published", "description", "guid"]
+EPISODE_INFO_KEYS = [
+    "link",
+    "subtitle",
+    "title",
+    "published",
+    "description",
+    "guid",
+    "image",
+]
 
 
 def parse_chapters(object):

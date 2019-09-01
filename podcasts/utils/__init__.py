@@ -9,12 +9,11 @@ from shutil import copyfileobj, move
 from urllib.parse import urlparse, urlunparse
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError, URLError
+from functools import lru_cache
+from django.core.files import File
 
 import requests
 from feedparser import CharacterEncodingOverride
-from PIL import Image
-
-from django.conf import settings
 
 from podcasts.utils.filters import shownotes_image_cleaner
 from podcasts.utils.parsers.feed_content import parse_feed_info
@@ -112,8 +111,9 @@ def download_file(link, filename):
         return
 
 
-def download_cover(img_url, file):
-    logger.info("Downloading cover")
+@lru_cache(maxsize=256)
+def download_cover(img_url):
+    logger.info(f"Downloading cover {img_url}")
 
     # Remove query params from URL (could be size-restricting, example: NPR's Invisibilia)
     # Of course that does not work on for example private feeds that use query params for
@@ -123,58 +123,18 @@ def download_cover(img_url, file):
     logger.debug("Query params (removed on first try): %s", url.query)
     url = url._replace(query="")
     unqueried_img_url = urlunparse(url)
-    response = requests.get(unqueried_img_url, headers=HEADERS, allow_redirects=True)
+    response = session.get(unqueried_img_url, allow_redirects=True)
     if response.status_code >= 400:
         logger.info("Failed without query string, trying again.")
         # If that fails, try again with the original URL. After that fail softly
-        response = requests.get(img_url, headers=HEADERS, allow_redirects=True)
+        response = session.get(img_url, allow_redirects=True)
         if response.status_code >= 400:
             return
-        else:
-            logger.info("Success.")
+        logger.info("Success.")
 
     name = url.path.split("/")[-1]
-    name, ext = os.path.splitext(name)
-    target_img_size = getattr(settings, "COVER_IMAGE_SIZE", (1000, 1000))
     finput = BytesIO(response.content)
-    img = Image.open(finput)
-    logger.debug("Original image size is %dx%d." % img.size)
-
-    # Return early and untouched if the image is smaller than desired
-    if img.size[0] < target_img_size[0] or img.size[1] < target_img_size[1]:
-        logger.info("Image size is smaller than desired. Ain't (re)touching that.")
-        finput.seek(0)
-        file.write(finput.read())
-        file.seek(0)
-        return name + ext
-
-    # Resize the image (from https://djangosnippets.org/snippets/10597/)
-    img.thumbnail(target_img_size)
-
-    if ext.lower() != "png":
-
-        # If the downloaded image has an alpha-channel: fill background
-        if img.mode in ("RGBA", "LA"):
-            logger.debug(
-                "Non-PNG image with alpha-channel will be placed on white background"
-            )
-            fill_color = (255, 255, 255, 255)
-            background = Image.new(img.mode[:-1], img.size, fill_color)
-            background.paste(img, img.split()[-1])
-            img = background
-
-        if img.mode != "RGB":
-            img = img.convert("RGB")
-
-        # After modifications, save it to the output
-        img.save(file, format="JPEG", quality=95)
-        name += "jpg"
-    else:
-        img.save(file, format="PNG", transparency=False)
-        name += "png"
-
-    file.seek(0)
-    return name
+    return File(finput, name=name)
 
 
 def strip_url(link):
