@@ -69,7 +69,6 @@ const baseConfig = {
     extensions: ['.vue', '.js'],
     alias: {
       vue: 'vue/dist/vue.js',
-      '@': path.resolve(__dirname, 'src'),
     },
   },
   plugins: [
