@@ -52,7 +52,8 @@ export default {
   data() {
     return {
       item: null,
-      podcastData: null
+      podcastData: null,
+      shownotes: null
     };
   },
   created() {
