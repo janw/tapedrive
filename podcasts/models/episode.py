@@ -17,11 +17,12 @@ from podcasts.utils.properties import (
     AVAILABLE_EPISODE_SEGMENTS,
     AVAILABLE_PODCAST_SEGMENTS,
 )
+from podcasts.models.common import CommonAbstract
 from podcasts import utils
 from actstream import action
 
 
-class Episode(models.Model):
+class Episode(CommonAbstract):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     guid = models.CharField(
         blank=False,

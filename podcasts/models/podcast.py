@@ -1,4 +1,3 @@
-from django.core.files import File
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
@@ -8,7 +7,6 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.shortcuts import reverse
 from django.template.defaultfilters import slugify
-from io import BytesIO
 
 import itertools
 import logging
@@ -21,9 +19,9 @@ from podcasts.conf import (
     DEFAULT_DATE_FORMAT,
     ITUNES_LOOKUP_URL,
 )
-from podcasts.utils import refresh_feed, feed_info, download_cover, HEADERS
-from podcasts.models import cover_image_filename
+from podcasts.utils import refresh_feed, feed_info, HEADERS
 from podcasts.models.episode import Episode
+from podcasts.models.common import CommonAbstract
 
 from actstream import action
 
@@ -96,7 +94,7 @@ class PodcastManager(models.Manager):
             )
 
 
-class Podcast(models.Model):
+class Podcast(CommonAbstract):
     title = models.CharField(
         default="Untitled", null=False, max_length=255, verbose_name=_("Podcast Title")
     )
@@ -125,12 +123,6 @@ class Podcast(models.Model):
     )
     link = models.URLField(
         blank=True, null=True, max_length=64, verbose_name=_("Podcast Link")
-    )
-    image = models.ImageField(
-        blank=True,
-        null=True,
-        upload_to=cover_image_filename,
-        verbose_name=_("Cover Image"),
     )
     itunes_explicit = models.NullBooleanField(verbose_name=_("Explicit Tag"))
     itunes_type = models.CharField(
@@ -194,22 +186,19 @@ class Podcast(models.Model):
         for ep in episode_info:
             ep["podcast"] = self
             chapters = ep.pop("chapters", [])
+            image = ep.pop("image", None)
+
             episode, created = Episode.objects.update_or_create(
                 guid=ep["guid"], defaults=ep
             )
+
+            episode.insert_cover(image)
 
             episode.add_chapters(chapters)
 
             all_created.append(created)
 
         return all_created
-
-    def insert_cover(self, img_url):
-        output = BytesIO()
-        name = download_cover(img_url, output)
-
-        if name:
-            self.image.save(name, File(output), save=True)
 
     def add_subscriber(self, listener):
         self.subscribers.add(listener)

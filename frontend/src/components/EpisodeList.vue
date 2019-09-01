@@ -7,6 +7,7 @@
             v-for="item in data"
             :key="item.id"
             :item="item"
+            :slug="slug"
             v-on:showModal="showModal"
           />
         </div>

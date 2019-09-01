@@ -11,6 +11,12 @@ class EpisodeInlineSerializer(serializers.ModelSerializer):
         fields = ("id", "title", "subtitle", "published", "downloaded")
 
 
+class PodcastInlineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Podcast
+        exclude = ("subscribers", "followers")
+
+
 class PodcastSerializer(serializers.HyperlinkedModelSerializer):
     num_episodes = serializers.IntegerField(read_only=True)
     last_published = serializers.DateTimeField(read_only=True)
@@ -44,7 +50,7 @@ class PodcastFromUrlSerializer(serializers.Serializer):
     feed_url = serializers.URLField()
 
 
-class EpisodeChapterSerializer(serializers.ModelSerializer):
+class EpisodeChapterInlineSerializer(serializers.ModelSerializer):
     class Meta:
         model = EpisodeChapter
         fields = ("starttime", "title", "link", "image")
@@ -57,9 +63,15 @@ class EpisodeDownloadTaskSerializer(serializers.ModelSerializer):
 
 
 class EpisodeSerializer(serializers.ModelSerializer):
-    chapters = EpisodeChapterSerializer(many=True, read_only=True)
     download_task = EpisodeDownloadTaskSerializer(read_only=True)
+    podcast = PodcastInlineSerializer(read_only=True)
 
     class Meta:
         model = Episode
-        exclude = ("media_url",)
+        exclude = ("media_url", "user", "shownotes")
+
+
+class EpisodeListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Episode
+        fields = ("title", "id", "podcast", "published")
