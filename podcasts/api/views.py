@@ -27,7 +27,9 @@ class PodcastViewSet(viewsets.ModelViewSet):
         return self.serializer_class
 
     def get_queryset(self, *args, **kwargs):
-        return self.queryset.filter(subscribers=self.request.user)
+        if self.action == "list":
+            return self.queryset.filter(subscribers=self.request.user)
+        return self.queryset
 
     @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
     def summary(self, request, *args, **kwargs):
@@ -58,6 +60,17 @@ class PodcastViewSet(viewsets.ModelViewSet):
 class EpisodeViewSet(viewsets.ModelViewSet):
     queryset = Episode.objects.all()
     serializer_class = serializers.EpisodeSerializer
+    list_serializer_class = serializers.EpisodeListSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        if self.action == "list":
+            return self.queryset.order_by("-published", "title")
+        return self.queryset
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return self.list_serializer_class
+        return self.serializer_class
 
     @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
     def shownotes(self, request, *args, **kwargs):

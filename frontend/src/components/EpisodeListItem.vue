@@ -6,7 +6,14 @@
     <div class="w-100 d-md-flex justify-content-between">
       <small class="mt-3 text-muted">Published {{item.published | moment("calendar")}}</small>
       <div class="mt-2 text-center text-md-left">
-        <b-button v-on:click="$emit('showModal', item)" variant="outline-secondary">Details</b-button>
+        <b-button-group>
+          <b-button v-on:click="$emit('showModal', item)" variant="outline-secondary">Peek</b-button>
+          <b-button
+            v-if="slug"
+            :to="{ name: 'EpisodeDetail', params: { slug: slug, episode: item.id }}"
+            variant="outline-secondary"
+          >Details</b-button>
+        </b-button-group>
       </div>
     </div>
   </b-list-group-item>
@@ -15,6 +22,9 @@
 <script>
 export default {
   props: {
+    slug: {
+      type: String
+    },
     item: {
       type: Object,
       // Object or array defaults must be returned from
