@@ -23,7 +23,7 @@ class EpisodeChapter(models.Model):
     episode = models.ForeignKey(
         "podcasts.Episode",
         on_delete=models.CASCADE,
-        related_name="chapters",
+        related_name="old_chapters",
         verbose_name=_("Episode of Chapter"),
     )
     starttime = models.DurationField(

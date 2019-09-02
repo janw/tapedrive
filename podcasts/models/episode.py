@@ -5,6 +5,7 @@ from django.db.transaction import atomic
 from django.dispatch import receiver
 from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify, date as _date
+from django.contrib.postgres.fields import JSONField
 
 import os
 from uuid import uuid4
@@ -18,6 +19,7 @@ from podcasts.utils.properties import (
     AVAILABLE_PODCAST_SEGMENTS,
 )
 from podcasts.models.common import CommonAbstract
+from podcasts.utils.serializers import PodcastsJSONEncoder
 from podcasts import utils
 from actstream import action
 
@@ -50,7 +52,9 @@ class Episode(CommonAbstract):
     description = models.TextField(
         blank=True, null=True, verbose_name=_("Episode Summary")
     )
-    link = models.URLField(blank=True, null=True, verbose_name=_("Episode Link"))
+    link = models.URLField(
+        blank=True, null=True, max_length=2048, verbose_name=_("Episode Link")
+    )
     media_url = models.URLField(
         blank=True,
         null=True,
@@ -114,6 +118,7 @@ class Episode(CommonAbstract):
     )
 
     shownotes = models.TextField(blank=True, null=True, verbose_name=_("Show Notes"))
+    chapters = JSONField(encoder=PodcastsJSONEncoder, default=list, null=True)
 
     class Meta:
         verbose_name = _("Episode")

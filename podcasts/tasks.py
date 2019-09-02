@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
@@ -10,6 +12,8 @@ from background_task import background
 from actstream import action
 
 User = get_user_model()
+
+logger = logging.getLogger(__name__)
 
 
 @background()
@@ -53,5 +57,8 @@ def regular_feed_refresh():
 
 @background()
 def refresh_feed(podcast_id):
-    podcast = Podcast.objects.get(id=podcast_id)
-    podcast.update()
+    try:
+        podcast = Podcast.objects.get(id=podcast_id)
+        podcast.update()
+    except Exception:
+        logger.exception("Refresh task failed", exc_info=True)

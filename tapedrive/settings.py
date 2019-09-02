@@ -153,7 +153,7 @@ class Common(Configuration):
         "handlers": {"console": {"class": "logging.StreamHandler"}},
         "loggers": {
             "django": {"handlers": ["console"], "level": "INFO"},
-            "podcasts": {"handlers": ["console"], "level": "INFO"},
+            "podcasts": {"handlers": ["console"], "level": "DEBUG"},
         },
     }
 

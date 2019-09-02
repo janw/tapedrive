@@ -103,7 +103,11 @@ class Podcast(CommonAbstract):
     )
     slug = models.SlugField(blank=True, null=False, unique=True, editable=False)
     feed_url = models.URLField(
-        blank=False, null=False, unique=True, verbose_name=_("Feed URL")
+        blank=False,
+        null=False,
+        max_length=2048,
+        unique=True,
+        verbose_name=_("Feed URL"),
     )
 
     added = models.DateTimeField(auto_now_add=True, verbose_name=_("Podcast Added"))
@@ -122,7 +126,7 @@ class Podcast(CommonAbstract):
         blank=True, null=True, max_length=64, verbose_name=_("Main Language")
     )
     link = models.URLField(
-        blank=True, null=True, max_length=64, verbose_name=_("Podcast Link")
+        blank=True, null=True, max_length=2048, verbose_name=_("Podcast Link")
     )
     itunes_explicit = models.NullBooleanField(verbose_name=_("Explicit Tag"))
     itunes_type = models.CharField(
@@ -185,7 +189,6 @@ class Podcast(CommonAbstract):
         all_created = []
         for ep in episode_info:
             ep["podcast"] = self
-            chapters = ep.pop("chapters", [])
             image = ep.pop("image", None)
 
             episode, created = Episode.objects.update_or_create(
@@ -193,9 +196,6 @@ class Podcast(CommonAbstract):
             )
 
             episode.insert_cover(image)
-
-            episode.add_chapters(chapters)
-
             all_created.append(created)
 
         return all_created
