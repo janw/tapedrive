@@ -34,12 +34,12 @@
           <b-collapse id="collapse-chapters" class="mt-2">
             <table class="table table-hover">
               <tr>
-                <th>Timestamp</th>
+                <th class="text-right">Timestamp</th>
                 <th>Title</th>
               </tr>
               <tr v-for="chapter in item.chapters" :key="chapter.id">
-                <td class="text-muted">
-                  <small>{{chapter.starttime}}</small>
+                <td class="text-muted text-right text-mono">
+                  <small>{{chapter.starttime | timestamp }}</small>
                 </td>
                 <td>{{chapter.title}}</td>
               </tr>
@@ -57,6 +57,10 @@
 </template>
 
 <script>
+const moment = require("moment");
+const momentDurationFormatSetup = require("moment-duration-format");
+momentDurationFormatSetup(moment);
+
 export default {
   props: ["item"],
   data() {
@@ -77,30 +81,10 @@ export default {
       }
     }
   },
-  watch: {
-    item: function(item) {
-      this.$api
-        .get(`/api/episodes/${item.id}/shownotes/`)
-        .then(response => {
-          let parser = new DOMParser();
-          let doc = parser.parseFromString(response.data, "text/html");
-          for (let i = 0; i < doc.images.length; i++) {
-            var el = doc.images[i];
-            el.dataset.src = el.src;
-            el.src = "";
-            var wrapper = document.createElement("span");
-            var text = document.createTextNode("Image");
-            wrapper.className = "img-has-src";
-            el.parentNode.insertBefore(wrapper, el);
-            wrapper.appendChild(text);
-            wrapper.appendChild(el);
-          }
-          console.log(doc);
-          this.shownotesContent = doc;
-        })
-        .catch(e => {
-          console.log(e);
-        });
+  filters: {
+    timestamp(value) {
+      if (!value) return "";
+      return moment.duration(value).format("hh:mm:ss.SS");
     }
   }
 };
@@ -133,5 +117,10 @@ export default {
   & > img {
     display: none;
   }
+}
+
+.text-mono {
+  font-family: $font-family-monospace;
+  font-size: 0.95rem;
 }
 </style>
