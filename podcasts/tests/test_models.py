@@ -3,7 +3,6 @@ from datetime import datetime
 from datetime import timezone
 
 import pytest
-from django.contrib.sites.models import Site
 from django.db import transaction
 from django.db.utils import IntegrityError
 
@@ -108,20 +107,8 @@ def test_filename_generation():
 
 @pytest.mark.django_db
 def test_settings_model():
-    site = Site.objects.create(name="Test Site", domain="testsite.local")
-
-    # Creating a Site object, fires a post_save creation of PodcastsSettings
-    # therefore trying to create another PS object with the same Site should
-    # cause the unique constraint to kick in
-    with pytest.raises(IntegrityError):
-        PodcastsSettings.objects.create(site=site)
-
-    # OneToOne rel should contain the PS instance
-    settings = site.podcastssettings
-    assert isinstance(settings, PodcastsSettings)
-
-    # Return the proper __str__ based on the Site.name
-    assert str(settings) == "Test Site Podcasts Settings"
+    settings = PodcastsSettings.objects.create()
+    assert str(settings) == "Tape Drive Settings"
 
 
 @pytest.mark.django_db

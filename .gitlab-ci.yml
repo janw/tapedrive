@@ -23,6 +23,13 @@ stages:
 
 pytest:
   extends: .python
+  services:
+    - postgres:latest
+  variables:
+    POSTGRES_DB: tapedrive_testing
+    POSTGRES_USER: gitlabci
+    POSTGRES_PASSWORD: tapedrive
+    DATABASE_URL: 'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/$POSTGRES_DB'
   script:
     - pytest --junitxml=pytest.xml --vcr-record=none
     - pip install coveralls && coveralls

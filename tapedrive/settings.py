@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 import os
 import random
-from tempfile import TemporaryDirectory
 
 from configurations import Configuration
 from configurations import values
@@ -201,14 +200,7 @@ class Development(Common):
 
 
 class Testing(Common):
-    def __init__(self, *args, **kwargs):
-        super().__init(*args, **kwargs)
-        with TemporaryDirectory() as tmpdirname:
-            self.DATABASES = values.DatabaseURLValue(
-                "sqlite:///{}".format(
-                    os.path.join(tmpdirname, "tapedrive-testing.sqlite3")
-                )
-            )
+    DATABASES = values.DatabaseURLValue("sqlite:///tapedrive-testing.sqlite3")
 
 
 class Staging(Common):
