@@ -46,17 +46,17 @@ def test_valid_feed():
 def test_invalid_feed(feed, expected, message, caplog):
     """Querying an invalid feed should always fail softly, returning None."""
     caplog.set_level(logging.ERROR, logger="podcasts.utils")
-    assert utils.refresh_feed(TEST_FEED_MALFORMED[feed]) is expected
-    assert message in caplog.text
+    with pytest.raises(Exception):
+        utils.refresh_feed(TEST_FEED_MALFORMED[feed])
 
 
 def test_connection_error(mocker, caplog):
     mock_requests = mocker.patch(
-        "podcasts.utils.requests.get", side_effect=requests.exceptions.ConnectionError
+        "podcasts.utils.session.get", side_effect=requests.exceptions.ConnectionError
     )
     caplog.set_level(logging.ERROR, logger="podcasts.utils")
-    assert utils.refresh_feed("https://any.feed/is/fine/here") is None
-    assert "Connection error" in caplog.text
+    with pytest.raises(requests.exceptions.ConnectionError):
+        utils.refresh_feed("https://any.feed/is/fine/here")
     mock_requests.assert_called_once()
 
 
