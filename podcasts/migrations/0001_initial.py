@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                 ('author', models.CharField(blank=True, max_length=255, null=True, verbose_name='Podcast Author')),
                 ('language', models.CharField(blank=True, max_length=64, null=True, verbose_name='Main Language')),
                 ('link', models.URLField(blank=True, max_length=64, null=True, verbose_name='Podcast Link')),
-                ('image', models.ImageField(blank=True, null=True, upload_to=podcasts.models.cover_image_filename, verbose_name='Cover Image')),
+                ('image', models.ImageField(blank=True, null=True, upload_to=podcasts.models.common.cover_image_filename, verbose_name='Cover Image')),
                 ('itunes_explicit', models.NullBooleanField(verbose_name='Explicit Tag')),
                 ('itunes_type', models.CharField(blank=True, max_length=64, null=True, verbose_name='iTunes Type')),
                 ('generator', models.CharField(blank=True, max_length=64, null=True, verbose_name='Feed Generator')),
