@@ -1,7 +1,6 @@
 from background_task.models import Task
 from rest_framework import serializers
 
-from podcasts.models import EpisodeChapter
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
 
@@ -49,12 +48,6 @@ class PodcastListSerializer(serializers.ModelSerializer):
 
 class PodcastFromUrlSerializer(serializers.Serializer):
     feed_url = serializers.URLField()
-
-
-class EpisodeChapterInlineSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EpisodeChapter
-        fields = ("starttime", "title", "link", "image")
 
 
 class EpisodeDownloadTaskSerializer(serializers.ModelSerializer):
