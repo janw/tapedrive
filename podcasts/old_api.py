@@ -1,31 +1,36 @@
-from django.db.transaction import atomic
-from django.shortcuts import redirect, reverse
-from django.shortcuts import get_object_or_404
-from django.contrib.sites.shortcuts import get_current_site
-from django.views.decorators.http import require_POST
-from django.http import (
-    HttpResponseBadRequest,
-    JsonResponse,
-    HttpResponseForbidden,
-    HttpResponse,
-)
+from datetime import datetime
+from urllib.parse import urlencode
+from urllib.parse import urlparse
+from urllib.parse import urlunparse
 
 import requests
-from datetime import datetime
-from urllib.parse import urlparse, urlunparse, urlencode
-
-from podcasts.models.listener import EpisodePlaybackState, Listener
-from podcasts.models.podcast import Podcast
-from podcasts.models.episode import Episode
-from podcasts.utils import unify_apple_podcasts_response, HEADERS
-from podcasts.serializers import EpisodeSerializer, ApplePodcastsSearchRequestSerializer
-from podcasts import utils
-from podcasts.conf import ITUNES_TOPCHARTS_URL, ITUNES_LOOKUP_URL, ITUNES_SEARCH_URL
-
-from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView
+from django.contrib.sites.shortcuts import get_current_site
+from django.db.transaction import atomic
+from django.http import HttpResponse
+from django.http import HttpResponseBadRequest
+from django.http import HttpResponseForbidden
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import reverse
+from django.views.decorators.http import require_POST
 from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from podcasts import utils
+from podcasts.conf import ITUNES_LOOKUP_URL
+from podcasts.conf import ITUNES_SEARCH_URL
+from podcasts.conf import ITUNES_TOPCHARTS_URL
+from podcasts.models.episode import Episode
+from podcasts.models.listener import EpisodePlaybackState
+from podcasts.models.listener import Listener
+from podcasts.models.podcast import Podcast
+from podcasts.serializers import ApplePodcastsSearchRequestSerializer
+from podcasts.serializers import EpisodeSerializer
+from podcasts.utils import HEADERS
+from podcasts.utils import unify_apple_podcasts_response
 
 
 class HttpResponseNoContent(HttpResponse):

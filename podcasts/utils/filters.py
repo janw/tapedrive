@@ -1,10 +1,10 @@
 from urllib.parse import urlparse
 
+from bleach.sanitizer import BleachSanitizerFilter
+from bleach.sanitizer import Cleaner
 from bleach.utils import force_unicode
-from bleach.sanitizer import BleachSanitizerFilter, Cleaner
-from html5lib.filters.base import Filter
-
 from django.utils.text import format_lazy
+from html5lib.filters.base import Filter
 
 
 CLEAN_HTML_GLOBAL = ["summary", "subtitle"]

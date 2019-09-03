@@ -7,12 +7,12 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
 import os
 import random
 from tempfile import TemporaryDirectory
 
-from configurations import Configuration, values
+from configurations import Configuration
+from configurations import values
 
 
 def get_secret_key(PROJECT_DIR):

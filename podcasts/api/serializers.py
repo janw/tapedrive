@@ -1,8 +1,9 @@
-from podcasts.models.podcast import Podcast
-from podcasts.models.episode import Episode
-from podcasts.models import EpisodeChapter
 from background_task.models import Task
 from rest_framework import serializers
+
+from podcasts.models import EpisodeChapter
+from podcasts.models.episode import Episode
+from podcasts.models.podcast import Podcast
 
 
 class EpisodeInlineSerializer(serializers.ModelSerializer):

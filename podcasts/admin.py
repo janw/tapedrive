@@ -1,7 +1,8 @@
 from django.contrib import admin
-from podcasts.models.podcast import Podcast
+
 from podcasts.models.episode import Episode
 from podcasts.models.episode import EpisodePlaybackState
+from podcasts.models.podcast import Podcast
 
 
 # Register your models here.

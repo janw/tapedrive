@@ -1,10 +1,11 @@
+import logging
+
 from django.apps import AppConfig
 from django.apps import apps as global_apps
-from django.db import DEFAULT_DB_ALIAS, router
+from django.db import DEFAULT_DB_ALIAS
+from django.db import router
 from django.db.models.signals import post_migrate
 from django.utils import timezone
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -70,8 +71,7 @@ def create_default_settings(
     if not PodcastsSettings.objects.using(using).exists():
         # The default settings set SITE_ID = 1 for django.contrib.sites, so we make
         # dependency on the default Site to create the initial settings object.
-        if verbosity >= 2:
-            print("Creating default PodcastsSettings")
+        logger.info("Creating default PodcastsSettings")
         PodcastsSettings().save(using=using)
 
 
@@ -84,6 +84,6 @@ class PodcastsConfig(AppConfig):
         post_migrate.connect(create_default_settings, sender=self)
         post_migrate.connect(create_background_refresh_task, sender=self)
 
-        from actstream import registry  # noqa
+        from actstream import registry
 
         registry.register(self.get_model("Podcast"), self.get_model("Episode"))

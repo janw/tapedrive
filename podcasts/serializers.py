@@ -1,9 +1,9 @@
+from rest_framework import serializers
+
+from podcasts import conf
+from podcasts.models import EpisodeChapter
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
-from podcasts.models import EpisodeChapter
-from podcasts import conf
-
-from rest_framework import serializers
 
 
 class PodcastSerializer(serializers.ModelSerializer):

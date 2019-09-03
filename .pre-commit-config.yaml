@@ -1,0 +1,43 @@
+exclude: >
+  (?x)^(
+    .+\.svg|
+    .+/migrations/.+|
+    .+/fixtures/.+|
+    .+/cassettes/.+
+  )$
+default_language_version:
+  python: python3.7
+repos:
+  - repo: local
+    hooks:
+      - id: python-no-print
+        name: check for print()
+        description: 'A quick check for the `print()` built-in function'
+        entry: '\bprint\('
+        language: pygrep
+        types: [python]
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: 'v1.4.1'
+    hooks:
+      - id: python-check-blanket-noqa
+      - id: python-no-eval
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 'v2.1.0'
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: '3.7.7'
+    hooks:
+      - id: flake8
+        additional_dependencies: ['flake8-bugbear']
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v1.5.0
+    hooks:
+      - id: reorder-python-imports
+        args: ['--py37-plus']

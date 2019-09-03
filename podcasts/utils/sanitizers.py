@@ -3,7 +3,9 @@ import logging
 from bs4 import BeautifulSoup
 from markdown import markdown
 
-from podcasts.utils.filters import subtitle_cleaner, summary_cleaner, shownotes_cleaner
+from podcasts.utils.filters import shownotes_cleaner
+from podcasts.utils.filters import subtitle_cleaner
+from podcasts.utils.filters import summary_cleaner
 
 
 logger = logging.getLogger(__name__)
