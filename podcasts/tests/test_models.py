@@ -36,7 +36,7 @@ def test_podcast_model(caplog):
     Podcast.objects.create(feed_url=TEST_FEED)
 
     podcast = Podcast.objects.get(feed_url=TEST_FEED)
-    assert podcast.title == ""
+    assert podcast.title == "Untitled"
 
     with pytest.raises(IntegrityError):
         Podcast.objects.create_from_feed_url(TEST_FEED)
@@ -75,15 +75,7 @@ def test_podcast_with_paged_feed(caplog):
     assert isinstance(podcast, Podcast)
 
     assert "Creating CRE" in caplog.text
-    assert "No next page found" in caplog.text
-    caplog.clear()
-
-    # Update Podcast, detection of existing episodes
-    with caplog.at_level(logging.INFO, logger="podcasts.models"):
-        podcast.update(insert_cover=False)
-
-    assert "Inserting episodes from first page" in caplog.text
-    assert "Found existing episodes" in caplog.text
+    assert "Queued refresh task" in caplog.text
 
 
 @pytest.mark.django_db

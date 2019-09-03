@@ -45,12 +45,10 @@ def refresh_feed(feed_url):
         feedobj["bozo"] == 1
         and type(feedobj["bozo_exception"]) is not CharacterEncodingOverride
     ):
-        logger.error("Feed is malformatted")
-        return None
+        raise Exception("Feed is malformatted")
 
     if "feed" not in feedobj:
-        logger.error("Feed is incomplete")
-        return None
+        raise Exception("Feed is incomplete")
 
     links = feedobj["feed"].get("links", [])
     next_page = next((item for item in links if item["rel"] == "next"), {}).get("href")
