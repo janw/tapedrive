@@ -3,11 +3,9 @@ from datetime import datetime
 from datetime import timezone
 
 import pytest
-from django.db import transaction
 from django.db.utils import IntegrityError
 
 from podcasts.models import PodcastsSettings
-from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
 from podcasts.tests.test_utils import TEST_FEED_NEXT_PAGE
 
@@ -41,25 +39,20 @@ def test_podcast_model(caplog):
     with pytest.raises(IntegrityError):
         Podcast.objects.create_from_feed_url(TEST_FEED)
 
-    with caplog.at_level(logging.INFO, logger="podcasts.models"):
-        podcast.update()
-
     assert "Fetched Killing Time" in caplog.text
-    assert podcast.title == "Killing Time"
-    assert podcast.get_absolute_url() == "/podcasts/killing-time/"
 
     # get_or_create should return the same podcast now
     same_one, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED)
     assert podcast == same_one
     assert created is False
 
-    # Should have more than 0 episodes
-    assert Episode.objects.count() > 0
+    # # Should have more than 0 episodes
+    # assert Episode.objects.count() > 0
 
-    # Deletion should remove Podcast and cascade to Episodes
-    podcast.delete()
-    Podcast.objects.count() == 0
-    Episode.objects.count() == 0
+    # # Deletion should remove Podcast and cascade to Episodes
+    # podcast.delete()
+    # Podcast.objects.count() == 0
+    # Episode.objects.count() == 0
 
 
 @pytest.mark.django_db
@@ -101,28 +94,3 @@ def test_filename_generation():
 def test_settings_model():
     settings = PodcastsSettings.objects.create()
     assert str(settings) == "Tape Drive Settings"
-
-
-@pytest.mark.django_db
-@pytest.mark.vcr()
-def test_episode_model():
-    podcast = Podcast.objects.create(feed_url=TEST_FEED)
-    podcast.update()
-
-    # Episode object cannot be created empty (requires GUID and Podcast)
-    with transaction.atomic():
-        with pytest.raises(IntegrityError):
-            episode = Episode.objects.create()
-    with transaction.atomic():
-        with pytest.raises(IntegrityError):
-            episode = Episode.objects.create(guid="testguid")
-
-    with transaction.atomic():
-        episode = Episode.objects.create(guid="/testguid1/", podcast=podcast)
-    assert str(episode) == "Killing Time's Episode"
-
-    with transaction.atomic():
-        episode = Episode.objects.create(
-            guid="/testguid2/", podcast=podcast, title="Fancy Test Episode"
-        )
-    str(episode) == "Fancy Test Episode"
