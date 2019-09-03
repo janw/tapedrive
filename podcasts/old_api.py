@@ -5,14 +5,11 @@ from urllib.parse import urlunparse
 
 import requests
 from django.contrib.sites.shortcuts import get_current_site
-from django.db.transaction import atomic
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.shortcuts import reverse
 from django.views.decorators.http import require_POST
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
@@ -24,8 +21,6 @@ from podcasts.conf import ITUNES_LOOKUP_URL
 from podcasts.conf import ITUNES_SEARCH_URL
 from podcasts.conf import ITUNES_TOPCHARTS_URL
 from podcasts.models.episode import Episode
-from podcasts.models.listener import EpisodePlaybackState
-from podcasts.models.listener import Listener
 from podcasts.models.podcast import Podcast
 from podcasts.serializers import ApplePodcastsSearchRequestSerializer
 from podcasts.serializers import EpisodeSerializer
@@ -41,10 +36,6 @@ def encode_datetime(obj):
     if isinstance(obj, datetime):
         return obj.strftime("%Y-%m-%dT%H:%M:%S%z")
     raise TypeError(repr(obj) + " is not JSON serializable")
-
-
-# @require_POST
-# def podcast_add(request):
 
 
 class AddPodcast(APIView):
@@ -105,24 +96,6 @@ def podcast_unsubscribe(request, slug=None):
     podcast.remove_subscriber(request.user.listener)
     podcast.save()
     return HttpResponseNoContent()
-
-
-@atomic
-@require_POST
-def episodes_mark_played(request, id):
-    object = get_object_or_404(Episode, id=id)
-    listener, created = Listener.objects.get_or_create(user=request.user)
-    if created:
-        listener.save()
-    state = EpisodePlaybackState(episode=object, listener=listener)
-    state.completed = True
-    state.save()
-
-    next = request.GET.get(
-        "next",
-        reverse("podcasts:podcasts-details", kwargs={"slug": object.podcast.slug}),
-    )
-    return redirect(next)
 
 
 @require_POST
