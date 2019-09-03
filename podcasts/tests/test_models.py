@@ -1,15 +1,15 @@
 import logging
+from datetime import datetime
+from datetime import timezone
 
 import pytest
-
 from django.contrib.sites.models import Site
 from django.db import transaction
 from django.db.utils import IntegrityError
+
+from podcasts.models import PodcastsSettings
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
-from podcasts.models import PodcastsSettings
-
-from datetime import datetime, timezone
 from podcasts.tests.test_utils import TEST_FEED_NEXT_PAGE
 
 # Create your tests here.

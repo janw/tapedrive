@@ -1,7 +1,8 @@
 from django import forms
-from django.utils.translation import gettext_lazy as _
 from django.contrib.sites.models import Site
-from django.forms import ModelForm, Form
+from django.forms import Form
+from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 
 from podcasts.models import PodcastsSettings
 from podcasts.models.listener import Listener

@@ -1,8 +1,8 @@
-from django.test import TestCase
-from django.urls import reverse
-from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseRedirect
+from django.test import TestCase
+from django.urls import reverse
 
 User = get_user_model()
 

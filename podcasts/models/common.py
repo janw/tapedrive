@@ -1,5 +1,4 @@
 from os import path
-from io import BytesIO
 
 from django.db import models
 

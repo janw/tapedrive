@@ -1,10 +1,13 @@
-from django import forms
-from django.utils.translation import gettext as _, ngettext
-from podcasts.utils.properties import UNIFYING_EPISODE_SEGMENTS, ALL_VALID_SEGMENTS
-
 import os
 import re
 from string import Template
+
+from django import forms
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
+
+from podcasts.utils.properties import ALL_VALID_SEGMENTS
+from podcasts.utils.properties import UNIFYING_EPISODE_SEGMENTS
 
 
 RE_MATCH_POSSIBLE_EXTENSION = re.compile(r".*(\.[0-9a-zA-Z]{1,4})$")
@@ -42,7 +45,6 @@ def validate_naming_scheme(scheme):
         )
 
     potential_segments = RE_MATCH_ALL_SEGMENTS.findall(scheme)
-    print(potential_segments)
     invalid_segments = [s for s in potential_segments if s not in ALL_VALID_SEGMENTS]
     if len(invalid_segments) > 0:
         raise forms.ValidationError(

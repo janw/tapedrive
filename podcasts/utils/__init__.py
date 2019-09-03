@@ -1,18 +1,22 @@
-import os
-import feedparser
 import logging
+import os
 import tempfile
 import xml.etree.ElementTree as etree
 from collections import namedtuple
-from io import BytesIO
-from shutil import copyfileobj, move
-from urllib.parse import urlparse, urlunparse
-from urllib.request import urlopen, Request
-from urllib.error import HTTPError, URLError
 from functools import lru_cache
-from django.core.files import File
+from io import BytesIO
+from shutil import copyfileobj
+from shutil import move
+from urllib.error import HTTPError
+from urllib.error import URLError
+from urllib.parse import urlparse
+from urllib.parse import urlunparse
+from urllib.request import Request
+from urllib.request import urlopen
 
+import feedparser
 import requests
+from django.core.files import File
 from feedparser import CharacterEncodingOverride
 
 from podcasts.utils.filters import shownotes_image_cleaner

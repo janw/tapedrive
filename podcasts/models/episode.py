@@ -1,27 +1,28 @@
+import itertools
+import os
+from string import Template
+from uuid import uuid4
+
+from actstream import action
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField
 from django.db import models
 from django.db.models.signals import post_save
 from django.db.transaction import atomic
 from django.dispatch import receiver
+from django.template.defaultfilters import date as _date
+from django.template.defaultfilters import slugify
 from django.utils.translation import gettext as _
-from django.template.defaultfilters import slugify, date as _date
-from django.contrib.postgres.fields import JSONField
 
-import os
-from uuid import uuid4
-from string import Template
-import itertools
-
-from podcasts.conf import STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT
-from podcasts.utils import strip_url
-from podcasts.utils.properties import (
-    AVAILABLE_EPISODE_SEGMENTS,
-    AVAILABLE_PODCAST_SEGMENTS,
-)
-from podcasts.models.common import CommonAbstract
-from podcasts.utils.serializers import PodcastsJSONEncoder
 from podcasts import utils
-from actstream import action
+from podcasts.conf import DEFAULT_DATE_FORMAT
+from podcasts.conf import DEFAULT_NAMING_SCHEME
+from podcasts.conf import STORAGE_DIRECTORY
+from podcasts.models.common import CommonAbstract
+from podcasts.utils import strip_url
+from podcasts.utils.properties import AVAILABLE_EPISODE_SEGMENTS
+from podcasts.utils.properties import AVAILABLE_PODCAST_SEGMENTS
+from podcasts.utils.serializers import PodcastsJSONEncoder
 
 
 class Episode(CommonAbstract):
@@ -194,7 +195,7 @@ class Episode(CommonAbstract):
         inpath_dateformat=DEFAULT_DATE_FORMAT,
         overwrite=False,
     ):
-        from podcasts.tasks import download_episode  # noqa
+        from podcasts.tasks import download_episode
 
         self.construct_file_path(storage_directory, naming_scheme, inpath_dateformat)
         if not os.path.isfile(self.file_path) or overwrite:

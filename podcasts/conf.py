@@ -1,7 +1,9 @@
-from django.conf import settings
-from .apps import PodcastsConfig
-from background_task.models import Task
 from datetime import timedelta
+
+from background_task.models import Task
+from django.conf import settings
+
+from .apps import PodcastsConfig
 
 
 def _getattr(variable, default):

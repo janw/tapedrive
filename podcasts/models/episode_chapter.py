@@ -1,9 +1,9 @@
-from django.db import models
-from django.core.files import File
-from django.utils.translation import gettext as _
-
 import os
 from io import BytesIO
+
+from django.core.files import File
+from django.db import models
+from django.utils.translation import gettext as _
 
 from podcasts import utils
 

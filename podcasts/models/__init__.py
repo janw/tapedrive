@@ -1,18 +1,13 @@
+import os
+
 from django.db import models
 from django.utils.translation import gettext as _
 
-import os
-
-from podcasts.conf import STORAGE_DIRECTORY, DEFAULT_NAMING_SCHEME, DEFAULT_DATE_FORMAT
-from podcasts.validators import validate_path, validate_naming_scheme
-
-from podcasts.models.episode_chapter import *  # noqa
-
-
-def cover_image_filename(instance, filename):
-    ext = os.path.splitext(filename)[-1]
-    filename = "%s-cover%s" % (instance.slug, ext)
-    return filename
+from podcasts.conf import DEFAULT_DATE_FORMAT
+from podcasts.conf import DEFAULT_NAMING_SCHEME
+from podcasts.conf import STORAGE_DIRECTORY
+from podcasts.validators import validate_naming_scheme
+from podcasts.validators import validate_path
 
 
 class IntegerRangeField(models.IntegerField):

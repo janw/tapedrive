@@ -1,17 +1,15 @@
 from django.db.models.functions import Lower
-
-from rest_framework import viewsets
+from requests import HTTPError
+from rest_framework import generics
 from rest_framework import renderers
+from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import generics
 
-from requests import HTTPError, ConnectionError
-
-from podcasts.models.podcast import Podcast
-from podcasts.models.episode import Episode
 from podcasts.api import serializers
+from podcasts.models.episode import Episode
+from podcasts.models.podcast import Podcast
 
 
 class PodcastViewSet(viewsets.ModelViewSet):

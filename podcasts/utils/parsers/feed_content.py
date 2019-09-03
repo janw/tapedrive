@@ -1,12 +1,9 @@
 from dateutil import parser as dateparser
-
 from django.template.defaultfilters import slugify
 
-from podcasts.utils.sanitizers import (
-    sanitize_summary,
-    sanitize_subtitle,
-    sanitize_shownotes,
-)
+from podcasts.utils.sanitizers import sanitize_shownotes
+from podcasts.utils.sanitizers import sanitize_subtitle
+from podcasts.utils.sanitizers import sanitize_summary
 
 # Summary, Subtitle not included, parsed separately
 PODCAST_INFO_KEYS = [

@@ -1,17 +1,17 @@
 from django.conf import settings
-from django.contrib import admin
-from django.urls import include, path
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include
+from django.urls import path
 from django.views.generic import TemplateView
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.views import TokenVerifyView
 
-from listeners.serializers import UserViewSet, UserView
+from listeners.serializers import UserView
+from listeners.serializers import UserViewSet
 from podcasts.api import views
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView,
-)
 
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
