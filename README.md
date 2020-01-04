@@ -35,13 +35,13 @@ Tape Drive is built using [Django] **and I'm working on a first stable release**
 
 ## Impressions
 
-![Tape Drive welcoming you](.attachments/screenshots/login-animated.gif)
+![Tape Drive login screen](hack/attachments/screenshots/login-animated.gif)
 
-![Tape Drive welcoming you](.attachments/screenshots/welcome.png)
+![Tape Drive welcoming you](hack/attachments/screenshots/welcome.png)
 
-![Tape Drive podcast list view](.attachments/screenshots/podcasts-list.png)
+![Tape Drive podcast list view](hack/attachments/screenshots/podcasts-list.png)
 
-![Tape Drive podcast detail view](.attachments/screenshots/podcast-detail.png)
+![Tape Drive podcast detail view](hack/attachments/screenshots/podcast-detail.png)
 
 ## Prerequisites and setup
 
