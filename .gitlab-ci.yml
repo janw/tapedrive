@@ -10,16 +10,18 @@ stages:
     key: pip-${CI_JOB_NAME}
     paths:
       - .pytest_cache
-      - '$CI_PROJECT_DIR/.cache/pip'
-      - '$CI_PROJECT_DIR/.cache/pre-commit'
+      - "$CI_PROJECT_DIR/.cache/pip"
+      - "$CI_PROJECT_DIR/.cache/pre-commit"
   variables:
-    PIP_CACHE_DIR: '$CI_PROJECT_DIR/.cache/pip'
-    PRE_COMMIT_HOME: '$CI_PROJECT_DIR/.cache/pre-commit'
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    PRE_COMMIT_HOME: "$CI_PROJECT_DIR/.cache/pre-commit"
   before_script:
-    - pip install poetry
-    - poetry debug:info
-    - poetry config settings.virtualenvs.create false
-    - poetry --no-interaction install
+    - wget https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
+    - python -u get-poetry.py
+    - . $HOME/.poetry/env
+    - poetry debug
+    - poetry config virtualenvs.create false
+    - poetry install --no-interaction
 
 pytest:
   extends: .python
@@ -29,7 +31,7 @@ pytest:
     POSTGRES_DB: tapedrive_testing
     POSTGRES_USER: gitlabci
     POSTGRES_PASSWORD: tapedrive
-    DATABASE_URL: 'postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/$POSTGRES_DB'
+    DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/$POSTGRES_DB"
   script:
     - pytest --junitxml=pytest.xml --vcr-record=none
     - pip install coveralls && coveralls
@@ -40,6 +42,7 @@ pytest:
 
 pre-commit:
   extends: .python
+  image: python:3.7
   before_script:
     - pip install -U pre-commit
   script:
@@ -51,7 +54,7 @@ pre-commit:
   services:
     - docker:dind
   variables:
-    DOCKER_TLS_CERTDIR: ''
+    DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
