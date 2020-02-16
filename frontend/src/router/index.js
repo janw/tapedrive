@@ -5,6 +5,7 @@ import Login from '../components/Login';
 import PodcastDetail from '../components/PodcastDetail';
 import EpisodeDetail from '../components/EpisodeDetail';
 import AddFeeds from '../components/AddFeeds';
+import ResetPassword from '../components/ResetPassword';
 
 Vue.use(Router);
 
@@ -38,6 +39,17 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+      allowedLoggedOut: true,
+      meta: {
+        showBackdrop: true,
+        hideHeader: true,
+      },
+    },
+    {
+      path: '/reset-password',
+      name: 'ResetPassword',
+      component: ResetPassword,
+      allowedLoggedOut: true,
       meta: {
         showBackdrop: true,
         hideHeader: true,
@@ -47,7 +59,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  if (localStorage.getItem('access') == null && to.name !== 'Login') {
+  if (localStorage.getItem('access') == null && typeof to.allowedLoggedOut !== 'undefined' && to.allowedLoggedOut == true) {
     console.log('Redirecting to login');
     next({
       path: '/login',
