@@ -9,10 +9,7 @@
           >
             <img class="img-logo" src="../images/icon@2x.png" alt />
 
-            <h1>
-              Tape Drive
-              <small class="d-block d-md-inline-block text-muted">Podcast Archive</small>
-            </h1>
+            <h1>Tape Drive</h1>
           </a>
 
           <b-nav class="justify-content-center mt-2 mt-md-0 ml-md-auto">
