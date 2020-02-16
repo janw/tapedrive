@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Your Podcasts</h1>
+    <h1 v-if="hasData">Your Podcasts</h1>
     <b-row>
       <b-col>
         <PodcastListItem v-for="(item, $index) in data" :key="$index" :item="item" />
@@ -22,6 +22,11 @@ export default {
       page: 1,
       data: []
     };
+  },
+  computed: {
+    hasData: function() {
+      return this.data.length > 0;
+    }
   }
 };
 </script>
