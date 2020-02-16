@@ -4,13 +4,14 @@
       <img class="img-logo w-50" src="../images/icon@3x.png" alt="Tape Drive Logo" />
       <h1 class="my-4">Tape Drive</h1>
       <b-form @submit="doLogin">
+        <b-alert v-bind:show="loginFailed" variant="danger">Login failed. Please try again.</b-alert>
         <b-form-group label="Username" label-for="username">
           <b-form-input v-model="username"></b-form-input>
         </b-form-group>
         <b-form-group label="Password" label-for="password">
           <b-form-input type="password" v-model="password"></b-form-input>
         </b-form-group>
-        <b-button type="submit" class="btn-lg mt-3">Log in</b-button>
+        <b-button :disabled="notFilledYet" type="submit" class="btn-lg mt-3">Log in</b-button>
       </b-form>
     </div>
     <div class="backdrop"></div>
@@ -21,14 +22,20 @@
 export default {
   data() {
     return {
+      loginFailed: false,
       username: "",
       password: ""
     };
   },
+  computed: {
+    notFilledYet: function() {
+      return this.username.length == 0 || this.password.length == 0;
+    }
+  },
   methods: {
     doLogin(e) {
-      console.log("Logging in");
       e.preventDefault();
+      this.loginFailed = false;
       this.$api
         .post("/api/auth/token/", {
           username: this.username,
@@ -48,9 +55,9 @@ export default {
             }
           }
         })
-
-        .catch(function(error) {
+        .catch(error => {
           console.error(error.response);
+          this.loginFailed = true;
         });
     },
     loggedIn() {
