@@ -42,6 +42,8 @@ const refreshAuthLogic = (failedRequest) =>
       failedRequest.response.config.headers['Authentication'] =
         'Bearer ' + resp.data.token;
       return Promise.resolve();
+    }).catch(error => {
+      Vue.$router.push({ name: 'Login' });
     });
 
 export default {
