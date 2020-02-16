@@ -12,11 +12,11 @@
         <apple-podcasts-search></apple-podcasts-search>
       </b-col>
     </b-row>
-    <b-row>
+    <!-- <b-row>
       <b-col class="mb-4 text-center text-md-left">
         <apple-podcasts-toplist></apple-podcasts-toplist>
       </b-col>
-    </b-row>
+    </b-row>-->
     <b-row v-if="showAppleAttribution">
       <b-col class="text-center my-3">
         <small class="text-muted">
