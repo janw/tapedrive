@@ -14,7 +14,6 @@
         <b-button :disabled="notFilledYet" type="submit" class="btn-lg mt-3">Log in</b-button>
       </b-form>
     </div>
-    <div class="backdrop"></div>
   </div>
 </template>
 
@@ -85,74 +84,6 @@ export default {
   width: 100%;
   top: 0;
   left: 0;
-}
-
-.backdrop {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: -100;
-  background-image: url("../images/michael-mroczek-195362-unsplash.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  opacity: 0.5;
-  animation: filter-animation 4s;
-}
-
-.filter-fade {
-  filter: grayscale(1) brightness(60%) contrast(150%);
-  opacity: 0.5;
-}
-
-@keyframes filter-animation {
-  0%,
-  25% {
-    opacity: 0;
-  }
-
-  0%,
-  75% {
-    filter: grayscale(1);
-  }
-
-  100% {
-    filter: grayscale(0);
-    opacity: 0.5;
-  }
-}
-
-#credit_badge {
-  position: fixed;
-  background: rgba(white, 0.8);
-  color: #333;
-  text-decoration: none;
-  left: 4px;
-  bottom: 4px;
-  padding: 2px 3px;
-  font-size: 10px;
-  display: inline-block;
-  border-radius: 3px;
-}
-
-.delay-visibility {
-  animation: delayed-opacity-animation 4s;
-}
-
-@keyframes delayed-opacity-animation {
-  0%,
-  65% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 
 .form-signin {

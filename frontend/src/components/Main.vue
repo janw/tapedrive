@@ -39,6 +39,7 @@
         </transition>
       </main>
       <!-- <WebPlayer /> -->
+      <Backdrop v-if="$route.meta.showBackdrop" />
       <footer class="footer">
         <div class="container">
           <small class="my-0 text-muted">
@@ -53,6 +54,7 @@
 
 <script>
 import WebPlayer from "./WebPlayer";
+import Backdrop from "./Backdrop";
 export default {
   name: "wrapper",
   data() {
@@ -77,7 +79,10 @@ export default {
       this.$router.push("/login");
     }
   },
-  components: { WebPlayer }
+  components: {
+    WebPlayer,
+    Backdrop
+  }
 };
 </script>
 
