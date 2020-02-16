@@ -1,18 +1,28 @@
 <template>
   <div class="overlay-wrapper">
     <div class="form-signin text-center border rounded shadow">
-      <img class="img-logo w-50" src="../images/icon@3x.png" alt="Tape Drive Logo" />
+      <img class="img-logo w-50 mt-3" src="../images/icon@3x.png" alt="Tape Drive Logo" />
       <h1 class="my-4">Tape Drive</h1>
       <b-form @submit="doLogin">
         <b-alert v-bind:show="loginFailed" variant="danger">Login failed. Please try again.</b-alert>
-        <b-form-group label="Username" label-for="username">
-          <b-form-input v-model="username"></b-form-input>
-        </b-form-group>
-        <b-form-group label="Password" label-for="password">
-          <b-form-input type="password" v-model="password"></b-form-input>
-        </b-form-group>
-        <b-button :disabled="notFilledYet" type="submit" class="btn-lg mt-3">Log in</b-button>
+
+        <label class="sr-only" for="username">Username</label>
+        <b-form-input name="username" v-model="username" placeholder="Username"></b-form-input>
+
+        <label class="sr-only" for="password">Password</label>
+        <b-form-input name="password" type="password" v-model="password" placeholder="Password"></b-form-input>
+
+        <b-button
+          variant="outline-secondary"
+          :disabled="notFilledYet"
+          type="submit"
+          class="px-4 mt-3 mb-2"
+        >Log in</b-button>
       </b-form>
+      <b-link
+        :to="{ name: 'ResetPassword' }"
+        class="reset_link text-muted"
+      >Forgot your username or password?</b-link>
     </div>
   </div>
 </template>
@@ -134,7 +144,7 @@ export default {
     border-radius: $border-radius !important;
   }
 
-  #reset_link {
+  .reset_link {
     font-size: 0.8rem;
   }
 }
