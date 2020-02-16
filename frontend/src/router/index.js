@@ -39,6 +39,7 @@ const router = new Router({
       name: 'Login',
       component: Login,
       meta: {
+        showBackdrop: true,
         hideHeader: true,
       },
     },
