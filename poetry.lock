@@ -93,7 +93,7 @@ description = "A high-level Python Web framework that encourages rapid developme
 name = "django"
 optional = false
 python-versions = ">=3.5"
-version = "2.2.4"
+version = "2.2.10"
 
 [package.dependencies]
 pytz = "*"
@@ -604,7 +604,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "contextlib2", "unittest2"]
 
 [metadata]
-content-hash = "ad46dfa001f80292003f127aabc5a480cde9e02168c52fcd09b2b4cc9aa4c935"
+content-hash = "c6a27d8b5f9d5443671185e9eddaf9b1be2768575fdb18bd0cdc00c9f1ee5d8f"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -676,8 +676,8 @@ dj-database-url = [
     {file = "dj_database_url-0.5.0-py2.py3-none-any.whl", hash = "sha256:851785365761ebe4994a921b433062309eb882fedd318e1b0fcecc607ed02da9"},
 ]
 django = [
-    {file = "Django-2.2.4-py3-none-any.whl", hash = "sha256:9a2f98211ab474c710fcdad29c82f30fc14ce9917c7a70c3682162a624de4035"},
-    {file = "Django-2.2.4.tar.gz", hash = "sha256:16a5d54411599780ac9dfe3b9b38f90f785c51259a584e0b24b6f14a7f69aae8"},
+    {file = "Django-2.2.10-py3-none-any.whl", hash = "sha256:9a4635813e2d498a3c01b10c701fe4a515d76dd290aaa792ccb65ca4ccb6b038"},
+    {file = "Django-2.2.10.tar.gz", hash = "sha256:1226168be1b1c7efd0e66ee79b0e0b58b2caa7ed87717909cd8a57bb13a7079a"},
 ]
 django-activity-stream = [
     {file = "django-activity-stream-0.8.0.tar.gz", hash = "sha256:ef07f7242f25dbf6e198b377632a72fdd0c06ce3cd1097c394d9b7052c943b4e"},
