@@ -38,7 +38,7 @@
           <router-view></router-view>
         </transition>
       </main>
-      <WebPlayer />
+      <!-- <WebPlayer /> -->
       <footer class="footer">
         <div class="container">
           <small class="my-0 text-muted">
