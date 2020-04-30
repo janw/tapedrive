@@ -23,7 +23,7 @@
     "babel-loader": "^8.0.5",
     "bootstrap-vue": "^2.0.0-rc.28",
     "css-loader": "^2.1.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
     "node-sass": "^4.12.0",
