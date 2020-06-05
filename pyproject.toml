@@ -7,7 +7,7 @@ license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-Django = "~2.2.10"
+Django = "~2.2.13"
 django-activity-stream = "^0.8"
 django-background-tasks = "^1.2"
 django-configurations = "^2.1"
