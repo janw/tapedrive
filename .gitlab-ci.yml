@@ -4,7 +4,7 @@ stages:
   - tag
 
 .python:
-  image: registry.gitlab.com/janw/python-poetry:3.7
+  image: python:3.7
   stage: test
   cache:
     key: pip-${CI_JOB_NAME}
@@ -16,12 +16,7 @@ stages:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
     PRE_COMMIT_HOME: "$CI_PROJECT_DIR/.cache/pre-commit"
   before_script:
-    - wget https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py
-    - python -u get-poetry.py
-    - . $HOME/.poetry/env
-    - poetry debug
-    - poetry config virtualenvs.create false
-    - poetry install --no-interaction
+    - pip install -r requirements.txt
 
 pytest:
   extends: .python
@@ -33,8 +28,13 @@ pytest:
     POSTGRES_PASSWORD: tapedrive
     DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/$POSTGRES_DB"
   script:
-    - pytest --junitxml=pytest.xml --vcr-record=none
-    - pip install coveralls && coveralls
+    - >
+      python -m pytest
+      --verbose
+      --junitxml=pytest.xml
+      --vcr-record=none
+      --cov
+      --cov-report term
   artifacts:
     reports:
       junit: pytest.xml
@@ -42,7 +42,6 @@ pytest:
 
 pre-commit:
   extends: .python
-  image: registry.gitlab.com/janw/python-poetry:3.7
   before_script:
     - pip install -U pre-commit
   script:

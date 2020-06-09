@@ -16,6 +16,12 @@ repos:
         entry: '\bprint\('
         language: pygrep
         types: [python]
+      - id: requirements-up-to-date
+        name: check requirements.txt is up to date
+        entry: make check_requirements
+        language: system
+        files: (requirements\.txt|poetry\.lock)$
+
   - repo: https://github.com/psf/black
     rev: stable
     hooks:

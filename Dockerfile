@@ -8,15 +8,11 @@ RUN yarn install
 COPY frontend ./
 RUN yarn build
 
-FROM registry.gitlab.com/janw/python-poetry:3.7-alpine as poetry-export
-COPY pyproject.toml poetry.lock ./
-RUN poetry export -f requirements.txt -o requirements.txt
-
 FROM python:3.7-alpine
 ENV PIP_NO_CACHE_DIR off
 ENV PYTHONUNBUFFERED 1
 
-COPY --from=poetry-export /src/requirements.txt ./
+COPY requirements.txt ./
 RUN \
   set -ex; \
   apk --update add tini postgresql-libs jpeg-dev && \
