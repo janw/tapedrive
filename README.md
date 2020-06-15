@@ -4,8 +4,9 @@
 <div align="center">
 <img src="frontend/src/images/icon@2x.png" alt="Tape Drive Logo" />
 
-[![pipeline status](https://gitlab.com/janw/tapedrive/badges/master/pipeline.svg)](https://gitlab.com/janw/tapedrive/commits/master)
-[![Coverage Status](https://coveralls.io/repos/github/janw/tapedrive/badge.svg)](https://coveralls.io/github/janw/tapedrive)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/janw/tapedrive)](https://gitlab.com/janw/tapedrive/-/pipelines?ref=master)
+
+[![Coverage Status](https://img.shields.io/codeclimate/coverage/janw/tapedrive.svg)](https://codeclimate.com/github/janw/tapedrive)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/janw/tapedrive.svg)](https://codeclimate.com/github/janw/tapedrive)
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
