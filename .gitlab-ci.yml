@@ -36,7 +36,7 @@ pytest:
     - wget -O ./cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
     - chmod +x cc-test-reporter
     - ./cc-test-reporter before-build
-    - pytest --junitxml=pytest.xml --vcr-record=none --cov --cov-report term
+    - pytest --junitxml=pytest.xml --vcr-record=none --cov --cov-report term --cov-report xml
     - ./cc-test-reporter after-build
   artifacts:
     reports:
