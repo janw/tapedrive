@@ -1,4 +1,3 @@
-import itertools
 import os
 from string import Template
 from uuid import uuid4
@@ -11,7 +10,6 @@ from django.db.models.signals import post_save
 from django.db.transaction import atomic
 from django.dispatch import receiver
 from django.template.defaultfilters import date as _date
-from django.template.defaultfilters import slugify
 from django.utils.translation import gettext as _
 
 from podcasts import utils
@@ -131,23 +129,6 @@ class Episode(CommonAbstract):
             return self.title
         else:
             return "%(podcast)s's Episode" % {"podcast": self.podcast}
-
-    def save(self, *args, **kwargs):
-        if not self.id or not self.slug:
-            max_length = self._meta.get_field("slug").max_length
-            self.slug = orig = slugify(self.title)
-            for x in itertools.count(1):
-                if not Episode.objects.filter(slug=self.slug).exists():
-                    break
-                self.slug = "%s-%d" % (orig[: max_length - len(str(x)) - 1], x)
-
-            # Some episodes have ridiculously long titles
-            if len(self.slug) > max_length:
-                self.slug = self.slug[:max_length]
-            if self.slug.endswith("-"):
-                self.slug = self.slug[:-1]
-
-        super().save(*args, **kwargs)
 
     def get_content(self, allowed_domains=False):
         if self.shownotes:

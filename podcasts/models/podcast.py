@@ -155,23 +155,6 @@ class Podcast(CommonAbstract):
     def __str__(self):
         return self.title
 
-    def save(self, *args, **kwargs):
-        if not self.id or not self.slug:
-            max_length = self._meta.get_field("slug").max_length
-            self.slug = orig = slugify(self.title)
-            for x in itertools.count(1):
-                if not Podcast.objects.filter(slug=self.slug).exists():
-                    break
-                self.slug = "%s-%d" % (orig[: max_length - len(str(x)) - 1], x)
-
-            # Some feeds have ridiculously long titles
-            if len(self.slug) > max_length:
-                self.slug = self.slug[:max_length]
-            if self.slug.endswith("-"):
-                self.slug = self.slug[:-1]
-
-        super().save(*args, **kwargs)
-
     def get_absolute_url(self):
         return reverse("podcasts:podcasts-details", kwargs={"slug": self.slug})
 
