@@ -2,6 +2,7 @@ import logging
 
 from actstream import action
 from background_task import background
+
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 

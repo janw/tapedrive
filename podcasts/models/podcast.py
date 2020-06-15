@@ -5,6 +5,7 @@ from urllib.parse import urlunparse
 
 import requests
 from actstream import action
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
@@ -20,10 +21,9 @@ from podcasts.conf import ITUNES_LOOKUP_URL
 from podcasts.conf import STORAGE_DIRECTORY
 from podcasts.models.common import CommonAbstract
 from podcasts.models.episode import Episode
-from podcasts.utils import feed_info
 from podcasts.utils import HEADERS
+from podcasts.utils import feed_info
 from podcasts.utils import refresh_feed
-
 
 logger = logging.getLogger(__name__)
 

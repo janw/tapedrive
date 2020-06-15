@@ -3,9 +3,9 @@ from urllib.parse import urlparse
 from bleach.sanitizer import BleachSanitizerFilter
 from bleach.sanitizer import Cleaner
 from bleach.utils import force_unicode
-from django.utils.text import format_lazy
 from html5lib.filters.base import Filter
 
+from django.utils.text import format_lazy
 
 CLEAN_HTML_GLOBAL = ["summary", "subtitle"]
 CLEAN_HTML_EPISODE = ["description", "subtitle"]

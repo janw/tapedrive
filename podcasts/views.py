@@ -1,4 +1,5 @@
 from actstream.models import Action
+
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
