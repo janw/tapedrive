@@ -15,7 +15,7 @@
       <p class="card-text mt-auto mb-0 text-muted">
         <span
           v-if="item.num_episodes > 0"
-        >{{item.num_episodes}} episodes, last one published {{item.last_published | moment("from", "now")}}.</span>
+        >{{item.num_episodes}} episodes, last one published {{item.last_published | fromNow}}.</span>
         <span v-else>No episodes yet.</span>
       </p>
     </b-card-body>

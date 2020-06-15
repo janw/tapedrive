@@ -10,9 +10,9 @@ import Main from './components/Main';
 import Spinner from './components/Spinner';
 import InfiniteNoMore from './components/InfiniteNoMore';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import "./filters";
 
 Vue.component('fa-icon', FontAwesomeIcon);
-Vue.use(require('vue-moment'));
 Vue.use(BootstrapVue);
 Vue.use(VueSpinners);
 

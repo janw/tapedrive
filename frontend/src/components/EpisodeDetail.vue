@@ -25,11 +25,11 @@
         >
           <div>
             <p class="text-muted mb-0">Published</p>
-            <p class="mb-0">{{item.published | moment("from")}}</p>
+            <p class="mb-0">{{item.published | fromLocalDateTime}}</p>
           </div>
           <div v-if="item.downloaded" class>
             <p class="text-muted mb-0">Downloaded</p>
-            <p class="mb-0">{{item.downloaded | moment("from")}}</p>
+            <p class="mb-0">{{item.downloaded | fromLocalDateTime}}</p>
           </div>
         </div>
       </b-col>

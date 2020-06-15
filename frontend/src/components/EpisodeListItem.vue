@@ -4,7 +4,7 @@
     <h5 v-if="item.subtitle" class="mb-2 text-muted" v-html="item.subtitle"></h5>
 
     <div class="w-100 d-md-flex justify-content-between">
-      <small class="mt-3 text-muted">Published {{item.published | moment("calendar")}}</small>
+      <small class="mt-3 text-muted">Published {{item.published | localDateTime}}</small>
       <div class="mt-2 text-center text-md-left">
         <b-button-group>
           <b-button v-on:click="$emit('showModal', item)" variant="outline-secondary">Peek</b-button>

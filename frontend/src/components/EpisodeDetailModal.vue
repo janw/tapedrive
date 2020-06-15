@@ -13,11 +13,11 @@
           >
             <div>
               <p class="text-muted mb-0">Published</p>
-              <p class="mb-0">{{item.published | moment("from")}}</p>
+              <p class="mb-0">{{item.published | fromLocalDateTime}}</p>
             </div>
             <div v-if="item.downloaded" class>
               <p class="text-muted mb-0">Downloaded</p>
-              <p class="mb-0">{{item.downloaded | moment("from")}}</p>
+              <p class="mb-0">{{item.downloaded | fromLocalDateTime}}</p>
             </div>
           </div>
         </b-col>
@@ -39,7 +39,7 @@
               </tr>
               <tr v-for="chapter in item.chapters" :key="chapter.id">
                 <td class="text-muted text-right text-mono">
-                  <small>{{chapter.starttime | timestamp }}</small>
+                  <small>{{chapter.starttime | millisToTimestamp }}</small>
                 </td>
                 <td>{{chapter.title}}</td>
               </tr>
@@ -57,10 +57,6 @@
 </template>
 
 <script>
-const moment = require("moment");
-const momentDurationFormatSetup = require("moment-duration-format");
-momentDurationFormatSetup(moment);
-
 export default {
   props: ["item"],
   data() {
@@ -79,12 +75,6 @@ export default {
       if (this.item.shownotes && this.item.shownotes.length > 0) {
         return true;
       }
-    }
-  },
-  filters: {
-    timestamp(value) {
-      if (!value) return "";
-      return moment.duration(value).format("hh:mm:ss.SS");
     }
   }
 };
