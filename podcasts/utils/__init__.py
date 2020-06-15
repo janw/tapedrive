@@ -16,8 +16,9 @@ from urllib.request import urlopen
 
 import feedparser
 import requests
-from django.core.files import File
 from feedparser import CharacterEncodingOverride
+
+from django.core.files import File
 
 from podcasts.utils.filters import shownotes_image_cleaner
 from podcasts.utils.parsers.feed_content import parse_feed_info

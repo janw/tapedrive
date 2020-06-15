@@ -3,6 +3,7 @@ from string import Template
 from uuid import uuid4
 
 from actstream import action
+
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import JSONField
 from django.db import models

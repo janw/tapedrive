@@ -4,6 +4,11 @@ from urllib.parse import urlparse
 from urllib.parse import urlunparse
 
 import requests
+from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
@@ -11,10 +16,6 @@ from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
-from rest_framework import status
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from podcasts import utils
 from podcasts.conf import ITUNES_LOOKUP_URL

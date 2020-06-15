@@ -3,6 +3,7 @@ from datetime import datetime
 from datetime import timezone
 
 import pytest
+
 from django.db.utils import IntegrityError
 
 from podcasts.models import PodcastsSettings

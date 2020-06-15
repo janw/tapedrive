@@ -9,7 +9,6 @@ from django.utils.translation import ngettext
 from podcasts.utils.properties import ALL_VALID_SEGMENTS
 from podcasts.utils.properties import UNIFYING_EPISODE_SEGMENTS
 
-
 RE_MATCH_POSSIBLE_EXTENSION = re.compile(r".*(\.[0-9a-zA-Z]{1,4})$")
 RE_MATCH_ALL_SEGMENTS = re.compile(r"\$(" + Template.idpattern + ")")
 
