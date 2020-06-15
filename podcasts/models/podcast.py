@@ -1,4 +1,3 @@
-import itertools
 import logging
 from urllib.parse import urlencode
 from urllib.parse import urlparse
@@ -12,7 +11,6 @@ from django.db.models.signals import post_save
 from django.db.transaction import atomic
 from django.dispatch import receiver
 from django.shortcuts import reverse
-from django.template.defaultfilters import slugify
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
