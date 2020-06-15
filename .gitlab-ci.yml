@@ -32,6 +32,9 @@ pytest:
     POSTGRES_USER: gitlabci
     POSTGRES_PASSWORD: tapedrive
     DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/$POSTGRES_DB"
+
+    # Required for coveralls to pick up correct branch name
+    BRANCH_NAME: "${CI_COMMIT_REF_NAME}"
   script:
     - pytest --junitxml=pytest.xml --vcr-record=none --cov --cov-report term
     - pip install coveralls && coveralls
