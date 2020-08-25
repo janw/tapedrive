@@ -10,12 +10,12 @@ const TerserPlugin = require('terser-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 
 const baseConfig = {
-  context: path.resolve(__dirname, 'src'),
+  context: path.resolve(__dirname, 'frontend/src'),
   entry: {
     app: './app.js',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'frontend/dist'),
     filename: '[name].[hash:8].js',
   },
   module: {
