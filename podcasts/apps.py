@@ -30,11 +30,9 @@ def create_background_refresh_task(
 
     tasks = Task.objects.using(using).filter(task_name=task_name)
     if not tasks.exists():
-        from podcasts.conf import (
-            DEFAULT_REFRESH_RATE,
-            DEFAULT_REFRESH_PRIORITY,
-            DEFAULT_REFRESH_DELAY,
-        )
+        from podcasts.conf import DEFAULT_REFRESH_DELAY
+        from podcasts.conf import DEFAULT_REFRESH_PRIORITY
+        from podcasts.conf import DEFAULT_REFRESH_RATE
         from podcasts.tasks import regular_feed_refresh
 
         task = regular_feed_refresh(
