@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
     console.log('Redirecting to login');
     next({
       path: '/login',
-      params: { nextUrl: to.fullPath },
+      params: { redirect: to.fullPath },
     });
   } else {
     next();
