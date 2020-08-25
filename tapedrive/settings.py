@@ -188,6 +188,8 @@ class Development(Common):
 
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+    AUTH_PASSWORD_VALIDATORS = []
+
 
 class Testing(Common):
     DATABASES = values.DatabaseURLValue("sqlite:///tapedrive-testing.sqlite3")
