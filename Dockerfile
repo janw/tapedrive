@@ -2,11 +2,12 @@ FROM node:lts as frontend
 LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 
 WORKDIR /frontend
-COPY frontend/yarn.lock frontend/package.json ./
-RUN yarn install
+COPY package-lock.json package.json ./
+RUN npm install
 
-COPY frontend ./
-RUN yarn build
+COPY webpack.config.js ./
+COPY frontend ./frontend
+RUN npm run build
 
 FROM registry.gitlab.com/janw/python-poetry:3.7-alpine as poetry-export
 COPY pyproject.toml poetry.lock ./
@@ -36,7 +37,7 @@ WORKDIR /app
 COPY Procfile ./
 COPY manage.py ./
 COPY bin ./bin
-COPY --from=frontend /frontend/dist ./frontend/dist
+COPY --from=frontend /frontend/frontend/dist ./frontend/dist
 COPY tapedrive ./tapedrive
 COPY listeners ./listeners
 COPY podcasts ./podcasts
