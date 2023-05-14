@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <img src="img/icon@2x.png" alt="No more results" />
+    <img src="../images/icon@2x.png" alt="No more results" />
   </div>
 </template>
 

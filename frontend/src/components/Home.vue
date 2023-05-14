@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import PodcastListItem from "./PodcastListItem";
+import PodcastListItem from "./PodcastListItem.vue";
 export default {
   components: {
     PodcastListItem

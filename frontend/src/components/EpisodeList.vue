@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import EpisodeListItem from "./EpisodeListItem";
-import EpisodeDetailModal from "./EpisodeDetailModal";
+import EpisodeListItem from "./EpisodeListItem.vue";
+import EpisodeDetailModal from "./EpisodeDetailModal.vue";
 
 export default {
   props: ["slug"],

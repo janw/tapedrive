@@ -7,7 +7,7 @@
             class="d-flex align-items-center align-items-center align-items-md-center site-title"
             href="/"
           >
-            <img class="img-logo" src="../images/icon@2x.png" alt />
+            <img class="img-logo" src="./images/icon@2x.png" alt />
 
             <h1>Tape Drive</h1>
           </a>
@@ -38,7 +38,6 @@
           <router-view></router-view>
         </transition>
       </main>
-      <!-- <WebPlayer /> -->
       <Backdrop v-if="$route.meta.showBackdrop" />
       <footer class="footer">
         <div class="container">
@@ -53,8 +52,7 @@
 </template>
 
 <script>
-import WebPlayer from "./WebPlayer";
-import Backdrop from "./Backdrop";
+import Backdrop from "./components/Backdrop.vue";
 export default {
   name: "wrapper",
   data() {
@@ -80,7 +78,6 @@ export default {
     }
   },
   components: {
-    WebPlayer,
     Backdrop
   }
 };

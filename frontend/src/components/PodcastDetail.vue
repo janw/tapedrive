@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import EpisodeList from "./EpisodeList";
+import EpisodeList from "./EpisodeList.vue";
 export default {
   props: ["slug"],
   data() {

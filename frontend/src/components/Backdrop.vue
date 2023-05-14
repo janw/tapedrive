@@ -1,12 +1,9 @@
 <template>
   <div>
     <div class="backdrop"></div>
-    <a
+    <p
       id="credit_badge"
       class="d-none d-sm-block delay-visibility"
-      href="https://unsplash.com/photos/byW_4p0EKMA?utm_source=unsplash&utm_medium=referral&utm_content=creditBadge"
-      target="_blank"
-      rel="nofollow noopener noreferrer"
       title="Photo by Michael Mroczek via Unsplash.com"
     >
       <span style="display:inline-block;padding:2px 3px;">
@@ -22,14 +19,14 @@
         </svg>
       </span>
       <span style="display:inline-block;padding:2px 3px;">Michael Mroczek</span>
-    </a>
+    </p>
   </div>
 </template>
 
 <style lang="scss">
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+@import "./node_modules/bootstrap/scss/functions";
+@import "./node_modules/bootstrap/scss/variables";
+@import "./node_modules/bootstrap/scss/mixins";
 
 .backdrop {
   position: fixed;

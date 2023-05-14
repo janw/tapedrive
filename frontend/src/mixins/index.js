@@ -1,8 +1,8 @@
 export default {
-  install(Vue) {
+  install (Vue) {
     Vue.mixin({
       methods: {
-        infiniteHandler($state) {
+        infiniteHandler ($state) {
           this.$api
             .get(this.endpoint, {
               params: {
@@ -18,7 +18,7 @@ export default {
               if (response.data.next == null) {
                 $state.complete();
               }
-            });
+            }).catch((err) => { $state.complete() });
         },
       },
     });

@@ -15,7 +15,7 @@
 
 
 <script>
-import ApplePodcastsSearchItem from "./ApplePodcastsSearchItem";
+import ApplePodcastsSearchItem from "./ApplePodcastsSearchItem.vue";
 
 export default {
   data() {
