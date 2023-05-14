@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import AddFeedProcessedUrl from "./AddFeedProcessedUrl";
+import AddFeedProcessedUrl from "./AddFeedProcessedUrl.vue";
 export default {
   data() {
     return {

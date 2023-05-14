@@ -1,15 +1,13 @@
-import Vue from '../app.js';
 import axios from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-const apiRoot = process.env.API_ROOT ? process.env.API_ROOT : null;
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 const api = axios.create({
-  baseURL: apiRoot,
+  baseURL: API_ROOT,
   headers: {
     Authorization: {
-      toString() {
+      toString () {
         return `Bearer ${localStorage.getItem('access')}`;
       },
     },
@@ -24,7 +22,7 @@ const createErrorHandlerInterceptor = (api) => {
     (error) => {
       console.error(error);
       if (error.response.status == 401) {
-        Vue.$router.push({ name: 'Login' });
+        this.$router.push({ name: 'Login' });
       } else if (error.response.status >= 400) {
         return Promise.reject(error.response);
       }
@@ -43,11 +41,11 @@ const refreshAuthLogic = (failedRequest) =>
         'Bearer ' + resp.data.token;
       return Promise.resolve();
     }).catch(error => {
-      Vue.$router.push({ name: 'Login' });
+      this.$router.push({ name: 'Login' });
     });
 
 export default {
-  install(Vue) {
+  install (Vue) {
     createAuthRefreshInterceptor(api, refreshAuthLogic, {
       statusCodes: [403],
     });

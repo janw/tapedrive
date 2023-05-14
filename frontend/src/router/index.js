@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '../components/Home';
-import Login from '../components/Login';
-import PodcastDetail from '../components/PodcastDetail';
-import EpisodeDetail from '../components/EpisodeDetail';
-import AddFeeds from '../components/AddFeeds';
-import ResetPassword from '../components/ResetPassword';
-
+import Home from '../components/Home.vue';
+import Login from '../components/Login.vue';
+import PodcastDetail from '../components/PodcastDetail.vue';
+import EpisodeDetail from '../components/EpisodeDetail.vue';
+import AddFeeds from '../components/AddFeeds.vue';
+import ResetPassword from '../components/ResetPassword.vue';
 Vue.use(Router);
 
 const router = new Router({

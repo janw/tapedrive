@@ -5,7 +5,7 @@ WORKDIR /frontend
 COPY package-lock.json package.json ./
 RUN npm install
 
-COPY webpack.config.js ./
+COPY vite.config.js ./
 COPY frontend ./frontend
 RUN npm run build
 
@@ -44,6 +44,8 @@ COPY --from=frontend /frontend/frontend/dist ./frontend/dist
 COPY tapedrive ./tapedrive
 COPY listeners ./listeners
 COPY podcasts ./podcasts
+
+RUN python manage.py collectstatic --no-input
 
 EXPOSE 8273
 VOLUME /app /data

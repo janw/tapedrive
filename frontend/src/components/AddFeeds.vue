@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import AddFeedFromUpload from "./AddFeedFromUpload";
-import ApplePodcastsSearch from "./ApplePodcastsSearch";
-import ApplePodcastsToplist from "./ApplePodcastsToplist";
+import AddFeedFromUpload from "./AddFeedFromUpload.vue";
+import ApplePodcastsSearch from "./ApplePodcastsSearch.vue";
+import ApplePodcastsToplist from "./ApplePodcastsToplist.vue";
 
 export default {
   name: "addfeeds",
