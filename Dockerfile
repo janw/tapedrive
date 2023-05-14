@@ -1,4 +1,4 @@
-FROM node:lts as frontend
+FROM node:16 as frontend
 LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 
 WORKDIR /frontend
