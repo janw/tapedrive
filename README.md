@@ -69,7 +69,7 @@ docker create \
   -e DATABASE_URL="postgres://USERNAME:PASSWORD@HOSTNAME:PORT/DATABASE_NAME" \
   -e DJANGO_ALLOWED_HOSTS=127.0.0.1,myfancy.domainname.example \
   -p 8273:8273 \
-  janwh/tapedrive
+  ghcr.io/janw/tapedrive
 ```
 
 Use the `DJANGO_ALLOWED_HOSTS` variable to tell Tape Drive which hostnames to accept connections from (as a comma-separated list). Most likely you want to link the storage path inside the container to a real location on your filesystem. By default, Tape Drive downloads data to `/data`, hence the above `-v` mapping.

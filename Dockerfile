@@ -9,9 +9,12 @@ COPY webpack.config.js ./
 COPY frontend ./frontend
 RUN npm run build
 
-FROM registry.gitlab.com/janw/python-poetry:3.7-alpine as poetry-export
+FROM python:3.7 as poetry-export
+WORKDIR /src
 COPY pyproject.toml poetry.lock ./
-RUN poetry export -f requirements.txt -o requirements.txt
+RUN \
+  pip install --no-cache-dir poetry && \
+  poetry export -f requirements.txt -o requirements.txt
 
 FROM python:3.7-alpine
 ENV PIP_NO_CACHE_DIR off
