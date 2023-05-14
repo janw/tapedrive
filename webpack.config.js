@@ -54,12 +54,6 @@ const baseConfig = {
               outputPath: 'img/',
             },
           },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              disable: false,
-            },
-          },
         ],
       },
     ],
