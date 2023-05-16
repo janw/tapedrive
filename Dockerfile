@@ -13,22 +13,23 @@ FROM python:3.7 as poetry-export
 WORKDIR /src
 COPY pyproject.toml poetry.lock ./
 RUN \
-  pip install --no-cache-dir poetry && \
+  pip install --no-cache-dir "poetry>=1.0" && \
   poetry export -f requirements.txt -o requirements.txt
 
 FROM python:3.7-alpine
 ENV PIP_NO_CACHE_DIR off
 ENV PYTHONUNBUFFERED 1
 
+WORKDIR /app
 COPY --from=poetry-export /src/requirements.txt ./
+
+# hadolint ignore=DL3018
 RUN \
   set -ex; \
-  apk --update add tini postgresql-libs jpeg-dev && \
-  apk add --virtual build-dependencies curl postgresql-dev libstdc++ zlib-dev build-base && \
-  pip install -r requirements.txt && \
-  pip install gunicorn honcho && \
+  apk add --no-cache tini postgresql-libs jpeg-dev && \
+  apk add --no-cache --virtual build-dependencies curl postgresql-dev libstdc++ zlib-dev build-base && \
+  pip install --no-cache-dir -r requirements.txt && \
   apk del build-dependencies && \
-  rm -rf /var/cache/apk/* && \
   find /usr/local -depth -type f -a \( -name '*.pyc' -o -name '*.pyo' \) -exec rm -rf '{}' +;
 
 
@@ -36,7 +37,6 @@ RUN \
 ENV ENVIRONMENT=PRODUCTION
 ENV DJANGO_ALLOWED_HOSTS=127.0.0.1
 
-WORKDIR /app
 COPY Procfile ./
 COPY manage.py ./
 COPY bin ./bin
