@@ -24,6 +24,8 @@ python-dateutil = "^2.8"
 html5lib = "^1.0"
 whitenoise = "^4.1"
 psycopg2 = "^2.9"
+gunicorn = "*"
+honcho = "*"
 
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^1.11"
