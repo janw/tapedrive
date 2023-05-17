@@ -5,20 +5,15 @@ import xml.etree.ElementTree as etree
 from collections import namedtuple
 from functools import lru_cache
 from io import BytesIO
-from shutil import copyfileobj
-from shutil import move
-from urllib.error import HTTPError
-from urllib.error import URLError
-from urllib.parse import urlparse
-from urllib.parse import urlunparse
-from urllib.request import Request
-from urllib.request import urlopen
+from shutil import copyfileobj, move
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse, urlunparse
+from urllib.request import Request, urlopen
 
 import feedparser
 import requests
-from feedparser import CharacterEncodingOverride
-
 from django.core.files import File
+from feedparser import CharacterEncodingOverride
 
 from podcasts.utils.filters import shownotes_image_cleaner
 from podcasts.utils.parsers.feed_content import parse_feed_info
@@ -42,10 +37,7 @@ def refresh_feed(feed_url):
     feedobj = feedparser.parse(response.content)
 
     # Escape malformatted XML
-    if (
-        feedobj["bozo"] == 1
-        and type(feedobj["bozo_exception"]) is not CharacterEncodingOverride
-    ):
+    if feedobj["bozo"] == 1 and type(feedobj["bozo_exception"]) is not CharacterEncodingOverride:
         raise Exception("Feed is malformatted")
 
     if "feed" not in feedobj:
@@ -68,7 +60,7 @@ def replace_shownotes_images(content, allowed_domains=False):
         return shownotes_image_cleaner.clean(content, allowed_domains=allowed_domains)
 
 
-def chunks(l, n):
+def chunks(l, n):  # noqa: E741
     # For item i in a range that is a length of l,
     for i in range(0, len(l), n):
         # Create an index range for l of n items:
@@ -85,22 +77,21 @@ def download_file(link, filename):
     # Begin downloading, resolve redirects
     prepared_request = Request(link, headers=HEADERS)
     try:
-        with tempfile.NamedTemporaryFile(delete=False) as outfile:
-            with urlopen(prepared_request) as response:
-                # Check for proper content length, with resolved link
-                link = response.geturl()
-                total_size = int(response.getheader("content-length", "0"))
-                if total_size == 0:
-                    logger.error("Received content-length is 0")
-                    return
+        with tempfile.NamedTemporaryFile(delete=False) as outfile, urlopen(prepared_request) as response:
+            # Check for proper content length, with resolved link
+            link = response.geturl()
+            total_size = int(response.getheader("content-length", "0"))
+            if total_size == 0:
+                logger.error("Received content-length is 0")
+                return
 
-                logger.debug("Resolved link:", link)
+            logger.debug("Resolved link:", link)
 
-                # Create the subdir, if it does not exist
-                os.makedirs(os.path.dirname(filename), exist_ok=True)
+            # Create the subdir, if it does not exist
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
 
-                # Finally start the download for real
-                copyfileobj(response, outfile)
+            # Finally start the download for real
+            copyfileobj(response, outfile)
 
         move(outfile.name, filename)
         return total_size
@@ -156,11 +147,7 @@ def handle_uploaded_file(f):
 def parse_opml_file(filename):
     with open(filename) as file:
         tree = etree.fromstringlist(file)
-    return [
-        node.get("xmlUrl")
-        for node in tree.findall("*/outline/[@type='rss']")
-        if node.get("xmlUrl") is not None
-    ]
+    return [node.get("xmlUrl") for node in tree.findall("*/outline/[@type='rss']") if node.get("xmlUrl") is not None]
 
 
 def unify_apple_podcasts_response(data):
@@ -181,8 +168,6 @@ def unify_apple_podcasts_response(data):
             data["results"][i]["artworkUrl"] = result["artworkUrl100"]
 
         if "genres" in result and isinstance(result["genres"][0], dict):
-            data["results"][i]["genres"] = [
-                dict(name=item.get("name")) for item in result["genres"]
-            ]
+            data["results"][i]["genres"] = [{"name": item.get("name")} for item in result["genres"]]
 
     return data

@@ -1,11 +1,9 @@
 from urllib.parse import urlparse
 
-from bleach.sanitizer import BleachSanitizerFilter
-from bleach.sanitizer import Cleaner
+from bleach.sanitizer import BleachSanitizerFilter, Cleaner
 from bleach.utils import force_unicode
-from html5lib.filters.base import Filter
-
 from django.utils.text import format_lazy
+from html5lib.filters.base import Filter
 
 CLEAN_HTML_GLOBAL = ["summary", "subtitle"]
 CLEAN_HTML_EPISODE = ["description", "subtitle"]
@@ -35,7 +33,8 @@ ALLOWED_HTML_ATTRIBUTES = {
 EXTENDED_HTML_TAGS = [
     "h1",
     "h2",
-    "h3" "h4",
+    "h3",
+    "h4",
     "h5",
     "h6",
     "img",
@@ -72,9 +71,7 @@ class CleanerWithOptions(Cleaner):
             allowed_domains = []
 
         if not isinstance(text, str):
-            message = "argument cannot be of '{name}' type, must be of text type".format(
-                name=text.__class__.__name__
-            )
+            message = "argument cannot be of '{name}' type, must be of text type".format(name=text.__class__.__name__)
             raise TypeError(message)
 
         if not text:
@@ -119,9 +116,7 @@ class ImgSrcFilter(Filter):
                     if domain not in allowed_domains:
                         token["data"][(None, "data-src")] = data_src
                         token["data"][(None, "class")] = "has-src"
-                        token["data"][(None, "alt")] = format_lazy(
-                            "Image from {domain}", domain=domain
-                        )
+                        token["data"][(None, "alt")] = format_lazy("Image from {domain}", domain=domain)
                         token["data"][(None, "src")] = ""
                         if data_alt:
                             token["data"][(None, "data-alt")] = data_alt
@@ -130,9 +125,7 @@ class ImgSrcFilter(Filter):
 
 subtitle_cleaner = Cleaner(tags=[], strip=True)
 
-summary_cleaner = Cleaner(
-    tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES, strip=True
-)
+summary_cleaner = Cleaner(tags=ALLOWED_HTML_TAGS, attributes=ALLOWED_HTML_ATTRIBUTES, strip=True)
 
 shownotes_cleaner = Cleaner(
     tags=ALLOWED_HTML_TAGS + EXTENDED_HTML_TAGS,

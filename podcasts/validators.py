@@ -6,8 +6,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from django.utils.translation import ngettext
 
-from podcasts.utils.properties import ALL_VALID_SEGMENTS
-from podcasts.utils.properties import UNIFYING_EPISODE_SEGMENTS
+from podcasts.utils.properties import ALL_VALID_SEGMENTS, UNIFYING_EPISODE_SEGMENTS
 
 RE_MATCH_POSSIBLE_EXTENSION = re.compile(r".*(\.[0-9a-zA-Z]{1,4})$")
 RE_MATCH_ALL_SEGMENTS = re.compile(r"\$(" + Template.idpattern + ")")
@@ -16,13 +15,9 @@ RE_MATCH_ALL_SEGMENTS = re.compile(r"\$(" + Template.idpattern + ")")
 def validate_path(path):
     path = os.path.expanduser(os.path.expandvars(path))
     if not os.path.isdir(path):
-        raise forms.ValidationError(
-            _("Path %(path)s does not exist"), params={"path": path}
-        )
+        raise forms.ValidationError(_("Path %(path)s does not exist"), params={"path": path})
     if not os.access(path, os.W_OK):
-        raise forms.ValidationError(
-            _("Path %(path)s is not writable"), params={"path": path}
-        )
+        raise forms.ValidationError(_("Path %(path)s is not writable"), params={"path": path})
 
 
 def validate_naming_scheme(scheme):
@@ -32,9 +27,7 @@ def validate_naming_scheme(scheme):
             params={"scheme": scheme},
         )
     if scheme.startswith("/") or scheme.endswith("/"):
-        raise forms.ValidationError(
-            _("Scheme must not begin or end with '/'"), params={"scheme": scheme}
-        )
+        raise forms.ValidationError(_("Scheme must not begin or end with '/'"), params={"scheme": scheme})
 
     match = RE_MATCH_POSSIBLE_EXTENSION.fullmatch(scheme)
     if match:
@@ -55,9 +48,7 @@ def validate_naming_scheme(scheme):
             params={"segments": "', '".join(invalid_segments)},
         )
 
-    unifying_segments = [
-        s for s in potential_segments if s in UNIFYING_EPISODE_SEGMENTS
-    ]
+    unifying_segments = [s for s in potential_segments if s in UNIFYING_EPISODE_SEGMENTS]
     if len(unifying_segments) == 0:
         raise forms.ValidationError(
             _("Scheme must contain at least one unifying episode segment"),

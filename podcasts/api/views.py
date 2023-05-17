@@ -1,12 +1,8 @@
+from django.db.models.functions import Lower
 from requests import HTTPError
-from rest_framework import generics
-from rest_framework import renderers
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import generics, renderers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-from django.db.models.functions import Lower
 
 from podcasts.api import serializers
 from podcasts.models.episode import Episode
@@ -14,7 +10,6 @@ from podcasts.models.podcast import Podcast
 
 
 class PodcastViewSet(viewsets.ModelViewSet):
-
     queryset = Podcast.objects.order_by(Lower("title"))
     serializer_class = serializers.PodcastSerializer
     list_serializer_class = serializers.PodcastListSerializer

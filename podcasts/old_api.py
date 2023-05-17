@@ -1,32 +1,22 @@
 from datetime import datetime
-from urllib.parse import urlencode
-from urllib.parse import urlparse
-from urllib.parse import urlunparse
+from urllib.parse import urlencode, urlparse, urlunparse
 
 import requests
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.http import require_POST
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponse
-from django.http import HttpResponseBadRequest
-from django.http import HttpResponseForbidden
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from django.views.decorators.http import require_POST
-
 from podcasts import utils
-from podcasts.conf import ITUNES_LOOKUP_URL
-from podcasts.conf import ITUNES_SEARCH_URL
-from podcasts.conf import ITUNES_TOPCHARTS_URL
+from podcasts.conf import ITUNES_LOOKUP_URL, ITUNES_SEARCH_URL, ITUNES_TOPCHARTS_URL
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
-from podcasts.serializers import ApplePodcastsSearchRequestSerializer
-from podcasts.serializers import EpisodeSerializer
-from podcasts.utils import HEADERS
-from podcasts.utils import unify_apple_podcasts_response
+from podcasts.serializers import ApplePodcastsSearchRequestSerializer, EpisodeSerializer
+from podcasts.utils import HEADERS, unify_apple_podcasts_response
 
 
 class HttpResponseNoContent(HttpResponse):
@@ -47,13 +37,9 @@ class AddPodcast(APIView):
             return HttpResponseBadRequest()
 
         if feed_url:
-            podcast, created = Podcast.objects.get_or_create_from_feed_url(
-                feed_url, only_first_page=True
-            )
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(feed_url, only_first_page=True)
         elif feed_id:
-            podcast, created = Podcast.objects.get_or_create_from_itunes_id(
-                feed_id, only_first_page=True
-            )
+            podcast, created = Podcast.objects.get_or_create_from_itunes_id(feed_id, only_first_page=True)
         podcast.add_subscriber(request.user.listener)
         podcast.add_follower(request.user.listener)
 
@@ -64,9 +50,7 @@ class AddPodcast(APIView):
 
 
 def podcast_add_from_id(request, id):
-    podcast, created = Podcast.objects.get_or_create_from_itunes_id(
-        id, only_first_page=True
-    )
+    podcast, created = Podcast.objects.get_or_create_from_itunes_id(id, only_first_page=True)
     podcast.add_subscriber(request.user.listener)
     podcast.add_follower(request.user.listener)
 
@@ -103,16 +87,13 @@ def podcast_unsubscribe(request, slug=None):
 def episode_queue_download(request, id):
     site = get_current_site(request)
     object = get_object_or_404(Episode, id=id)
-    object.queue_download_task(
-        site.podcastssettings.storage_directory, site.podcastssettings.naming_scheme
-    )
+    object.queue_download_task(site.podcastssettings.storage_directory, site.podcastssettings.naming_scheme)
     return HttpResponseNoContent()
 
 
 @require_POST
 def podcast_queue_download(request, slug):
     site = get_current_site(request)
-    site.podcastssettings.storage_directory
     object = get_object_or_404(Podcast.objects.prefetch_related("episodes"), slug=slug)
     object.queue_missing_episodes_download_tasks(
         site.podcastssettings.storage_directory, site.podcastssettings.naming_scheme
@@ -127,9 +108,7 @@ class EpisodeDetailsView(RetrieveAPIView):
 
 
 def episode_details(request, id):
-    object = get_object_or_404(
-        Episode.objects.prefetch_related("podcast", "chapters"), id=id
-    )
+    object = get_object_or_404(Episode.objects.prefetch_related("podcast", "chapters"), id=id)
 
     return JsonResponse(EpisodeSerializer(object))
 
@@ -206,19 +185,16 @@ class ApplePodcastsSearch(APIView):
     @staticmethod
     def _parse_search_results(data):
         return [
-            dict(
-                id=el["collectionId"],
-                author=el["artistName"],
-                title=el["collectionName"],
-                genres=list(
-                    filter(("Podcasts").__ne__, el["genres"])
-                ),  # Remove 'podcasts' from genres
-                explicit=el["collectionExplicitness"]
-                != "cleaned",  # Turn explicitness into boolean
-                feed_url=el["feedUrl"],
-                image=el["artworkUrl600"],
-                updated=el["releaseDate"],
-            )
+            {
+                "id": el["collectionId"],
+                "author": el["artistName"],
+                "title": el["collectionName"],
+                "genres": list(filter(("Podcasts").__ne__, el["genres"])),  # Remove 'podcasts' from genres
+                "explicit": el["collectionExplicitness"] != "cleaned",  # Turn explicitness into boolean
+                "feed_url": el["feedUrl"],
+                "image": el["artworkUrl600"],
+                "updated": el["releaseDate"],
+            }
             for el in data["results"]
             if "feedUrl" in el
         ]

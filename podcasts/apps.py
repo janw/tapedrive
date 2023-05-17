@@ -2,8 +2,7 @@ import logging
 
 from django.apps import AppConfig
 from django.apps import apps as global_apps
-from django.db import DEFAULT_DB_ALIAS
-from django.db import router
+from django.db import DEFAULT_DB_ALIAS, router
 from django.db.models.signals import post_migrate
 from django.utils import timezone
 
@@ -30,9 +29,7 @@ def create_background_refresh_task(
 
     tasks = Task.objects.using(using).filter(task_name=task_name)
     if not tasks.exists():
-        from podcasts.conf import DEFAULT_REFRESH_DELAY
-        from podcasts.conf import DEFAULT_REFRESH_PRIORITY
-        from podcasts.conf import DEFAULT_REFRESH_RATE
+        from podcasts.conf import DEFAULT_REFRESH_DELAY, DEFAULT_REFRESH_PRIORITY, DEFAULT_REFRESH_RATE
         from podcasts.tasks import regular_feed_refresh
 
         task = regular_feed_refresh(
@@ -44,9 +41,7 @@ def create_background_refresh_task(
     else:
         task = tasks[0]
         logger.info("Found existing feed refresh task")
-    logger.info(
-        "Is scheduled for %s" % timezone.get_current_timezone().normalize(task.run_at)
-    )
+    logger.info("Is scheduled for %s" % timezone.get_current_timezone().normalize(task.run_at))
 
 
 # Shamelessly stolen and adapted from django.contrib.sites

@@ -26,18 +26,10 @@ class EpisodeChapter(models.Model):
         related_name="old_chapters",
         verbose_name=_("Episode of Chapter"),
     )
-    starttime = models.DurationField(
-        blank=False, null=False, verbose_name=_("Chapter Start")
-    )
-    title = models.CharField(
-        blank=False, null=False, max_length=2047, verbose_name=_("Chapter Title")
-    )
-    link = models.URLField(
-        blank=True, null=True, max_length=2047, verbose_name=_("Chapter Link")
-    )
-    image_url = models.URLField(
-        blank=True, null=True, max_length=2047, verbose_name=_("Chapter Image URL")
-    )
+    starttime = models.DurationField(blank=False, null=False, verbose_name=_("Chapter Start"))
+    title = models.CharField(blank=False, null=False, max_length=2047, verbose_name=_("Chapter Title"))
+    link = models.URLField(blank=True, null=True, max_length=2047, verbose_name=_("Chapter Link"))
+    image_url = models.URLField(blank=True, null=True, max_length=2047, verbose_name=_("Chapter Image URL"))
     image = models.ImageField(
         blank=True,
         null=True,

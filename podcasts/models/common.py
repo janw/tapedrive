@@ -30,7 +30,6 @@ class CommonAbstract(models.Model):
                 self.image.save(file.name, file, save=True)
 
     def save(self, *args, **kwargs):
-
         # Update the slug, ensuring it's unique
         Model = self._meta.concrete_model
         if not self.id or not self.slug:

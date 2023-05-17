@@ -1,34 +1,20 @@
 from actstream.models import Action
-
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.paginator import EmptyPage
-from django.core.paginator import PageNotAnInteger
-from django.core.paginator import Paginator
-from django.db.models import Case
-from django.db.models import Count
-from django.db.models import Max
-from django.db.models import When
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Case, Count, Max, When
 from django.http import HttpResponseBadRequest
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.generic.edit import DeleteView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import DeleteView, FormView
 from django.views.generic.list import ListView
 
-from podcasts.conf import EPISODES_PER_PAGE
-from podcasts.conf import PODCASTS_PER_PAGE
-from podcasts.forms import AdminSettingsForm
-from podcasts.forms import ListenerSettingsForm
-from podcasts.forms import NewFromURLForm
-from podcasts.forms import SiteSettingsForm
+from podcasts.conf import EPISODES_PER_PAGE, PODCASTS_PER_PAGE
+from podcasts.forms import AdminSettingsForm, ListenerSettingsForm, NewFromURLForm, SiteSettingsForm
 from podcasts.models.episode import Episode
 from podcasts.models.podcast import Podcast
-from podcasts.utils import handle_uploaded_file
-from podcasts.utils import parse_opml_file
+from podcasts.utils import handle_uploaded_file, parse_opml_file
 
 
 class EnsureCsrfCookieMixin(object):
@@ -59,11 +45,7 @@ class PodcastsList(ListView):
             Podcast.objects.prefetch_related("subscribers", "subscribers")
             .prefetch_related("followers", "followers")
             .annotate(num_episodes=Count("episodes"))
-            .annotate(
-                downloaded_episodes=Count(
-                    Case(When(episodes__downloaded__isnull=False, then=1))
-                )
-            )
+            .annotate(downloaded_episodes=Count(Case(When(episodes__downloaded__isnull=False, then=1))))
             .annotate(last_episode_date=Max("episodes__published"))
             .filter(followers=self.request.user.listener)
             .order_by(user_ordering)
@@ -90,17 +72,9 @@ class PodcastDetails(ListView):
     def get_queryset(self, **kwargs):
         user_ordering = self.request.user.listener.sort_order_episodes
         self.podcast = get_object_or_404(
-            (
-                Podcast.objects.prefetch_related(
-                    "episodes", "episodes"
-                ).prefetch_related("subscribers", "subscribers")
-            )
+            (Podcast.objects.prefetch_related("episodes", "episodes").prefetch_related("subscribers", "subscribers"))
             .annotate(num_episodes=Count("episodes"))
-            .annotate(
-                downloaded_episodes=Count(
-                    Case(When(episodes__downloaded__isnull=False, then=1))
-                )
-            )
+            .annotate(downloaded_episodes=Count(Case(When(episodes__downloaded__isnull=False, then=1))))
             .annotate(last_episode_date=Max("episodes__published")),
             slug=self.slug,
         )
@@ -111,9 +85,7 @@ class PodcastDetails(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["podcast"] = self.podcast
-        context["user_is_subscriber"] = self.podcast.subscribers.filter(
-            user=self.user
-        ).exists()
+        context["user_is_subscriber"] = self.podcast.subscribers.filter(user=self.user).exists()
         return context
 
 
@@ -125,9 +97,7 @@ class PodcastNew(FormView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         if form.cleaned_data["feed_url"]:
-            podcast, created = Podcast.objects.get_or_create_from_feed_url(
-                form.cleaned_data["feed_url"]
-            )
+            podcast, created = Podcast.objects.get_or_create_from_feed_url(form.cleaned_data["feed_url"])
             podcast.add_subscriber(self.request.user.listener)
             podcast.add_follower(self.request.user.listener)
 
@@ -138,9 +108,7 @@ class PodcastNew(FormView):
             for feed in feeds:
                 # When creating from OPML, episodes have to be created afterwards,
                 # to speed up import
-                podcast, created = Podcast.objects.get_or_create_from_feed_url(
-                    feed, create_episodes=False
-                )
+                podcast, created = Podcast.objects.get_or_create_from_feed_url(feed, create_episodes=False)
                 if podcast is not None:
                     podcast.add_subscriber(self.request.user.listener)
                     podcast.add_follower(self.request.user.listener)
@@ -181,15 +149,9 @@ def settings(request):
             instance=current_podcasts_settings,
             prefix="app",
         )
-        site_admin_form = SiteSettingsForm(
-            request.POST, request.FILES, instance=current_site_settings, prefix="site"
-        )
+        site_admin_form = SiteSettingsForm(request.POST, request.FILES, instance=current_site_settings, prefix="site")
 
-        if (
-            listener_form.is_valid()
-            and app_admin_form.is_valid()
-            and site_admin_form.is_valid()
-        ):
+        if listener_form.is_valid() and app_admin_form.is_valid() and site_admin_form.is_valid():
             listener_form.save()
             app_admin_form.save()
             site_admin_form.save()
@@ -197,15 +159,9 @@ def settings(request):
             next = request.GET.get("next", "/")
             return redirect(next)
     else:
-        listener_form = ListenerSettingsForm(
-            instance=request.user.listener, prefix="listener"
-        )
-        app_admin_form = AdminSettingsForm(
-            instance=current_podcasts_settings, prefix="app"
-        )
-        site_admin_form = SiteSettingsForm(
-            instance=current_site_settings, prefix="site"
-        )
+        listener_form = ListenerSettingsForm(instance=request.user.listener, prefix="listener")
+        app_admin_form = AdminSettingsForm(instance=current_podcasts_settings, prefix="app")
+        site_admin_form = SiteSettingsForm(instance=current_site_settings, prefix="site")
 
     return render(
         request,

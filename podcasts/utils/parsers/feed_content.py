@@ -1,10 +1,7 @@
 from dateutil import parser as dateparser
-
 from django.template.defaultfilters import slugify
 
-from podcasts.utils.sanitizers import sanitize_shownotes
-from podcasts.utils.sanitizers import sanitize_subtitle
-from podcasts.utils.sanitizers import sanitize_summary
+from podcasts.utils.sanitizers import sanitize_shownotes, sanitize_subtitle, sanitize_summary
 
 # Summary, Subtitle not included, parsed separately
 PODCAST_INFO_KEYS = [
@@ -55,7 +52,7 @@ def parse_feed_info(parsed_feed):
 
         if key == "updated" and feed_info[key] is not None:
             feed_info[key] = dateparser.parse(feed_info[key])
-        elif key == "image" and "href" in feed_info[key].keys():
+        elif key == "image" and "href" in feed_info[key]:
             feed_info[key] = feed_info[key]["href"]
 
     feed_info["subtitle"] = sanitize_subtitle(feed)
@@ -64,9 +61,7 @@ def parse_feed_info(parsed_feed):
     # Process episode list separately
     episode_list = parsed_feed.get("items", False) or parsed_feed.get("entries", False)
     if episode_list:
-        feed_info["episodes"] = [
-            parse_episode_info(episode) for episode in episode_list
-        ]
+        feed_info["episodes"] = [parse_episode_info(episode) for episode in episode_list]
     else:
         feed_info["episodes"] = []
 
@@ -80,11 +75,7 @@ def parse_episode_info(episode):
 
         if key == "published" and episode_info[key] is not None:
             episode_info[key] = dateparser.parse(episode_info[key])
-        elif (
-            key == "image"
-            and episode_info.get(key, None) is not None
-            and "href" in episode_info[key].keys()
-        ):
+        elif key == "image" and episode_info.get(key, None) is not None and "href" in episode_info[key]:
             episode_info[key] = episode_info[key]["href"]
         elif key == "title":
             episode_info["slug"] = slugify(episode_info["title"])
@@ -96,7 +87,7 @@ def parse_episode_info(episode):
 
     episode_info["media_url"] = None
     for link in episode["links"]:
-        if "rel" in link.keys() and link["rel"] == "enclosure":
+        if "rel" in link and link["rel"] == "enclosure":
             episode_info["media_url"] = link["href"]
 
     return episode_info

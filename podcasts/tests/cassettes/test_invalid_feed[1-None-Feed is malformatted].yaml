@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - Podcast-Archive/0.1 (https://github.com/janw/tapedrive)
     method: GET
-    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/invalid.xml
+    uri: https://raw.githubusercontent.com/janw/tapedrive/main/podcasts/tests/fixtures/invalid.xml
   response:
     body:
       string: !!binary |
