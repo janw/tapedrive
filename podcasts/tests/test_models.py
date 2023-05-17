@@ -1,9 +1,7 @@
 import logging
-from datetime import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 
 import pytest
-
 from django.db.utils import IntegrityError
 
 from podcasts.models import PodcastsSettings
@@ -62,9 +60,7 @@ def test_podcast_with_paged_feed(caplog):
     """Create complete Podcast from feed_url, with pages."""
 
     with caplog.at_level(logging.INFO, logger="podcasts.models"):
-        podcast, created = Podcast.objects.get_or_create_from_feed_url(
-            TEST_FEED_NEXT_PAGE
-        )
+        podcast, created = Podcast.objects.get_or_create_from_feed_url(TEST_FEED_NEXT_PAGE)
     assert created
     assert isinstance(podcast, Podcast)
 

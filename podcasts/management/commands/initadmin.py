@@ -16,9 +16,7 @@ class Command(BaseCommand):
             email = "changeme@tapedrive.io"
             password = environ.get("INITIAL_ADMIN_PASSWORD", "admin")
             logger.info("Creating initial admin account.")
-            admin = User.objects.create_superuser(
-                email=email, username=username, password=password
-            )
+            admin = User.objects.create_superuser(email=email, username=username, password=password)
             admin.is_active = True
             admin.is_admin = True
             admin.save()

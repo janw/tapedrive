@@ -9,19 +9,12 @@ COPY vite.config.js ./
 COPY frontend ./frontend
 RUN npm run build
 
-FROM python:3.7 as poetry-export
-WORKDIR /src
-COPY pyproject.toml poetry.lock ./
-RUN \
-  pip install --no-cache-dir "poetry>=1.0" && \
-  poetry export -f requirements.txt -o requirements.txt
-
 FROM python:3.7-alpine
 ENV PIP_NO_CACHE_DIR off
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
-COPY --from=poetry-export /src/requirements.txt ./
+COPY requirements.txt ./
 
 # hadolint ignore=DL3018
 RUN \

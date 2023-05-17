@@ -3,17 +3,12 @@ import os
 from django.db import models
 from django.utils.translation import gettext as _
 
-from podcasts.conf import DEFAULT_DATE_FORMAT
-from podcasts.conf import DEFAULT_NAMING_SCHEME
-from podcasts.conf import STORAGE_DIRECTORY
-from podcasts.validators import validate_naming_scheme
-from podcasts.validators import validate_path
+from podcasts.conf import DEFAULT_DATE_FORMAT, DEFAULT_NAMING_SCHEME, STORAGE_DIRECTORY
+from podcasts.validators import validate_naming_scheme, validate_path
 
 
 class IntegerRangeField(models.IntegerField):
-    def __init__(
-        self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs
-    ):
+    def __init__(self, verbose_name=None, name=None, min_value=None, max_value=None, **kwargs):
         self.min_value, self.max_value = min_value, max_value
         models.IntegerField.__init__(self, verbose_name, name, **kwargs)
 
@@ -49,9 +44,7 @@ class PodcastsSettings(models.Model):
         default=DEFAULT_DATE_FORMAT,
         validators=[],
         verbose_name=_("In-Path Date Format"),
-        help_text=_(
-            "Scheme used to compile date segments in episode download filenames"
-        ),
+        help_text=_("Scheme used to compile date segments in episode download filenames"),
     )
 
     class Meta:
@@ -63,8 +56,6 @@ class PodcastsSettings(models.Model):
 
     def save(self, *args, **kwargs):
         # Expand user and vars now once, to prevent future changes to cause unexpected directory changes
-        self.storage_directory = os.path.expanduser(
-            os.path.expandvars(self.storage_directory)
-        )
+        self.storage_directory = os.path.expanduser(os.path.expandvars(self.storage_directory))
 
         super().save(*args, **kwargs)

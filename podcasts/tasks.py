@@ -2,7 +2,6 @@ import logging
 
 from actstream import action
 from background_task import background
-
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 
@@ -18,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 @background()
 def download_episode(media_url, file_path, id):
-
     # Get Episode from database
     episode = Episode.objects.get(id=id)
     logger.info("Downloading episode %s ..." % episode)
@@ -39,7 +37,6 @@ def download_episode(media_url, file_path, id):
 @background()
 def regular_feed_refresh():
     for psettings in PodcastsSettings.objects.iterator():
-
         logger.info("Queueing feed refreshes ...")
         # Refresh feeds of podcasts with at least one follower
         for podcast in Podcast.objects.filter(followers__isnull=False).iterator():

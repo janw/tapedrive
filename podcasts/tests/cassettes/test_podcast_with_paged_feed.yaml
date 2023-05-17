@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - Podcast-Archive/0.1 (https://github.com/janw/tapedrive)
     method: GET
-    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/paged_p1.xml
+    uri: https://raw.githubusercontent.com/janw/tapedrive/main/podcasts/tests/fixtures/paged_p1.xml
   response:
     body:
       string: !!binary |
@@ -11171,7 +11171,7 @@ interactions:
       User-Agent:
       - Podcast-Archive/0.1 (https://github.com/janw/tapedrive)
     method: GET
-    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/paged_p2.xml
+    uri: https://raw.githubusercontent.com/janw/tapedrive/main/podcasts/tests/fixtures/paged_p2.xml
   response:
     body:
       string: !!binary |
@@ -26487,7 +26487,7 @@ interactions:
       User-Agent:
       - Podcast-Archive/0.1 (https://github.com/janw/tapedrive)
     method: GET
-    uri: https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/paged_p1.xml
+    uri: https://raw.githubusercontent.com/janw/tapedrive/main/podcasts/tests/fixtures/paged_p1.xml
   response:
     body:
       string: !!binary |

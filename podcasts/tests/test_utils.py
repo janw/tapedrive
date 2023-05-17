@@ -6,9 +6,7 @@ import requests
 from podcasts import utils
 from podcasts.utils import properties
 
-FIXTURES_URL = (
-    "https://raw.githubusercontent.com/janw/tapedrive/master/podcasts/tests/fixtures/"
-)
+FIXTURES_URL = "https://raw.githubusercontent.com/janw/tapedrive/main/podcasts/tests/fixtures/"
 
 TEST_FEED = FIXTURES_URL + "valid.xml"
 TEST_FEED_MALFORMED = (
@@ -40,20 +38,16 @@ def test_valid_feed():
 
 
 @pytest.mark.vcr()
-@pytest.mark.parametrize(
-    "feed,expected,message", [(0, None, "Not Found"), (1, None, "Feed is malformatted")]
-)
+@pytest.mark.parametrize("feed,expected,message", [(0, None, "Not Found"), (1, None, "Feed is malformatted")])
 def test_invalid_feed(feed, expected, message, caplog):
     """Querying an invalid feed should always fail softly, returning None."""
     caplog.set_level(logging.ERROR, logger="podcasts.utils")
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # noqa: B017
         utils.refresh_feed(TEST_FEED_MALFORMED[feed])
 
 
 def test_connection_error(mocker, caplog):
-    mock_requests = mocker.patch(
-        "podcasts.utils.session.get", side_effect=requests.exceptions.ConnectionError
-    )
+    mock_requests = mocker.patch("podcasts.utils.session.get", side_effect=requests.exceptions.ConnectionError)
     caplog.set_level(logging.ERROR, logger="podcasts.utils")
     with pytest.raises(requests.exceptions.ConnectionError):
         utils.refresh_feed("https://any.feed/is/fine/here")

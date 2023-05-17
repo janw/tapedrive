@@ -10,8 +10,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 import random
 
-from configurations import Configuration
-from configurations import values
+from configurations import Configuration, values
 
 
 def get_secret_key(PROJECT_DIR):
@@ -22,12 +21,7 @@ def get_secret_key(PROJECT_DIR):
     except IOError:
         try:
             SECRET_KEY = "".join(
-                [
-                    random.SystemRandom().choice(
-                        "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
-                    )
-                    for i in range(50)
-                ]
+                [random.SystemRandom().choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]
             )
             with open(SECRET_FILE, "w") as sf:
                 sf.write(SECRET_KEY)
@@ -100,16 +94,12 @@ class Common(Configuration):
 
     # Database
     # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue(
-        "postgres://tapedrive:tapedrive@localhost/tapedrive"
-    )
+    DATABASES = values.DatabaseURLValue("postgres://tapedrive:tapedrive@localhost/tapedrive")
 
     # Password validation
     # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
     AUTH_PASSWORD_VALIDATORS = [
-        {
-            "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
-        },
+        {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
         {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
         {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
         {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},

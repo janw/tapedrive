@@ -1,11 +1,8 @@
 import logging
-from urllib.parse import urlencode
-from urllib.parse import urlparse
-from urllib.parse import urlunparse
+from urllib.parse import urlencode, urlparse, urlunparse
 
 import requests
 from actstream import action
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
@@ -15,15 +12,10 @@ from django.shortcuts import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from podcasts.conf import DEFAULT_DATE_FORMAT
-from podcasts.conf import DEFAULT_NAMING_SCHEME
-from podcasts.conf import ITUNES_LOOKUP_URL
-from podcasts.conf import STORAGE_DIRECTORY
+from podcasts.conf import DEFAULT_DATE_FORMAT, DEFAULT_NAMING_SCHEME, ITUNES_LOOKUP_URL, STORAGE_DIRECTORY
 from podcasts.models.common import CommonAbstract
 from podcasts.models.episode import Episode
-from podcasts.utils import HEADERS
-from podcasts.utils import feed_info
-from podcasts.utils import refresh_feed
+from podcasts.utils import HEADERS, feed_info, refresh_feed
 
 logger = logging.getLogger(__name__)
 
@@ -46,9 +38,7 @@ class PodcastManager(models.Manager):
         podcast.queue_full_update()
         return podcast
 
-    def get_or_create_from_feed_url(
-        self, feed_url, feed_info=None, subscriber=None, **kwargs
-    ):
+    def get_or_create_from_feed_url(self, feed_url, feed_info=None, subscriber=None, **kwargs):
         self._for_write = True
         if not feed_info:
             feed_info = refresh_feed(feed_url)
@@ -62,9 +52,7 @@ class PodcastManager(models.Manager):
             logger.info("Found existing %(podcast)s" % {"podcast": podcast.title})
         except self.model.DoesNotExist:
             # Args now include feed_info to prevent a second refresh happening down the line
-            podcast = self.create_from_feed_url(
-                feed_info.url, feed_info=feed_info, **kwargs
-            )
+            podcast = self.create_from_feed_url(feed_info.url, feed_info=feed_info, **kwargs)
             created = True
         if subscriber:
             podcast.subscribers.add(subscriber)
@@ -88,18 +76,12 @@ class PodcastManager(models.Manager):
         data = response.json()
 
         if "resultCount" in data and data["resultCount"] > 0:
-            return self.get_or_create_from_feed_url(
-                data["results"][0]["feedUrl"], **kwargs
-            )
+            return self.get_or_create_from_feed_url(data["results"][0]["feedUrl"], **kwargs)
 
 
 class Podcast(CommonAbstract):
-    title = models.CharField(
-        default="Untitled", null=False, max_length=255, verbose_name=_("Podcast Title")
-    )
-    subtitle = models.CharField(
-        blank=True, null=True, max_length=255, verbose_name=_("Podcast Subtitle")
-    )
+    title = models.CharField(default="Untitled", null=False, max_length=255, verbose_name=_("Podcast Title"))
+    subtitle = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Podcast Subtitle"))
     slug = models.SlugField(blank=True, null=False, unique=True, editable=False)
     feed_url = models.URLField(
         blank=False,
@@ -110,40 +92,22 @@ class Podcast(CommonAbstract):
     )
 
     added = models.DateTimeField(auto_now_add=True, verbose_name=_("Podcast Added"))
-    fetched = models.DateTimeField(
-        blank=True, null=True, verbose_name=_("Feed Fetched Last")
-    )
+    fetched = models.DateTimeField(blank=True, null=True, verbose_name=_("Feed Fetched Last"))
     # Fields extracted at feed refresh
-    updated = models.DateTimeField(
-        blank=True, null=True, verbose_name=_("Last Feed Update")
-    )
-    author = models.CharField(
-        blank=True, null=True, max_length=255, verbose_name=_("Podcast Author")
-    )
+    updated = models.DateTimeField(blank=True, null=True, verbose_name=_("Last Feed Update"))
+    author = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Podcast Author"))
 
-    language = models.CharField(
-        blank=True, null=True, max_length=64, verbose_name=_("Main Language")
-    )
-    link = models.URLField(
-        blank=True, null=True, max_length=2048, verbose_name=_("Podcast Link")
-    )
+    language = models.CharField(blank=True, null=True, max_length=64, verbose_name=_("Main Language"))
+    link = models.URLField(blank=True, null=True, max_length=2048, verbose_name=_("Podcast Link"))
     itunes_explicit = models.NullBooleanField(verbose_name=_("Explicit Tag"))
-    itunes_type = models.CharField(
-        blank=True, null=True, max_length=64, verbose_name=_("iTunes Type")
-    )
-    generator = models.CharField(
-        blank=True, null=True, max_length=64, verbose_name=_("Feed Generator")
-    )
+    itunes_type = models.CharField(blank=True, null=True, max_length=64, verbose_name=_("iTunes Type"))
+    generator = models.CharField(blank=True, null=True, max_length=64, verbose_name=_("Feed Generator"))
     summary = models.TextField(blank=True, null=True, verbose_name=_("Podcast Summary"))
 
     objects = PodcastManager()
 
-    subscribers = models.ManyToManyField(
-        User, verbose_name=_("Subscribers"), related_name="subscribed_podcasts"
-    )
-    followers = models.ManyToManyField(
-        User, verbose_name=_("Follwers"), related_name="interested_podcasts"
-    )
+    subscribers = models.ManyToManyField(User, verbose_name=_("Subscribers"), related_name="subscribed_podcasts")
+    followers = models.ManyToManyField(User, verbose_name=_("Follwers"), related_name="interested_podcasts")
 
     class Meta:
         verbose_name = _("Podcast")
@@ -173,9 +137,7 @@ class Podcast(CommonAbstract):
             ep["podcast"] = self
             image = ep.pop("image", None)
 
-            episode, created = Episode.objects.update_or_create(
-                guid=ep["guid"], defaults=ep
-            )
+            episode, created = Episode.objects.update_or_create(guid=ep["guid"], defaults=ep)
 
             episode.insert_cover(image)
             all_created.append(created)
@@ -239,8 +201,7 @@ class Podcast(CommonAbstract):
         defaults["fetched"] = timezone.now()
 
         logger.info(
-            "Fetched %(podcast)s at %(timestamp)s"
-            % {"podcast": defaults["title"], "timestamp": defaults["fetched"]}
+            "Fetched %(podcast)s at %(timestamp)s" % {"podcast": defaults["title"], "timestamp": defaults["fetched"]}
         )
 
         episodes = defaults.pop("episodes", None)
@@ -260,12 +221,7 @@ class Podcast(CommonAbstract):
             # * There is a next page
             # * Not only the first page should be processed
             # * All episodes are new OR existing episodes should be updated
-            while (
-                feed_info.next_page
-                and not only_first_page
-                and (False not in all_created or update_all)
-            ):
-
+            while feed_info.next_page and not only_first_page and (False not in all_created or update_all):
                 logger.info("Fetching next page %s ..." % feed_info.next_page)
 
                 feed_info = refresh_feed(feed_info.next_page)
@@ -291,9 +247,7 @@ class Podcast(CommonAbstract):
         inpath_dateformat=DEFAULT_DATE_FORMAT,
     ):
         for episode in self.episodes.filter(downloaded=None):
-            episode.queue_download_task(
-                storage_directory, naming_scheme, inpath_dateformat
-            )
+            episode.queue_download_task(storage_directory, naming_scheme, inpath_dateformat)
 
 
 @receiver(post_save, sender=Podcast)

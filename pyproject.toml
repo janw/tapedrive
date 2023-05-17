@@ -37,20 +37,42 @@ pytest-mock = "^1.10"
 pytest-vcr = "^1.0"
 Werkzeug = "^0.15.2"
 
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.267"
+black = "^23.3.0"
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+extend-select = [
+    "I",   # isort
+    "B",   # bugbear
+    # "A",   # builtins FIXME: uncomment
+    "ISC", # implicit-str-concat
+    "Q",   # quotes
+    "TID", # tidy-imports
+    "C4",  # comprehensions
+    "SIM", # simplify
+    "C90", # mccabe
+]
+unfixable = [
+    "B", # bugbear
+]
+ignore = [
+    "SIM108", # if-else-block-instead-of-if-exp
+]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
 [tool.black]
-line-length = 88
-target-version = ['py37', 'py38']
+line-length = 120
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
 include = '\.pyi?$'
-exclude = '''
+extend-exclude = '''
 /(
-    \.eggs
-  | \.git
-  | \.tx
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
+  | frontend
   | build
   | dist
   | staticfiles

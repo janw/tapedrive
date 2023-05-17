@@ -12,7 +12,6 @@ class Command(BaseCommand):
     help = "Wait for a usable database connection."
 
     def handle(self, *args, **options):
-
         # If connection is already up: exit.
         if connection.connection is not None:
             sys.exit(0)

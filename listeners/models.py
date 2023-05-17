@@ -6,7 +6,6 @@ from podcasts.models import IntegerRangeField
 
 
 class User(AbstractUser):
-
     # How to display things in frontend
     PODCASTS_PER_PAGE = 15
     EPISODES_PER_PAGE = 30
