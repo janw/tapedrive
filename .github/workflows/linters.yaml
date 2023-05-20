@@ -5,22 +5,9 @@ on:
 
 jobs:
   gitlint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set up python environment
-        uses: actions/setup-python@v4
-        with:
-          cache: 'pip'
-
-      - run: pip install gitlint
-
-      # NOTE: Range since first commit that uses conventional-commits
-      - run: gitlint --fail-without-commits --commits abb56f5..HEAD
+    uses: janw/workflows/.github/workflows/gitlint.yaml@main
+    with:
+      first-commit: abb56f5
 
   pre-commit:
     uses: janw/workflows/.github/workflows/pre-commit.yaml@main
