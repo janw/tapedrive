@@ -49,8 +49,8 @@ class AddPodcast(APIView):
         )
 
 
-def podcast_add_from_id(request, id):
-    podcast, created = Podcast.objects.get_or_create_from_itunes_id(id, only_first_page=True)
+def podcast_add_from_id(request, podcast_id):
+    podcast, created = Podcast.objects.get_or_create_from_itunes_id(podcast_id, only_first_page=True)
     podcast.add_subscriber(request.user.listener)
     podcast.add_follower(request.user.listener)
 
@@ -84,18 +84,18 @@ def podcast_unsubscribe(request, slug=None):
 
 
 @require_POST
-def episode_queue_download(request, id):
+def episode_queue_download(request, episode_id):
     site = get_current_site(request)
-    object = get_object_or_404(Episode, id=id)
-    object.queue_download_task(site.podcastssettings.storage_directory, site.podcastssettings.naming_scheme)
+    obj = get_object_or_404(Episode, id=episode_id)
+    obj.queue_download_task(site.podcastssettings.storage_directory, site.podcastssettings.naming_scheme)
     return HttpResponseNoContent()
 
 
 @require_POST
 def podcast_queue_download(request, slug):
     site = get_current_site(request)
-    object = get_object_or_404(Podcast.objects.prefetch_related("episodes"), slug=slug)
-    object.queue_missing_episodes_download_tasks(
+    obj = get_object_or_404(Podcast.objects.prefetch_related("episodes"), slug=slug)
+    obj.queue_missing_episodes_download_tasks(
         site.podcastssettings.storage_directory, site.podcastssettings.naming_scheme
     )
     return HttpResponseNoContent()
@@ -107,28 +107,28 @@ class EpisodeDetailsView(RetrieveAPIView):
     serializer_class = EpisodeSerializer
 
 
-def episode_details(request, id):
-    object = get_object_or_404(Episode.objects.prefetch_related("podcast", "chapters"), id=id)
+def episode_details(request, episode_id):
+    obj = get_object_or_404(Episode.objects.prefetch_related("podcast", "chapters"), id=episode_id)
 
-    return JsonResponse(EpisodeSerializer(object))
+    return JsonResponse(EpisodeSerializer(obj))
 
 
-def _episode_content_html(request, id=None, object=None):
-    if id is None and object is None:
+def _episode_content_html(request, episode_id=None, obj=None):
+    if episode_id is None and obj is None:
         raise Exception("Need either an episode ID or object")
-    if not object:
-        object = get_object_or_404(Episode, id=id)
+    if not obj:
+        obj = get_object_or_404(Episode, id=episode_id)
 
     isp = request.user.listener.image_security_policy
     if isp == "a":
         allowed_domains = ["*"]
     elif isp == "f":
-        domain = utils.clean_link(object.podcast.link)
+        domain = utils.clean_link(obj.podcast.link)
         allowed_domains = [domain]
     else:
         allowed_domains = []
 
-    return object.get_content(allowed_domains)
+    return obj.get_content(allowed_domains)
 
 
 def apple_podcasts_topcharts(request):
@@ -137,8 +137,8 @@ def apple_podcasts_topcharts(request):
     return JsonResponse(unify_apple_podcasts_response(data))
 
 
-def apple_podcasts_feed_from_id(request, id):
-    params = {"id": id}
+def apple_podcasts_feed_from_id(request, podcast_id):
+    params = {"id": podcast_id}
     url_parts = list(urlparse(ITUNES_LOOKUP_URL))
     url_parts[4] = urlencode(params)
     url = urlunparse(url_parts)

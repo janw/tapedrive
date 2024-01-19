@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.translation import gettext as _
 
+from podcasts.enums import EpisodeOrder, ImageSecurityPolicy, PodcastOrder
 from podcasts.models import IntegerRangeField
 
 
@@ -14,66 +14,33 @@ class User(AbstractUser):
     DEFAULT_IMAGE_SECURITY_POLICY = "f"
     SEEK_FORWARD_BY = 45
     SEEK_BACKWARD_BY = 30
-    # Playback-related options (maybe in the future)
-
-    PODCASTS_ORDER_CHOICES = (
-        (_("Content"), (("title", _("Title")),)),
-        (
-            _("Metadata"),
-            (
-                ("last_episode_date", _("Last Published Episode")),
-                ("num_episodes", _("Number of Episodes")),
-            ),
-        ),
-    )
-
-    EPISODES_ORDER_CHOICES = (
-        (_("Content"), (("title", _("Title")),)),
-        (
-            _("Metadata"),
-            (
-                ("downloaded", _("Download Date (Earliest First)")),
-                ("-downloaded", _("Download Date (Latest First)")),
-                ("published", _("Publishing Date (Earliest First)")),
-                ("-published", _("Publishing Date (Latest First)")),
-                ("itunes_duration", _("Duration (Shortest First)")),
-                ("-itunes_duration", _("Duration (Longest First)")),
-            ),
-        ),
-    )
-
-    IMAGE_SECURITY_POLICY_CHOICES = (
-        ("a", _("Allow All")),
-        ("f", _("Allow First-Party")),
-        ("n", _("Allow None")),
-    )
 
     # Display settings
     sort_order_podcasts = models.CharField(
-        choices=PODCASTS_ORDER_CHOICES,
-        default=DEFAULT_PODCASTS_ORDER,
-        max_length=16,
-        verbose_name=_("Sort Podcasts By"),
-        help_text=_("Determines the sorting of podcasts in the podcasts list"),
+        choices=PodcastOrder,
+        default=PodcastOrder.default(),
+        max_length=3,
+        verbose_name="Sort Podcasts By",
+        help_text="Determines the sorting of podcasts in the podcasts list",
     )
     sort_order_episodes = models.CharField(
-        choices=EPISODES_ORDER_CHOICES,
-        default=DEFAULT_EPISODES_ORDER,
-        max_length=16,
-        verbose_name=_("Sort Episodes By"),
-        help_text=_("Determines the sorting of episodes on podcast detail pages"),
+        choices=EpisodeOrder,
+        default=EpisodeOrder.default(),
+        max_length=4,
+        verbose_name="Sort Episodes By",
+        help_text="Determines the sorting of episodes on podcast detail pages",
     )
     dark_mode = models.BooleanField(
         default=False,
-        verbose_name=_("Dark Mode"),
-        help_text=_("Reduce eye strain at night, increase awesomeness by day."),
+        verbose_name="Dark Mode",
+        help_text="Reduce eye strain at night, increase awesomeness by day.",
     )
     image_security_policy = models.CharField(
-        choices=IMAGE_SECURITY_POLICY_CHOICES,
-        default=DEFAULT_IMAGE_SECURITY_POLICY,
+        choices=ImageSecurityPolicy,
+        default=ImageSecurityPolicy.default(),
         max_length=1,
-        verbose_name=_("Image Security Policy"),
-        help_text=_("How to load external images in show notes, etc."),
+        verbose_name="Image Security Policy",
+        help_text="How to load external images in show notes, etc.",
     )
 
     # Settings for future playback functionality
@@ -83,7 +50,7 @@ class User(AbstractUser):
         default=SEEK_FORWARD_BY,
         min_value=1,
         max_value=360,
-        verbose_name=_("Seek Duration Forward"),
+        verbose_name="Seek Duration Forward",
     )
     playback_seek_backward_by = IntegerRangeField(
         null=True,
@@ -91,11 +58,11 @@ class User(AbstractUser):
         default=SEEK_BACKWARD_BY,
         min_value=1,
         max_value=360,
-        verbose_name=_("Seek Duration Backward"),
+        verbose_name="Seek Duration Backward",
     )
 
     def __str__(self):
-        return _("User %(user)s") % {"user": self.username}
+        return f"User {self.username}"
 
     def has_played(self, episode):
         from podcasts.models.episode import EpisodePlaybackState

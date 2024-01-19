@@ -4,10 +4,45 @@ on:
   pull_request:
 
 jobs:
-  gitlint:
-    uses: janw/workflows/.github/workflows/gitlint.yaml@main
-    with:
-      first-commit: abb56f5
+  commitizen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            pyproject.toml
+          sparse-checkout-cone-mode: false
 
-  pre-commit:
-    uses: janw/workflows/.github/workflows/pre-commit.yaml@main
+      - name: Install commitizen
+        run: pipx install commitizen
+
+      - run: cz check --rev-range origin/main..HEAD
+        shell: bash
+
+  # pre-commit-extras:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out
+  #       uses: actions/checkout@v3
+
+  #     - name: Get python version from file
+  #       run: echo "PYTHON_VERSION=$(cat .python-version)" | tee -a "$GITHUB_ENV"
+
+  #     - name: Install commitizen
+  #       run: pipx install poetry
+
+  #     - name: Set up python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: ${{ env.PYTHON_VERSION }}
+  #         cache: 'poetry'
+
+  #     - run: poetry install --with=dev
+
+  #     - uses: pre-commit/action@v3.0.0
+  #       with:
+  #         extra_args: >
+  #           rich-codex
+  #           --all-files

@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from background_task.models import Task
 from django.conf import settings
 
 from .apps import PodcastsConfig
@@ -9,7 +8,7 @@ from .apps import PodcastsConfig
 def _getattr(variable, default):
     prefix = PodcastsConfig.name.upper()
     variable = variable.upper()
-    return getattr(settings, "%s_%s" % (prefix, variable), default)
+    return getattr(settings, f"{prefix}_{variable}", default)
 
 
 STORAGE_DIRECTORY = "/data"
@@ -21,6 +20,15 @@ ITUNES_SEARCH_URL = "https://itunes.apple.com/search?"
 ITUNES_LOOKUP_URL = "https://itunes.apple.com/lookup?"
 ITUNES_SEARCH_LIMIT = 15
 
-DEFAULT_REFRESH_RATE = Task.HOURLY
+# DEFAULT_REFRESH_RATE = Task.HOURLY
 DEFAULT_REFRESH_PRIORITY = -10
 DEFAULT_REFRESH_DELAY = timedelta(minutes=1)
+
+
+DEFAULT_PODCASTS_PER_PAGE = 15
+DEFAULT_EPISODES_PER_PAGE = 30
+DEFAULT_DEFAULT_PODCASTS_ORDER = "title"
+DEFAULT_DEFAULT_EPISODES_ORDER = "-published"
+DEFAULT_DEFAULT_IMAGE_SECURITY_POLICY = "f"
+DEFAULT_SEEK_FORWARD_BY = 45
+DEFAULT_SEEK_BACKWARD_BY = 30

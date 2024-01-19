@@ -1,4 +1,4 @@
-from background_task.models import Task
+# from background_task.models import Task
 from rest_framework import serializers
 
 from podcasts.models.episode import Episode
@@ -50,14 +50,14 @@ class PodcastFromUrlSerializer(serializers.Serializer):
     feed_url = serializers.URLField()
 
 
-class EpisodeDownloadTaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Task
-        fields = ("task_hash", "run_at", "attempts", "failed_at")
+# class EpisodeDownloadTaskSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Task
+#         fields = ("task_hash", "run_at", "attempts", "failed_at")
 
 
 class EpisodeSerializer(serializers.ModelSerializer):
-    download_task = EpisodeDownloadTaskSerializer(read_only=True)
+    # download_task = EpisodeDownloadTaskSerializer(read_only=True)
     podcast = PodcastInlineSerializer(read_only=True)
 
     class Meta:

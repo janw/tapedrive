@@ -1,5 +1,7 @@
+# syntax=docker/dockerfile:1
+ARG PYTHON_VERSION
+
 FROM node:16 as frontend
-LABEL maintainer="Jan Willhaus <mail@janwillhaus.de"
 
 WORKDIR /frontend
 COPY package-lock.json package.json ./
@@ -9,7 +11,7 @@ COPY vite.config.js ./
 COPY frontend ./frontend
 RUN npm run build
 
-FROM python:3.7-alpine
+FROM python:${PYTHON_VERSION}-alpine
 ENV PIP_NO_CACHE_DIR off
 ENV PYTHONUNBUFFERED 1
 

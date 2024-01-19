@@ -8,36 +8,36 @@ from podcasts.utils.filters import shownotes_cleaner, subtitle_cleaner, summary_
 logger = logging.getLogger(__name__)
 
 
-def sanitize_subtitle(object):
+def sanitize_subtitle(obj):
     # Properly process subtitle
-    if "subtitle" in object:
+    if "subtitle" in obj:
         # As per spec, subtitle should be plain text and up to 255 characters.
-        subtitle = subtitle_cleaner.clean(object.get("subtitle", ""))
+        subtitle = subtitle_cleaner.clean(obj.get("subtitle", ""))
         if len(subtitle) > 255:
             logger.warning("Subtitle too long, will be truncated")
             subtitle = subtitle[:251] + " ..."
         return subtitle
 
 
-def sanitize_summary(object):
+def sanitize_summary(obj):
     # Properly process summary/description
-    if "summary_detail" in object:
+    if "summary_detail" in obj:
         # If summary properly announces as markdown parse it out
-        if object["summary_detail"]["type"] == "text/markdown":
-            html = markdown(object["summary_detail"]["value"])
+        if obj["summary_detail"]["type"] == "text/markdown":
+            html = markdown(obj["summary_detail"]["value"])
         else:
-            html = object["summary_detail"]["value"]
-    elif "summary" in object:
-        html = object.get("summary", "")
+            html = obj["summary_detail"]["value"]
+    elif "summary" in obj:
+        html = obj.get("summary", "")
     else:
-        html = object.get("description", "")
+        html = obj.get("description", "")
 
     # In any case, clean the thing from weird HTML shenanigans
     return summary_cleaner.clean(html)
 
 
-def sanitize_shownotes(object, max_headline=2):
-    content = object.get("content")
+def sanitize_shownotes(obj, max_headline=2):
+    content = obj.get("content")
     if not content:
         return None
 

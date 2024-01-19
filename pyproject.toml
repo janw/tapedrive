@@ -1,88 +1,187 @@
 [tool.poetry]
-name = "tapedrive"
-version = "0.1.0"
+name        = "tapedrive"
+version     = "0.1.0"
 description = "The selfhosted Podcast Archive"
-authors = ["Jan Willhaus <mail@janwillhaus.de>"]
-license = "Apache-2.0"
+authors     = ["Jan Willhaus <mail@janwillhaus.de>"]
+license     = "Apache-2.0"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-Django = "~2.2.10"
-django-activity-stream = "^0.8"
-django-background-tasks = "^1.2"
-django-configurations = "^2.1"
-djangorestframework = "^3.9"
-djangorestframework_simplejwt = "^4.3"
-dj-database-url = "^0.5.0"
-bleach = "^3.1"
-feedparser = "^6.0"
-beautifulsoup4 = "^4.7"
-Markdown = "^3.1"
-Pillow = "^6.0"
-requests = "^2.21"
+python = "^3.12"
+
+# Django and friends
+Django                        = "~4.2"
+django-activity-stream        = "^1.4"
+django-configurations         = "^2.5"
+djangorestframework           = "^3.14"
+djangorestframework_simplejwt = "^5.3"
+dj-database-url               = "^2.1"
+
+# Feedparsing
+bleach          = "^6.1"
+html5lib        = "^1.1"
+feedparser      = "^6.0"
+beautifulsoup4  = "^4.7"
+Markdown        = "^3.1"
+Pillow          = "^6.0"
+requests        = "^2.31"
 python-dateutil = "^2.8"
-html5lib = "^1.0"
-whitenoise = "^4.1"
+
+whitenoise = "^6.6"
+
+# Running the app
 psycopg2 = "^2.9"
 gunicorn = "*"
-honcho = "*"
 
 [tool.poetry.group.tests.dependencies]
-pytest = "^4.4"
-pytest-cov = "^2.7"
+pytest        = "^7.4.4"
+pytest-cov    = "^2.7"
 pytest-django = "^3.4"
-pytest-mock = "^1.10"
-pytest-vcr = "^1.0"
+pytest-mock   = "^1.10"
+pytest-vcr    = "^1.0"
 
 [tool.poetry.group.dev.dependencies]
-django-debug-toolbar = "^1.11"
-django-extensions = "^2.1"
-ruff = "^0.0.267"
-black = "^23.3.0"
-Werkzeug = "^0.15.2"
+ipython    = "<8.18"
+ipdb       = "*"
+ruff       = "^0.1.14"
+pre-commit = "^3.2.2"
+commitizen = "^3.13.0"
+rich-codex = "^1.2.6"
+mypy       = "^1.8.0"
+
+django-debug-toolbar = "^4.2"
+django-extensions    = "^3.2"
+
+# Werkzeug = "^3.0"
+honcho = "*"
+
+# Typing
+django-stubs = "*"
+
+
+[tool.commitizen]
+version_scheme = "semver"
+version_provider = "poetry"
+version_files = [
+    "pyproject.toml:version = ",
+    "tapedrive/__init__.py",
+    "package.json",
+    "README.md",
+]
+gpg_sign = true
+annotated_tag = true
+tag_format = "v$version"
+update_changelog_on_bump = true
+
+
+[tool.pytest.ini_options]
+testpaths = [
+    "listeners/tests",
+    "podcasts/tests",
+    "tapedrive/tests",
+]
+
+DJANGO_SETTINGS_MODULE = "tapedrive.settings"
+DJANGO_CONFIGURATION   = "Testing"
+
+
+[tool.coverage.paths]
+
+[tool.coverage.run]
+branch = true
+source = [
+    "tapedrive",
+    "podcasts",
+    "listeners",
+]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+]
+[tool.coverage.report]
+exclude_also = [
+    "if TYPE_CHECKING:",
+]
+fail_under = 60
+precision = 2
+show_missing = true
+
 
 [tool.ruff]
 line-length = 120
-target-version = "py39"
+target-version = "py312"
 extend-select = [
     "I",   # isort
     "B",   # bugbear
-    # "A",   # builtins FIXME: uncomment
     "ISC", # implicit-str-concat
     "Q",   # quotes
     "TID", # tidy-imports
     "C4",  # comprehensions
     "SIM", # simplify
     "C90", # mccabe
+    "T20", # no print
+    "PGH", # pygrep-hooks
+    "W",   # pycodestyle warnings (eol/eof whitespace, etc.
+    "T10", # no debug statements
+    "DJ",  # flake8-django
+    "A",   # flake8-builtins
+    "UP",  # pyupgrade
 ]
 unfixable = [
     "B", # bugbear
 ]
 ignore = [
     "SIM108", # if-else-block-instead-of-if-exp
+    "ISC001", # single-line-implicit-string-concatenation
+]
+extend-exclude = [
+    "frontend",
+    "build",
+    "dist",
+    "staticfiles",
+    "templates",
+    "assets",
+    "locale",
+    "node_modules",
+    "migrations",
 ]
 
 [tool.ruff.mccabe]
 max-complexity = 10
 
-[tool.black]
-line-length = 120
-target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  | frontend
-  | build
-  | dist
-  | staticfiles
-  | templates
-  | assets
-  | locale
-  | node_modules
-  | migrations
-)/
-'''
+[tool.ruff.format]
+quote-style = "double"
+
+
+[tool.mypy]
+disallow_untyped_defs    = true
+disallow_any_generics    = true
+disallow_untyped_calls   = true
+disallow_incomplete_defs = true
+warn_unused_configs      = true
+warn_redundant_casts     = true
+warn_unused_ignores      = true
+strict_optional          = true
+strict_equality          = true
+check_untyped_defs       = true
+no_implicit_reexport     = true
+
+plugins = [
+    "mypy_django_plugin.main",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "feedparser.*",
+    "requests.*",
+    "slugify.*",
+    "yaml.*",
+]
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "tapedrive.settings:Testing"
+
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires      = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

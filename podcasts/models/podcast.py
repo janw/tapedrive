@@ -29,10 +29,10 @@ class PodcastManager(models.Manager):
         if not feed_info:
             feed_info = refresh_feed(feed_url)
         if feed_info is None:
-            logger.error("Feed %(feed)s seems dead" % {"feed": feed_url})
+            logger.error(f"Feed {feed_url} seems dead")
             return
 
-        logger.info("Creating %(podcast)s" % {"podcast": feed_info.data["title"]})
+        logger.info("Creating {podcast}".format(podcast=feed_info.data["title"]))
         podcast = Podcast(feed_url=feed_info.url)
         podcast.update(feed_info=feed_info, create_episodes=False, **kwargs)
         podcast.queue_full_update()
@@ -43,13 +43,13 @@ class PodcastManager(models.Manager):
         if not feed_info:
             feed_info = refresh_feed(feed_url)
         if not feed_info:
-            logger.error("Feed %(feed)s seems dead" % {"feed": feed_url})
+            logger.error(f"Feed {feed_url} seems dead")
             return None, False
 
         created = False
         try:
             podcast = self.get(feed_url=feed_info.url)
-            logger.info("Found existing %(podcast)s" % {"podcast": podcast.title})
+            logger.info(f"Found existing {podcast.title}")
         except self.model.DoesNotExist:
             # Args now include feed_info to prevent a second refresh happening down the line
             podcast = self.create_from_feed_url(feed_info.url, feed_info=feed_info, **kwargs)
@@ -80,9 +80,24 @@ class PodcastManager(models.Manager):
 
 
 class Podcast(CommonAbstract):
-    title = models.CharField(default="Untitled", null=False, max_length=255, verbose_name=_("Podcast Title"))
-    subtitle = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Podcast Subtitle"))
-    slug = models.SlugField(blank=True, null=False, unique=True, editable=False)
+    title = models.CharField(
+        default="Untitled",
+        null=False,
+        max_length=255,
+        verbose_name=_("Podcast Title"),
+    )
+    subtitle = models.CharField(
+        blank=True,
+        default="",
+        max_length=255,
+        verbose_name=_("Podcast Subtitle"),
+    )
+    slug = models.SlugField(
+        blank=True,
+        null=False,
+        unique=True,
+        editable=False,
+    )
     feed_url = models.URLField(
         blank=False,
         null=False,
@@ -91,23 +106,71 @@ class Podcast(CommonAbstract):
         verbose_name=_("Feed URL"),
     )
 
-    added = models.DateTimeField(auto_now_add=True, verbose_name=_("Podcast Added"))
-    fetched = models.DateTimeField(blank=True, null=True, verbose_name=_("Feed Fetched Last"))
+    added = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Podcast Added"),
+    )
+    fetched = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Feed Fetched Last"),
+    )
     # Fields extracted at feed refresh
-    updated = models.DateTimeField(blank=True, null=True, verbose_name=_("Last Feed Update"))
-    author = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Podcast Author"))
+    updated = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Last Feed Update"),
+    )
+    author = models.CharField(
+        blank=True,
+        default="",
+        max_length=255,
+        verbose_name=_("Podcast Author"),
+    )
 
-    language = models.CharField(blank=True, null=True, max_length=64, verbose_name=_("Main Language"))
-    link = models.URLField(blank=True, null=True, max_length=2048, verbose_name=_("Podcast Link"))
+    language = models.CharField(
+        blank=True,
+        default="",
+        max_length=64,
+        verbose_name=_("Main Language"),
+    )
+    link = models.URLField(
+        blank=True,
+        default="",
+        max_length=2048,
+        verbose_name=_("Podcast Link"),
+    )
     itunes_explicit = models.NullBooleanField(verbose_name=_("Explicit Tag"))
-    itunes_type = models.CharField(blank=True, null=True, max_length=64, verbose_name=_("iTunes Type"))
-    generator = models.CharField(blank=True, null=True, max_length=64, verbose_name=_("Feed Generator"))
-    summary = models.TextField(blank=True, null=True, verbose_name=_("Podcast Summary"))
+    itunes_type = models.CharField(
+        blank=True,
+        default="",
+        max_length=64,
+        verbose_name=_("iTunes Type"),
+    )
+    generator = models.CharField(
+        blank=True,
+        default="",
+        max_length=64,
+        verbose_name=_("Feed Generator"),
+    )
+    summary = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("Podcast Summary"),
+    )
 
     objects = PodcastManager()
 
-    subscribers = models.ManyToManyField(User, verbose_name=_("Subscribers"), related_name="subscribed_podcasts")
-    followers = models.ManyToManyField(User, verbose_name=_("Follwers"), related_name="interested_podcasts")
+    subscribers = models.ManyToManyField(
+        User,
+        verbose_name=_("Subscribers"),
+        related_name="subscribed_podcasts",
+    )
+    followers = models.ManyToManyField(
+        User,
+        verbose_name=_("Follwers"),
+        related_name="interested_podcasts",
+    )
 
     class Meta:
         verbose_name = _("Podcast")
@@ -200,9 +263,7 @@ class Podcast(CommonAbstract):
         defaults["feed_url"] = feed_info.url
         defaults["fetched"] = timezone.now()
 
-        logger.info(
-            "Fetched %(podcast)s at %(timestamp)s" % {"podcast": defaults["title"], "timestamp": defaults["fetched"]}
-        )
+        logger.info("Fetched {} at {}", defaults["title"], defaults["fetched"])
 
         episodes = defaults.pop("episodes", None)
         image = defaults.pop("image", None)

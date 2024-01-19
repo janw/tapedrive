@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 from django.db.utils import IntegrityError
@@ -22,7 +22,7 @@ TEST_EPISODE = {
     "title": "Le fancey episode",
     "guid": "http://example.com/feed/01-testep",
     "media_url": "http://example.com/feed/01-testep.mp3",
-    "published": datetime(2018, 3, 12, 10, tzinfo=timezone.utc),
+    "published": datetime(2018, 3, 12, 10, tzinfo=UTC),
 }
 
 

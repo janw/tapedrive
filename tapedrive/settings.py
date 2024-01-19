@@ -1,12 +1,3 @@
-"""
-Django settings for tapedrive project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/2.0/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/2.0/ref/settings/
-"""
 import os
 import random
 
@@ -18,14 +9,14 @@ def get_secret_key(PROJECT_DIR):
     try:
         with open(SECRET_FILE) as sf:
             SECRET_KEY = sf.read().strip()
-    except IOError:
+    except OSError:
         try:
             SECRET_KEY = "".join(
                 [random.SystemRandom().choice("abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)") for i in range(50)]
             )
             with open(SECRET_FILE, "w") as sf:
                 sf.write(SECRET_KEY)
-        except IOError:
+        except OSError:
             Exception(
                 "Please create a %s file with random characters \
             to generate your secret key!"
@@ -57,7 +48,6 @@ class Common(Configuration):
         "django.contrib.staticfiles",
         "listeners",
         "podcasts",
-        "background_task",
         "actstream",
         "rest_framework",
     ]

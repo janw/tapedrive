@@ -1,7 +1,6 @@
 from urllib.parse import urlparse
 
 from bleach.sanitizer import BleachSanitizerFilter, Cleaner
-from bleach.utils import force_unicode
 from django.utils.text import format_lazy
 from html5lib.filters.base import Filter
 
@@ -71,13 +70,12 @@ class CleanerWithOptions(Cleaner):
             allowed_domains = []
 
         if not isinstance(text, str):
-            message = "argument cannot be of '{name}' type, must be of text type".format(name=text.__class__.__name__)
+            message = f"argument cannot be of '{text.__class__.__name__}' type, must be of text type"
             raise TypeError(message)
 
         if not text:
             return ""
 
-        text = force_unicode(text)
         dom = self.parser.parseFragment(text)
         filtered = BleachSanitizerFilter(
             source=self.walker(dom),

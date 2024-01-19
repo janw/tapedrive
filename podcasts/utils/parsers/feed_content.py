@@ -27,10 +27,10 @@ EPISODE_INFO_KEYS = [
 ]
 
 
-def parse_chapters(object):
+def parse_chapters(obj):
     chapters = []
-    if "psc_chapters" in object:
-        chapters = object["psc_chapters"].get("chapters", [])
+    if "psc_chapters" in obj:
+        chapters = obj["psc_chapters"].get("chapters", [])
         for i, chap in enumerate(chapters):
             chapters[i]["starttime"] = chap["start_parsed"]
             del chapters[i]["start_parsed"]

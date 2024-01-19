@@ -4,14 +4,16 @@
 <div align="center">
 <img src="frontend/src/images/icon@2x.png" alt="Tape Drive Logo" />
 
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/janw/tapedrive)](https://gitlab.com/janw/tapedrive/-/pipelines?ref=master)
+[![Docker Build](https://github.com/janw/tapedrive/actions/workflows/docker-build.yaml/badge.svg)](https://github.com/janw/tapedrive/actions/workflows/docker-build.yaml)
+[![Tests](https://github.com/janw/tapedrive/actions/workflows/tests.yaml/badge.svg)](https://github.com/janw/tapedrive/actions/workflows/tests.yaml)
 
-[![Coverage Status](https://img.shields.io/codeclimate/coverage/janw/tapedrive.svg)](https://codeclimate.com/github/janw/tapedrive)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/janw/tapedrive.svg)](https://codeclimate.com/github/janw/tapedrive)
+[![maintainability](https://api.codeclimate.com/v1/badges/e8a6d1046e1aebb4b701/maintainability)](https://codeclimate.com/github/janw/tapedrive/maintainability)
+[![coverage](https://api.codeclimate.com/v1/badges/e8a6d1046e1aebb4b701/test_coverage)](https://codeclimate.com/github/janw/tapedrive/test_coverage)
+[![pre-commit.ci](https://results.pre-commit.ci/badge/github/janw/tapedrive/main.svg)](https://results.pre-commit.ci/latest/github/janw/tapedrive/main)
 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
-[![Dependency management: poetry](https://img.shields.io/badge/deps-poetry-blueviolet.svg)](https://poetry.eustace.io/docs/)
-[![Development Status](https://img.shields.io/badge/status-alpha-orange.svg)](https:///github.com/janw/tapedrive/issues)
+[![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://docs.astral.sh/ruff/)
+[![poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/docs/)
+[![pre-commit](https://img.shields.io/badge/-pre--commit-f8b424?logo=pre-commit&labelColor=grey)](https://github.com/pre-commit/pre-commit)
 
 </div>
 

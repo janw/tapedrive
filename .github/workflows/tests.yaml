@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+    tags:
+      - "*"
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Get python version from file
+        run: echo "PYTHON_VERSION=$(cat .python-version)" | tee -a "$GITHUB_ENV"
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'poetry'
+
+      - run: poetry install --no-root --with=tests --sync
+
+      - run: poetry run pytest --cov --cov-report=xml --cov-report=term
+
+      - name: Upload coverage reports to Codeclimate
+        uses: paambaati/codeclimate-action@v5
+        env:
+          CC_TEST_REPORTER_ID: bfeb9df569119f2dfbf094be7ebff7f1c40ab30660d1cb949fc43c3c68618ee6
+        with:
+          coverageLocations: |
+            coverage.xml:coverage.py
+        if: always()

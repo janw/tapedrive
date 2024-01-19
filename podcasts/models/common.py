@@ -13,9 +13,6 @@ def cover_image_filename(instance, filename):
 
 
 class CommonAbstract(models.Model):
-    class Meta:
-        abstract = True
-
     image = models.ImageField(
         blank=True,
         null=True,
@@ -23,11 +20,8 @@ class CommonAbstract(models.Model):
         verbose_name="Cover Image",
     )
 
-    def insert_cover(self, img_url):
-        if img_url:
-            file = download_cover(img_url)
-            if file:
-                self.image.save(file.name, file, save=True)
+    class Meta:
+        abstract = True
 
     def save(self, *args, **kwargs):
         # Update the slug, ensuring it's unique
@@ -47,3 +41,9 @@ class CommonAbstract(models.Model):
                 self.slug = self.slug[:-1]
 
         super().save(*args, **kwargs)
+
+    def insert_cover(self, img_url):
+        if img_url:
+            file = download_cover(img_url)
+            if file:
+                self.image.save(file.name, file, save=True)

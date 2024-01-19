@@ -21,7 +21,11 @@ from podcasts.utils.serializers import PodcastsJSONEncoder
 
 
 class Episode(CommonAbstract):
-    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid4,
+        editable=False,
+    )
     guid = models.CharField(
         blank=False,
         null=False,
@@ -30,7 +34,12 @@ class Episode(CommonAbstract):
         editable=False,
         verbose_name=_("Episode GUID"),
     )
-    slug = models.SlugField(blank=False, null=False, editable=False, max_length=255)
+    slug = models.SlugField(
+        blank=False,
+        null=False,
+        editable=False,
+        max_length=255,
+    )
     podcast = models.ForeignKey(
         "podcasts.Podcast",
         blank=False,
@@ -39,39 +48,101 @@ class Episode(CommonAbstract):
         related_name="episodes",
         verbose_name=_("Podcast"),
     )
-    title = models.CharField(blank=True, null=True, verbose_name=_("Episode Title"), max_length=255)
-    subtitle = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Episode Subtitle"))
-    description = models.TextField(blank=True, null=True, verbose_name=_("Episode Summary"))
-    link = models.URLField(blank=True, null=True, max_length=2048, verbose_name=_("Episode Link"))
+    title = models.CharField(
+        blank=True,
+        default="",
+        verbose_name=_("Episode Title"),
+        max_length=255,
+    )
+    subtitle = models.CharField(
+        blank=True,
+        default="",
+        max_length=255,
+        verbose_name=_("Episode Subtitle"),
+    )
+    description = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("Episode Summary"),
+    )
+    link = models.URLField(
+        blank=True,
+        default="",
+        max_length=2048,
+        verbose_name=_("Episode Link"),
+    )
     media_url = models.URLField(
         blank=True,
-        null=True,
+        default="",
         editable=False,
         verbose_name=_("Media URL"),
         max_length=2047,
     )
-    published = models.DateTimeField(blank=True, null=True, verbose_name=_("Published"))
-    downloaded = models.DateTimeField(blank=True, null=True, default=None, verbose_name=_("Downloaded"))
+    published = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name=_("Published"),
+    )
+    downloaded = models.DateTimeField(
+        blank=True,
+        null=True,
+        default=None,
+        verbose_name=_("Downloaded"),
+    )
 
     # iTunes-secific attributes
-    itunes_duration = models.CharField(blank=True, null=True, max_length=32, verbose_name=_("Duration"))
-    itunes_season = models.CharField(blank=True, null=True, max_length=32, verbose_name=_("Season"))
-    itunes_episode = models.CharField(blank=True, null=True, max_length=32, verbose_name=_("Episode Number"))
-    itunes_episodetype = models.CharField(blank=True, null=True, max_length=16, verbose_name=_("Episode Type"))
+    itunes_duration = models.CharField(
+        blank=True,
+        default="",
+        max_length=32,
+        verbose_name=_("Duration"),
+    )
+    itunes_season = models.CharField(
+        blank=True,
+        default="",
+        max_length=32,
+        verbose_name=_("Season"),
+    )
+    itunes_episode = models.CharField(
+        blank=True,
+        default="",
+        max_length=32,
+        verbose_name=_("Episode Number"),
+    )
+    itunes_episodetype = models.CharField(
+        blank=True,
+        default="",
+        max_length=16,
+        verbose_name=_("Episode Type"),
+    )
 
     # Fields related to file storage
-    file_originalname = models.CharField(blank=True, null=True, max_length=255, verbose_name=_("Original Filename"))
+    file_originalname = models.CharField(
+        blank=True,
+        default="",
+        max_length=255,
+        verbose_name=_("Original Filename"),
+    )
     file_path = models.FilePathField(
         path=STORAGE_DIRECTORY,
         blank=True,
-        null=True,
+        default="",
         recursive=True,
         allow_files=True,
         allow_folders=False,
         verbose_name=_("File Location"),
     )
-    file_size = models.BigIntegerField(blank=True, null=True, verbose_name=_("File Size"))
-    file_sha256 = models.CharField(blank=True, null=True, verbose_name=_("File Hash (SHA256)"), max_length=64)
+    file_size = models.BigIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("File Size"),
+    )
+    file_sha256 = models.CharField(
+        blank=True,
+        default="",
+        verbose_name=_("File Hash (SHA256)"),
+        max_length=64,
+    )
 
     # Listeners and states
     user = models.ManyToManyField(
@@ -89,8 +160,16 @@ class Episode(CommonAbstract):
         verbose_name=_("Associated Download Task"),
     )
 
-    shownotes = models.TextField(blank=True, null=True, verbose_name=_("Show Notes"))
-    chapters = JSONField(encoder=PodcastsJSONEncoder, default=list, null=True)
+    shownotes = models.TextField(
+        blank=True,
+        default="",
+        verbose_name=_("Show Notes"),
+    )
+    chapters = JSONField(
+        encoder=PodcastsJSONEncoder,
+        default=list,
+        null=True,
+    )
 
     class Meta:
         verbose_name = _("Episode")
@@ -101,7 +180,7 @@ class Episode(CommonAbstract):
         if self.title is not None:
             return self.title
         else:
-            return "%(podcast)s's Episode" % {"podcast": self.podcast}
+            return f"{self.podcast}'s Episode"
 
     def get_content(self, allowed_domains=False):
         if self.shownotes:
@@ -158,7 +237,7 @@ class Episode(CommonAbstract):
 
     def add_chapters(self, chapters):
         for chap in chapters:
-            object, created = self.chapters.update_or_create(**chap)
+            self.chapters.update_or_create(**chap)
 
     def get_chapters(self):
         if self.chapters.exists():
@@ -185,7 +264,4 @@ class EpisodePlaybackState(models.Model):
     completed = models.BooleanField(default=False, verbose_name=_("Playback Completed"))
 
     def __str__(self):
-        return "%(user)s's state on %(episode)s" % {
-            "user": self.listener,
-            "episode": self.episode,
-        }
+        return f"{self.listener}'s state on {self.episode}"
