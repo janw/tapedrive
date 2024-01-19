@@ -17,7 +17,7 @@ from podcasts.models.podcast import Podcast
 from podcasts.utils import handle_uploaded_file, parse_opml_file
 
 
-class EnsureCsrfCookieMixin(object):
+class EnsureCsrfCookieMixin:
     """
     Ensures that the CSRF cookie will be passed to the client.
     NOTE:
@@ -26,7 +26,7 @@ class EnsureCsrfCookieMixin(object):
 
     @method_decorator(ensure_csrf_cookie)
     def dispatch(self, *args, **kwargs):
-        return super(EnsureCsrfCookieMixin, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 # Create your views here.
@@ -129,8 +129,8 @@ class PodcastDeleteView(DeleteView):
 def podcasts_refresh_feed(request, slug):
     podcast = get_object_or_404(Podcast, slug=slug)
     podcast.update(update_all=True)
-    next = request.GET.get("next", "/")
-    return redirect(next)
+    next_page = request.GET.get("next", "/")
+    return redirect(next_page)
 
 
 def settings(request):
@@ -156,8 +156,8 @@ def settings(request):
             app_admin_form.save()
             site_admin_form.save()
 
-            next = request.GET.get("next", "/")
-            return redirect(next)
+            next_page = request.GET.get("next", "/")
+            return redirect(next_page)
     else:
         listener_form = ListenerSettingsForm(instance=request.user.listener, prefix="listener")
         app_admin_form = AdminSettingsForm(instance=current_podcasts_settings, prefix="app")

@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 @background()
-def download_episode(media_url, file_path, id):
+def download_episode(media_url, file_path, episode_id):
     # Get Episode from database
-    episode = Episode.objects.get(id=id)
+    episode = Episode.objects.get(id=episode_id)
     logger.info("Downloading episode %s ..." % episode)
 
     # Download the file
