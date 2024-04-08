@@ -9,7 +9,7 @@ license     = "Apache-2.0"
 python = "^3.12"
 
 # Django and friends
-Django                        = "~4.2"
+Django                        = "~5.0"
 django-activity-stream        = "^1.4"
 django-configurations         = "^2.5"
 djangorestframework           = "^3.14"
